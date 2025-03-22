@@ -1,47 +1,149 @@
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>�½���ҳ 1</title>
-<script language="JavaScript">
-<!--
-function FP_preloadImgs() {//v1.0
- var d=document,a=arguments; if(!d.FP_imgs) d.FP_imgs=new Array();
- for(var i=0; i<a.length; i++) { d.FP_imgs[i]=new Image; d.FP_imgs[i].src=a[i]; }
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算法研究博客</title>
 
-function FP_swapImg() {//v1.0
- var doc=document,args=arguments,elm,n; doc.$imgSwaps=new Array(); for(n=2; n<args.length;
- n+=2) { elm=FP_getObjectByID(args[n]); if(elm) { doc.$imgSwaps[doc.$imgSwaps.length]=elm;
- elm.$src=elm.src; elm.src=args[n+1]; } }
-}
+    <!-- 字体引入 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@alifd/cloud-font@1.1.0/font.css" rel="stylesheet">
 
-function FP_getObjectByID(id,o) {//v1.0
- var c,el,els,f,m,n; if(!o)o=document; if(o.getElementById) el=o.getElementById(id);
- else if(o.layers) c=o.layers; else if(o.all) el=o.all[id]; if(el) return el;
- if(o.id==id || o.name==id) return o; if(o.childNodes) c=o.childNodes; if(c)
- for(n=0; n<c.length; n++) { el=FP_getObjectByID(id,c[n]); if(el) return el; }
- f=o.forms; if(f) for(n=0; n<f.length; n++) { els=f[n].elements;
- for(m=0; m<els.length; m++){ el=FP_getObjectByID(id,els[n]); if(el) return el; } }
- return null;
-}
-// -->
-</script>
+    <!-- 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* 基础样式 */
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #00b894;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+        }
+
+        body {
+            font-family: 'AlibabaPuHuiTi', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+            animation: fadeIn 0.8s ease;
+        }
+
+        /* 标题样式 */
+        h1 {
+            position: relative;
+            padding-bottom: 1rem;
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+            h1::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80px;
+                height: 3px;
+                background: var(--primary-color);
+                border-radius: 2px;
+            }
+
+        /* 按钮容器 */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.95);
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        /* 自定义按钮 */
+        .custom-button {
+            display: flex;
+            align-items: center;
+            padding: 1.2rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #a8a4e6 100%);
+            border-radius: 0.8rem;
+            color: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+            .custom-button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 12px rgba(108,92,231,0.3);
+            }
+
+            .custom-button:active {
+                transform: scale(0.98);
+            }
+
+            .custom-button i {
+                margin-right: 1rem;
+                font-size: 1.4rem;
+                width: 25px;
+            }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .button-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 
-<body onload="FP_preloadImgs(/*url*/'button2.jpg',/*url*/'button3.jpg',/*url*/'button4.jpg',/*url*/'button5.jpg',/*url*/'button7.jpg',/*url*/'button8.jpg',/*url*/'button10.jpg',/*url*/'button11.jpg')">
+<body>
+    <h1>算法研究笔记</h1>
 
-<p><a href="html/shulun.html">
-<img border="0" id="img1" src="button1.jpg" height="20" width="100" alt="����" fp-style="fp-btn: Border Bottom 1; fp-font: SimSun-ExtB" fp-title="����" onmouseover="FP_swapImg(1,0,/*id*/'img1',/*url*/'button2.jpg')" onmouseout="FP_swapImg(0,0,/*id*/'img1',/*url*/'button1.jpg')" onmousedown="FP_swapImg(1,0,/*id*/'img1',/*url*/'button3.jpg')" onmouseup="FP_swapImg(0,0,/*id*/'img1',/*url*/'button2.jpg')"></a></p>
+    <div class="button-container">
+        <a href="html/shulun.html" class="custom-button">
+            <i class="fas fa-calculator"></i>
+            数论研究
+        </a>
+        <a href="html/modui.html" class="custom-button">
+            <i class="fas fa-project-diagram"></i>
+            莫队算法
+        </a>
+        <a href="html/dujiaoshai.html" class="custom-button">
+            <i class="fas fa-filter"></i>
+            杜教筛法
+        </a>
+        <a href="html/prufer.html" class="custom-button">
+            <i class="fas fa-network-wired"></i>
+            Prufer编码
+        </a>
+    </div>
 
-<p><a href="html/modui.html">
-<img border="0" id="img2" src="button6.jpg" height="20" width="100" alt="Ī��" onmouseover="FP_swapImg(1,0,/*id*/'img2',/*url*/'button4.jpg')" onmouseout="FP_swapImg(0,0,/*id*/'img2',/*url*/'button6.jpg')" onmousedown="FP_swapImg(1,0,/*id*/'img2',/*url*/'button5.jpg')" onmouseup="FP_swapImg(0,0,/*id*/'img2',/*url*/'button4.jpg')" fp-style="fp-btn: Border Bottom 1; fp-font: SimSun-ExtB" fp-title="Ī��"></a></p>
-<p><a href="html/dujiaoshai.html">
-<img border="0" id="img4" src="button12.jpg" height="20" width="100" alt="�Ž�ɸ" onmouseover="FP_swapImg(1,0,/*id*/'img4',/*url*/'button10.jpg')" onmouseout="FP_swapImg(0,0,/*id*/'img4',/*url*/'button12.jpg')" onmousedown="FP_swapImg(1,0,/*id*/'img4',/*url*/'button11.jpg')" onmouseup="FP_swapImg(0,0,/*id*/'img4',/*url*/'button10.jpg')" fp-style="fp-btn: Border Bottom 1; fp-font: SimSun-ExtB" fp-title="�Ž�ɸ"></a></p>
-
-<p><a href="html/prufer.html">
-<img border="0" id="img3" src="button9.jpg" height="20" width="100" alt="prufer" onmouseover="FP_swapImg(1,0,/*id*/'img3',/*url*/'button7.jpg')" onmouseout="FP_swapImg(0,0,/*id*/'img3',/*url*/'button9.jpg')" onmousedown="FP_swapImg(1,0,/*id*/'img3',/*url*/'button8.jpg')" onmouseup="FP_swapImg(0,0,/*id*/'img3',/*url*/'button7.jpg')" fp-style="fp-btn: Border Bottom 1; fp-font: SimSun-ExtB" fp-title="prufer"></a></p>
-
+    <!-- 可选背景纹理（从以下网址下载） -->
+    <!-- <img src="geometry-bg.png" alt="背景" style="display:none"> -->
 </body>
-
 </html>
