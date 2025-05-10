@@ -856,22 +856,22 @@
   
   
   <entry>
-    <title>cbcoj</title>
+    <title>about</title>
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[<p><a href="CBCOJ.zip">点击这里</a></p>]]></content>
+    <content type="html"><![CDATA[<p>关于。</p>]]></content>
     
   </entry>
   
   
   
   <entry>
-    <title>about</title>
+    <title>cbcoj</title>
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[<p>关于。</p>]]></content>
+    <content type="html"><![CDATA[<p><a href="CBCOJ.zip">点击这里</a></p>]]></content>
     
   </entry>
   
