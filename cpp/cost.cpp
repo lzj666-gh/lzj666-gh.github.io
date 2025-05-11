@@ -1,0 +1,65 @@
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+const int inf = 1145141919810ll;
+struct Edge {
+	int v, w, c, nxt;
+	Edge(int v = 0, int w = 0, int c = 0, int nxt = 0) :v(v), w(w), c(c), nxt(nxt) {}
+}edge[100000 + 10];
+int head[5000 + 10], idx = 1;
+void add(int u, int v, int w, int c) {
+	edge[++idx] = { v,w,c,head[u] };
+	head[u] = idx;
+}
+int n, m, s, t, dis[5000 + 10], cur[5000 + 10];
+bool vis[5000 + 10];
+bool bfs() {
+	memset(vis, 0, sizeof vis);
+	queue<int>q;
+	for (int i = 1; i <= n; ++i) dis[i] = inf, cur[i] = head[i];
+	dis[s] = 0; q.push(s); vis[s] = 1;
+	bool flg = 0;
+	while (!q.empty()) {
+		int now = q.front(); q.pop(); vis[now] = 0;
+		flg |= now == t;
+		for (int i = head[now]; i; i = edge[i].nxt) {
+			int& v = edge[i].v;
+			if (dis[v] > dis[now] + edge[i].c && edge[i].w > 0) {
+				dis[v] = dis[now] + edge[i].c;
+				if (!vis[v])
+					q.push(v),
+					vis[v] = 1;
+			}
+		}
+	}
+	return flg;
+}
+int ans;
+int dfs(int x, int flow) {
+	if (x == t) return flow;
+	vis[x] = 1;
+	int ans = 0;
+	for (int& i = cur[x]; i && flow; i = edge[i].nxt) {
+		int& v = edge[i].v;
+		if (!vis[v] && edge[i].w > 0 && dis[v] == dis[x] + edge[i].c) {
+			int k = dfs(v, min(flow, edge[i].w));
+			if (k == 0) dis[v] = inf;
+			edge[i].w -= k;
+			edge[i ^ 1].w += k;
+			ans += k; flow -= k;
+			::ans += k * edge[i].c;
+		}
+	}
+	vis[x] = 0;
+	return ans;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> s >> t;
+	for (int i = 1, u, v, w, c; i <= m; ++i)
+		cin >> u >> v >> w >> c, add(u, v, w, c), add(v, u, 0, -c);
+	int ans = 0;
+	while (bfs()) ans += dfs(s, inf);
+	cout << ans << ' ' << ::ans << endl;
+	return 0;
+}
