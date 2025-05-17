@@ -2,8 +2,8 @@ import os
  
 def replace_md_links():
     # 配置参数
-    old_url = "https://www.lzj-blog/paste" 
-    new_url = "https://www.lzj-blog.top/paste" 
+    old_url = "https://www.lzj-blog.top/paste" 
+    new_url = "/paste" 
     target_ext = ".md"
     processed_count = 0
  
