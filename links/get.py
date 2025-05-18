@@ -13,4 +13,4 @@ headers = {
 }
 res=get('https://www.luogu.com.cn/api/team/members/14398?limit=100&orderBy=group.no&page=1',headers=headers)
 for t in json.loads(res.text)['members']['result']:
-    print('    - {\n      title: \'%s\',\n      intro: \'%s\',\n      link: www.luogu.com.cn/user/\'%d\',\n      avatar: \'%s\'\n    }'%(t['user']['name'],t['user']['slogan'],t['user']['uid'],t['user']['avatar']))
+    print('    - {\n      title: \'%s\',\n      intro: \'%s\',\n      link: https://www.luogu.com.cn/user/%d,\n      avatar: \'%s\'\n    }'%(t['user']['name'],t['user']['slogan'],t['user']['uid'],t['user']['avatar']))
