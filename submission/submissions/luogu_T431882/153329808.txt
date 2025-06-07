@@ -1,0 +1,7 @@
+//  OJ: 洛谷
+//  提交ID: 153329808
+//  题目ID: T431882
+#include<bits/stdc++.h>
+int main(){
+	cout<<"Always Accepted\n";
+}

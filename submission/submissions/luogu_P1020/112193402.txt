@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 112193402
+//  题目ID: P1020
+#include<bits/stdc++.h>
+using namespace std;
+int x,a[100000],n,dp1[100000],ans1,ans2,st2[100000],top2,st1[100000],top1,k;
+int erfen(int val){
+	int L=1,R=top2,mid;
+	while(L<=R){
+		mid=(L+R)/2;
+		if(val>st2[mid]) R=mid-1;
+		else L=mid+1;
+	}
+	return R+1;
+}
+int main(){
+	std::ios::sync_with_stdio(false);
+	while(cin>>x) a[++n]=x;
+//	for(int i=1;i<=n;++i) dp1[i]=1;
+//	for(int i=2;i<=n;++i){
+//		for(int j=1;j<i;++j){
+//			if(a[j]>=a[i]&&dp1[i]<dp1[j]+1) dp1[i]=dp1[j]+1;
+//		}
+//	}
+//	for(int i=1;i<=n;++i){
+//		ans1=max(ans1,dp1[i]);
+//	}
+	st1[++top1]=a[1];
+	for(int i=2;i<=n;++i){
+		if(a[i]>st1[top1]) st1[++top1]=a[i];
+		else{
+			k=lower_bound(st1+1,st1+top1+1,a[i])-st1;
+			st1[k]=a[i];
+		}
+	}
+	st2[++top2]=a[1];
+	for(int i=2;i<=n;++i){
+		if(a[i]<=st2[top2]) st2[++top2]=a[i];
+		else{
+			k=erfen(a[i]);
+			st2[k]=a[i];
+		}
+	}
+	cout<<top2<<endl;
+	cout<<top1<<endl;
+	return 0;
+}

@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 150204805
+//  题目ID: P10244
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+string a,b,c,d;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>a>>b>>c>>d;
+	for(int i=0;i^n;++i){
+		if(a[i]>c[i]) swap(a[i],c[i]),swap(b[i],d[i]);
+		else if(a[i]==c[i]&&b[i]>d[i]) swap(a[i],c[i]),swap(b[i],d[i]);
+	}
+	cout<<b<<endl;
+}

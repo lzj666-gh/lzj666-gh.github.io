@@ -1,0 +1,54 @@
+//  OJ: 洛谷
+//  提交ID: 141653178
+//  题目ID: T132495
+#include <bits/stdc++.h>
+using namespace std;
+int n, sum, x, num;
+int a[70], vis[70];
+bool dfs(int cnt, int len, int cntnum) {
+	if (cntnum == num)return true;
+	for (int i = cnt; i < n; i++) {
+		if (vis[i] || (i && !vis[i - 1] && a[i] == a[i - 1]))continue;
+		if (len + a[i] == x) {
+			vis[i] = 1;
+			if (dfs(0, 0, cntnum + 1)) return true;
+			vis[i] = 0;
+			return false;
+		}
+		else if (len + a[i] < x) {
+			vis[i] = 1;
+			if (dfs(i + 1, len + a[i], cntnum)) return true;
+			vis[i] = 0;
+			if (len == 0) return false;
+		}
+	}
+	return false;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	while (cin >> n) {
+		if (n == 0) return 0;
+		sum = 0;
+		memset(a, 0, sizeof a);
+		for (int i = 0; i < n; i++) {
+			cin >> a[i];
+			if (a[i] > 50) {
+				i--;
+				n--;
+				continue;
+			}
+			sum += a[i];
+		}
+		sort(a, a + n, [](const int& a, const int& b)->bool {return a > b; });
+		for (x = a[0]; x <= sum / 2; x++) {
+			if (sum % x == 0) {
+				num = sum / x;
+				memset(vis, 0, sizeof(vis));
+				if (dfs(0, 0, 0)){
+					cout << x << endl;
+					break;
+				}
+			}
+		}
+	}
+}

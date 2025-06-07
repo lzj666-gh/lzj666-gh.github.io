@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 101273866
+//  题目ID: P1308
+#include<bits/stdc++.h>
+using namespace std;
+char n[15],a[1000000+10];
+int cnt=0,tmp=0,wz=-1;
+bool dcpp(int ks,int js) {
+	if(js-ks+1!=strlen(n)) return false;
+	for(int i=ks,j=0; i<=js; i++,j++) {
+		if(a[i]!=n[j]) return false;
+	}
+	return true;
+}
+int main() {
+	cin>>n;
+	getchar();
+	fgets(a,1000000+10,stdin);
+	for(int i=0; i<strlen(n); i++) {
+		if(n[i]>='A'&&n[i]<='Z') n[i]=n[i]-'A'+'a';
+	}
+	int L=strlen(a)-1;
+	for(int i=0; i<L; i++) {
+		if(a[i]>='A'&&a[i]<='Z') a[i]=a[i]-'A'+'a';
+	}
+	for(int i=0; i<L; i++) {
+		int k=0;
+		while(a[i]>='a'&&a[i]<='z'&&i<L) {
+			i++;
+			k++;
+		}
+		if(k>0 && dcpp(i-k,i-1)) {
+			cnt++;
+			if(wz==-1) wz=i-k;
+		}
+	}
+	if(wz==-1) cout<<-1<<endl;
+	else  cout<<cnt<<" "<<wz<<endl;
+	return 0;
+}

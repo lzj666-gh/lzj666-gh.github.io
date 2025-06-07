@@ -1,0 +1,84 @@
+//  OJ: 洛谷
+//  提交ID: 195507552
+//  题目ID: P4655
+#include<bits/stdc++.h>
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+using namespace std;
+int n, h[100000 + 10], w[100000 + 10], f[100000 + 10];
+struct Line {
+	double k, b;
+	Line(int x_0 = 0, int y_0 = INT_MAX, int x_1 = 0, int y_1 = INT_MAX) {
+		if (x_1 == x_0) {
+			k = 0;
+			b = min(y_0, y_1);
+			return;
+		}
+		k = (y_1 - y_0) * 1.0 / (x_1 - x_0);
+		b = y_0 - x_0 * k;
+	}
+	double operator()(int x) {
+		return k * x + b;
+	}
+	friend ostream& operator<<(ostream& out, const Line& l) {
+		return out << "f(x)=" << l.k << 'x' << '+' << l.b;
+	}
+}l[100000 + 5];
+struct Tree {
+	int l, r, ans;
+}tree[1000000 << 2 | 3];
+void build(int p, int l, int r) {
+	tree[p].l = l; tree[p].r = r;
+	if (l == r) return;
+	build(lc(p), l, l + r >> 1);
+	build(rc(p), (l + r >> 1) + 1, r);
+}
+const double eps = 1e-10;
+//114514 for less and 1919810 for greater
+int cmp(double x, double y) {
+	if (x - y > eps) return 1919810;
+	if (fabs(x - y) <= eps) return 0;
+	return 114514;
+}
+void clac(int p, int x) {
+	//cout << "inserting! "<< '[' << tree[p].l << ',' << tree[p].r << ']' << endl;
+	int mid = tree[p].l + tree[p].r >> 1;
+	int& y = tree[p].ans;
+	int Mid = cmp(l[tree[p].ans](mid), l[x](mid));
+	if (Mid == 1919810) swap(x, y);
+	int L = cmp(l[x](tree[p].l), l[y](tree[p].l)), R = cmp(l[x](tree[p].r), l[y](tree[p].r));
+	if (L == 114514) clac(lc(p), x);
+	if (R == 114514) clac(rc(p), x);
+	//cout << '[' << tree[p].l << ',' << tree[p].r << "]'s final ans is " << l[tree[p].ans] << endl;
+}
+int query(int p, int k) {
+	if (k <= tree[p].l && tree[p].r <= k) return l[tree[p].ans](k);
+	if (tree[p].r < k || k < tree[p].l) return INT_MAX;
+	return min({ query(lc(p), k), query(rc(p), k),(int)l[tree[p].ans](k) });
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	build(1, 1, 1e6);
+	for (int i = 1; i <= n; ++i) cin >> h[i];
+	for (int i = 1; i <= n; ++i) cin >> w[i], w[i] += w[i - 1];
+	l[1].k = -2 * h[1];
+	l[1].b = h[1] * h[1] - w[1];
+	clac(1, 1);
+	//cout << "insert: " << l[1] << endl;
+	for (int i = 2; i <= n; ++i) {
+		//cout << "query: " << h[i] << " is " << query(1, h[i]) << endl;
+		f[i] = h[i] * h[i] + w[i - 1] + query(1, h[i]);
+		l[i].k = -2 * h[i];
+		l[i].b = f[i] + h[i] * h[i] - w[i];
+		clac(1, i);
+		//cout << "insert: " << l[i] << endl;
+	}
+	cout << f[n] << endl;
+	return 0;
+}
+/*
+f_i = min{ f_j + h_i^2 - 2h_ih_j + h_j^2 + s_{i - 1} - s_j }
+f_i = h_i^2 + s_{i - 1} + min{ a_jh_i + b_j }
+插入直线 y_i = a_ix + b_i ，求 x = h_i 时 y_i 的最小值
+*/

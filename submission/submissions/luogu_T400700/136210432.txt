@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 136210432
+//  题目ID: T400700
+#include<bits/stdc++.h>
+using namespace std;
+priority_queue<int,vector<int>,greater<int>> minq;
+priority_queue<int> maxq;
+int main(){
+	ios_base::sync_with_stdio(false);
+	int t;
+	cin>>t;
+	while(t--){
+		int idx,n;
+		cin>>idx>>n;
+		cout<<idx<<' '<<(n+1)/2<<endl;
+		int topp;
+		vector<int> ans;
+		for(int i=1;i<=n;i++){
+			int num;
+			cin>>num;
+			if(i==1) topp=num;
+			if(num>=topp) minq.push(num);
+			else maxq.push(num);
+			if(minq.size()>maxq.size()+1){
+				num=minq.top();
+				minq.pop();
+				maxq.push(num);
+			}
+			else if(maxq.size()>minq.size()>+1){
+				num=maxq.top();
+				maxq.pop();
+				minq.push(num);
+			}
+			if(i%2){
+				if(minq.size()>maxq.size()) topp=minq.top();
+				else topp=maxq.top();
+				ans.push_back(topp);
+			}
+		}
+		for(int i=0;i<ans.size();i++){
+			if(i){
+				if(i%10) cout<<" ";
+				else cout<<endl;
+			}
+			cout<<ans[i];
+		}
+		cout<<endl;
+	}
+	return 0;
+}

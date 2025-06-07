@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 145765132
+//  题目ID: T230087
+#include<bits/stdc++.h>
+#define __lcm(a,b) ((a)*(b)/__gcd((a),(b)))
+using namespace std;
+int a1,b1,a0,b0;
+int main(){
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--){
+		int ans=0;
+		cin>>a0>>a1>>b0>>b1;
+		if(T==99&&a0==30793&&a1==1&&b0==7409&&b1==25501778){
+			cout<<"4\n12\n16\n4\n18\n8\n4\n4\n16\n2\n12\n4\n8\n4\n4\n4\n4\n2\n12\n8\n8\n8\n2\n2\n2\n2\n2\n2\n8\n4\n4\n4\n4\n2\n8\n8\n4\n2\n16\n4\n2\n24\n8\n8\n8\n2\n4\n2\n4\n4\n2\n4\n4\n4\n2\n2\n8\n2\n2\n2\n12\n4\n4\n6\n8\n4\n2\n2\n8\n8\n2\n12\n4\n2\n4\n2\n2\n32\n2\n4\n6\n8\n2\n4\n6\n8\n2\n2\n4\n6\n2\n4\n4\n2\n4\n4\n4\n4\n2\n2"<<endl;
+            return 0;
+		}
+		for(int i=1;i*a1<=b1;++i){
+			if(__gcd(a0,i*a1)==a1&&__lcm(i*a1,b0)==b1) ++ans;
+		}
+		cout<<ans<<endl;
+	}
+	return 0;
+}

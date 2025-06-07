@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 90898696
+//  题目ID: P1425
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a,b,c,d,e,f;
+	cin>>a>>b>>c>>d;
+	e=c-a-1;
+	f=d+60-b;
+	cout<<e<<" "<<f;
+	return 0;
+}
+

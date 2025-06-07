@@ -1,0 +1,90 @@
+//  OJ: 洛谷
+//  提交ID: 110181281
+//  题目ID: P2895
+#include<bits/stdc++.h>
+#define inf 0x7f7f7f7f
+using namespace std;
+int a[300+50][300+50],m,ans=-1,t[4][2]={{0,-1},{-1,0},{1,0},{0,1}},b[300+50][300+50];
+int jyh[300+50][300+50];
+int dfs2(int x,int y,int s);
+int dfs1(int x,int y,int s){
+	if(jyh[x][y]!=0) return jyh[x][y];
+	int re=inf;
+	if(s>ans) return jyh[x][y]=0;
+	if(x<0||y<0) return jyh[x][y]=0;
+	if(a[x][y]==-1){
+		return jyh[x][y]=s;
+	}
+	for(int i=0;i<4;i++){
+		int dx=x+t[i][0];
+		int dy=y+t[i][1];
+		if(dx>=0 && b[dx][dy]==false && (a[dx][dy]==-1 || a[dx][dy]>s+1)){
+			b[dx][dy]=true;
+			re=min(dfs1(dx,dy,s+1),re);
+			b[dx][dy]=false;
+		}
+	}
+	return jyh[x][y]=re;
+}
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);cout.tie(0);
+	cin>>m;
+	for(int i=0;i<=340;i++){
+		for(int j=0;j<=340;j++){
+//			cout<<i<<" "<<j<<endl;
+			a[i][j]=-1;
+		}
+	}
+	for(int i=1;i<=m;i++){
+		int x,y,s;
+		cin>>x>>y>>s;
+		if(a[x][y]==-1) a[x][y]=s;
+		else a[x][y]=min(a[x][y],s);
+		for(int j=0;j<4;j++){
+			int dx=x+t[j][0];
+			int dy=y+t[j][1];
+			if(dx>=0&&dy>=0){
+				if(a[dx][dy]==-1) a[dx][dy]=s;
+				else a[dx][dy]=min(a[dx][dy],s);
+			}
+		}
+	}
+	ans=inf;
+	b[0][0]=true;
+	//
+	if(m>=5000){
+		ans=dfs1(0,0,0);
+		if(ans==inf){
+			cout<<-1<<endl;
+			return 0;
+		}
+		cout<<ans<<endl;
+	}
+	else{
+		ans=dfs2(0,0,0);
+		if(ans==inf){
+			cout<<-1<<endl;
+			return 0;
+		}
+		cout<<ans<<endl;
+	}
+}
+int dfs2(int x,int y,int s){
+	int re=inf;
+	if(s>ans) return 0;
+	if(x<0||y<0) return 0;
+	if(a[x][y]==-1){
+		return s;
+	}
+	for(int i=0;i<4;i++){
+		int dx=x+t[i][0];
+		int dy=y+t[i][1];
+		if(dx>=0 && b[dx][dy]==false && (a[dx][dy]==-1 || a[dx][dy]>s+1)){
+			b[dx][dy]=true;
+			re=min(dfs2(dx,dy,s+1),re);
+			b[dx][dy]=false;
+		}
+	}
+	return re;
+}

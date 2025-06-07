@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 166067217
+//  题目ID: P1144
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+    int v,w,nxt;
+}edge[2000000+10];
+int head[1000000+10],idx;
+void add(int u,int v,int w){
+	edge[++idx]={v,w,head[u]};
+	head[u]=idx;
+}
+struct Node{
+	int first,second;
+	friend bool operator<(const Node&a,const Node&b){
+		return a.first>b.first;
+	}
+};
+int n,m,s,dis[1000000+10],cnt[1000000+10];
+priority_queue<Node>q;
+bool vis[1000000+10];
+void dij(){
+	memset(dis,0x3f,sizeof dis);
+	dis[s]=0;cnt[s]=1;
+	q.push({0,s});
+	while(!q.empty()){
+		Node p=q.top();q.pop();
+		if(vis[p.second]) continue;
+		vis[p.second]=1;
+		for(int i=head[p.second];i;i=edge[i].nxt){
+			if(dis[edge[i].v]>dis[p.second]+edge[i].w){
+				dis[edge[i].v]=dis[p.second]+edge[i].w;
+				q.push({dis[p.second]+edge[i].w,edge[i].v});
+				cnt[edge[i].v]=cnt[p.second];
+				cnt[edge[i].v]%=100003;
+			}
+			else if(dis[edge[i].v]==dis[p.second]+edge[i].w){
+				cnt[edge[i].v]+=cnt[p.second];
+				cnt[edge[i].v]%=100003;
+			}
+		}
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+    cin>>n>>m;s=1;
+    for(int i=1;i<=m;++i){
+    	int u,v,w;
+    	cin>>u>>v;w=1;
+    	add(u,v,w);
+	}
+	dij();
+	for(int i=1;i<=n;++i) cout<<(dis[i]==0x3f3f3f3f?0:cnt[i])<<'\n';
+    return 0;
+}

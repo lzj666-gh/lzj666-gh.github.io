@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 208701436
+//  题目ID: T587079
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int mod = 1e9 + 7;
+typedef long long ll;
+int qpow(int a, int b, int p = mod) {
+	int rt = 1 % p;
+	while (b) {
+		if (b & 1) rt = 1ll * rt * a % p;
+		b >>= 1;
+		a = 1ll * a * a % p;
+	}
+	return rt;
+}
+int m, n;
+int main() {
+    cin.tie(0)->sync_with_stdio(false);
+	while (cin >> n >> m, n && m) {
+		swap(n, m);
+		ll ans = 0;
+		for (int k = 1; k <= n; ++k) ans += qpow(m, gcd(n, k));
+		if (n & 1) ans += n * qpow(m, n / 2 + 1);
+		else ans = ans % mod + n / 2 * (qpow(m, n / 2) + qpow(m, n / 2 + 1)) % mod;
+		cout << ans % mod * qpow(n * 2, mod - 2) % mod << endl;
+	}
+    return 0;
+}

@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 101249299
+//  题目ID: P2670
+#include<bits/stdc++.h>
+using namespace std;
+int m,n;
+char a[105][105];
+int b[105][105]={0};
+int main(){
+	cin>>n>>m;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			cin>>a[i][j];
+		}
+	}
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			if(a[i][j]=='*') continue;
+			for(int k=i-1;k<=i+1; k++){
+				for(int l=j-1;l<=j+1;l++){
+					if(k>=0 && l>=0 && a[k][l]=='*') b[i][j]++;
+				}
+			}
+		}
+	}
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			if(a[i][j]=='*')
+				printf("%c",a[i][j]);
+			else
+				printf("%d",b[i][j]);
+		}
+		printf("\n");
+	}
+	return 0;
+}

@@ -1,0 +1,53 @@
+//  OJ: 洛谷
+//  提交ID: 194390888
+//  题目ID: P5956
+#include<bits/stdc++.h>
+using namespace std;
+int B, Q;
+long long a[1000000 + 10];
+struct Node {
+	long long sum;
+	unordered_map<int, int>minus;
+	Node(const long long& oth) :sum(oth), minus(unordered_map<int, int>()) {}
+	Node(Node& oth) :sum(oth.sum), minus(oth.minus) {}
+};
+queue<Node>q;
+int main() {
+// 	freopen("Podzielno.in", "r", stdin);
+// 	freopen("Podzielno.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> B >> Q; B--;
+	long long sum = 0;
+	for (int i = 0; i <= B; ++i) cin >> a[i], sum += a[i] * i;
+	q.emplace(sum);
+	while (!q.empty()) {
+		Node now = q.front(); q.pop();
+		if (now.sum % B == 0) {
+			for (unordered_map<int, int>::iterator it = now.minus.begin(); it != now.minus.end(); it++)
+				a[it->first] -= it->second;
+			sum = now.sum;
+			break;
+		}
+		for (int i = 0; i <= B; ++i) {
+			if (a[i] - now.minus[i] > 0) {
+				now.minus[i]++;
+				now.sum -= i;
+				q.emplace(now);
+				now.minus[i]--;
+				now.sum += i;
+			}
+		}
+	}
+//	for (int i = 0; i <= B; ++i) cout << a[i] << ' '; cout << endl;
+	for (int i = 1; i <= B; ++i) a[i] += a[i - 1];
+	while (Q--) {
+		long long k;
+		cin >> k; k++;
+		if (k > a[B] || k < 0) {
+			cout << -1 << endl;
+			continue;
+		}
+		cout << (lower_bound(a, a + B + 1, k) - a) << endl;
+	}
+	return 0;
+}

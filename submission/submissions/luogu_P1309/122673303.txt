@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 122673303
+//  题目ID: P1309
+#include<bits/stdc++.h>
+#define f_u(a,b) for(register int i=a;i<=b;++i)
+#define f_d(a,b) for(register int i=a;i>=b;--i)
+#define F_u(a,b) for(register int j=a;j<=b;++j)
+#define F_d(a,b) for(register int j=a;j>=b;--j)
+using namespace std;
+struct person{
+	int idx,score,w;
+	friend bool operator < (person a,person b){
+		if(a.score==b.score) return a.idx<b.idx;
+		return a.score>b.score;
+	}
+}a[100000*2+10];
+inline int read(){register char c=getchar();register int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=(x<<3)+(x<<1)+(c^48);c=getchar();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+int n,r,q;
+int main(){
+	freopen("swiss.in","r",stdin);freopen("swiss.out","w",stdout);
+	n=read();r=read();q=read();
+	f_u(1,2*n) a[i].idx=i,a[i].score=read();
+	f_u(1,2*n) a[i].w=read();
+	sort(&a[1],&a[n*2+1]);
+	for(int j=1;j<=r;++j){
+		for(int i=1;i<=n;++i){
+			if(a[i*2-1].w<a[i*2].w) a[i*2].score+=1;
+			else a[i*2-1].score+=1;
+		}
+		sort(&a[1],&a[n*2+1]);
+	}
+	write(a[q].idx);
+	return 0;
+}

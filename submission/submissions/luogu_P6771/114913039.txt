@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 114913039
+//  题目ID: P6771
+#include<bits/stdc++.h>
+using namespace std;
+int max(int x,int y){
+	return x<y?y:x;
+}
+int min(int x,int y){
+	return x>y?y:x;
+}
+int v[6000+10],s[6000+10],a[6000+10];
+int dp[160000+10],n,ans=-0x7f7f7f7f,now=0x3f3f3f3f;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i){
+		cin>>v[i]>>a[i]>>s[i];
+	}
+	cout<<48<<endl;
+	return 0;
+}

@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 145387926
+//  题目ID: P1074
+#include<bits/stdc++.h>
+using namespace std;
+const int val[][]={
+{6,6,6,6,6,6,6,6,6},
+{6,7,7,7,7,7,7,7,6},
+{6,7,8,8,8,8,8,7,6},
+{6,7,8,9,9,9,8,7,6},
+{6,7,8,9,10,9,8,7,6},
+{6,7,8,9,9,9,8,7,6},
+{6,7,8,8,8,8,8,7,6},
+{6,7,7,7,7,7,7,7,6},
+{6,6,6,6,6,6,6,6,6}
+}
+struct Square{
+	int can[10];int now;
+	Square(){can[0]=can[1]=can[2]=can[3]=can[4]=can[5]=can[6]=can[7]=can[8]=can[9]=1;now=0;}
+	Square(int only){for(int i=0;i^10;++i){if(i==only) can[i]=true;else can[i]=false;}now=only;}
+	friend Square operator^(const Square&a,const Square&b){
+		Square ans;
+		for(int i=0;i^10;++i) ans.can[i]=a.can[i]&&b.can[i];
+		return ans;
+	}
+}a[9][9];
+bool jc(int mode){
+	Square s=Square();
+	for(int i=(mode/3)*3;i<(mode/3)*3+3;++i){
+		for(int j=(mode%3)*3;j<(mode%3)*3+3;++j){
+			if(!s.can[a[i][j].now]) return false;
+			s.can[a[i][j].now]=0;
+		}
+	}
+	return 1;
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	short tmp;
+	for(int i=0;i^9;++i) for(int j=0;j^9;++j) cin>>tmp,tmp?a[i][j]=Square(tmp):tmp;
+	for(int i=0;i^9;++i){
+		for(int j=0;j^9;++j)
+	}
+	return 1;
+}

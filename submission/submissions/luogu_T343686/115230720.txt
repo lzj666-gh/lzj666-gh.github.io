@@ -1,0 +1,43 @@
+//  OJ: 洛谷
+//  提交ID: 115230720
+//  题目ID: T343686
+#include <bits/stdc++.h>
+using namespace std;
+int n,ans=0;
+struct node{
+    int top=0;
+    int children[200];
+    int v[20a0];
+} a[100000+10];
+void dfs(int k,int last,int len){
+    bool g=true;
+    for(int i=0;i<a[k].top;i++){
+        if(a[k].children[i]==last) continue;
+        dfs(a[k].children[i],k,len+a[k].v[i]);
+        g=false;
+    }
+    if(g){
+        if(ans<len){
+            ans=len;
+        }
+    }
+}
+int main(){
+    ios::sync_with_stdio(false);
+    cin>>n;
+    for(int i=1;i <= n - 1;i++){
+        int x,y,z;
+        cin>>x>>y>>z;
+        a[x].children[a[x].top]=y;
+        a[x].v[a[x].top]=z;
+        a[y].children[a[y].top]=x;
+        a[y].v[a[y].top]=z;
+        a[x].top++;
+        a[y].top++;
+    }
+    for(int i=1;i<=n;i++){
+    	dfs(i,0,0);
+	}
+    cout<<ans<<endl;
+    return 0;
+}

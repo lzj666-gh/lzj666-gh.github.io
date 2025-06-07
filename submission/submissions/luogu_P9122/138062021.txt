@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 138062021
+//  题目ID: P9122
+#include<bits/stdc++.h>
+using namespace std;
+int n,T,k;char nw[20+10][20+10],stp[20+10][20+10],want[20+10][20+10],ttmp[20+10][20+10];
+int dodo(){
+	for(int i=1;i<=n-k+1;++i){
+		for(int j=1;j<=n-k+1;++j){
+			bool can=true;
+			for(int p=0;p<k;++p)
+				for(int q=0;q<k;++q){
+					if(want[i+p][j+q]=='.'&&stp[q][p]=='*'){
+						can=false;
+					}
+//						nw[i+p][j+q]=nw[i+p][j+q]=='.'?stp[q][p]:'*';
+				}
+			if(can) 
+			for(int p=0;p<k;++p)
+				for(int q=0;q<k;++q)
+					if(nw[i+p][j+q]=='.') nw[i+p][j+q]=stp[q][p];
+		}
+	}
+	for(int i=0;i<k;++i) for(int j=0;j<k;++j) ttmp[i][j]=stp[k-j-1][i];
+	for(int i=0;i<k;++i) for(int j=0;j<k;++j) stp[i][j]=ttmp[i][j];
+}
+int main(){
+//	freopen("stamp.in","r",stdin);
+//	freopen("stamp.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>T;
+	while(T--){
+		cin>>n;
+		for(int i=1;i<=n;++i)
+			for(int j=1;j<=n;++j) cin>>want[i][j],nw[i][j]='.';
+		cin>>k;
+		for(int i=0;i<k;++i) for(int j=0;j<k;++j) cin>>stp[i][j];
+		dodo();dodo();dodo();dodo();
+		bool can=true;
+		for(int i=1;i<=n;++i){
+			for(int j=1;j<=n;++j){
+				if(nw[i][j]!=want[i][j]){
+					if(can) cout<<"NO"<<endl;
+					can=false;
+					break;
+				}
+			}
+		}
+		if(can) cout<<"YES"<<endl;
+	}
+	return 0;
+}

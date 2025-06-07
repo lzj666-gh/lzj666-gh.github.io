@@ -1,0 +1,54 @@
+//  OJ: 洛谷
+//  提交ID: 127706788
+//  题目ID: T385410
+#include<bits/stdc++.h>
+#define int long long
+#define f(i,a,b) for(register int i=a;i<=b;++i)
+using namespace std;
+struct peo {
+	int a,b;
+	int l(int x) {
+		return x<=b&&x>=a?2*(-a+b):x<a?(2*(b-x)):2*(x-a);
+	}
+};
+inline int read() {
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c<'0'||c>'9') {
+		if(c=='-') s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0') {
+		x=(x<<1)+(x<<3)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+}
+inline void write(int x) {
+	if(x<0) {
+		x=~x+1;
+		putchar('-');
+	} else if(!x) return;
+	write(x/10);
+	putchar(x%10+48);
+}
+int n,m;
+long long ans,ans2=0;
+peo a[5000000];
+int t[1000000];
+main() {
+//	freopen("elev.in","r",stdin),freopen("elev.out","w",stdout);
+	n=read(),m=read();
+	for(int i=1; i<=m; ++i) {
+		a[i].a=read();
+		a[i].b=read();
+		t[i*2]=a[i].a;
+		t[i*2+1]=a[i].b;
+	}
+	sort(&t[1],&t[m*2+1]);
+	ans=t[m];
+	for(int i=1;i<=m;++i) ans2+=a[i].l(ans);
+	write(ans),putchar(' ');
+	write(ans2),putchar('\n');
+	return 0;
+}

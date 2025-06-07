@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 211349563
+//  题目ID: P3857
+#include<bits/stdc++.h>
+using namespace std;
+long long n, m, d[5000], tot;
+constexpr int mod = 2008;
+long long pow(long long a, long long b) {
+	long long res = 1;
+	while (b) {
+		if (b & 1) {
+			res = res * a % mod;
+		}
+		a = a * a % mod;
+		b >>= 1;
+	}
+	return res;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= m; ++i) {
+		bitset<5000> b;
+		for (int j = 0; j < n; ++j) {
+			char x;
+			cin >> x;
+			b[j] = x == 'O';
+		}
+		for (int j = 0; j < n; ++j) {
+			if (b[j]) {
+				if (!d[j]) {
+					d[j] = b.to_ullong();
+					tot++;
+					break;
+				}
+				b ^= d[j];
+			}
+		}
+	}
+	cout << pow(2, tot) << endl;
+	return 0;
+}

@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 104957007
+//  题目ID: P1096
+#include<bits/stdc++.h>
+using namespace std;
+int a[2000000],b[2000000],n;
+char c[2000000];
+void ce(){
+	for(int i=1;i<=a[0];i++){
+		b[i]=a[i]*2;
+	}
+	for(int i=1;i<=a[0];i++){
+		b[i+1]+=b[i]%10;
+		b[i]%=10;
+	}
+	b[1]+=2;
+	for(int i=1;i<=b[0];i++){
+		if(b[i]>=10){
+			b[i+1]+=1;
+			b[i]%=10;
+		}
+		else break;
+	}
+	memset(a,b,sizeof(b));
+}
+int main(){
+	cin>>n;
+	a[0]=1;a[1]=2;
+	for(int i=1;i<=n;i++){
+		ce();
+	}
+	for(int i=a[0];i>=1;i--){
+		printf("%d",a[i]);
+	}
+	return 0;
+}

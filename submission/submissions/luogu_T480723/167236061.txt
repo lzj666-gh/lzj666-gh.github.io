@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 167236061
+//  题目ID: T480723
+#include<bits/stdc++.h>
+using namespace std;
+int n,k,p1,p2;
+string s;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	while(n--){
+		cin>>s>>k;
+		int ans=0;
+		p1=0;
+//		cout<<"debug: ";
+		for(int i=1;i<=k;++i){
+			cin>>p2;
+			string now=s.substr(p1,p2-p1);
+			p1=p2;
+//			cout<<now<<' ';
+			if(now.find("respect")!=std::string::npos)  ans++;
+		}
+		string now=s.substr(p2,s.size()-p2);
+		if(now.find("respect")!=std::string::npos)  ans++;
+//		cout<<now<<' ';
+		if(k==0) if(s.find("respect")!=std::string::npos)  ans++;
+//		cout<<endl;
+		cout<<ans<<endl;
+	}
+	return 0;
+}

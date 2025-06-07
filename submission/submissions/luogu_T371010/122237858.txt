@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 122237858
+//  题目ID: T371010
+#include<bits/stdc++.h>
+using namespace std;
+int n,a<:100000+11:>,max_to=1,ans<:100000+11:>,top;
+bool b<:100000+11:>;
+int main()<%
+//	freopen("chess.in","r",stdin);
+//	freopen("chess.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;i++) cin>>i<:a:>;
+	for(int i=1;i<=n+1;++i)<%
+		if(max_to>=i) max_to=max_to>i+i<:a:>?max_to:i+i<:a:>;
+		else<%
+//			cout<<i<<' '<<endl;
+			int tmp=i,num=-0x3f3f3f3f;
+			for(int j=i-1;j>=1;--j)<%
+				if(j<:a:>+j+1>=num&&!j<:b:>) tmp=j,num=j<:a:>+j+1;
+			%>
+			(++top)<:ans:>=tmp;
+			tmp<:b:>=true;
+			max_to=num;
+//			cout<<max_to<<endl;
+		%>
+	%>
+	cout<<top<<endl;
+	for(int i=1;i<=top;++i)<%
+		cout<<i<:ans:><<' ';
+	%>
+	return 0;
+%>

@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 217277105
+//  题目ID: P1038
+#include<bits/stdc++.h>
+#define int long long 
+using namespace std;
+constexpr int N = 100 + 10, M = 10000 + 10;
+struct Edge {
+	int v, w, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+bool vis[N];
+int n, p, u[N], c[N], r[N];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> p;
+	queue<int>q;
+	for (int i = 1; i <= n; ++i) {
+		cin >> c[i] >> u[i];
+		if (c[i] > 0) q.push(i), c[i] += u[i];
+	}
+	for (int i = 1, u, v, w; i <= p; ++i) cin >> u >> v >> w, add(u, v, w), r[v]++;
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		//cerr << "now: " << now << " with c:" << c[now] << endl;
+		c[now] -= u[now];
+		if (c[now] <= 0) continue;
+		for (int i = head[now]; i; i = edge[i].nxt) {
+			c[edge[i].v] += edge[i].w * c[now];
+			if (!--r[edge[i].v]) q.push(edge[i].v);
+		}
+		if (head[now]) c[now] = 0;
+	}
+	bool flg = 1;
+	for (int i = 1; i <= n; ++i)if (c[i] > 0) { flg = 0; cout << i << ' ' << c[i] << endl; }
+	if (flg) cout << "NULL" << endl;
+	return 0;
+}

@@ -1,0 +1,93 @@
+//  OJ: 洛谷
+//  提交ID: 203824134
+//  题目ID: P10137
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, q;
+struct ROAD {
+	int x[200000 + 10], idx;
+	ROAD() :x{}, idx() {}
+	void add(int k) {
+		x[++idx] = k;
+	}
+	void build() {
+		x[0] = 0;
+		x[++idx] = 2e9 + 1;
+		sort(x, x + idx + 1);
+	}
+	bool have(int k) {
+		return binary_search(x, x + idx + 1, k);
+	}
+	int* find_next(int k) {
+		return upper_bound(x, x + idx + 1, k);
+	}
+	int* find(int k) {
+		return lower_bound(x, x + idx + 1, k);
+	}
+}X, Y;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> q;
+	for (int i = 1; i <= n; ++i) {
+		static char c;
+		static int x;
+		cin >> c >> x;
+		if (c == 'V') X.add(x);
+		else Y.add(x);
+	}
+	X.build(); Y.build();
+	while (q--) {
+		long long x, y, d, t = 0;
+		cin >> x >> y >> d;
+		int* px, * py;
+		if (X.have(x)) {
+			px = X.find(x);
+			py = Y.find_next(y);
+			int k = *py;
+			if (d <= k - y) {
+				cout << x << ' ' << y + d << endl;
+				continue;
+			}
+			t += k - y;
+			y = k;
+		}
+		else {
+			py = Y.find(y);
+			px = Y.find_next(y);
+			int k = *px;
+			if (d <= k - x) {
+				cout << x + d << ' ' << y << endl;
+				continue;
+			}
+			t += k - x;
+			x = k;
+		}
+		bool flg = 1;
+		while (1) {
+			if (t & 1) {
+				int k = *(++px);
+				if (d - t <= k - x) {
+					cout << x + d - t << ' ' << y << endl;
+					flg = 0;
+					break;
+				}
+				t += k - x;
+				x = k;
+			}
+			else {
+				int k = *(++py);
+				if (d - t <= k - y) {
+					cout << x << ' ' << y + d - t << endl;
+					flg = 0;
+					break;
+				}
+				t += k - y;
+				y = k;
+			}
+		}
+		if (flg)
+			cout << x << ' ' << y << endl;
+	}
+	return 0;
+}

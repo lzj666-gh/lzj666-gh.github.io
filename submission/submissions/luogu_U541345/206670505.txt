@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 206670505
+//  题目ID: U541345
+#include<stdio.h>
+const int SIZE = (1 << 20);
+char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1;
+char _st[55];
+int _qr = 0;
+inline void flush() {
+    fwrite(obuf, 1, oS - obuf, stdout);
+    oS = obuf;
+    return;
+}
+struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+int main() {
+	int m;
+	scanf("%d %d", &m, &m);
+	while (m--) {
+		*oS++ = 'Y';
+		*oS++ = 'e';
+		if (oS == oT) flush();
+		*oS++ = 's';
+		*oS++ = '\n';
+		if (oS == oT) flush();
+	}
+	return 0;
+}

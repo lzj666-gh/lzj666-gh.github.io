@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 211653455
+//  题目ID: T575392
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    while(1);
+}

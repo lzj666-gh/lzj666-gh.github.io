@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 143950795
+//  题目ID: T132501
+#include<bits/stdc++.h>
+using namespace std;
+const int d[2][4]={{1,0,-1,0},{0,1,0,-1}};
+int n,m,b[1000+10][1000+10];
+bitset<1000+10>a;
+string tmp;
+void bfs(){
+	queue<pair<int,int>>q;
+	for(int i=0;i^n;++i)for(int j=0;j^m;++j) if(a[i][j]) q.push({i,j});
+	while(!q.empty()){
+		pair<int,int>now=q.front();q.pop();
+		if(now.first<0||now.first>n||now.second<0||now.second>m) continue;
+		if(b[now.first][now.second]) continue;
+		for(int i=0;i<4;++i){
+			pair<int,int>p={now.first+d[0][i],now.second+d[1][i]};
+			q.push(p);
+			
+		}
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=0;i^n;++i){
+		cin>>tmp;
+		for(int j=0;j^m;++j) a[i][j]=tmp[j]^'0';
+	}
+		
+	bfs();
+	return 0;
+}

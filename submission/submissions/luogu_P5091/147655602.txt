@@ -1,0 +1,43 @@
+//  OJ: 洛谷
+//  提交ID: 147655602
+//  题目ID: P5091
+#include<bits/stdc++.h>
+#ifdef ONLINE_JUDGE
+#define gcd __gcd
+#endif
+using namespace std;
+long long phi = 1;
+inline void read(long long& x) {
+	bool f = 1; char ch = getchar();
+	while (ch < '0' || ch>'9') { if (ch == '-') f = !f; ch = getchar(); }
+	while (ch >= '0' && ch <= '9') { x = (x << 1) + (x << 3) + (ch ^ 48); x %= phi; ch = getchar(); }
+	x = (f ? x : -x); return;
+}
+#define int long long
+int poww(int a, int x, int p) {
+	if (x == 0) return 1;
+	long long t = poww(a, x / 2, p) % p;
+	t = (t * t) % p;
+	if (x % 2 == 1) t = (t * a) % p;
+	return t;
+}
+#undef int
+long long a, b, m;
+int main() {
+	cin >> a >> m;
+	a %= m;
+	long long tmp = m;
+	for (long long i = 2; i * i <= tmp; ++i) {
+		if (tmp % i) continue;
+		phi *= i - 1;
+		tmp /= i;
+		while (tmp % i == 0) phi *= i, tmp /= i;
+	}
+	if (tmp > 1) phi *= tmp - 1;
+	read(b);
+	if (gcd(a, m) == 1)
+		cout << poww(a, b, m) << endl;
+	else
+		cout << poww(a, b + phi, m) << endl;
+	return 0;
+}

@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 178333272
+//  题目ID: P2831
+#include<bits/stdc++.h>
+#define eps 1e-8
+using namespace std;
+int T,n,m;
+int val[175];
+int dp[1<<19];
+double x[20],y[20];
+int main(){
+// 	freopen("angrybirds.in","r",stdin);
+// 	freopen("angrybirds.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>T;
+	while(T--){
+		cin>>n>>m;
+		vector<pair<double,double>>v;
+		for(int i=1;i<=n;++i){
+			cin>>x[i]>>y[i];
+			y[i]=y[i]/x[i];
+			x[i]=-x[i];
+			for(int j=1;j<i;++j){
+				double X=(y[j]-y[i])/(x[i]-x[j]);
+				if(X>=0) continue;
+				v.emplace_back(X,x[i]*X+y[i]);
+			}
+			v.emplace_back(-1,-x[i]+y[i]);
+		}
+		sort(v.begin(),v.end());
+		v.erase(unique(v.begin(),v.end()),v.end());
+		memset(val,0,sizeof val);
+		for(int j=0;j<v.size();++j)
+			for(int i=1;i<=n;++i)
+				if(fabs(x[i]*v[j].first+y[i]-v[j].second)<eps)
+					val[j]|=1<<(i-1);
+		memset(dp,0x3f,sizeof dp);
+		dp[0]=0;
+		int maxx=1<<n;
+		for(int i=1;i<maxx;++i){
+			for(int j=0;j<v.size();++j){
+				int tmp=val[j];
+				for(int cur=tmp;cur;cur=(cur-1)&tmp){
+					if((i&cur)==cur)
+						dp[i]=min(dp[i],dp[i^cur]+1);
+				}
+			}
+		}
+		cout<<dp[maxx-1]<<endl;
+	}
+	return 0;
+}

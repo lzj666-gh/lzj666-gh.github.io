@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 189094156
+//  题目ID: P11279
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n; string s;
+	cin >> n >> s;
+	for (char& c : s) c = 'z';
+	cout << s << endl;
+	return 0;
+}

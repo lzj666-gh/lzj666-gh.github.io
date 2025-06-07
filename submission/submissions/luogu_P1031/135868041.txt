@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 135868041
+//  题目ID: P1031
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[1000000+10],s[1000000+10];
+long long ans,cnt;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i) cin>>a[i],cnt+=a[i];
+	cnt/=n;
+	for(int i=1;i<=n;++i) s[i]=a[i]-cnt;
+	for(int i=1;i<n;++i) if(a[i]!=0) s[i+1]+=s[i],++ans;
+	cout<<ans-2<<endl;
+	return 0;
+}

@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 136488155
+//  题目ID: T154542
+#include<bits/stdc++.h>
+using namespace std;
+pair<int, int> cow[500000+10];
+int n;
+int ans=-2e9,sum=0;
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin>>n;
+    for(int i=1,w,s;i<=n;i++){
+        cin>>w>>s;
+        cow[i]=make_pair(w+s,w);
+    }  
+    sort(&cow[1],&cow[n+1]);
+    for(int i=1;i<=n;i++){
+        ans=max(ans,sum-(cow[i].first-cow[i].second));
+        sum+=cow[i].second;
+    }
+    cout<<ans<<endl;
+    return 0;
+}

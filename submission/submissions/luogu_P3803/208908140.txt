@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 208908140
+//  题目ID: P3803
+#define _USE_MATH_DEFINES
+#include<bits/stdc++.h>
+#define cerr(n) cerr << #n << ": " << n << endl;
+using namespace std;
+typedef long long ll;
+typedef complex<double> w;
+template<int rev>
+void FFT(w* f, int n) {
+    if (n == 1) return;
+    int len = n / 2;
+    static w cur[1 << 21];
+    for (int i = 0; i < n; ++i) cur[i] = f[i];
+    for (int i = 0; i < n; ++i)
+        if (i & 1)
+            f[len + i / 2] = cur[i];
+        else
+            f[i / 2] = cur[i];
+    w* g1 = f, * g2 = f + len;
+    FFT<rev>(g1, len); FFT<rev>(g2, len);
+    w I(1, 0), stp(cos(2 * M_PI / n), sin(2 * M_PI * rev / n));
+    for (int k = 0; k < len; ++k) {
+        w t = I * g2[k];
+        cur[k] = g1[k] + t;
+        cur[k + len] = g1[k] - t;
+        I *= stp;
+    }
+    for (int i = 0; i < n; ++i) f[i] = cur[i];
+}
+int n, m;
+w f[1 << 21], g[1 << 21];
+signed main() {
+    cin.tie(0)->sync_with_stdio(false);
+    cin >> n >> m;
+    for (int i = 0; i <= n; ++i) cin >> f[i];
+    for (int i = 0; i <= m; ++i) cin >> g[i];
+    int t = pow(2, ceil(log2(n + m + 1)));
+    fill(f + n + 1, f + t, 0);
+    fill(g + m + 1, g + t, 0);
+    FFT<1>(f, t);
+    FFT<1>(g, t);
+    for (int i = 0; i < t; ++i) f[i] *= g[i];
+    FFT<-1>(f, t);
+    for (int i = 0; i < t; ++i) f[i] /= t;
+    for (int i = 0; i <= n + m; ++i) cout << int(f[i].real() + 0.5) << ' ';
+    return 0;
+}

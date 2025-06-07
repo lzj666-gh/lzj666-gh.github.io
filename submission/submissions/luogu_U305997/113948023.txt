@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 113948023
+//  题目ID: U305997
+#include<bits/stdc++.h>
+using namespace std;
+long long n,m,x,y,z;
+int main(){
+	ios::sync_with_stdio(false); 
+	cin>>n>>m>>z;
+	n-=z;m-=z;
+	for(long long i=1;i<=n;++i){
+		if(i*5+(n-i)*3==m){
+			cout<<i<<' '<<n-i<<endl;
+		}
+	}
+}

@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 122676591
+//  题目ID: P1067
+#include <bits/stdc++.h>
+using namespace std;
+int n,a[100+10];
+bool e=false;
+int main(){
+	cin>>n;
+	for(int i=n;i>=0;i--) cin>>a[i];
+	for(int i=n;i>=1;i--)
+		if(a[i]){
+			if(i!=1)
+				if(a[i]>0){
+					if(e&&a[i]==1) cout<<"+x^"<<i;
+					else if(e&&a[i]!=1) cout<<'+'<<a[i]<<"x^"<<i;
+					else if(!e&&a[i]==1) cout<<"x^"<<i;
+					else cout<<a[i]<<"x^"<<i;
+				}
+				else
+					if(a[i]==-1) cout<<"-x^"<<i;
+					else cout<<a[i]<<"x^"<<i;
+			else
+				if(a[i]>0){
+					if(e&&a[i]==1) cout<<"+x";
+					else if(e&&a[i]!=1) cout<<'+'<<a[i]<<'x';
+					else if(!e&&a[i]==1) cout<<'x';
+					else cout<<a[i]<<'x';
+				}
+				else
+					if(a[i]==-1) cout<<"-x";
+					else cout<<a[i]<<'x';
+			e=true;
+		}
+	if(a[0]>0&&!e) cout<<a[0];
+	else if(a[0]>0&&e) cout<<'+'<<a[0];
+	else if(a[0]!=0) cout<<a[0];
+	return 0;
+}

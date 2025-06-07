@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 217911812
+//  题目ID: P1892
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 1e6 + 10, M = 1e6 + 10;
+int n, m, x, y;
+int fa[N], fight[N];
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) fa[i] = i;
+	while (m--) {
+		char opt;
+		cin >> opt >> x >> y;
+		if (opt == 'F') fa[find(x)] = find(y);
+		else {
+			if (!fight[x]) fight[x] = y;
+			else fa[find(fight[x])] = find(y);
+			if (!fight[y]) fight[y] = x;
+			else fa[find(fight[y])] = find(x);
+		}
+	}
+	int ans = 0;
+	for (int i = 1; i <= n; ++i)
+		ans += fa[i] == i;
+	cout << ans << endl;
+	return 0;
+}

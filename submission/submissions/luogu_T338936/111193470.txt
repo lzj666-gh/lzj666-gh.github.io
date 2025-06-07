@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 111193470
+//  题目ID: T338936
+#include<bits/stdc++.h>
+using namespace std;
+bool zhi(int x){
+	if(x==1) return false;
+	for(int i=2;i*i<=x;i++){
+		if(x%i==0) return false;
+	}
+	return true;
+}
+int main(){
+	std::ios::sync_with_stdio(false);
+	int n;
+	cin>>n;
+	bool e1=false,e2=false;
+	int x=0,d=0;
+	for(int i=1;e1==false||e2==false;i++){
+		if(zhi(n-i)) x=n-i,e1=true;
+		if(zhi(n+i)) d=n+i,e2=true;
+	}
+	cout<<d<<' '<<x<<endl;
+	return 0;
+}

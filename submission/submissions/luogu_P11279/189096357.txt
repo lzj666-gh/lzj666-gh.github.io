@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 189096357
+//  题目ID: P11279
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+int tmp[1000];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n; string s;
+	cin >> n >> s;
+	for (char& c : s) tmp[c]++;
+	for (char& c : s) {
+		tmp[c]--;
+		bool flg = 1;
+		for (char c = 'z'; c >= 'a'; c--) {
+			if (tmp[c] == 0) {
+				flg = 0;
+				cout << c;
+				break;
+			}
+		}
+		if (flg) {
+			cout << c;
+		}
+		tmp[c]++;
+	}
+	return 0;
+}

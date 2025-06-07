@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 166491976
+//  题目ID: CF784F
+#include<bits/stdc++.h>
+using namespace std;
+int a[100000+10],beg=clock();
+int main(){
+	int n;cin>>n;
+	for(int i=0;i<n;i++) cin>>a[i];
+	sort(a,a+n);
+	for(int i=0;i<n;i++) cout<<a[i]<<" ";
+	while(clock()-beg<CLOCKS_PER_SEC);
+} 

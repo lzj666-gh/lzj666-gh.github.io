@@ -1,0 +1,53 @@
+//  OJ: 洛谷
+//  提交ID: 202411374
+//  题目ID: T545354
+#include<bits/stdc++.h>
+#define int long long
+#define File "ironclad"
+using namespace std;
+int n;
+struct Node {
+	int a, b;
+	friend bool operator<(const Node& a, const Node& b) {
+		return a.b == b.b ? a.a > b.a:a.b > b.b;
+	}
+}a[5000 + 10];
+multiset<int>s;
+bool vis[5000 + 10];
+signed main() {
+//	freopen(File".in", "r", stdin);
+//	freopen(File".out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i].a >> a[i].b;
+	sort(a + 1, a + n + 1);
+	long long tot = 0;
+	for (int i = 1; i <= n; ++i) {
+		int k = -1;
+		long long d = 0;
+		for (int j = 1; j <= n; ++j) {
+			if (vis[j]) continue;
+			int l = s.size() + 1;
+			long long dt = 0;
+			for (auto it = s.begin(); it != s.end() && (*it) < a[j].b; it++, l--)
+				dt += *it;
+			dt += l * a[j].b + a[j].a - a[j].b;
+//			cerr<<l<<' ' << j << ' ' << dt << endl;
+			if (k == -1 || dt < d) {
+				k = j;
+				d = dt;
+				continue;
+			}
+		}
+		vis[k] = 1;
+		s.insert(a[k].b);
+		tot += a[k].a - a[k].b;
+		long long ans = tot;
+		int j = 1;
+		for (auto it = s.rbegin(); it != s.rend(); it++)
+			ans += *it * j,
+			j++;
+		cout << ans << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 202968103
+//  题目ID: U473935
+#include<bits/stdc++.h>
+#define File "flower"
+using namespace std;
+using ll = long long;
+constexpr int mod = 1e9 + 9;
+int main() {
+	// freopen(File".in", "r", stdin);
+	// freopen(File".out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	ll n, m;
+	while (cin >> n >> m) {
+		ll ans = 0; // n %= mod; m %= mod;
+		ans = (n + 1) * n / 2 * (m - 1);
+		for (ll i = 1; i < m; ++i) {
+			ll lst = (n - 1) / i;
+			ans += (lst - 1) * lst / 2 * i % mod + lst * (n - lst * i) % mod;
+			ans %= mod;
+		}
+		cout << ans << endl;
+	}
+	return 0;
+}

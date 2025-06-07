@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 122374812
+//  题目ID: P1725
+#include<bits/stdc++.h>
+#define maxn 2000000*2+10
+using namespace std;
+inline int max(int a,int b){
+	return a<b?b:a;
+}
+int n,a[maxn],l,r,dp[maxn];
+int main(){
+//	freopen("plum.in","r",stdin);
+//	freopen("plum.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>n>>l>>r;
+	for(register int i=0;i<=n;++i) cin>>a[i];
+	for(register int i=0;i<=n+r;++i) dp[i]=-0x3f3f3f3f;
+	dp[0]=a[0];
+	for(register int i=l;i<=n+r;++i){
+		for(register int j=i-r;j<=i-l;++j){
+			if(j<0) continue;
+			dp[i]=max(dp[j]+a[i],dp[i]);
+		}
+//		cout<<i<<" "<<dp[i]<<endl;
+	}
+	int ans=-0x3f3f3f3f;
+	for(register int i=n+1;i<=n+r;i++){
+		ans=max(ans,dp[i]);
+	}
+	cout<<ans<<endl;
+	return 0;
+}

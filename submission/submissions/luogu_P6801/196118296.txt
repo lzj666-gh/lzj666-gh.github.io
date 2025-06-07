@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 196118296
+//  题目ID: P6801
+#include<bits/stdc++.h>
+//#define ONLINE
+#define NAME "fence"
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int n, h[100000 + 10], w[100000 + 10], ans;
+stack<int>st[2];
+int c2(int h) { return((h + 1ll) * h / 2) % mod; }
+int main() {
+#ifdef ONLINE
+	freopen(NAME".in", "r", stdin);
+	freopen(NAME".out", "w", stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> h[i];
+	for (int i = 1; i <= n; ++i) cin >> w[i];
+	int sum = 0;
+	st[0].emplace(-1);
+	for (int i = 1; i <= n + 1; ++i) {
+		sum = 0;
+		while (h[i] <= st[0].top()) {
+			int now[2] = { st[0].top(),st[1].top() }; st[0].pop(); st[1].pop();
+			(sum += now[1]) %= mod;
+			ans += 1ll * (c2(now[0]) - c2(max(h[i], st[0].top()) + mod)) * c2(sum) % mod;
+			ans = (ans + mod) % mod;
+		}
+		st[0].emplace(h[i]), st[1].emplace((w[i] + sum) % mod);
+	}
+	cout << ans << endl;
+	return 0;
+}
+//O(n)
+/*
+4
+2 3 4 2
+2 1 2 1
+*/

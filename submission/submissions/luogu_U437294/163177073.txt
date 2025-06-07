@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 163177073
+//  题目ID: U437294
+#include<bits/stdc++.h>
+using namespace std;
+int n,tmp;
+string s;
+struct pli{
+	list<string>first;
+	int second;
+};
+stack<pli>v;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	while(n--){
+		cin>>s;
+		if(s=="push"){
+			cin>>s>>tmp;
+			if(v.empty()){
+				list<string>q; q.push_back(s);
+				v.push(pli{q,tmp});
+			}
+			else if(tmp==v.top().second) v.top().first.push_back(s);
+			else{
+				list<string>q; q.push_back(s);
+				v.push(pli{q,tmp});
+			}
+		}
+		else{
+			cout<<v.top().first.front()<<endl;
+			v.top().first.pop_front();
+			if(v.top().first.empty()) v.pop();
+		}
+		
+	}
+	return 0;
+}

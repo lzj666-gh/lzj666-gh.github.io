@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 194217976
+//  题目ID: U231067
+#include<bits/stdc++.h>
+using namespace std;
+long long s=1,a;
+char ch;
+int main()
+{
+	scanf("%d",&a);
+	while(ch=getchar()){
+	    scanf("%d",&a);
+		if(ch=='\n'||ch=='\r'){
+			cout<<s<<endl;
+			s=a;
+		} 
+		else if(ch=='*'){
+			s*=a;
+		}
+		else{
+			cout<<-1<<endl;
+			char ch1=getchar();
+			while(ch1!='\n'&&ch1!='\r') ch1=getchar();
+		}
+	}
+
+	return 0;
+}
+

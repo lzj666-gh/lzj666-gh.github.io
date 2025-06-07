@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 116360971
+//  题目ID: T346054
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int to,val;
+};
+vector<vector<Edge> > a(50000);
+int n,m,s;
+int dijkstra(){
+	vector<int> dis(n+1,INT_MAX/2-1);
+	dis[s]=0;
+	priority_queue<pair<int,int>,vector<pair<int,int> >,greater<pair<int,int> > > pq;
+	pq.push({0,s});
+	while(!pq.empty()){
+		int val=pq.top().first,num=pq.top().second;
+		pq.pop();
+		if(val>dis[num]){
+			continue;
+		}
+		for(Edge edge:a[num]){
+			int newDist=dis[num]+edge.val;
+			if(newDist<dis[edge.to]){
+				dis[edge.to]=newDist;
+				pq.push({newDist,edge.to});
+			}
+		}
+	}
+	for(int i=1;i<=n;i++){
+		cout<<dis[i]<<' ';
+	}
+	cout<<endl;
+}
+int main(){
+	cin>>n>>m>>s;
+	for(int i=0;i<m;++i){
+		int x,y,z;
+		cin>>x>>y>>z;
+		a[x].push_back({y,z});
+	}
+	dijkstra();
+	cout<<endl;
+	return 0;
+}

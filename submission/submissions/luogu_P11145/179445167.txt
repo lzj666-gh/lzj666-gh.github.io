@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 179445167
+//  题目ID: P11145
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+signed main() {
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		ll ans1, ans2;
+		cout << "? 1000000000000000000" << endl;
+		cin >> ans1;
+		cout << "? 999999999999999999" << endl;
+		cin >> ans2;
+		cout << "! " << gcd(1000000000000000000ll - ans1, 999999999999999999 - ans2);
+	}
+	return 0;
+}

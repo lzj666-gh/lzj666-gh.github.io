@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 121726571
+//  题目ID: P1215
+#include<bits/stdc++.h>
+using namespace std;
+int a,b,c;bool ans[20];
+int main(){
+//	freopen("milk.in","r",stdin);
+//	freopen("milk.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>a>>b>>c;
+	int k=a-b;
+	if(k>0){
+		int now=c%k;
+		while(now<c){
+			cout<<now<<' ';
+			now+=k;
+		}
+	}
+	else{
+		if(c-b>0) ans[c-b]=true;
+		if(c-a>0) ans[c-a]=true;
+		if(a+b>c)ans[a]=true;
+		ans[c]=true;
+		ans[b]=true;
+		for(int i=1;i*a<c;++i){
+			for(int j=0;a*i-b*j>0;++j){
+				ans[b+a*i-b*j]=true;
+			}
+		}
+		for(int i=1;i<=c;i++){
+			if(ans[i]) cout<<i<<' ';
+		}
+	}
+	return 0;
+}

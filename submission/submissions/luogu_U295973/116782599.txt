@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 116782599
+//  题目ID: U295973
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+	cout<<(n%2==0?"NO":"YES")<<endl;
+	return 0;
+}

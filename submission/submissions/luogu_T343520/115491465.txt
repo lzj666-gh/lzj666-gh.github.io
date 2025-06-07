@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 115491465
+//  题目ID: T343520
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int n;
+    cin>>n;
+    int nn=1<<n;
+    vector<int>a(nn);
+    for(int i=0;i<nn;++i){
+        cin>>a[i];
+    }
+    vector<int> win=a;
+    while(win.size()>1){
+        vector<int>next;
+        for(int i=0;i<win.size();i+=2){
+            next.push_back(max(win[i],win[i+1]));
+        }
+        win.swap(next);
+    }
+    int ans=min(a[win[0]],a[win[1]]);
+    cout<<ans<<endl;
+    return 0;
+}

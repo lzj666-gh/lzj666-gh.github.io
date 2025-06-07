@@ -1,0 +1,54 @@
+//  OJ: 洛谷
+//  提交ID: 108518396
+//  题目ID: T214849
+#include<iostream>
+#include<queue>
+
+using namespace std;
+
+const int N = 1e6 + 10;
+
+int h[N];
+
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+
+    for(int i=0;i<n;i++)
+        cin>>h[i];
+
+    queue<int> q;
+    int cnt = 1, max_h = h[0]; // 初始化
+
+    for(int i=0;i<m-1;++i) //队列长度为m-1时，只记录最高身高和变化次数
+    {
+        while(q.size() && h[q.back()] < h[i]) q.pop(); // 将前m-1个数按单调递减插入队列中，队头存储最大值
+        q.push(i); // 注意，这里放入下标而不是身高值
+        
+        if(h[i]>=max_h) { // 更新最高身高
+            max_h = h[i];
+            ++cnt; // 最高身高变化次数
+        }
+    }
+
+    cout<<max_h<<" "<<cnt<<endl;
+
+    for(int i=m-1,j=0;i<n;i++,j++){ // 队列长度达到m之后需要一直记录每个区间最大值及其变化次数
+        if(j>m-1){ // 超出范围要弹出队头
+            if(q.front() == j-m) q.pop();
+        }
+
+        while(q.size() && h[q.back()] < h[i]) q.pop(); // 维护单调递减的队列
+        q.push(i);
+
+        if(h[q.front()] != max_h){ // 遇到新的最高身高，更新并记录变化次数
+            max_h = h[q.front()];
+            ++cnt;
+        }
+
+        cout<<max_h<<" "<<cnt<<endl; // 输出本区间最高身高和变化次数
+    }
+
+    return 0;
+}

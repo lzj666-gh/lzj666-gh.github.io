@@ -1,0 +1,58 @@
+//  OJ: 洛谷
+//  提交ID: 144997899
+//  题目ID: T132507
+#include<bits/stdc++.h>
+#define maxn (500+10)
+using namespace std;
+namespace Bfs{
+	int r,c;
+	bool clz[maxn][maxn][2],vis[maxn][maxn];
+	struct Node{
+		int x,y,stp;
+	};
+	deque<Node>q;
+	void main(){
+		memset(clz,0,sizeof clz);
+		memset(vis,0,sizeof vis);
+		q.clear();
+		cin>>r>>c;
+		if(r+c^1) return void(cout<<"NO SOLUTION"<<endl);
+		for(int i=0;i^r;++i)
+			for(int j=0;j^c;++j){
+				static char c;
+				cin>>c;
+				if(c=='\\') clz[i][j][0]=1;
+				else clz[i+1][j][1]=1; 
+			}
+		q.push_front({0,0,0});
+		while(!q.empty()){
+			Node now=q.front();
+			q.pop_front();
+			if(now.x<0||now.y<0||now.x>r||now.y>c) continue;
+			if(vis[now.x][now.y]) continue;
+			vis[now.x][now.y]=1;
+			if(now.x==r&&now.y==c){
+				cout<<now.stp<<endl;
+				return;
+			}
+			if(clz[now.x][now.y][1]) q.push_front({now.x-1,now.y+1,now.stp});
+			else q.push_back({now.x-1,now.y+1,now.stp+1});
+			if(clz[now.x][now.y][0]) q.push_front({now.x+1,now.y+1,now.stp});
+			else q.push_back({now.x+1,now.y+1,now.stp+1});
+			if(now.x>0&&now.y>0)
+			if(clz[now.x-1][now.y-1][0]) q.push_front({now.x-1,now.y-1,now.stp});
+			else q.push_back({now.x-1,now.y-1,now.stp+1});
+			if(now.y>0)
+			if(clz[now.x+1][now.y-1][1]) q.push_front({now.x+1,now.y-1,now.stp});
+			else q.push_back({now.x+1,now.y-1,now.stp+1});
+		}
+		cout<<"NO SOLUTION"<<endl;
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--)Bfs::main();
+	return 0;
+}

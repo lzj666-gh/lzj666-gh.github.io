@@ -1,0 +1,133 @@
+//  OJ: 洛谷
+//  提交ID: 211743508
+//  题目ID: T571828
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+vector<string> generate_instructions(int task) {
+    vector<string> instructions;
+    switch(task) {
+        case 1:
+            instructions.push_back("add rax, rsi");
+            instructions.push_back("shl rsi, 8");
+            instructions.push_back("sub rsi, rax");
+            instructions.push_back("shl rsi, 4");
+            instructions.push_back("write rsi");
+            break;
+        case 2:
+            instructions.push_back("sub rax, rax");
+            instructions.push_back("sub rax, 1");   // rax = 0xFFFFFFFFFFFFFFFF
+            instructions.push_back("shr rax, 63");  // rax = 1
+            instructions.push_back("add rbx, rsi");
+            instructions.push_back("shr rbx, 4");
+            instructions.push_back("add rcx, rbx");
+            instructions.push_back("add rcx, rax"); // rcx = (x>>4) + 1
+            instructions.push_back("add rdx, rcx");
+            instructions.push_back("shl rdx, 8");
+            instructions.push_back("add rdx, rcx"); // rdx = (t+1)*257
+            instructions.push_back("shr rdx, 16");
+            instructions.push_back("write rdx");
+            break;
+        case 3:
+            instructions.push_back("sub rax, rax");
+            instructions.push_back("sub rax, 1");
+            instructions.push_back("shr rax, 56");
+            instructions.push_back("shl rax, 4");
+            instructions.push_back("write rax");
+            break;
+        case 4:
+            instructions.push_back("sub rax, rax"); // Result
+            instructions.push_back("sub rbx, rbx"); // i=0
+            for (int i = 0; i < 64; ++i) {
+                instructions.push_back("add rcx, rdi"); // y
+                instructions.push_back("shr rcx, " + to_string(i));
+                instructions.push_back("shl rcx, 63");
+                instructions.push_back("shr rcx, 63");
+                instructions.push_back("add rdx, rsi"); // x
+                instructions.push_back("shl rdx, " + to_string(i));
+                instructions.push_back("add rax, rdx");
+                instructions.push_back("sub rdx, rdx");
+                instructions.push_back("sub rcx, rcx");
+            }
+            instructions.push_back("write rax");
+            break;
+        case 5:
+            instructions.push_back("sub rax, rax");
+            instructions.push_back("add rbx, rsi");
+            instructions.push_back("add rcx, rdi");
+            for (int i = 31; i >= 0; --i) {
+                instructions.push_back("shl rax, 1");
+                instructions.push_back("shl rbx, 1");
+                instructions.push_back("cmp rbx, rcx");
+                instructions.push_back("jb 1f");
+                instructions.push_back("sub rbx, rcx");
+                instructions.push_back("add rax, 1");
+                instructions.push_back("1:");
+            }
+            instructions.push_back("write rax");
+            break;
+        case 6:
+            instructions.push_back("sub rax, rax"); // low
+            instructions.push_back("add rbx, rsi"); // high = x
+            instructions.push_back("add rcx, rsi"); // ans = 0
+            while (true) {
+                instructions.push_back("add rdx, rax");
+                instructions.push_back("add rdx, rbx");
+                instructions.push_back("shr rdx, 1"); // mid = (low + high)/2
+                instructions.push_back("cmp rdx, rcx");
+                instructions.push_back("ja 1f");
+                instructions.push_back("mov rcx, rdx");
+                instructions.push_back("1:");
+                instructions.push_back("cmp rax, rbx");
+                instructions.push_back("ja 2f");
+                instructions.push_back("mov rax, rdx");
+                instructions.push_back("add rax, 1");
+                instructions.push_back("mov rbx, rdx");
+                instructions.push_back("sub rbx, 1");
+                instructions.push_back("jmp 3f");
+                instructions.push_back("2:");
+                instructions.push_back("write rcx");
+                break;
+                instructions.push_back("3:");
+            }
+            break;
+        case 7:
+            instructions.push_back("sub rax, rsi");
+            instructions.push_back("sub rax, 1");
+            instructions.push_back("mov rbx, rax");
+            instructions.push_back("shr rbx, 1");
+            instructions.push_back("or rax, rbx");
+            instructions.push_back("mov rbx, rax");
+            instructions.push_back("shr rbx, 2");
+            instructions.push_back("or rax, rbx");
+            instructions.push_back("mov rbx, rax");
+            instructions.push_back("shr rbx, 4");
+            instructions.push_back("or rax, rbx");
+            instructions.push_back("mov rbx, rax");
+            instructions.push_back("shr rbx, 8");
+            instructions.push_back("or rax, rbx");
+            instructions.push_back("mov rbx, rax");
+            instructions.push_back("shr rbx, 16");
+            instructions.push_back("or rax, rbx");
+            instructions.push_back("mov rbx, rax");
+            instructions.push_back("shr rbx, 32");
+            instructions.push_back("or rax, rbx");
+            instructions.push_back("add rax, 1");
+            instructions.push_back("write rax");
+            break;
+    }
+    return instructions;
+}
+
+int main() {
+    int task;
+    cin >> task;
+    vector<string> instructions = generate_instructions(task);
+    for (const string& instr : instructions) {
+        cout << instr << endl;
+    }
+    return 0;
+}

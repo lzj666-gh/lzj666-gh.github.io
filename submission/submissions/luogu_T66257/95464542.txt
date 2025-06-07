@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 95464542
+//  题目ID: T66257
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	double n,k,s1=0.00,s2=250.00;cin>>n>>k;int j=0;
+	while(s1<s2){
+		s1+=n;
+		n*=1.08;
+		s2*=(1+k/100);
+		j++;
+	}
+	if(j>20){
+		cout<<"Impossible";
+		return 0;
+	}
+	cout<<j;
+
+	return 0;
+}

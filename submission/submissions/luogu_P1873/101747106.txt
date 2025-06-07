@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 101747106
+//  题目ID: P1873
+#include<bits/stdc++.h>
+using namespace std;
+long long a[1000000+10],m,n,amax=0;
+long long s(int x){
+	int ret=0;
+	for(int i=0;i<n;i++){
+		if(a[i]>x){
+			ret+=a[i]-x;
+		}
+	}
+	return ret;
+}
+long long erfen(){
+	long long begin=0,end=amax;
+//	cout<<begin<<" "<<end<<endl;
+//	int i=1;
+	while(begin<=end){
+//		cout<<i<<endl;i++;
+		long long mid=(begin+end)/2;
+//		cout<<mid<<endl;
+		if(s(mid)==m){
+			return mid;
+		}
+		if(s(mid)>m){
+//			cout<<"a"<<endl;
+			begin=mid+1;
+		}
+		else{
+//			cout<<"b"<<endl;
+			end=mid-1;
+		}
+//		cout<<begin<<" "<<mid<<" "<<end<<endl;
+	}
+}
+int main(){
+	scanf("%lld%lld",&n,&m);
+	for(int i=0;i<n;i++){
+		scanf("%lld",&a[i]);
+		amax=max(amax,a[i]);
+	}
+//	cout<<amax<<endl;
+	cout<<erfen()<<endl;
+	return 0;
+}

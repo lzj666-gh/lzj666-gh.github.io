@@ -1,0 +1,77 @@
+//  OJ: 洛谷
+//  提交ID: 194090197
+//  题目ID: P5854
+#include<bits/stdc++.h>
+using namespace std;
+int r() {
+	int tmp;
+	cin >> tmp;
+	return tmp;
+}
+class FHQ_Treap {
+public:
+	void ins(int x) {
+		int a, b, c;
+		split(root, x, a, b);
+		c = merge(a, new_node(x));
+		root = merge(c, b);
+	}
+	void output() {
+		int tmp = 0;
+		for (int i = 1; i <= idx; ++i) tmp ^= tree[i].val * (tree[i].lc + 1);
+		cout << tmp << ' '; tmp = 0;
+		for (int i = 1; i <= idx; ++i) tmp ^= tree[i].val * (tree[i].rc + 1);
+		cout << tmp << '\n';
+	}
+protected:
+	int root = 0, idx = 0;
+	struct Point {
+		int lc, rc, size, val, rnd;
+		Point() :lc(0), rc(0), size(0), val(0), rnd(114514) {}
+	}tree[100000 + 100];
+	int new_node(int val) {
+		++idx;
+		tree[idx].rnd = r();
+		tree[idx].val = val;
+		tree[idx].size = 1;
+		return idx;
+	}
+	void push_up(int p) {
+		tree[p].size = tree[tree[p].lc].size + tree[tree[p].rc].size + 1;
+	}
+	void split(int p, int val, int& x, int& y) {
+		if (!p) {
+			x = y = 0;
+			return;
+		}
+		if (tree[p].val <= val) {
+			x = p;
+			split(tree[p].rc, val, tree[p].rc, y);
+			push_up(p);
+		}
+		else {
+			y = p;
+			split(tree[p].lc, val, x, tree[p].lc);
+			push_up(p);
+		}
+	}
+	int merge(int x, int y) {
+		if (!x || !y) return x + y;
+		if (tree[x].rnd < tree[y].rnd) {
+			tree[x].rc = merge(tree[x].rc, y);
+			push_up(x); return x;
+		}
+		else {
+			tree[y].lc = merge(x, tree[y].lc);
+			push_up(y); return y;
+		}
+	}
+}t;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n;
+	cin >> n;
+	for (int i = 1; i <= n; ++i) t.ins(i);
+	t.output();
+	return 0;
+}

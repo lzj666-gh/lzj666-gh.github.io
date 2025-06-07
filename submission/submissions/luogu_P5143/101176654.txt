@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 101176654
+//  题目ID: P5143
+#include<bits/stdc++.h>
+using namespace std;
+struct d{
+	int x,y,z;
+}a[50000+10];
+bool abc(d a1,d a2){ return ai.z<a2.z;}
+int main(){
+	int n;cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>a[i].x>>a[i].y>>a[i].z;
+	}
+	sort(&a[0],&a[n],abc);
+	double q=0;
+	for(int i=0;i<n-1;i++){
+		q+=sqrt((a[i].x-a[i+1].x)*(a[i].x-a[i+1].x)+(a[i].y-a[i+1].y)*(a[i].y-a[i+1].y)+(a[i].z-a[i+1].z)*(a[i].z-a[i+1].z));
+	}
+	printf("%.3lf",q);
+}

@@ -1,0 +1,55 @@
+//  OJ: 洛谷
+//  提交ID: 219516744
+//  题目ID: P4542
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+constexpr ll inf = 0x3f3f3f3f3f3f3f3f;
+ll dis[200], a, b, l;
+bool vis[200];
+struct Edge {
+	int v, w, nxt;
+}edge[200000 + 10];
+int head[20000 + 10], idx = 1;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+void addedge(int u, int v, int w) {
+	add(u, v, w); add(v, u, w);
+}
+priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>q;
+void dij(int s) {
+	memset(dis, 0x3f, sizeof dis);
+	memset(vis, 0, sizeof vis);
+	dis[s] = 0; q.emplace(0, s);
+	while (!q.empty()) {
+		int x = q.top().second; q.pop();
+		if (vis[x] || x > s) continue; vis[x] = 1;
+		for (int i = head[x]; i; i = edge[i].nxt)
+			if (edge[i].v <= s && dis[edge[i].v] > dis[x] + edge[i].w)
+				dis[edge[i].v] = dis[x] + edge[i].w,
+				q.emplace(dis[edge[i].v], edge[i].v);
+	}
+}
+int n, m, k, pos[20];
+signed main() {
+	// freopen("pika.in", "r", stdin);
+	// freopen("pika.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> k;
+	for (int i = 1; i <= m; ++i)
+		cin >> a >> b >> l, addedge(a, b, l);
+	ll ans = 0;
+	for (int i = 1; i <= n; ++i) {
+		dij(i);
+		int p = 1;
+		for (int j = 1; j <= k; ++j)
+			if (dis[pos[j]] < dis[pos[p]])
+				p = j;
+		ans += dis[pos[p]];
+		pos[p] = i;
+	}
+	cout << ans << endl;
+	return 0;
+}

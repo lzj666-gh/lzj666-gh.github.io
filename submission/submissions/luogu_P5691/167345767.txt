@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 167345767
+//  题目ID: P5691
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n,m,k[10],p[10];
+vector<int> s1,s2;
+void dfs1(int k,int sum){
+	if(k==n/2+1){
+		s1.push_back(sum);
+		return;
+	}
+	for(int i=1;i<=m;++i){
+		dfs1(k+1,sum+::k[k]*pow(i,p[k]));
+	}
+}
+void dfs2(int k,int sum){
+	if(k==n/2){
+		s2.push_back(sum);
+		return;
+	}
+	for(int i=1;i<=m;++i){
+		dfs2(k-1,sum+::k[k]*pow(i,p[k]));
+	}
+
+}
+signed main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;++i) cin>>k[i]>>p[i];
+	dfs1(1,0);
+	dfs2(n,0);
+	sort(s2.begin(),s2.end());
+	int cnt=0;
+	for(int&i:s1){
+	    i=-i;
+		if(*lower_bound(s2.begin(),s2.end(),i)==i) cnt+=(upper_bound(s2.begin(),s2.end(),i)-lower_bound(s2.begin(),s2.end(),i));
+	}
+	cout<<cnt<<endl;
+	return 0;
+}
+/*
+1881035**35
+859514956
+*/

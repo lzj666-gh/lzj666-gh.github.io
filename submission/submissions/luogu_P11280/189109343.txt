@@ -1,0 +1,43 @@
+//  OJ: 洛谷
+//  提交ID: 189109343
+//  题目ID: P11280
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+int n, m, r;
+struct Edge {
+	int v, nxt;
+}edge[2000000 + 10];
+int head[1000000 + 10], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+bool vis[1000000 + 10];
+int dis[1000000 + 10];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> r;
+	for (int i = 1, u, v; i <= m; ++i) cin >> u >> v, add(u, v), add(v, u);
+	queue<int>q;
+	q.push(r); dis[r] = 1; vis[r] = 1;
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		for (int i = head[now]; i; i = edge[i].nxt) {
+			if (!vis[edge[i].v]) {
+				vis[edge[i].v] = 1;
+				dis[edge[i].v] = dis[now] + 1;
+				q.push(edge[i].v);
+			}
+		}
+	}
+	cout << "I'm here!" << endl;
+	int Q;
+	cin >> Q;
+	while (Q--) {
+		int a, b;
+		cin >> a >> b;
+		cout << (dis[a] <= dis[b] ? "Terry" : "Jom") << endl;
+	}
+	return 0;
+}

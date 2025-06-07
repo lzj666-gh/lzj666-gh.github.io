@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 153436125
+//  题目ID: T419219
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	cout<<"imrgwe!kondlabsfph?tyujc\n";
+}

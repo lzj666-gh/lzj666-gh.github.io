@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 162670138
+//  题目ID: U437294
+#include<bits/stdc++.h>
+using namespace std;
+int n,tmp;
+string s;
+vector<pair<deque<string>,int>>v;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	while(n--){
+		cin>>s;
+		if(s=="push"){
+			cin>>s>>tmp;
+			if(v.empty()){
+				deque<string>q; q.push_back(s);
+				v.push_back(make_pair(q,tmp));
+			}
+			else if(tmp==v.back().second) v.back().first.push_back(s);
+			else{
+				deque<string>q; q.push_back(s);
+				v.push_back(make_pair(q,tmp));
+			}
+		}
+		else{
+			cout<<v.back().first.front()<<endl;
+			v.back().first.pop_front();
+			if(v.back().first.empty()) v.pop_back();
+		}
+		
+	}
+	return 0;
+}

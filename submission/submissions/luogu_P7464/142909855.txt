@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 142909855
+//  题目ID: P7464
+#include<bits/stdc++.h>
+using namespace std;
+int T,n,v[int(1e6)+10];
+void gt(){
+	for(int i=1;i<=1e6;++i)
+		for(int j=i+1;1ll*i*j<=1e6;++j)
+			for(int k=j+1;1ll*i*j*k<=1e6;++k)
+				v[i*j*k]++;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	gt();
+	for(int i=2;i<=1e6;++i) v[i]+=v[i-1];
+	cin>>T;
+	while(T--){
+		cin>>n;
+//		cerr<<"ans: ";
+		cout<<v[n]<<endl;
+	}
+	return 0;
+}

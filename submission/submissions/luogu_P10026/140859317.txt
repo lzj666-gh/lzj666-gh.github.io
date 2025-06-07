@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 140859317
+//  题目ID: P10026
+#include<bits/stdc++.h>
+using namespace std;
+int T;bool ca;
+void dfs(int now,int k,int step,int n){
+	if(ca) return;
+	if(step==k){
+		ca=now==n;
+		return ;
+	}
+	dfs(now-1,k,step+1,n);
+	dfs(now*2,k,step+1,n);
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>T;
+	while(T--){
+		int n,k;
+		cin>>k>>n;
+		ca=false;
+		dfs(1,k,0,n);
+		cout<<(ca?"Yes":"No")<<endl;
+	}
+	return 0;
+}

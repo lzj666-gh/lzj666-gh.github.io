@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 101764389
+//  题目ID: P1678
+#include<bits/stdc++.h>
+using namespace std;
+int m,n,a[100000+10],b[100000+10],ans=0;
+int erfen(int i){
+	int begin=0,end=n+1,mid;
+	while(begin<end){
+		mid=(begin+end)/2;
+		if(a[mid]<=b[i]){
+			begin=mid+1;
+		}
+		else{
+			end=mid;
+		}
+	}
+	if(b[i]<=a[1]) ans+=a[1]-b[i];
+	else ans+=min(abs(a[begin-1]-b[i]),abs(a[begin]-b[i]));
+}
+int main(){
+	scanf("%d%d",&n,&m);
+	for(int i=1;i<=n;i++){
+		scanf("%d",&a[i]);
+	}
+	for(int i=1;i<=m;i++){
+		scanf("%d",&b[i]);
+	}
+	sort(a+1,a+n+1);
+	for(int i=1;i<=m;i++){
+		erfen(i);
+	}
+	cout<<ans<<endl;
+	return 0;
+}

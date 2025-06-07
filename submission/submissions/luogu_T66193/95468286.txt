@@ -1,0 +1,15 @@
+//  OJ: 洛谷
+//  提交ID: 95468286
+//  题目ID: T66193
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int a,b,n;cin>>a>>b>>n;
+	for(int i=1;i<=n;i++){
+		a=a%b;
+		a*=10;
+	}
+	cout<<a/b;
+	return 0;
+}

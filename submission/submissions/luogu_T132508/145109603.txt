@@ -1,0 +1,61 @@
+//  OJ: 洛谷
+//  提交ID: 145109603
+//  题目ID: T132508
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,s,t,c,pri[1000+10],dp[1000+10][100+10],q;
+struct node{
+   int v,d;
+   node(){}
+   node(int vv,int dd):v(vv),d(dd){}
+};
+struct City{
+	int v,l,val;
+	friend bool operator<(const City&a,const City&b){
+		return a.val>b.val;
+	}
+};
+vector<node> adj[1000+10];
+bool vis[1000+10][100+10];
+int bfs(){
+	memset(dp,0x3f,sizeof dp);
+	memset(vis,0,sizeof vis);
+	priority_queue<City>q;
+	q.push({s,0,0});
+	dp[s][0]=0;
+	while(!q.empty()){
+		City now=q.top();
+		q.pop();
+		vis[now.v][now.l]=1;
+		if(now.v==t) return now.val;
+		if(now.l<c&&!vis[now.v][now.l+1]&&dp[now.v][now.l+1]>dp[now.v][now.l]+pri[now.v]){
+			dp[now.v][now.l+1]=dp[now.v][now.l]+pri[now.v];
+			q.push({now.v,now.l+1,dp[now.v][now.l+1]});
+		}
+		for(node k:adj[now.v]){
+			if(now.l>=k.d&&!vis[k.v][now.l-k.d]&&dp[k.v][now.l-k.d]>now.val){
+				dp[k.v][now.l-k.d]=now.val;
+				q.push({k.v,now.l-k.d,now.val});
+			}
+		}
+	}
+	return -1;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=0;i^n;++i) cin>>pri[i];
+	for(int i=0,u,v,d;i^m;++i){
+		cin>>u>>v>>d;
+		adj[u].push_back(node(v,d));
+		adj[v].push_back(node(u,d));  
+	}
+	cin>>q;
+	while(q--){
+		cin>>c>>s>>t;
+		int ans=bfs();
+		if(ans==-1) cout<<"impossible"<<endl;
+		else cout<<ans<<endl;
+	}
+	return 0;
+}

@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 95468031
+//  题目ID: T65945
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int f,m;double s=6.00;cin>>f>>m;
+	if(f<=100){
+		s+=8;
+	}
+	else{
+		s+=8;
+		s+=(f-100)*0.15;
+	}
+	if(m<=100){
+		s+=8;
+	}
+	else{
+		s+=8;
+		m=(m+99)/100;
+		s+=(m*100-100)/100*10;
+	}
+	if(s<=30) cout<<30.000;
+	else printf("%.3lf",s);
+	return 0;
+}

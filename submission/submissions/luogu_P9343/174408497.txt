@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 174408497
+//  题目ID: P9343
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int T;
+	cin>>T;
+	for(int k=1;k<=T;k++){
+		int n,m;
+		cin>>n>>m;
+		int *a=new int[n+1];
+		int ans=0x7f7f7f7f;
+		memset(a,0,sizeof(a));
+		for(int i=1;i<=m;i++){
+			int o,x;
+			cin>>o>>x;
+			a[x]=true;
+			bool e;
+			for(int j=1;j<=n;j++){
+				if(a[j]==false){
+					e=true;
+					break;
+				}
+			}
+			if(e==false) ans=min(ans,i);
+		}
+		bool e=false;
+		for(int i=1;i<=n;i++){
+			if(a[i]==false){
+				cout<<-1<<endl;
+				e=true;
+				break;
+			}
+		}
+		if(e==false){
+			cout<<ans<<endl;
+		}
+	}
+}

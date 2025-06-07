@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 115967168
+//  题目ID: T164526
+#include<bits/stdc++.h>
+using namespace std;
+string s;
+int main(){
+	cin>>s;
+	int n=s.size();
+	s='+'+s;
+	for(int i=1;i<=n;i++) s+='#';
+	for(int i=1;i<=n;i++){
+		if((s[i*2]=='#'&&s[i*2+1]!='#')||(s[i*2]!='#'&&s[i*2+1]=='#')){
+			cout<<"No";
+			return 0;
+		}
+	}
+	cout<<"Yes";
+	return 0;
+}

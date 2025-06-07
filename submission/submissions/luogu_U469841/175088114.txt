@@ -1,0 +1,202 @@
+//  OJ: 洛谷
+//  提交ID: 175088114
+//  题目ID: U469841
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+struct KTree {
+	int l, r;
+	mutable ll v;
+	KTree(int lll,int rr,ll vv):l(lll),r(rr),v(vv){}
+	friend bool operator <(const KTree& a, const KTree& b) {
+		return a.l < b.l;
+	}
+};
+set<KTree>s;
+set<KTree>::iterator it, it1, it2;
+int n, m;
+void debug() {
+	for (it = s.begin(); it != s.end(); it++) for (int i = it->l; i <= it->r; ++i)cout << it->v << ' ';
+	cout << endl;
+}
+vector<KTree>tmp,tmp2;
+void tuipin(int l, int r, ll k) {
+	it = s.upper_bound(KTree(l, l / (n / l), 0));
+	it--;
+	if (it->l != l) {
+		tmp.emplace_back(KTree(it->l, l - 1, it->v));
+	}
+	it2 = s.upper_bound(KTree(r, r / (n / r), 0));
+	it2--;
+	if (it2->r != r) {
+		tmp.emplace_back(KTree(r + 1, it2->r, it2->v));
+	}
+	it2++;
+	s.erase(it, it2);
+	s.insert(KTree(l, r, k));
+	for (KTree& t : tmp) s.insert(t);
+	tmp.clear();
+}
+void add(int l, int r, ll k) {
+	it = s.upper_bound(KTree(l, l / (n / l), 0));
+	it--;
+	if (it->l != l) {
+		tmp.emplace_back(KTree(it->l, l - 1, it->v));
+		tmp.emplace_back(KTree(l, it->r, it->v));
+		s.erase(it);
+		s.insert(tmp[0]);
+		it = s.insert(tmp[1]).first;
+		tmp.clear();
+	}
+	it2 = s.upper_bound(KTree(r, r / (n / r), 0));
+	it2--;
+	if (it2 == it) {
+		tmp.emplace_back(KTree(r + 1, it2->r, it2->v));
+		tmp.emplace_back(KTree(it2->l, r, it2->v + k));
+		s.erase(it2);
+		s.insert(tmp[0]);
+		it2 = s.insert(tmp[1]).first;
+		tmp.clear();
+		return;
+	}
+	if (it2->r != r) {
+		tmp.emplace_back(KTree(r + 1, it2->r, it2->v));
+		tmp.emplace_back(KTree(it2->l, r, it2->v + k));
+		s.erase(it2);
+		s.insert(tmp[0]);
+		it2 = s.insert(tmp[1]).first;
+		tmp.clear();
+	}
+	else {
+		it2->v += k;
+	}
+	for (it1 = it; it1 != it2; it1++) {
+		it1->v += k;
+	}
+}
+void rev(int l, int r) {
+	it = s.upper_bound(KTree(l, l / (n / l), 0));
+	it--;
+	if (it->l != l) {
+		tmp.emplace_back(KTree(it->l, l - 1, it->v));
+		tmp.emplace_back(KTree(l, it->r, it->v));
+		s.erase(it);
+		s.insert(tmp[0]);
+		it = s.insert(tmp[1]).first;
+		tmp.clear();
+	}
+	it2 = s.upper_bound(KTree(r, r / (n / r), 0));
+	it2--;
+	if (it2->r != r) {
+		tmp.emplace_back(KTree(r + 1, it2->r, it2->v));
+		tmp.emplace_back(KTree(it2->l, r, it2->v));
+		s.erase(it2);
+		s.insert(tmp[0]);
+		it2 = s.insert(tmp[1]).first;
+		tmp.clear();
+	}
+	it2++;
+	for (it1 = it; it1 != it2; it1++) {
+		tmp2.emplace_back(*it1);
+	}
+//	s.erase(it, it2);
+	int now = tmp2.back().r;
+	for (KTree& t : tmp2) s.insert(KTree(t.l + now - t.r, now, t.v)), now = t.l - t.r + now - 1;
+	tmp2.clear();
+}
+ll xor_sum(int l, int r) {
+	ll ans = 0;
+	it = s.upper_bound(KTree(l, l / (n / l), 0));
+	it--;
+	ans ^= (it->r - l + 1) % 2 == 0 ? 0 : it->v;
+	it2 = s.upper_bound(KTree(r, r / (n / r), 0));
+	it2--;
+	if (it2 == it) {
+		ans ^= (it->r - r) % 2 == 0 ? 0 : it->v;
+		return ans;
+	}
+	ans ^= (r - it2->l + 1) % 2 == 0 ? 0 : it2->v;
+	it++;
+	for (it1 = it; it1 != it2; it1++) {
+		ans ^= (it1->r - it1->l + 1) % 2 == 0 ? 0 : it1->v;
+	}
+	return ans;
+}
+ll sum(int l, int r) {
+	ll ans = 0;
+	it = s.upper_bound(KTree(l, l / (n / l), 0));
+	it--;
+	ans += (it->r - l + 1) * it->v;
+	it2 = s.upper_bound(KTree(r, r / (n / r), 0));
+	it2--;
+	if (it2 == it) {
+		ans -= (it->r - r) * it->v;
+		return ans;
+	}
+	ans += (r - it2->l + 1) * it2->v;
+	it++;
+	for (it1 = it; it1 != it2; it1++) {
+		ans += (it1->r - it1->l + 1) * it1->v;
+	}
+	return ans;
+}
+ll maxnum(int l, int r) {
+	ll ans = LLONG_MIN;
+	it = s.upper_bound(KTree(l, l / (n / l), 0));
+	it--;
+	ans = max(it->v, ans);
+	it2 = s.upper_bound(KTree(r, r / (n / r), 0));
+	it2--;
+	if (it2 == it) 
+		return ans;
+	ans = max(it2->v, ans);
+	it++;
+	for (it1 = it; it1 != it2; it1++) {
+		ans = max(it1->v, ans);
+	}
+	return ans;
+}
+int main() {
+// 	freopen("cbclby.in", "r", stdin);
+// 	freopen("cbclby.out", "w", stdout);
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n;) {
+		s.insert(KTree(i, n / (n / i), n / i));
+		i = n / (n / i) + 1;
+	}
+	for (it = s.begin(); it != s.end(); it++) cout << it->l << ' ' << it->r << ' ' << it->v << endl;
+	while (m--) {
+		int opt, l, r;
+		ll k;
+		cin >> opt >> l >> r;
+		if (opt == 1) {
+			cin >> k;
+			tuipin(l, r, k);
+		}
+		else if (opt == 2) {
+			cin >> k;
+			add(l, r, k);
+		}
+		else if (opt == 3) {
+			rev(l, r);
+		}
+		else if (opt == 4) {
+			cout << xor_sum(l, r) << endl;
+		}
+		else if (opt == 5) {
+			cout << sum(l, r) << endl;
+		}
+		else cout << maxnum(l, r) << endl;
+//		debug();
+	}
+	return 0;
+}
+/*
+5 5
+1 2 3 4
+5 1 2
+3 4 5
+3 3 5
+4 2 5
+*/

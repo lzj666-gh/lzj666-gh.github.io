@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 121999279
+//  题目ID: P1151
+#include<bits/stdc++.h>
+using namespace std;
+bool e;
+int k;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>k;
+	for(int i=10000;i<=30000;i++){
+		if((i/100)%k==0&&(i%1000/10)%k==0&&i%100000%k==0){
+			cout<<i<<endl;
+			e=true;
+		}
+	}
+	if(~e){
+		cout<<"No"<<endl;
+	}
+	return 0;
+}

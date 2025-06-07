@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 121265156
+//  题目ID: P1209
+#include<bits/stdc++.h>
+#define maxn 200+10 
+#define f_u(a,b) for(register int i=a;i<=b;++i)
+#define f_d(a,b) for(register int i=a;i>=b;--i)
+#define F_u(a,b) for(register int j=a;j<=b;++j)
+#define F_d(a,b) for(register int j=a;j>=b;--j)
+using namespace std;
+inline int read(){register char c=getchar();register int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=(x<<3)+(x<<1)+(c^48);c=getchar();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+int  a[maxn],b[maxn],m,s,c,ans;
+bool cmp(int x,int y){return x>y;}
+int main(){
+//	ios_base::sync_with_stdio(false);
+	m=read();s=read(),c=read();
+	f_u(1,c) a[i]=read();
+	if(m>c){
+		write(c);
+		return 0;
+	}
+	sort(&a[1],&a[c+1]);
+	ans=a[c]-a[1]+1;
+	f_u(1,c){
+		b[i]=a[i]-a[i-1];
+	}
+	sort(&b[1],&b[c],cmp);
+	f_u(1,m-1) ans=ans-b[i]+1;
+	write(ans);
+	return 0;
+}
+
+

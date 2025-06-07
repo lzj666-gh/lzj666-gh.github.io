@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 147373527
+//  题目ID: P5656
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+long long exgcd(long long a, long long b, long long& x, long long& y) {
+	if (b == 0) { x = 1; y = 0; return a; }
+	long long d = exgcd(b, a % b, x, y);
+	long long z = x; x = y, y = z - y * (a / b);
+	return d;
+}
+long long a, b, c, x, y;
+signed main() {
+	ios::sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		cin >> a >> b >> c;
+		long long d = exgcd(a, b, x, y);
+		if (c % d) {
+//			cerr << "ans: ";
+			cout << -1 << endl;
+			continue;
+		}
+		x *= c / d, y *= c / d;
+//		cerr << "ansx: " << x << " ansy: " << y << '\n';
+		long long dx = b / d, dy = a / d;
+		if (x < 0) y -= ((-x) / dx + 1) * dy, x += ((-x) / dx + 1) * dx;
+		else y += dy * (x / dx - (x % dx == 0)), x -= dx * (x / dx - (x % dx == 0));
+//		cerr << "ans: ";
+		if (y > 0) {
+			cout << (y - 1) / dy + 1 << ' ' << x << ' ' << (y - 1) % dy + 1 << ' ' << x + (y - 1) / dy * dx << ' ' << y << endl;
+		}
+		else {
+			cout << x << ' ' << y % dy + dy << endl;
+		}
+	}
+	return 0;
+}

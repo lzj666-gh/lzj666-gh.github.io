@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 174180930
+//  题目ID: P1525
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+	int v,w,nxt;
+}edge[200000+10];
+int head[20000+10],idx;
+void add(int u,int v,int w){
+	edge[++idx]={v,w,head[u]};
+	head[u]=idx;
+}
+short color[20000+10];
+bool chk(int mid,int s){
+	queue<pair<int,bool>>q;
+	q.emplace(s,false);
+	while(!q.empty()){
+		pair<int,bool>now=q.front();
+		q.pop();
+		if(color[now.first]==-1){
+			color[now.first]=now.second;
+			for(int i=head[now.first];i;i=edge[i].nxt){
+				if(edge[i].w>mid) q.emplace(edge[i].v,!now.second);
+			}
+		}
+		else if(color[now.first]!=now.second) return 0;
+	}
+	return 1;
+}
+int n,m,u,v,w,l,r,mid;
+bool check(int mid){
+	memset(color,-1,sizeof color);
+	for(int i=1;i<=n;++i)
+		if(color[i]==-1)
+			if(!chk(mid,i)) return 0;
+	return 1;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=m;++i) cin>>u>>v>>w,add(u,v,w),add(v,u,w),r=max(r,w);
+	while(l<r){
+		mid=l+r>>1;
+		if(check(mid)) r=mid;
+		else l=mid+1;
+	}
+	cout<<l<<endl;
+	return 0;
+}

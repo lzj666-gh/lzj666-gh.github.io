@@ -1,0 +1,54 @@
+//  OJ: 洛谷
+//  提交ID: 109847568
+//  题目ID: P1535
+#include<bits/stdc++.h>
+using namespace std;
+int n,xx,yy,m,t,sx,sy,fx,fy,cnt;
+bool a[120][120];
+int b[120][120][20];
+int dfs(int x,int y,int z){
+	if(x<1||x>n||y<1||y>m) return 0;
+	if(z>t) return 0;
+	if(b[x][y][z]!=0){
+		return b[x][y][z];
+	}
+	if(x==fx&&y==fy){
+		return 1;
+	}
+	int ans=0;
+	if(a[x+1][y]==true) ans+=dfs(x+1,y,z+1);
+	if(a[x-1][y]==true) ans+=dfs(x-1,y,z+1);
+	if(a[x][y+1]==true) ans+=dfs(x,y+1,z+1);
+	if(a[x][y-1]==true) ans+=dfs(x,y-1,z+1);
+	b[x][y][z]=ans;
+	return ans;
+}
+int main(){
+	cin>>n>>m>>t;
+	getchar();
+	for(int i=1;i<=n;i++){
+		char ch;
+		for(int j=1;j<=m;j++){
+			ch=getchar();
+			a[i][j]=ch=='.';
+		}
+		getchar();
+	}
+	cin>>sx>>sy>>fx>>fy;
+//	cout<<n<<" "<<m<<" "<<t<<endl;
+//	cout<<sx<<" "<<sy<<" "<<fx<<" "<<fy<<endl;
+//	for(int i=1;i<=n;i++){
+//		for(int j=1;j<=m;j++){
+//			cout<<a[i][j]<<" ";
+//		}
+//		cout<<endl;
+//	}
+	if(a[fx][fy]==false){
+		putchar('0');
+		return 0;
+	}
+	
+	cout<<dfs(sx,sy,0)<<endl;
+	return 0;
+}
+

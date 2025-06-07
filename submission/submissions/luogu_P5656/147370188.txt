@@ -1,0 +1,123 @@
+//  OJ: 洛谷
+//  提交ID: 147370188
+//  题目ID: P5656
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+long long exgcd(long long a, long long b, long long& x, long long& y) {
+	if (b == 0) { x = 1; y = 0; return a; }
+	long long d = exgcd(b, a % b, x, y);
+	long long z = x; x = y, y = z - y * (a / b);
+	return d;
+}
+long long a, b, c, x, y;
+signed main() {
+	ios::sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		cin >> a >> b >> c;
+// 		cerr << "ans: ";
+		long long d = exgcd(a, b, x, y);
+		if (c % d) {
+			cout << -1 << endl;
+			continue;
+		}
+		x *= c / d, y *= c / d;
+// 		cerr << "ansx: " << x << " ansy: " << y << ' ';
+		long long kx = b / d, ky = a / d;
+		if (x <= 0 && y <= 0) {
+			x += ceil(1.0 * (-x) / kx) * kx;
+			if (x == 0) x += kx;
+			cout << x;
+			y += ceil(1.0 * (-y) / ky) * ky;
+			if (y == 0) y += ky;
+			cout << ' ' << y << endl;
+			continue;
+		}
+		else if (x <= 0) {
+			y -= ceil(1.0 * (-x) / kx) * ky;
+			x += ceil(1.0 * (-x) / kx) * kx;
+			if (x == 0) y -= ky, x += kx;
+			if (y <= 0) {
+				cout << x;
+				y += ceil(1.0 * (-y) / ky) * ky;
+				if (y == 0) y += ky;
+				cout << ' ' << y + 1 << endl;
+				continue;
+			}
+			else {
+				int k1 = x / kx, k2 = y / ky;
+				if (x - k1 * kx <= 0) --k1;
+				if (y - k2 * ky <= 0) --k2;
+				pair<int, int>l = { x - k1 * kx,y + k1 * ky };
+				pair<int, int>r = { x + k2 * kx,y - k2 * ky };
+				cout << k1 + k2 + 1 << ' ' << 
+				min(l.first, r.first) << ' ' << min(l.second, r.second) << ' ' << 
+				max(l.first, r.first) << ' ' << max(l.second, r.second) << endl;
+				continue;
+			}
+			continue;
+		}
+		else if (y <= 0) {
+			x -= ceil(1.0 * (-y) / ky) * kx;
+			y += ceil(1.0 * (-y) / ky) * ky;
+			if (y == 0) x -= kx, y += ky;
+			if (x <= 0) {
+				x += ceil(1.0 * (-x) / kx) * kx;
+				if (x == 0) x += kx;
+				cout << x << ' ' << y << endl;
+				continue;
+			}
+			else {
+				int k1 = x / kx, k2 = y / ky;
+				if (x - k1 * kx == 0)--k1;
+				if (y - k2 * ky == 0)--k2;
+				pair<int, int>l = { x - k1 * kx,y + k1 * ky };
+				pair<int, int>r = { x + k2 * kx,y - k2 * ky };
+				cout << k1 + k2 + 1 << ' ' << 
+				min(l.first, r.first) << ' ' << min(l.second, r.second) << ' ' << 
+				max(l.first, r.first) << ' ' << max(l.second, r.second) << endl;
+				continue;
+			}
+			continue;
+		}
+		else {
+			int k1 = x / kx, k2 = y / ky;
+			if (x - k1 * kx == 0)--k1;
+			if (y - k2 * ky == 0)--k2;
+			pair<int, int>l = { x - k1 * kx,y + k1 * ky };
+			pair<int, int>r = { x + k2 * kx,y - k2 * ky };
+			cout << k1 + k2 + 1 << ' ' << 
+			min(l.first, r.first) << ' ' << min(l.second, r.second) << ' ' << 
+			max(l.first, r.first) << ' ' << max(l.second, r.second) << endl;
+			continue;
+		}
+	}
+	return 0;
+}
+/*
+10
+689170087 293277985 83281826
+6296 12083 80555328
+323949577 384333368 300436558
+7062 30288 147373111
+673477480 542580091 512403159
+14034 20491 739071291
+10769 5431 898984976
+28599 8302 399245959
+27720 30750 650316382
+8041 15452 913288423
+
+
+65340243 535627908
+1 7897 2552 7897 2552
+121915558 221188546
+-1
+163272499 470815509
+2 13928 12495 34419 26529
+15 2894 9024 78928 159790
+2 1435 14548 9737 43147
+-1
+8 3599 945 111763 57232
+*/

@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 159231496
+//  题目ID: P10472
+#include<bits/stdc++.h>
+#define isl(a) (bool)(a=='('||a=='['||a=='{')
+using namespace std;
+int ans;
+deque<int>stk;
+string s;
+map<char,char>g;
+int main(){
+	ios_base::sync_with_stdio(false);
+	g['(']=')';
+	g['[']=']';
+	g['{']='}';
+	g[')']='(';
+	g[']']='[';
+	g['}']='{';
+	cin>>s;
+	for(int i=0;i<s.size();++i){
+		if((bool)(s[i]=='('||s[i]=='['||s[i]=='{')){
+			stk.push_back(i);
+		}
+		else{
+			if(stk.empty()){
+				stk.push_back(i);
+//				cout<<i<<' '<<a<<':'<<' '<<ans<<endl;
+				continue;
+			}
+			if(s[stk.back()]!=g[s[i]]){
+				stk.push_back(i);
+			}
+			else{
+				stk.pop_back();
+				if(stk.empty()){
+					ans=max(ans,i+1);
+					continue;
+				}
+				ans=max(ans,i-stk.back());
+			}
+		}
+//		cout<<i<<' '<<a<<':'<<' '<<ans<<endl;
+	}
+	cout<<ans<<endl;
+	return 0;
+}
+//{}}{}{{{}}{{{[]][[][]][}{}{{]][[]][{}{}{}{}{][

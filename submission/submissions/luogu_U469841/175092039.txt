@@ -1,0 +1,112 @@
+//  OJ: 洛谷
+//  提交ID: 175092039
+//  题目ID: U469841
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+struct KTree {
+	int l, r;
+	mutable ll v;
+	KTree(int lll, int rr = 0, ll vv = 0) :l(lll), r(rr), v(vv) {  }
+	friend bool operator <(const KTree& a, const KTree& b) {
+		return a.l < b.l;
+	}
+};
+set<KTree>s;
+using sit = set<KTree>::iterator;
+int n, m;
+void debug() {
+	for (sit it = s.begin(); it != s.end(); it++) for (int i = it->l; i <= it->r; ++i)cout << it->v << ' ';
+	cout << endl;
+}
+sit split(int pos) {
+	if (pos == n + 1) return s.end();
+	sit it = s.lower_bound(KTree(pos));
+	if (it != s.end() && it->l == pos) {
+		return it;
+	}
+	it--;
+	ll l = it->l, r = it->r, v = it->v;
+	s.erase(it);
+	s.insert(KTree(l, pos - 1, v));
+	return s.insert(KTree(pos, r, v)).first;
+}
+void tuipin(int l, int r, ll k) {
+	sit it2 = split(r + 1), it1 = split(l);
+	s.erase(it1, it2);
+	s.insert(KTree(l, r, k));
+}
+void add(int l, int r, ll k) {
+	sit it2 = split(r + 1), it1 = split(l);
+	for (sit it = it1; it != it2; it++) {
+		it->v += k;
+	}
+}
+vector<KTree>tmp;
+void rev(int l, int r) {
+	sit it2 = split(r + 1), it1 = split(l);
+	for (sit it = it1; it != it2; it++) {
+		tmp.emplace_back(*it);
+	}
+	s.erase(it1, it2);
+	int now = tmp.back().r;
+	for (KTree& t : tmp) s.insert(KTree(t.l + now - t.r, now, t.v)), now = t.l - t.r + now - 1;
+	tmp.clear();
+}
+ll xor_sum(int l, int r) {
+	ll ans = 0;
+	sit it2 = split(r+1), it1 = split(l);
+	debug();
+	for (sit it = it1; it != it2; it++) {
+		ans ^= (it->r - it->l+1) % 2 * it->v;
+	}
+	return ans;
+}
+ll sum(int l, int r) {
+	ll ans = 0;
+	sit it2 = split(r + 1), it1 = split(l);
+	for (sit it = it1; it != it2; it++) {
+		ans += (it->r - it->l+1) * it->v;
+	}
+	return ans;
+}
+ll maxnum(int l, int r) {
+	ll ans = LLONG_MIN;
+	sit it2 = split(r + 1), it1 = split(l);
+	for (sit it = it1; it != it2; it++) {
+		ans = max(it->v, ans);
+	}
+	return ans;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n;) {
+		s.insert(KTree(i, n / (n / i), n / i));
+		i = n / (n / i) + 1;
+	}
+	while (m--) {
+		int opt, l, r;
+		ll k;
+		cin >> opt >> l >> r;
+		if (opt == 1) {
+			cin >> k;
+			tuipin(l, r, k);
+		}
+		else if (opt == 2) {
+			cin >> k;
+			add(l, r, k);
+		}
+		else if (opt == 3) {
+			rev(l, r);
+		}
+		else if (opt == 4) {
+			cout << xor_sum(l, r) << endl;
+		}
+		else if (opt == 5) {
+			cout << sum(l, r) << endl;
+		}
+		else cout << maxnum(l, r) << endl;
+	}
+	return 0;
+}

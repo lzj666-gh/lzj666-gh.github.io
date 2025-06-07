@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 108331331
+//  题目ID: T214849
+#include <iostream>
+#include <deque>
+
+using namespace std;
+
+const int n = 1e6 + 10;
+
+int n, m;
+int h[n]; // 身高
+deque<int> q; // 存储队列的下标
+
+int main()
+{
+    scanf("%d%d", &n, &m);
+    for (int i = 0; i < n; i ++ ) scanf("%d", &h[i]);
+
+    for (int i = 0; i < n; i ++ )
+    {
+        // 队列不为空，且当前元素比队尾元素大，则弹出队尾元素
+        while (q.size() && h[q.back()] <= h[i]) q.pop_back();
+        q.push_back(i);
+
+        // 如果队头元素已经不在区间内，则弹出队头元素
+        if (q.front() == i - m) q.pop_front();
+
+        // 如果已经遍历足够的元素，则输出结果
+        if (i >= m - 1) printf("%d %d\n", q.front(), h[q.front()]);
+    }
+
+    return 0;
+}

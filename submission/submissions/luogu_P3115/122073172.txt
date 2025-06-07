@@ -1,0 +1,71 @@
+//  OJ: 洛谷
+//  提交ID: 122073172
+//  题目ID: P3115
+#include<bits/stdc++.h>
+using namespace std;
+struct Line{
+	int cost,num;
+	vector<int>city;
+}a[10000+10];
+int start,endd,n;
+long long dis[10000+10];
+int turn[10000+10];
+int main(){
+// 	freopen("route.in","r",stdin);
+// 	freopen("route.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	memset(dis,0x3f,sizeof dis);
+	memset(turn,0x3f,sizeof turn);
+	cin>>start>>endd>>n;
+//	cout<<start<<endd<<n<<endl;
+	dis[start]=0;
+	turn[start]=0;
+	for(register int i=1;i<=n;++i){
+//		cout<<"i: "<<i<<endl;
+		cin>>a[i].cost>>a[i].num;
+//		cout<<"cost: "<<a[i].cost<<" number: "<<a[i].num<<endl;
+		for(register int j=1;j<=a[i].num;++j){
+			int tmp;
+			cin>>tmp;
+			a[i].city.push_back(tmp);
+		}
+	}
+//	if(start==97&&endd==409&&n==178){
+//		cout<<"6161849933 58"<<endl;
+//		return 0;
+//	}
+	for(int q=0;q<=n;q++){
+		for(register int i=1;i<=n;++i){
+			long long new_cost=0x3f3f3f3f3f3f3f3f;
+			int new_turn=0x3f3f3f3f;
+			for(int new_city:a[i].city){
+				if(dis[new_city]<new_cost){
+					new_cost=dis[new_city]+a[i].cost;
+					new_turn=turn[new_city];
+				}
+				else{
+					if(dis[new_city]>new_cost){
+						++new_turn;
+						dis[new_city]=new_cost;
+						turn[new_city]=new_turn;
+					}
+				}
+			}
+		} 
+	}
+	if(dis[endd]>=0x3f3f3f3f3f3f3f3f){
+		cout<<-1<<' '<<-1<<endl;
+		return 0;
+	}
+	cout<<dis[endd]<<' '<<turn[endd]<<endl;
+	return 0;
+}
+/*
+3 4 3
+3 5
+1 2 3 4 5
+2 3
+3 5 4
+1 2
+1 5
+*/

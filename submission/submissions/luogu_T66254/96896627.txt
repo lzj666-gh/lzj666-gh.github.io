@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 96896627
+//  题目ID: T66254
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int g=100;
+	double n,s=0;cin>>n;
+	while(g>n){
+		s+=g;
+		g/=2;
+		s+=g;
+	}
+	printf("%.3lf",s);
+	
+
+	return 0;
+}
+

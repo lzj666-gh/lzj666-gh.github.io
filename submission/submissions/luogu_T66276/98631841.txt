@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 98631841
+//  题目ID: T66276
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int n;cin>>n;const int N=n;int a[N];int c=0,d;int flag=0;
+	for(int i=0;i<N;i++){
+		cin>>d;
+		for(int j=0;j<i;j++){
+			if(a[j]==d){
+				break;
+				flag=1;
+			}
+		}
+		if(flag!=1){
+			a[c]=d;
+			c++;
+		}
+		flag=0;
+	}
+	for(int i=0;i<=c;i++){
+		cout<<a[i]<<" ";
+	}
+}

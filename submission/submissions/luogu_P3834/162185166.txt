@@ -1,0 +1,64 @@
+//  OJ: 洛谷
+//  提交ID: 162185166
+//  题目ID: P3834
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+int a[200000 + 10], n, m, root[200000 + 10], idx;
+vector<int>cbc;
+unordered_map<int, int>val, idk;
+struct Tree {
+	int lc, rc, sum;
+}tree[200000 * 25];
+void build(int k, int l, int r) {
+	if (l == r) return;
+	build(tree[k].lc = ++idx, l, l + r >> 1);
+	build(tree[k].rc = ++idx, (l + r >> 1) + 1, r);
+}
+void insert(int lst, int now, int l, int r, int k) {
+	tree[now] = tree[lst]; tree[now].sum++;
+	if (l == r) return;
+	if (k <= (l + r >> 1)) insert(tree[lst].lc, tree[now].lc = ++idx, l, l + r >> 1, k);
+	else insert(tree[lst].rc, tree[now].rc = ++idx, (l + r >> 1) + 1, r, k);
+}
+int query(int x, int y, int l, int r, int k) {
+	if (l == r) return l;
+	int L = -tree[tree[x].lc].sum + tree[tree[y].lc].sum;
+//	cerr << l << " " << r << " " << L << ' ' << k << endl;
+	if (k <= L) return query(tree[x].lc, tree[y].lc, l, l + r >> 1, k);
+	else return query(tree[x].rc, tree[y].rc, (l + r >> 1) + 1, r, k - L);
+}
+void debug(const int&k, int l, int r) {
+	cout << "idx is " << k << " with[" << l << ',' << r << "]it's sum:" << tree[k].sum << endl;
+	if (l == r) {
+		cout << "in leaf node " << val[l] << endl;
+		return;
+	}
+	debug(tree[k].lc, l, l + r >> 1);
+	debug(tree[k].rc, (l + r >> 1) + 1, r);
+}
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i], cbc.push_back(a[i]);
+	sort(cbc.begin(), cbc.end());
+	cbc.erase(unique(cbc.begin(), cbc.end()), cbc.end());
+	for (int i = 0; i < cbc.size(); ++i) {
+		val[i + 1] = cbc[i];
+		idk[cbc[i]] = i + 1;
+	}
+	for (int i = 1; i <= n; ++i) a[i] = idk[a[i]];
+	build(root[0] = ++idx, 1, cbc.size());
+	for (int i = 1; i <= n; ++i) insert(root[i - 1], root[i] = ++idx, 1, cbc.size(), a[i]);
+//	for (int i = 0; i <= n; ++i) {
+//		cout << "tree " << i << " begin{" << endl;
+//		debug(root[i], 1, cbc.size());
+//		cout << "}end" << endl;            
+//	}
+	while (m--) {
+		static int l, r, k;
+		cin >> l >> r >> k;
+		cout << val[query(root[l - 1], root[r], 1, cbc.size(), k)] << endl;
+	}
+	return 0;
+}

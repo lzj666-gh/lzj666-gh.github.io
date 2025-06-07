@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 114208959
+//  题目ID: P1280
+#include<iostream>
+#include<algorithm>
+using namespace std;
+long int n,k,sum[10001],num=1,dp[10001];
+struct pe{  
+	long int kk,jj;
+}z[10001];
+int cmp(pe a,pe b){  
+	return a.kk>b.kk;
+}
+int main(){
+	long int i,j;
+	cin>>n>>k;
+	for(i=1;i<=k;i++){
+	cin>>z[i].kk>>z[i].jj;
+	sum[z[i].kk]++;
+	}
+	sort(z+1,z+k+1,cmp);
+	for(i=n;i>=1;i--){
+		if(sum[i]==0)
+		dp[i]=dp[i+1]+1;
+		else
+		for(j=1;j<=sum[i];j++){
+			if(dp[i+z[num].jj]>dp[i])
+			dp[i]=dp[i+z[num].jj];
+			num++;
+		}
+	}
+	cout<<dp[1]<<endl;
+}  

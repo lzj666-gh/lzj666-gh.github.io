@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 176129697
+//  题目ID: P11020
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		int n, m, k;
+		cin >> n >> m >> k;
+		if (k <= min(n, m)) {
+			int tot = 0;
+			for (int i = 1; i <= n; ++i, cout << endl) for (int j = 1; j <= m; ++j) cout << (i == j && ++tot <= k ? 'S' : '.');
+			continue;
+		}
+		if (k <= max(n, m)) {
+			int tot = 0;
+			for (int i = 1; i <= n; ++i, cout << endl)
+				for (int j = 1; j <= m; ++j)
+					cout << (((i - 1) % m) == ((j - 1) % n) && ++tot <= k ? 'S' : '.');
+			continue;
+		}
+		int tot = max(n, m);
+		for (int i = 1; i <= n; ++i, cout << endl)
+			for (int j = 1; j <= m; ++j)
+				cout << (((i - 1) % m) == ((j - 1) % n) || ((++tot <= k)) ? 'S' : '.');
+	}
+	return 0;
+}

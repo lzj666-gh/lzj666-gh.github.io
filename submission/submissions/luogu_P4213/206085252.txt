@@ -1,0 +1,67 @@
+//  OJ: 洛谷
+//  提交ID: 206085252
+//  题目ID: P4213
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+using ll = long long;
+constexpr int N = 1e7;
+int smu[N + 10], sphi[N + 10], n, T;
+unordered_map<int, ll>Smu, Sphi;
+inline ll Sumu(int n) {
+	if (n <= N) return smu[n];
+	if (Smu[n]) return Smu[n];
+	ll ret = 1ll;
+	for (int l = 2, r; l <= n; l = r + 1)
+		r = n / (n / l),
+		ret -= (r - l + 1) * Sumu(n / l);
+	return Smu[n] = ret;
+}
+inline ll Sumphi(int n) {
+	if (n <= N) return sphi[n];
+	if (Sphi[n]) return Sphi[n];
+	ll ret = 1ll * n * (n + 1) / 2;
+	for (int l = 2, r; l <= n; l = r + 1)
+		r = n / (n / l),
+		ret -= (r - l + 1) * Sumphi(n / l);
+	return Sphi[n] = ret;
+}
+vector<int>prm;
+bool vis[N + 10];
+int phi[N + 10], mu[N + 10];
+void iniit() {
+	sphi[1] = phi[1] = 1;
+	smu[1] = mu[1] = 1;
+	for (int i = 2; i <= N; i++) {
+		if (!vis[i]) {
+			prm.push_back(i);
+			phi[i] = i - 1;
+			mu[i] = -1;
+		}
+		for (int& v : prm) {
+			if (i * v > N) break;
+			vis[i * v] = true;
+			if (i % v == 0) {
+				phi[i * v] = phi[i] * v;
+				mu[i * v] = 0;
+				break;
+			}
+			phi[i * v] = phi[i] * phi[v];
+			mu[i * v] = -mu[i];
+		}
+		smu[i] = smu[i - 1] + mu[i];
+		sphi[i] = sphi[i - 1] + phi[i];
+	}
+	//for (int i = 1; i <= 20; ++i) cout << mu[i] << ' '; cout << endl;
+	//for (int i = 1; i <= 20; ++i) cout << phi[i] << ' '; cout << endl;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> T;
+	iniit();
+	while (T--) {
+		cin >> n;
+		cout << Sumphi(n) << ' ' << Sumu(n) << endl;
+	}
+	return 0;
+}

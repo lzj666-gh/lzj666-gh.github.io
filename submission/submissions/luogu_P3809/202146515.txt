@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 202146515
+//  题目ID: P3809
+#include<bits/stdc++.h>
+#include<array>
+using namespace std;
+string s;
+int n, w, sa[2000000 + 5];
+int rk[2000000 + 5], oldrk[2000000 + 5];
+void sort() {
+	static vector<int> t[1000000 + 5];
+	for (int i = 0; i <= 1000000; ++i) t[i].clear();
+	for (int i = 1; i <= n; ++i)
+		t[rk[sa[i] + w]].push_back(sa[i]);
+	for (int i = 0, p = 0; i <= 1000000; ++i)
+		for (const auto& j : t[i])
+			sa[++p] = j;
+	for (int i = 0; i <= 1000000; ++i) t[i].clear();
+	for (int i = 1; i <= n; ++i)
+		t[rk[sa[i]]].push_back(sa[i]);
+	for (int i = 0, p = 0; i <= 1000000; ++i)
+		for (const auto& j : t[i])
+			sa[++p] = j;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> s;
+	n = s.size();
+	s = ' ' + s;
+	for (int i = 1; i <= n; ++i) sa[i] = i, rk[i] = s[i];
+	for (w = 1; w < n; w <<= 1) {
+		sort();
+		
+		memcpy(oldrk, rk, n * 4 + 4);
+		for (int i = 1, p = 0; i <= n; ++i) {
+			if (oldrk[sa[i]] != oldrk[sa[i - 1]] || oldrk[sa[i] + w] != oldrk[sa[i - 1] + w]) ++p;
+			rk[sa[i]] = p;
+		}
+	}
+	for (int i = 1; i <= n; ++i) cout << sa[i] << ' ';
+	return 0;
+}

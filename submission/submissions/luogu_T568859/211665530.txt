@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 211665530
+//  题目ID: T568859
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    cout<<"2024-05-21";
+}

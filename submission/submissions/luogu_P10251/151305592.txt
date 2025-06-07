@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 151305592
+//  题目ID: P10251
+#include<bits/stdc++.h>
+using namespace std;
+int minx=INT_MAX,miny=INT_MAX,maxx=-INT_MAX,maxy=-INT_MAX,n,a,b,c,d;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	while(n--){
+		cin>>a>>b>>c>>d;
+		minx=min({minx,a,c});
+		maxx=max({maxx,a,c});
+		miny=min({miny,b,d});
+		maxy=max({maxy,b,d});
+	}
+	cout<<(maxx-minx)*(maxy-miny)<<endl;
+	return 0;
+}

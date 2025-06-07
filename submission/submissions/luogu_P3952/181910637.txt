@@ -1,0 +1,93 @@
+//  OJ: 洛谷
+//  提交ID: 181910637
+//  题目ID: P3952
+#include<bits/stdc++.h>
+#pragma warning(disable:4996)
+#pragma warning(disable:6031)
+using namespace std;
+int T;
+int main() {
+	//freopen("palin.in", "r", stdin);
+	//freopen("palin.out", "w", stdout);
+	ios_base::sync_with_stdio(false);
+	cin >> T;
+	while (T--) {
+		map<char, bool>mp;
+		char opt;
+		bool flg = 0;
+		int L, except, mx = 1;
+		string tmp;
+		cin >> L >> tmp;
+		if (tmp[2] == '1') except = 0;
+		else sscanf(tmp.c_str(), "O(n^%d)", &except);
+		int O = 0, ans = 0;
+		stack<char>I;
+		while (L--) {
+			//cout << "beg " << L << endl;
+			if (flg) {
+				//cout << "ERRed break" << endl;
+				char ttmp[20];
+				cin.getline(ttmp, 15);
+				continue;
+			}
+			cin >> opt;
+			if (opt == 'F') {
+				char i;
+				string x, y;
+				cin >> i >> x >> y;
+				if (x != "n" && y == "n") O++, ans = max(ans, O);
+				else if ((x != "n" && y != "n" && stoi(x) > stoi(y)) || (x == "n" && y != "n")) {
+					int tmp = 0;
+					while (tmp >= 0) {
+						if (!(L--)) {
+							cin.get();
+							flg = 1;
+							break;
+						}
+						char gyy;
+						cin >> gyy;
+						if (gyy == 'F') {
+							char lzj;
+							string ttmp;
+							cin >> lzj >> ttmp >> ttmp;
+							tmp++;
+							if (mp[lzj]) {
+								flg = 1;
+								cin.get();
+								break;
+							}
+							mp[lzj] = 1;
+						}
+						else tmp--;
+					}
+					if (tmp >= 0) {
+						cin.get();
+						flg = 1;
+						break;
+					}
+					continue;
+				}
+				if (mp[i]) {
+					flg = 1;
+					cin.get();
+					continue;
+				}
+				mp[i] = 1; I.push(i);
+			}
+			else {
+				O--;
+				if (!I.size()) {
+					flg = 1;
+					cin.get();
+					continue;
+				}
+				mp[I.top()] = 0;
+				I.pop();
+			}
+		}
+		if (flg || I.size()) cout << "ERR" << endl;
+		else if (ans == except) cout << "Yes" << endl;
+		else cout << "No" << endl;
+	}
+	return 0;
+}

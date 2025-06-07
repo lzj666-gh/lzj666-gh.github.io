@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 107574476
+//  题目ID: T322189
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    cout<<"F"<<endl;
+    return 0; 
+}

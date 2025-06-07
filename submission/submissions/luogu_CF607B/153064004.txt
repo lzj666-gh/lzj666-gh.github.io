@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 153064004
+//  题目ID: CF607B
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn=500+10;
+int dp[maxn][maxn],a[maxn],n;
+int min(int a,int b){
+	return a<b?a:b;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		cin>>a[i];
+	}
+	memset(dp,0x7f,sizeof(dp));
+	for(int i=1;i<=n;i++) dp[i][i]=1;
+	for(int i=1;i<n;i++) dp[i][i+1]=1+(a[i]!=a[i+1]); 
+	for(int len=3;len<=n;len++){
+		for(int l=1;l+len-1<=n;l++){
+			int r=l+len-1;
+			if(a[l]==a[r]) dp[l][r]=dp[l+1][r-1];
+			for(int i=l;i<r;i++) dp[l][r]=min(dp[l][r],dp[l][i]+dp[i+1][r]);
+		}
+	}
+	cout<<dp[1][n]<<endl;
+	return 0;
+}

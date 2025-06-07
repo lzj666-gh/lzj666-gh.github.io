@@ -1,0 +1,75 @@
+//  OJ: 洛谷
+//  提交ID: 101814647
+//  题目ID: T261057
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[4]= {0};
+char A[600+10]={0};
+int main() {
+	scanf("%d",&n);
+	getchar();
+//	cout<<"aa"<<endl;
+	for(int i=0; i<n; i++) {
+//		cout<<i<<endl;
+		for(int j=0; j<=3; j++) {
+//			cout<<j<<endl;
+			fgets(A,600+10,stdin);
+//			cout<<A;
+			a[j]=strlen(A);
+//			cout<<a[j]<<endl;
+		}
+//		for(int j=0;j<=3;j++){
+//			cout<<a[j]<<" ";
+//		}
+//		cout<<endl;
+		int amax=0,amin=0x7f7f7f7f,ji=0,ji2=0;
+		int maxch,minch;
+		for(int j=0;j<=3;j++){
+			if(a[j]>=amax){
+				if(a[j]==amax) ji++;
+				amax=a[j];
+				maxch=j;
+			}
+			if(a[j]<=amin){
+				if(a[j]==amin) ji2++;
+				amin=a[j];
+				minch=j;
+			}
+		}
+		cout<<ji<<" "<<ji2<<endl;
+		if(ji2==0){
+			if(minch==0){
+				cout<<'A';
+			}
+			if(minch==1){
+				cout<<'B';
+			}
+			if(minch==2){
+				cout<<'C';
+			}
+			if(minch==3){
+				cout<<'D';
+			}
+		}
+		else if(ji==0){
+			if(maxch==0){
+				cout<<'A';
+			}
+			if(maxch==1){
+				cout<<'B';
+			}
+			if(maxch==2){
+				cout<<'C';
+			}
+			if(maxch==3){
+				cout<<'D';
+			}
+		}
+		else{
+			cout<<'C';
+		}
+		cout<<endl;
+	}
+
+	return 0;
+}

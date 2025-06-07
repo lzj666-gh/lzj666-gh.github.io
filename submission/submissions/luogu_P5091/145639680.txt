@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 145639680
+//  题目ID: P5091
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int poww(int a,int x,int p){ 
+	if(x==0) return 1;
+	long long t=poww(a,x/2,p)%p;
+	t=(t*t)%p;
+	if(x%2==1) t=(t*a)%p;
+	return t;
+}
+int a,b,m;
+signed main(){
+    ios_base::sync_with_stdio(false);
+    cin>>a>>b>>m;
+    cout<<poww(a,b,m);
+    return 0;
+}

@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 116776090
+//  题目ID: U305586
+#include<bits/stdc++.h>
+using namespace std;
+map<string,int>a;
+int n,m,cnt;
+int main(){
+	ios::sync_with_stdio(false);
+	cout<<"volleketball"<<endl;
+	return 0;
+}

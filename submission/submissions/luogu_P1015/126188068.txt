@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 126188068
+//  题目ID: P1015
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+string m;
+inline bool ok(){
+	string tmp=m;
+	reverse(tmp.begin(),tmp.end());
+	return tmp==m;
+}
+int ans;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(auto&c:m)if(c>='A'&&c<='Z')c-='A',c+='0';
+	while(!ok()){
+		++ans;
+		string tmp=m;
+		reverse(tmp.begin(),tmp.end());
+//		cout<<"step: "<<ans<<" m: "<<m<<" tmp:"<<tmp<<endl;
+		for(int i=m.size()-1;i>=1;--i){
+			m[i]+=tmp[i];
+			m[i]-=2*'0';
+			if(m[i]>=n){
+				++m[i-1];
+				m[i]-=n;
+			}
+			m[i]+='0';
+		}
+		m[0]+=tmp[0];
+		m[0]-=2*'0';
+		if(m[0]>=n){
+			m='1'+m;
+			m[1]-=n;
+			m[1]+='0';
+		}
+		else m[0]+='0';
+		if(ans>30){
+			cout<<"Impossible!"<<endl;
+			return 0;
+		}
+	}
+	cout<<"STEP="<<ans<<endl;
+}

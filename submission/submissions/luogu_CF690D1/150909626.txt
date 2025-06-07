@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 150909626
+//  题目ID: CF690D1
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,a[120][120],ans;
+void dfs(int x,int y){
+	a[x][y]=0;
+	if(a[x+1][y]!=0) dfs(x+1,y);
+	if(a[x-1][y]!=0) dfs(x-1,y);
+	if(a[x][y+1]!=0) dfs(x,y+1);
+	if(a[x][y-1]!=0) dfs(x,y-1);
+}
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>n>>m;
+	for(int i=1;i<=n;i++){
+		char str[120];
+		cin>>str;
+		for(int j=1;j<=m;j++){
+			a[i][j]=str[j-1]=='.'?0:1;
+		}
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			if(a[i][j]!=0) dfs(i,j),ans++;
+		}
+	}
+	cout<<ans<<endl;
+	return 0;
+}
+

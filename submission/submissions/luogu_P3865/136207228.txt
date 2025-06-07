@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 136207228
+//  题目ID: P3865
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,a[100010],f[100010][20];
+inline int read()
+{
+	int x=0,f=1;char ch=getchar();
+	while (ch<'0'||ch>'9'){if (ch=='-') f=-1;ch=getchar();}
+	while (ch>='0'&&ch<='9'){x=x*10+ch-48;ch=getchar();}
+	return x*f;
+}
+int main(){
+//	ios_base::sync_with_stdio(false);
+	n=read(),m=read();
+	for(int i=1;i<=n;i++) f[i][0]=read();
+	for(int j=1;j<=log(n)/log(2);j++)
+		for(int i=1;i<=n-(1<<j)+1;i++){
+			f[i][j]=max(f[i][j-1],f[i+(1<<(j-1))][j-1]);
+		}
+	for(int i=1,x,y;i<=m;i++){
+		x=read();y=read();
+		printf("%d\n",max(f[x][(int)(log(y-x+1)/log(2))],f[y-(1<<(int)(log(y-x+1)/log(2)))+1][(int)(log(y-x+1)/log(2))]));
+	}
+}

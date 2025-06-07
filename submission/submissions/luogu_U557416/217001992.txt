@@ -1,0 +1,109 @@
+//  OJ: 洛谷
+//  提交ID: 217001992
+//  题目ID: U557416
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+#define int ll
+constexpr int N = 1e6 + 5, inf = 0x3f3f3f3f3f3f3f3f;
+struct mss {
+	int fa[N << 1];
+	mss() :fa() {}
+	int& operator()(int x) { return fa[x]; }
+	int operator[](int x) { return fa[x] ? fa[x] = (*this)[fa[x]] : x; }
+}id;
+struct Edge {
+	int u, v, w, val;
+};
+struct Node {
+	Edge* data;
+	int dist, add;
+	Node* ls, * rs;
+	Node(Edge* data) : data(data), dist(1), add(), ls(), rs() {}
+	void pushdown() {
+		if (ls) ls->add += add;
+		if (rs) rs->add += add;
+		data->w += add;
+		add = 0;
+	}
+};
+Node* merge(Node* x, Node* y) {
+	if (!x) return y;
+	if (!y) return x;
+	if (x->data->w + x->add > y->data->w + y->add) swap(x, y);
+	x->pushdown();
+	x->rs = merge(x->rs, y);
+	if (!x->ls || x->ls->dist < x->rs->dist) swap(x->ls, x->rs);
+	if (x->rs) x->dist = x->rs->dist + 1;
+	else x->dist = 1;
+	return x;
+}
+Edge* top(Node*& x) {
+	Edge* r = x->data;
+	x->pushdown();
+	x = merge(x->ls, x->rs);
+	return r;
+}
+vector<Edge> in[N];
+int n, m, fa[N << 1], nxt[N << 1];
+Edge* cyc[N << 1];
+Node* pq[N << 1];
+bool vis[N << 1];
+ll expand(int x, int t) {
+	ll r = 0;
+	for (; x != t; x = fa[x]) {
+		ll sum = 0;
+		for (int u = nxt[x]; u != x; u = nxt[u]) {
+			if (cyc[u]->val >= inf) return inf;
+			ll child = expand(cyc[u]->v, u);
+			if (child >= inf || sum >= inf) {
+				sum = inf; break;
+			}
+			sum += child + cyc[u]->val;
+		}
+		if (sum >= inf || (r += sum) >= inf) return inf;
+	}
+	return r;
+}
+int main() {
+	int rt;
+	cin >> n >> m >> rt;
+	for (int i = 0; i < m; i++) {
+		int u, v, w;
+		cin >> u >> v >> w;
+		in[v].push_back({ u, v, w, w });
+	}
+	for (int i = 1; i <= n; i++) in[i].push_back({ i > 1 ? i - 1 : n, i, inf, inf });
+	for (int i = 1; i <= n; i++) {
+		queue<Node*> q;
+		for (Edge& e : in[i]) q.push(new Node(&e));
+		while (q.size() > 1) {
+			Node* u = q.front(); q.pop();
+			Node* v = q.front(); q.pop();
+			q.push(merge(u, v));
+		}
+		pq[i] = q.front();
+	}
+	vis[1] = true;
+	for (int a = 1, b = 1; pq[a]; b = a, vis[b] = true) {
+		do {
+			cyc[a] = top(pq[a]);
+			a = id[cyc[a]->u];
+		} while (a == b && pq[a]);
+		if (a == b) break;
+		if (!vis[a]) continue;
+		a = b;
+		n++;
+		while (a != n) {
+			id(a) = fa[a] = n;
+			if (pq[a]) pq[a]->add -= cyc[a]->w;
+			pq[n] = merge(pq[n], pq[a]);
+			int p = id[cyc[a]->u];
+			nxt[p == n ? b : p] = a;
+			a = p;
+		}
+	}
+	ll ans = expand(rt, n);
+	cout << (ans >= inf ? -1 : ans) << endl;
+	return 0;
+}

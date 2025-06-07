@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 112435001
+//  题目ID: P9408
+
+#include <iostream>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+
+const int MAXN = 1005;
+int a[MAXN], dp[MAXN][10];
+
+int main() {
+int n;
+cin >> n;
+for (int i = 1; i <= n; i++) {
+cin >> a[i];
+}
+memset(dp, 0x3f, sizeof(dp)); // 初始化为正无穷
+for (int i = 0; i <= 9; i++) {
+dp[1][i] = min(abs(a[1]-i), 10-abs(a[1]-i)); // 边界条件
+}
+for (int i = 2; i <= n; i++) {
+for (int j = 0; j <= 9; j++) {
+for (int k = 0; k <= j; k++) {
+dp[i][j] = min(dp[i][j], dp[i-1][k]+min(abs(a[i]-j), 10-abs(a[i]-j))); // 状态转移方程
+}
+}
+}
+int ans = 0x3f3f3f3f;
+for (int i = 0; i <= 9; i++) {
+ans = min(ans, dp[n][i]);
+}
+cout << ans << endl;
+return 0;
+}

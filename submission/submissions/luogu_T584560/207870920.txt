@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 207870920
+//  题目ID: T584560
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int a,s;
+    cin>>a>>s;
+    cout<<2*(a+s/a)<<endl;
+}

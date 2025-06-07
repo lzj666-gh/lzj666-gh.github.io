@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 158004873
+//  题目ID: U418137
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+char buf[1<<20],*p1,*p2;
+#define getchar() (p1 == p2 && (p2 = (p1 = buf) + fread(buf,1,1<<20,stdin), p1 == p2) ? 0 : *p1++)
+inline void read(int&x){
+    x=0;char ch=getchar();
+    while(ch<'0'||ch>'9'){ch=getchar();}
+    while(ch>='0'&&ch<='9'){x=(x<<1)+(x<<3)+(ch^48);ch=getchar();}
+    return;
+}
+inline void write(int x){
+    if(x>9) write(x/10);
+    putchar(x%10+'0');
+}
+int n,m,k,T;
+signed main() {
+	read(T);
+	while(T--){
+		read(n);read(m);read(k);k++;
+		if(n%k==1&&m%k==1) puts("NSL");
+		else{
+			write((n%k+k-1)%k),putchar(' '),write((m%k+k-1)%k),putchar('\n');
+		}
+	}
+	return 0;
+}

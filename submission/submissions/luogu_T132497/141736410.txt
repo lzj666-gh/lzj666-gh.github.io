@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 141736410
+//  题目ID: T132497
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 110;
+int path[N],n;
+bool dfs(int u, int k){
+	if (u == k) return path[u - 1] == n;
+	unordered_map<int, bool>st;
+	for (int i = u - 1; i >= 0; i--)
+		for (int j = i; j >= 0; j--){
+			int s = path[i] + path[j];
+			if (s <= path[u - 1] || s > n || st[s]) continue;
+			st[s] = true;
+			path[u] = s;
+			if (dfs(u + 1, k)) return true;
+		}
+	return false;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	path[0] = 1;
+	while (cin >> n && n) {
+		int k = 1;
+		while (!dfs(1, k)) k++;
+		cout << k << ' ';
+		for (int i = 0; i < k; i++) cout << path[i] << " ";
+		cout << endl;
+	}
+	return 0;
+}

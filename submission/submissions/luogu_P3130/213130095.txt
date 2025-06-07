@@ -1,0 +1,98 @@
+//  OJ: 洛谷
+//  提交ID: 213130095
+//  题目ID: P3130
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+struct Seg_Tree {
+#define lc (p << 1)
+#define rc (p << 1 | 1)
+#define mid ((l + r) >> 1)
+#define lson lc, l, mid
+#define rson rc, mid + 1, r
+	struct Node {
+		int sum, min, lazy;
+		Node() : sum(0), min(LLONG_MAX), lazy(0) {}
+	}tree[200000 << 2 | 3];
+	void push_up(int p) {
+		tree[p].sum = tree[lc].sum + tree[rc].sum;
+		tree[p].min = min(tree[lc].min, tree[rc].min);
+	}
+	void push_down(int p, int l, int r) {
+		if (tree[p].lazy) {
+			tree[lc].sum += tree[p].lazy * (r - l + 1);
+			tree[rc].sum += tree[p].lazy * (r - l + 1);
+			tree[lc].min += tree[p].lazy;
+			tree[rc].min += tree[p].lazy;
+			tree[lc].lazy += tree[p].lazy;
+			tree[rc].lazy += tree[p].lazy;
+			tree[p].lazy = 0;
+		}
+	}
+	void build(int p, int l, int r, vector<int>& a) {
+		if (l == r) {
+			tree[p].sum = tree[p].min = a[l];
+			return;
+		}
+		build(lson, a);
+		build(rson, a);
+		push_up(p);
+	}
+	void add(int p, int l, int r, int x, int y, int k) {
+		if (x <= l && r <= y) {
+			tree[p].sum += k * (r - l + 1);
+			tree[p].min += k;
+			tree[p].lazy += k;
+			return;
+		}
+		push_down(p, l, r);
+		if (x <= mid) add(lson, x, y, k);
+		if (y > mid) add(rson, x, y, k);
+		push_up(p);
+	}
+	int query_min(int p, int l, int r, int x, int y) {
+		if (x <= l && r <= y) return tree[p].min;
+		push_down(p, l, r);
+		int ans = LLONG_MAX;
+		if (x <= mid) ans = min(ans, query_min(lson, x, y));
+		if (y > mid) ans = min(ans, query_min(rson, x, y));
+		push_up(p);
+		return ans;
+	}
+	int query_sum(int p, int l, int r, int x, int y) {
+		if (x <= l && r <= y) return tree[p].sum;
+		push_down(p, l, r);
+		int ans = 0;
+		if (x <= mid) ans += query_sum(lson, x, y);
+		if (y > mid) ans += query_sum(rson, x, y);
+		push_up(p);
+		return ans;
+	}
+}seg;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m;
+	cin >> n >> m;
+	vector<int> a(n + 1);
+	for (int i = 1; i <= n; i++)
+		cin >> a[i];
+	seg.build(1, 1, n, a);
+	while (m--) {
+		string op;
+		int x, y, k;
+		cin >> op;
+		if (op == "P") {
+			cin >> x >> y >> k;
+			seg.add(1, 1, n, x, y, k);
+		}
+		else if (op == "S") {
+			cin >> x >> y;
+			cout << seg.query_sum(1, 1, n, x, y) << '\n';
+		}
+		else {
+			cin >> x >> y;
+			cout << seg.query_min(1, 1, n, x, y) << '\n';
+		}
+	}
+	return 0;
+}

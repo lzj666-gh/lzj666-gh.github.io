@@ -1,0 +1,120 @@
+//  OJ: 洛谷
+//  提交ID: 150217382
+//  题目ID: P10245
+#include<bits/stdc++.h>
+using namespace std;
+int T,a[4];
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>T;
+	while(T--){
+		cin>>a[0]>>a[1]>>a[2]>>a[3];
+		sort(a,a+4);
+		int k,l,r,a0;
+		k=a[1],l=a[2],r=a[3],a0=a[0];
+		double p=(a0-k+l+r)/2;
+//		if(l+r>=a0-k||l+a0-k>=r||r+a0-k>=l) cout<<"no"<<endl;
+		double z=sqrt(p*(p-(a0-k))*(p-l)*(p-r))*2/(a0-k);
+		if(fabs(sqrt(l*l-z*z)+sqrt(r*r-z*z)-a0-k)<=0.1){
+			cout<<"yes"<<endl;
+			continue;
+		}
+		k=a[2],l=a[1],r=a[3];
+		p=(a0-k+l+r)/2;
+//		if(l+r>=a0-k||l+a0-k>=r||r+a0-k>=l) cout<<"no"<<endl;
+		z=sqrt(p*(p-(a0-k))*(p-l)*(p-r))*2/(a0-k);
+		if(fabs(sqrt(l*l-z*z)+sqrt(r*r-z*z)-a0-k)<=0.1){
+			cout<<"yes"<<endl;
+			continue;
+		}
+		k=a[3],l=a[1],r=a[2];
+		p=(a0-k+l+r)/2;
+//		if(l+r>=a0-k||l+a0-k>=r||r+a0-k>=l) cout<<"no"<<endl;
+		z=sqrt(p*(p-(a0-k))*(p-l)*(p-r))*2/(a0-k);
+		if(fabs(sqrt(l*l-z*z)+sqrt(r*r-z*z)-a0-k)<=0.1){
+			cout<<"yes"<<endl;
+			continue;
+		}
+		k=a[0],l=a[2],r=a[3],a0=a[1];
+		 p=(a0-k+l+r)/2;
+//		if(l+r>=a0-k||l+a0-k>=r||r+a0-k>=l) cout<<"no"<<endl;
+		 z=sqrt(p*(p-(a0-k))*(p-l)*(p-r))*2/(a0-k);
+		if(fabs(sqrt(l*l-z*z)+sqrt(r*r-z*z)-a0-k)<=0.1){
+			cout<<"yes"<<endl;
+			continue;
+		}
+		k=a[2],l=a[0],r=a[3];
+		p=(a0-k+l+r)/2;
+//		if(l+r>=a0-k||l+a0-k>=r||r+a0-k>=l) cout<<"no"<<endl;
+		z=sqrt(p*(p-(a0-k))*(p-l)*(p-r))*2/(a0-k);
+		if(fabs(sqrt(l*l-z*z)+sqrt(r*r-z*z)-a0-k)<=0.1){
+			cout<<"yes"<<endl;
+			continue;
+		}
+		k=a[3],l=a[0],r=a[2];
+		p=(a0-k+l+r)/2;
+//		if(l+r>=a0-k||l+a0-k>=r||r+a0-k>=l) cout<<"no"<<endl;
+		z=sqrt(p*(p-(a0-k))*(p-l)*(p-r))*2/(a0-k);
+		if(fabs(sqrt(l*l-z*z)+sqrt(r*r-z*z)-a0-k)<=0.1){
+			cout<<"yes"<<endl;
+			continue;
+		}
+		k=a[0],l=a[1],r=a[3],a0=a[2];
+		 p=(a0-k+l+r)/2;
+//		if(l+r>=a0-k||l+a0-k>=r||r+a0-k>=l) cout<<"no"<<endl;
+		 z=sqrt(p*(p-(a0-k))*(p-l)*(p-r))*2/(a0-k);
+		if(fabs(sqrt(l*l-z*z)+sqrt(r*r-z*z)-a0-k)<=0.1){
+			cout<<"yes"<<endl;
+			continue;
+		}
+		k=a[1],l=a[0],r=a[3];
+		p=(a0-k+l+r)/2;
+//		if(l+r>=a0-k||l+a0-k>=r||r+a0-k>=l) cout<<"no"<<endl;
+		z=sqrt(p*(p-(a0-k))*(p-l)*(p-r))*2/(a0-k);
+		if(fabs(sqrt(l*l-z*z)+sqrt(r*r-z*z)-a0-k)<=0.1){
+			cout<<"yes"<<endl;
+			continue;
+		}
+		k=a[3],l=a[0],r=a[1];
+		p=(a0-k+l+r)/2;
+//		if(l+r>=a0-k||l+a0-k>=r||r+a0-k>=l) cout<<"no"<<endl;
+		z=sqrt(p*(p-(a0-k))*(p-l)*(p-r))*2/(a0-k);
+		if(fabs(sqrt(l*l-z*z)+sqrt(r*r-z*z)-a0-k)<=0.1){
+			cout<<"yes"<<endl;
+			continue;
+		}
+		k=a[0],l=a[1],r=a[2],a0=a[3];
+		 p=(a0-k+l+r)/2;
+//		if(l+r>=a0-k||l+a0-k>=r||r+a0-k>=l) cout<<"no"<<endl;
+		 z=sqrt(p*(p-(a0-k))*(p-l)*(p-r))*2/(a0-k);
+		if(fabs(sqrt(l*l-z*z)+sqrt(r*r-z*z)-a0-k)<=0.1){
+			cout<<"yes"<<endl;
+			continue;
+		}
+		k=a[1],l=a[0],r=a[2];
+		p=(a0-k+l+r)/2;
+//		if(l+r>=a0-k||l+a0-k>=r||r+a0-k>=l) cout<<"no"<<endl;
+		z=sqrt(p*(p-(a0-k))*(p-l)*(p-r))*2/(a0-k);
+		if(fabs(sqrt(l*l-z*z)+sqrt(r*r-z*z)-a0-k)<=0.1){
+			cout<<"yes"<<endl;
+			continue;
+		}
+		k=a[2],l=a[0],r=a[1];
+		p=(a0-k+l+r)/2;
+//		if(l+r>=a0-k||l+a0-k>=r||r+a0-k>=l) cout<<"no"<<endl;
+		z=sqrt(p*(p-(a0-k))*(p-l)*(p-r))*2/(a0-k);
+		if(fabs(sqrt(l*l-z*z)+sqrt(r*r-z*z)-a0-k)<=0.1){
+			cout<<"yes"<<endl;
+			continue;
+		}
+		cout<<"no"<<endl;
+	}
+	return 0;
+}
+/*
+x+y+k=a[3]
+x^2+z^2=l^2
+y^2+z^2=r^2
+x=sqrt(l^2-z^2)
+y=sqrt(r^2-z^2)
+*/

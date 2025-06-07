@@ -1,0 +1,78 @@
+//  OJ: 洛谷
+//  提交ID: 157002865
+//  题目ID: T237472
+#include<bits/stdc++.h>
+using namespace std;
+int n, m;
+struct Tree {
+	int c[500000 + 10];
+	inline void add(int x, long long val) { for (; x <= n; x += x & -x) c[x] += val; }
+	long long ask(int x) {
+		long long res = 0;
+		for (; x; x -= x & -x) res += c[x];
+		return res;
+	}
+}t;
+vector<long long>a, b;
+struct Seg {
+	int l, r;
+	long long val;
+}tr[500000 + 10 << 2];
+#ifdef ONLINE_JUDGE
+long long gcd(long long a, long long b) {
+	return abs(__gcd(a, b));
+}
+#else
+#define gcd(a, b) abs(gcd(a, b))
+#endif
+void build(int p, int l, int r) {
+	tr[p].l = l; tr[p].r = r;
+	if (l == r) {
+		tr[p].val = b[l];
+		return;
+	}
+	int mid = l + r >> 1;
+	build(p << 1, l, mid), build(p << 1 | 1, mid + 1, r);
+	tr[p].val = gcd(tr[p << 1].val, tr[p << 1 | 1].val);
+}
+void pluss(int p, int x, long long val) {
+	if (tr[p].l == x && tr[p].r == x) {
+		tr[p].val += val;
+		return;
+	}
+	int mid = tr[p].l + tr[p].r >> 1;
+	if (x <= mid) pluss(p << 1, x, val);
+	else pluss(p << 1 | 1, x, val);
+	tr[p].val = gcd(tr[p << 1].val, tr[p << 1 | 1].val);
+}
+long long query(int p, int l, int r) {
+	if (tr[p].l >= l && tr[p].r <= r) return tr[p].val;
+	int mid = tr[p].l + tr[p].r >> 1;
+	long long val = 0;
+	if (l <= mid) val = gcd(val, query(p << 1, l, r));
+	if (r > mid) val = gcd(val, query(p << 1 | 1, l, r));
+	return val;
+}
+int main() {
+	cin >> n >> m;
+	a.push_back(0);
+	b.push_back(0);
+	for (int i = 1, tmp; i <= n; i++) cin >> tmp, a.push_back(tmp), b.push_back(a[i] - a[i - 1]), t.add(i, b[i]);
+	build(1, 1, n);
+	while (m--) {
+		string op; int l, r;
+		cin >> op >> l >> r;
+		if (op == "C") {
+			long long d;
+			cin >> d;
+			pluss(1, l, d);
+			if (r < n) pluss(1, r + 1, -d);
+			t.add(l, d), t.add(r + 1, -d);
+		}
+		else {
+			if (l == r) cout << t.ask(l) << endl;
+			else cout << gcd(t.ask(l), query(1, l + 1, r)) << endl;
+		}
+	}
+	return 0;
+}

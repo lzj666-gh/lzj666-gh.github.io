@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 150193446
+//  题目ID: P1450
+#include<bits/stdc++.h>
+using namespace std;
+int c[4], n, d[4], s;
+long long cbc, dp[100000 + 10];
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> c[0] >> c[1] >> c[2] >> c[3] >> n;
+	dp[0] = 1;
+	for (int i = 0; i ^ 4; ++i)
+		for (int j = c[i]; j <= 1e5; ++j)
+			dp[j] += dp[j - c[i]];
+	while (n--) {
+		cbc = 0;
+		cin >> d[0] >> d[1] >> d[2] >> d[3] >> s;
+		for (int i = 0; i ^ 16; ++i) {
+			long long t = s; int sgn = 0;
+			for (int j = 0; j ^ 4; ++j)
+				if ((i >> j) & 1)
+					t -= c[j] * (d[j] + 1),
+					++sgn;
+			cbc += t >= 0 ? (sgn & 1 ? -dp[t] : dp[t]) : 0;
+		}
+		cout << cbc << endl;
+	}
+	return 0;
+}

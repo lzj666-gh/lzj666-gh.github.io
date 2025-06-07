@@ -1,0 +1,193 @@
+//  OJ: 洛谷
+//  提交ID: 148068555
+//  题目ID: P1771
+#include<bits/stdc++.h>
+namespace std {
+	struct big_num {
+		short a[150];
+		short int& operator [] (int i) {
+			if (i > this->a[0]) {
+				throw 114514;
+			}
+			return this->a[i];
+		}
+		short int& operator () (int i) {
+			if (i > this->a[0]) {
+				throw 114514;
+			}
+			return this->a[this->a[0] - i + 1];
+		}
+		friend istream& operator >> (istream& in, big_num& a) {
+			string s;
+			in >> s;
+			reverse(s.begin(), s.end());
+			a.a[0] = s.size();
+			for (int i = 1; i <= a.a[0]; ++i) a.a[i] = s[i - 1] ^ 48;
+			return in;
+		}
+		friend ostream& operator << (ostream& out, const big_num& a) {
+			if (a.a[0] == 0) {
+				out << '0';
+			}
+			else {
+				for (int i = a.a[0]; i >= 1; --i) {
+					out << a.a[i];
+				}
+			}
+			return out;
+		}
+		template<typename T>
+		void operator = (T b) {
+			int top = 0;
+			while (b) {
+				this->a[++top] = b % 10;
+				b /= 10;
+			}
+			this->a[0] = max(top - 1, 1);
+		}
+		string change_to_string() {
+			string s;
+			if (a[0] == 0) {
+				s += '0';
+				return s;
+			}
+			for (int i = a[0]; i >= 1; --i) {
+				s += (a[i] + '0');
+			}
+			return s;
+		}
+		void string_to(string s) {
+			a[0] = s.size();
+			for (int i = 1, j = a[0] - 1; i <= a[0]; ++i, --j) a[i] = s[j] - '0';
+		}
+		friend void operator >> (string s, big_num& a) {
+			a[0] = s.size();
+			for (int i = 1, j = a[0] - 1; i <= a[0]; ++i, --j) a[i] = s[j] - '0';
+		}
+		friend void operator << (string& s, big_num a) {
+			if (a[0] == 0) {
+				s += '0';
+			}
+			else for (int i = a[0]; i >= 1; --i) {
+				s += (a[i] + '0');
+			}
+		}
+		long long change_to_long_long() {
+			long long s = 0;
+			if (a[0] == 0) {
+				return s;
+			}
+			for (int i = a[0]; i >= 1; --i) {
+				s *= 10;
+				s += a[i];
+			}
+			return s;
+		}
+		friend big_num operator + (big_num& a, big_num& b) {
+			big_num ans;
+			ans.a[0] = a.a[0] > b.a[0] ? a.a[0] : b.a[0];
+			for (int i = 1; i <= ans.a[0]; ++i) {
+				ans.a[i] = a.a[i] + b.a[i];
+				ans.a[i + 1] = ans.a[i] / 10;
+				ans.a[i] %= 10;
+			}
+			ans[0] += 2;
+			while (ans.a[ans.a[0]] == 0 && ans.a[0] > 1) ans.a[0]--;
+			return ans;
+		}
+		friend void operator += (big_num& a, big_num& b) {
+			a = a + b;
+		}
+		friend big_num operator - (big_num& a, big_num& b) {
+			if (b > a) swap(a, b);
+			big_num ans;
+			ans.a[0] = a.a[0] > b.a[0] ? a.a[0] : b.a[0];
+			for (int i = 1; i <= ans.a[0]; ++i) {
+				ans.a[i] = a.a[i] - b.a[i];
+				if (ans.a[i] < 0) --ans.a[i + 1];
+			}
+			while (ans.a[ans.a[0]] == 0 && ans.a[0] > 0) --ans.a[0];
+			return ans;
+		}
+		friend void operator -= (big_num& a, big_num& b) {
+			a = a - b;
+		}
+		friend big_num operator * (big_num& a, big_num& b) {
+			big_num c;
+			c.a[0] = a.a[0] + b.a[0];
+			for (int i = 1; i <= a.a[0]; i++) {
+				for (int j = 1; j <= b.a[0]; j++) {
+					c.a[i + j - 1] += a.a[i] * b.a[j];
+					if (c.a[i + j - 1] >= 10) {
+						c.a[i + j] += c.a[i + j - 1] / 10;
+						c.a[i + j - 1] = c.a[i + j - 1] % 10;
+					}
+				}
+			}
+			while (c.a[c.a[0]] == 0 && c.a[0] > 1) c.a[0]--;
+			return c;
+		}
+		friend void operator *= (big_num& a, big_num& b) {
+			a = a * b;
+		}
+		friend bool operator < (big_num& a, big_num& b) {
+			if (a.a[0] != b.a[0]) return a.a[0] < b.a[0];
+			for (int i = a.a[0]; i >= 1; --i) {
+				if (a.a[i] != b.a[i]) return a.a[i] < b.a[i];
+			}
+		}
+		friend bool operator > (big_num& a, big_num& b) {
+			if (a.a[0] != b.a[0]) return a.a[0] > b.a[0];
+			for (int i = a.a[0]; i >= 1; --i) {
+				if (a.a[i] != b.a[i]) return a.a[i] > b.a[i];
+			}
+		}
+		friend bool operator <= (big_num& a, big_num& b) {
+			if (a.a[0] != b.a[0]) return a.a[0] <= b.a[0];
+			for (int i = a.a[0]; i >= 1; --i) {
+				if (a.a[i] != b.a[i]) return a.a[i] <= b.a[i];
+			}
+		}
+		friend bool operator >= (big_num& a, big_num& b) {
+			if (a.a[0] != b.a[0]) return a.a[0] >= b.a[0];
+			for (int i = a.a[0]; i >= 1; --i) {
+				if (a.a[i] != b.a[i]) return a.a[i] >= b.a[i];
+			}
+		}
+		friend bool operator == (big_num& a, big_num& b) {
+			if (a.a[0] != b.a[0]) return false;
+			for (int i = a.a[0]; i >= 1; --i) {
+				if (a.a[i] != b.a[i]) return false;
+			}
+			return true;
+		}
+		friend bool operator != (big_num& a, big_num& b) {
+			if (a.a[0] != b.a[0]) return true;
+			for (int i = a.a[0]; i >= 1; --i) {
+				if (a.a[i] != b.a[i]) return true;
+			}
+			return false;
+		}
+	};
+}
+using namespace std;
+int poww(int a, int x, const int&p) {
+	if (x == 0) return 1;
+	int t = poww(a, x / 2, p) % p;
+	t = (t * t) % p;
+	if (x % 2 == 1) t = (t * a) % p;
+	return t;
+}
+int k, x;
+big_num ans[1000 + 10][100 + 10];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> k >> x;
+	int n = poww(x % 1000, x, 1000);
+	for (int i = 1; i < n; ++i) ans[i][1] = i;
+	for (int j = 2; j < k; ++j)
+		for (int i = j; i < n; ++i)
+			ans[i][j] = ans[i - 1][j - 1] + ans[i - 1][j];
+	cout << ans[n - 1][k - 1] << endl;
+	return 0;
+}

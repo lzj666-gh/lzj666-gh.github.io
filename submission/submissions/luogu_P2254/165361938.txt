@@ -1,0 +1,59 @@
+//  OJ: 洛谷
+//  提交ID: 165361938
+//  题目ID: P2254
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+int debug[][4] = { {4,1,1,0},{4,2,2,1},{4,3,3,2},{4,3,4,2},{3,3,5,3},{2,3,6,4},{2,2,7,5},{2,1,8,6}};
+int n, m, a, b, k, s, t, df[400000 + 10], d, ans, mxt;
+bool ok[200 + 10][200 + 10];
+char gy;
+//unordered_map<unsigned long long, bool>vis;
+void dfs(int x, int y, int t, int l) {
+//	unsigned long long ha = x;
+//	ha += static_cast<unsigned long long>(40001) * static_cast<unsigned long long>(201) * 201 * static_cast<unsigned long long>(l);
+//	ha += 201 * static_cast<unsigned long long>(y);
+//	ha += static_cast<unsigned long long>(201) * static_cast<unsigned long long>(201) * t;
+///	if (vis[ha]) return;
+//	vis[ha] = 1;
+	ans = max(ans, l);
+	if (t > mxt) return;
+//	for (int*a : debug) {
+//		if (a[0] == x && a[1] == y && a[2] == t && a[3] == l) cout << x << ' ' << y << ' ' << t << ' ' << l << endl;
+//	}
+	dfs(x, y, t + 1, l);
+	switch (df[t]) {
+	case 1:
+		if (ok[x - 1][y]) dfs(x - 1, y, t + 1, l + 1);
+		return;
+	case 2:
+		if (ok[x + 1][y]) dfs(x + 1, y, t + 1, l + 1);
+		return;
+	case 3:
+		if (ok[x][y - 1]) dfs(x, y - 1, t + 1, l + 1);
+		return;
+	case 4:
+		if (ok[x][y + 1]) dfs(x, y + 1, t + 1, l + 1);
+		return;
+	default:
+		cout << "ERR!";
+		return;
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> a >> b >> k;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j) {
+			cin >> gy;
+			ok[i][j] = gy == '.';
+		}
+	for (int i = 1; i <= k; ++i) {
+		cin >> s >> t >> d;
+		for (int j = s; j <= t; j++) df[j] = d;
+		mxt = max(mxt, t);
+	}
+	dfs(a, b, 1, 0);
+	cout << ans << endl;
+	return 0;
+}

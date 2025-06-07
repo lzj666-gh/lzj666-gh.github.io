@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 107009409
+//  题目ID: T211873
+#include<bits/stdc++.h>
+using namespace std;
+const int Maxn=2000000+10;
+struct node {
+	long long x;
+	int y;
+} a[Maxn];
+int m,tot,cnt,f[1000000-1000];
+long long d,t,x,num[1000000-1000];
+char ch;
+int find(int x) {
+	if(x!=f[x]) f[x]=find(f[x]);
+	return f[x];
+}
+int main() {
+	cin>>m>>d;
+	for(int i=1; i<=m; i++) {
+		cin>>ch;
+		scanf("%lld",&x);
+		if(ch=='A') {
+			x%=d;
+			num[++tot]=x;
+			f[tot]=tot;
+			while(x>a[cnt].x&&cnt) {
+				f[a[cnt--].y]=tot;
+			}
+			a[++cnt].x=x;
+			a[cnt].y=tot;
+		} else {
+			x=tot-x+1;
+			int y=find(x);
+			t=num[y];
+			printf("%lld\n",t);
+		}
+	}
+	return 0;
+}

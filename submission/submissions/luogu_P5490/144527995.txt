@@ -1,0 +1,53 @@
+//  OJ: 洛谷
+//  提交ID: 144527995
+//  题目ID: P5490
+#ifdef ONLINE_JUDGE
+#include<bits/stdc++.h>
+#elif
+#include<stdc++.h>
+#endif
+#define inr int
+#define int long long
+using namespace std;
+struct line {
+	int l, r, h, flg;
+	line(inr ll = 0, inr rr = 0, inr hh = 0, int glg = 0) :l(ll), r(rr), h(hh), flg(glg) {}
+	friend bool operator<(const line& a, const line& b) {
+		return a.h == b.h ? a.l > b.l : a.h < b.h;
+	}
+}l[1000005];
+struct tree {
+	int sum, len;
+	tree() {
+		sum = len = 0;
+	}
+}t[1000005 << 2];
+int n, tot = 0, ans = 0, y[1000005];
+inline void upd(int x, int l, int r) {
+	if (t[x].sum > 0) t[x].len = y[r] - y[l];
+	else t[x].len = t[x << 1].len + t[x << 1 | 1].len;
+}
+inline void chg(int x, int l, int r, int L, int R, int dc) {
+	if (L >= y[r] || y[l] >= R) return;
+	if (L <= y[l] && y[r] <= R) t[x].sum += dc, upd(x, l, r);
+	else chg(x << 1, l, (l + r) >> 1, L, R, dc), chg(x << 1 | 1, (l + r) >> 1, r, L, R, dc), upd(x, l, r);
+}
+int main() {
+	cin >> n;
+	for (int i = 1, x1, y1, x2, y2; i <= n; ++i) {
+		cin >> x1 >> y1 >> x2 >> y2;
+		l[(i << 1) - 1] = line(y1, y2, x1, 1);
+		l[i << 1] = line(y1, y2, x2, -1);
+		y[(i << 1) - 1] = y1, y[i << 1] = y2;
+	}
+	n <<= 1;
+	sort(y + 1, y + n + 1);
+	sort(l + 1, l + n + 1);
+	for (int i = 1; i <= n; ++i)
+		if (y[i] != y[i + 1]) y[++tot] = y[i];
+	for (int i = 1; i < n; ++i)
+		chg(1, 1, n, l[i].l, l[i].r, l[i].flg),
+		ans += (l[i + 1].h - l[i].h) * t[1].len;
+	cout << ans << endl;
+	return 0;
+}

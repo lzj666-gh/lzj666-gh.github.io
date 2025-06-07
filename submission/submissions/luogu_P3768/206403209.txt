@@ -1,0 +1,75 @@
+//  OJ: 洛谷
+//  提交ID: 206403209
+//  题目ID: P3768
+#include<bits/stdc++.h>
+#include<unordered_map>
+#define int ll
+using namespace std;
+using ll = long long;
+constexpr int N = 4700000;
+ll ssum[N + 10], n, p;
+unordered_map<int, ll>Sum;
+int poww(int x, int k) {
+	if (k == 0) return 1;
+	if (k == 1) return x;
+	long long tmp = poww(x, k / 2);
+	tmp *= tmp;
+	tmp %= p;
+	if (k % 2 == 1) return tmp * x % p;
+	else return tmp;
+}
+int inv6, inv4;
+inline ll Sumans(int n) {
+	if (n <= N) return ssum[n];
+	if (Sum[n]) return Sum[n];
+	ll ret = n % p * (n + 1) % p * n % p * (n + 1) % p * inv4 % p;
+	for (int l = 2, r; l <= n; l = r + 1)
+		r = n / (n / l),
+		ret -= (((r % p * (r + 1) % p * (2 * r % p + 1) % p * inv6 % p) % p) - (((l - 1) % p * l % p * (2 * (l - 1) % p + 1) % p * inv6 % p) % p)) * Sumans(n / l) % p,
+		ret = (ret % p + p) % p;
+	return Sum[n] = ret;
+}
+vector<int>prm;
+bool vis[N + 10];
+int phi[N + 10];
+void iniit() {
+	ssum[1] = phi[1] = 1;
+	for (int i = 2; i <= N; i++) {
+		if (!vis[i]) {
+			prm.push_back(i);
+			phi[i] = i - 1;
+		}
+		for (int v : prm) {
+			if (i * v > N) break;
+			vis[i * v] = true;
+			if (i % v == 0) {
+				phi[i * v] = phi[i] * v;
+				break;
+			}
+			phi[i * v] = phi[i] * phi[v];
+		}
+		ssum[i] = (ssum[i - 1] + i * phi[i] % p * i % p) % p;
+	}
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> p >> n;
+	inv6 = poww(6, p - 2);
+	inv4 = poww(4, p - 2);
+	iniit();
+	//F(i)=i^2*phi[i]
+	//S(n)=\sum_{i=1}^{n},i^3*F(n/i)
+	long long ans = 0;
+	/*
+	for (int i = 1; i <= n; ++i)
+		ans += i % p * i % p * i % p * Sumans(n / i) % p, ans %= p;
+	*/
+	for (int l = 1, r; l <= n; l = r + 1) {
+		r = n / (n / l);
+		long long v1 = (l - 1) % p * l % p * (l - 1) % p * l % p * inv4 % p, v2 = r % p * (r + 1) % p * r % p * (r + 1) % p * inv4 % p;
+		ans += (v2 - v1 + p) % p * Sumans(n / l) % p;
+		ans %= p;
+	}
+	cout << ans << endl;
+	return 0;
+}

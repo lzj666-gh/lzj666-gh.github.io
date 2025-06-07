@@ -1,0 +1,61 @@
+//  OJ: 洛谷
+//  提交ID: 116548748
+//  题目ID: T139908
+#include<bits/stdc++.h>
+#define maxn 100+10
+using namespace std;
+struct Edge{
+	int v,next;
+	double w;
+}edge[maxn];
+double dis[maxn];
+int head[maxn],top,n,m,s,t;
+bool vis[maxn];
+void spfa(){
+	queue<int>q;
+	dis[s]=0;
+	q.push(s);
+	while(!q.empty()){
+		int now=q.front();
+		q.pop();
+		vis[now]=false;
+		for(int i=head[now];i;i=edge[i].next){
+			int to=edge[i].v;
+			if(dis[to]>dis[now]+edge[i].w){
+				dis[to]=dis[now]+edge[i].w;
+				if(!vis[to]){
+					vis[to]=true;
+					q.push(to);
+				}
+			}
+		}
+	}
+}
+void add(int u,int v,double w){
+	edge[++top].v=v;
+	edge[top].w=w;
+	edge[top].next=head[u];
+	head[u]=top;
+}
+int xx[maxn],yy[maxn];
+main(){
+	ios::sync_with_stdio(false);
+	memset(dis,127,sizeof dis);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		cin>>xx[i]>>yy[i];
+	}
+	cin>>m;
+	for(int i=1;i<=m;i++){
+		int x,y;
+		cin>>x>>y;
+		double tmp1=abs(xx[x]-xx[y]),tmp2=abs(yy[x]-yy[y]);
+		double ss=sqrt(tmp1*tmp1+tmp2*tmp2);
+		add(x,y,ss);
+		add(y,x,ss);
+	}
+	cin>>s>>t;
+	spfa();
+	cout<<fixed<<setprecision(2)<<dis[t]<<endl;
+    return 0;
+}

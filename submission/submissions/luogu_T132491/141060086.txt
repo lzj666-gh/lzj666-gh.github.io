@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 141060086
+//  题目ID: T132491
+#include<bits/stdc++.h>
+using namespace std;
+int r[30000 + 5], n, m;
+vector<int> ch[30000 + 5], toped;
+bitset<30005> bt[30000 + 5];
+int main() {
+	cin >> n >> m;
+	while (m--) {
+		int u, v;
+		cin >> u >> v;
+		ch[u].push_back(v);
+		r[v]++;
+	}
+	queue<int> q;
+	for (int i = 1; i <= n; i++) {
+		if (!r[i]) q.push(i);
+	}
+	while (!q.empty()) {
+		int top = q.front(); q.pop();
+		toped.push_back(top);
+		for (int k : ch[top]) {
+			r[k]--;
+			if (!r[k]) q.push(k);
+		}
+	}
+	reverse(toped.begin(), toped.end());
+	for (int v : toped) {
+		bt[v][v] = 1;
+		for (int j = 0; j < ch[v].size(); j++) bt[v] |= bt[ch[v][j]];
+	}
+	for (int i = 1; i <= n; i++) {
+		cout << bt[i].count() << endl;
+	}
+	return 0;
+}

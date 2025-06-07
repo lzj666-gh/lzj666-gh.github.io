@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 211802683
+//  题目ID: T575029
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+    int i;
+    cin>>i;
+    if(i==1) cout<<"awu";
+    if(i==2) cout<<"lfod";
+    if(i==3) cout<<"rnb abj";
+    if(i==4) cout<<"dggg udi uygy nkue";
+    if(i==5) cout<<"lkye iite";
+    if(i==6) cout<<"ruah ufye";
+    return 0;
+}

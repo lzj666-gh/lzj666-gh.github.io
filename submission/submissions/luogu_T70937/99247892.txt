@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 99247892
+//  题目ID: T70937
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a[4][4];
+	for(int i=0;i<4;i++){
+		for(int j=0;j<4;j++){
+			cin>>a[i][j];
+		}
+	}
+	for(int i=4;i>=0;i--){
+		for(int j=0;j<=3-i;j++){
+			cout<<a[i][j];
+		}
+		cout<<endl;
+	}
+}

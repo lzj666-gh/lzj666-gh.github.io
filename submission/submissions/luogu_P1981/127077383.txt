@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 127077383
+//  题目ID: P1981
+#include<bits/stdc++.h>
+using namespace std;
+stack <long long> a;
+stack <char> b;
+long long n;
+char ch;
+main() {
+	scanf("%lld",&n);
+//	printf("%d",n);
+    n%=100000;
+	a.push(n);
+	while(cin>>ch>>n) {
+	    n%=100000;
+		if(ch=='/'||ch=='*') {
+			long long x=a.top();
+			a.pop();
+			if(ch=='*') x=x*n;
+			if(ch=='/') x=x/n;
+			a.push(x);
+		} else {
+			if(b.size()) {
+				long long x=a.top();
+				a.pop();
+				long long n=a.top();
+				a.pop();
+				if(b.top()=='-') x=n-x;
+				if(b.top()=='+') x=x+n;
+				b.pop();
+				a.push(x);
+			}
+			a.push(n);
+			b.push(ch);
+		}
+	}
+	if(b.size()) {
+		long long x=a.top();
+		a.pop();
+		long long n=a.top();
+		a.pop();
+		if(b.top()=='-') x=n-x;
+		if(b.top()=='+') x=x+n;
+		b.pop();
+		a.push(x);
+	}
+	printf("%lld",a.top()%10000);
+}

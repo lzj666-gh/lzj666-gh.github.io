@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 130552207
+//  题目ID: P1177
+n=int(input())
+a=input().split()
+a=a.sort()
+for i in range(n):
+    print(a[i-1],sep=' ',end=' ')

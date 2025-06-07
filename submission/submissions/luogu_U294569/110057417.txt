@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 110057417
+//  题目ID: U294569
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int n;cin>>n;
+	cout<<n;
+	return 0;
+}

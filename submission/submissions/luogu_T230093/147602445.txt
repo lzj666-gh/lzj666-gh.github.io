@@ -1,0 +1,63 @@
+//  OJ: 洛谷
+//  提交ID: 147602445
+//  题目ID: T230093
+#include<bits/stdc++.h>
+#define mod 9901
+using namespace std;
+template<typename T1, typename T2> 
+ostream& operator << (ostream& out, pair<T1, T2>& p) { 
+	out << '{' << p.first << ',' << p.second << '}'; 
+	return out; 
+}
+template<typename T>
+ostream& operator << (ostream& out, vector<T>p) {
+	for (T t : p) out << t << ';';
+	return out;
+}
+struct LZJ {
+	int n, m;
+	int num[5][5];
+	LZJ() {
+		n = m = 2;
+		for (int i = 1; i <= n; ++i)
+			num[i][i] = 1;
+	}
+	LZJ(int nn) {
+		n = m = nn;
+		for (int i = 1; i <= n; ++i)
+			num[i][i] = 1;
+	}
+	LZJ(int nn, int mm) {
+		n = nn, m = mm;
+		memset(num, 0, sizeof num);
+	}
+	friend LZJ operator * (const LZJ& a, const LZJ& b) {
+		LZJ c = LZJ(a.n, b.m);
+		if (a.m != b.n) return LZJ(2);
+		for (int i = 1; i <= a.m; ++i) 
+			for (int j = 1; j <= b.m; ++j) 
+				for (int k = 1; k <= a.m; ++k) 
+					c.num[i][j] += a.num[i][k] * b.num[k][j];
+		return c;
+	}
+	friend LZJ operator %(const LZJ& a, const int& m) {
+		LZJ c = a;
+		for (int i = 1; i <= a.n; ++i)
+			for (int j = 1; j <= a.m; ++j)
+				c.num[i][j] %= m;
+		return c;
+	}
+};
+LZJ poww(LZJ a, int x, int p) {
+	if (x == 0) return LZJ(a.n);
+	LZJ t = poww(a, x / 2, p) % p;
+	t = (t * t) % p;
+	if (x % 2 == 1) t = (t * a) % p;
+	return t;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	
+	return 0;
+}

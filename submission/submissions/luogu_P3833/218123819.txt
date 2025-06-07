@@ -1,0 +1,115 @@
+//  OJ: 洛谷
+//  提交ID: 218123819
+//  题目ID: P3833
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 100000 + 10, M = 1000000 + 10;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx, hvy[N], dep[N], bel[N], siz[N], dfn[N], ed[N], fa[N];
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+struct Seg_Tree {
+#define lc(x) (x << 1)
+#define rc(x) (x << 1 | 1)
+#define mid ((l + r) >> 1)
+	struct Node {
+		int l, r, sum, lzy;
+	}tree[N << 2 | 3];
+	void pushup(int x) {
+		tree[x].sum = tree[lc(x)].sum + tree[rc(x)].sum;
+	}
+	void pushdown(int x) {
+		if (tree[x].lzy) {
+			tree[lc(x)].sum += tree[x].lzy * (tree[lc(x)].r - tree[lc(x)].l + 1);
+			tree[rc(x)].sum += tree[x].lzy * (tree[rc(x)].r - tree[rc(x)].l + 1);
+			tree[lc(x)].lzy += tree[x].lzy;
+			tree[rc(x)].lzy += tree[x].lzy;
+			tree[x].lzy = 0;
+		}
+	}
+	void build(int x, int l, int r) {
+		tree[x].l = l; tree[x].r = r;
+		if (l == r) return;
+		build(lc(x), l, mid);
+		build(rc(x), mid + 1, r);
+	}
+	void add(int x, int l, int r, int v) {
+		if (tree[x].l > r || tree[x].r < l) return;
+		if (tree[x].l >= l && tree[x].r <= r) {
+			tree[x].sum += v * (tree[x].r - tree[x].l + 1);
+			tree[x].lzy += v;
+			return;
+		}
+		pushdown(x);
+		add(lc(x), l, r, v);
+		add(rc(x), l, r, v);
+		pushup(x);
+	}
+	int query(int x, int l, int r) {
+		if (tree[x].l > r || tree[x].r < l) return 0;
+		if (tree[x].l >= l && tree[x].r <= r) return tree[x].sum;
+		pushdown(x);
+		return query(lc(x), l, r) + query(rc(x), l, r);
+	}
+}t;
+void dfs1(int x, int f) {
+	fa[x] = f; siz[x] = 1; dep[x] = dep[f] + 1;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		dfs1(edge[i].v, x), siz[x] += siz[edge[i].v],
+		(siz[edge[i].v] > siz[hvy[x]]) && (hvy[x] = edge[i].v);
+}
+void dfs2(int x) {
+	static int idx;
+	dfn[x] = ++idx;
+	if (hvy[x] == 100001) return;
+	bel[hvy[x]] = bel[x];
+	dfs2(hvy[x]);
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ hvy[x])
+			bel[edge[i].v] = edge[i].v,
+			dfs2(edge[i].v);
+	ed[x] = idx;
+
+}
+void add(int x, int y, int d) {
+	while(bel[x] ^ bel[y]) {
+		if (dep[bel[x]] < dep[bel[y]]) swap(x, y);
+		t.add(1, dfn[bel[x]], dfn[x], d);
+		x = fa[bel[x]];
+	}
+	if (dep[x] > dep[y]) swap(x, y);
+	t.add(1, dfn[x], dfn[y], d);
+}
+int query(int x) {
+	return t.query(1, dfn[x], ed[x]);
+}
+int n, m;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n; fill(hvy, hvy + N, 100001);
+	for (int i = 1, x, y; i < n; ++i) cin >> x >> y, add(x, y);
+	t.build(1, 1, n);
+	dfs1(0, 0);
+	dfs2(0);
+	cin >> m;
+	while (m--) {
+		char opt;
+		cin >> opt;
+		if (opt == 'A') {
+			int u, v, d;
+			cin >> u >> v >> d;
+			add(u, v, d);
+		}
+		else {
+			int x;
+			cin >> x;
+			cout << query(x) << endl;
+		}
+	}
+	return 0;
+}

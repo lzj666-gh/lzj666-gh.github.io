@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 122692918
+//  题目ID: P1069
+#include<bits/stdc++.h>
+using namespace std;
+int n,m1,m2,l[10001],p[10001],m;
+int vis[10001][175];
+bool pr(int num){
+	if(num==1||num==0) return false;
+	if(num==2) return true;
+	for(int i=2;i*i<=num;++i){
+		if(num%i==0) return false;
+	}
+	return true;
+}
+int main(){
+	ios::sync_with_stdio(0);
+	cin>>n>>m1>>m2;
+	for(int i=1;i<=n;++i) cin>>l[i];
+	for(int i=1;i<=174;++i){
+		if(pr(i)) p[++m]=i;
+	}
+	int num;
+	for(int i=1;i<=m;++i){
+		num=0;
+		while(m1%p[i]==0) ++num,m1/=p[i];
+		vis[0][i]=num;
+	}
+	for(int k=1;k<=n;++k){
+		for(register int i=1;i<=m;++i){
+			num=0;
+			while(l[k]%p[i]==0) ++num,l[k]/=p[i];
+			vis[k][i]=num;
+		}
+	}
+	bool fl;int nn,minn=0x7ffffff;
+	for(int i=1;i<=n;++i){
+		fl=0;nn=0;
+		for(int j=1;j<=m;++j){
+			if(vis[0][j]==0) continue;
+			if(vis[i][j]==0){
+				fl=1;break;
+			}else{
+				nn=max(nn,int(ceil(float(vis[0][j]*m2)/float(vis[i][j]))));
+			}
+		}
+		if(fl) continue;
+		minn=min(minn,nn);
+	}
+	if(minn!=0x7fffffff) cout<<minn<<endl;
+	else cout<<-1<<endl;
+}

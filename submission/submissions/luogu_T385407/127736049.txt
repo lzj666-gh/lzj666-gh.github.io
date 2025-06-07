@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 127736049
+//  题目ID: T385407
+#include<bits/stdc++.h>
+#define f(i,a,b) for(register int i=a;i<=b;++i)
+using namespace std;
+inline int read() {
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c<'0'||c>'9') {
+		if(c=='-') s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0') {
+		x=(x<<1)+(x<<3)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+}
+inline void write(auto x) {
+	if(x<0) {
+		x=~x+1;
+		putchar('-');
+	} else if(!x) return;
+	write(x/10);
+	putchar(x%10+48);
+}
+int n,a[1000+10];
+long long ans;
+int main() {
+//	freopen("routine.in","r",stdin),freopen("routine.out","w",stdout);
+	n=read();
+	f(i,1,n) a[i]=read();
+	int now=0;
+	f(i,1,n) {
+		if(a[i]>=240) {
+			long long anss=0;
+			f(j,1,n) anss+=a[i];
+			anss+=400+10080;
+			write(anss);
+			return 0;
+		} else if(now+a[i]>=240) {
+			ans+=now+400;
+			now=a[i];
+		} else {
+			now+=a[i];
+		}
+	}
+	if(ans) write(ans);
+	else putchar('0');
+	return 0;
+}

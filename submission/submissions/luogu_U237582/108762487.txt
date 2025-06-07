@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 108762487
+//  题目ID: U237582
+#include<bits/stdc++.h>
+using namespace std;
+char a[300+10];
+long long po(int x){
+	long long b=1;
+	for(int i=1;i<=x;i++){
+		b*=2;
+	}
+	return b;
+}
+int main(){
+	while(1){
+		if(a[0]=='-'&&a[1]=='1') return 0;
+		cin>>a;
+		if(a[0]=='-'&&a[1]=='1') return 0;
+		long long l=strlen(a),s=0;
+		for(int i=0;i<l;i++){
+			s+=(a[i]-'0')*po(l-i-1);
+		}
+		printf("%lld\n",s);
+	}
+}

@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 101187547
+//  题目ID: T303237
+#include<bits/stdc++.h>
+using namespace std;
+int mian(){
+	int a,b;cin>>a>>b;
+	if(a<0||b<0){
+		cout<<"qwq";
+		return 0;
+	}
+	int c=a-b;
+	if(c>5||c<0){
+		cout<<"qwq";
+		return 0;
+	}
+	cout<<10-a<<0<<"%";
+	return 0;
+} 

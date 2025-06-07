@@ -1,0 +1,97 @@
+//  OJ: 洛谷
+//  提交ID: 211910647
+//  题目ID: T571828
+#include <iostream>
+using namespace std;
+
+int main() {
+    int task;
+    cin >> task;
+    switch (task) {
+        case 1:
+            cout << "add rax, rsi\n";
+            cout << "shl rsi, 8\n";
+            cout << "sub rsi, rax\n";
+            cout << "shl rsi, 4\n";
+            cout << "write rsi\n";
+            break;
+        case 2:
+            cout << "shr rsi, 4\n";
+            cout << "add rax, rsi\n";
+            cout << "shr rax, 8\n";
+            cout << "add rbx, rax\n";
+            cout << "shr rbx, 8\n";
+            cout << "add rcx, rbx\n";
+            cout << "shr rcx, 8\n";
+            cout << "write rcx\n";
+            break;
+        case 3:
+            cout << "add rax, rsi\n";
+            cout << "shl rax, 12\n";
+            cout << "add rbx, rsi\n";
+            cout << "shl rbx, 4\n";
+            cout << "sub rax, rbx\n";
+            cout << "write rax\n";
+            break;
+        case 4:
+            cout << "xor rax, rax\n";
+            for (int i = 0; i < 64; ++i) {
+                cout << "mov rdx, rdi\n";
+                cout << "shr rdx, " << i << "\n";
+                cout << "shl rdx, 63\n";
+                cout << "shr rdx, 63\n";
+                cout << "mov rbx, rsi\n";
+                cout << "shl rbx, " << i << "\n";
+                cout << "and rbx, rdx\n";
+                cout << "add rax, rbx\n";
+            }
+            cout << "write rax\n";
+            break;
+        case 5:
+            cout << "xor rax, rax\n";
+            cout << "mov rbx, rdi\n";
+            cout << "mov rcx, rsi\n";
+            cout << "loop_start:\n";
+            cout << "sub rbx, rcx\n";
+            cout << "js negative\n";
+            cout << "inc rax\n";
+            cout << "jmp loop_start\n";
+            cout << "negative:\n";
+            cout << "add rbx, rcx\n";
+            cout << "write rax\n";
+            break;
+        case 6:
+            cout << "xor rax, rax\n";
+            cout << "mov rbx, 0x80000000\n";
+            cout << "sqrt_loop:\n";
+            cout << "mov rcx, rax\n";
+            cout << "add rcx, rbx\n";
+            cout << "cmp rcx, rsi\n";
+            cout << "jg next\n";
+            cout << "add rax, rbx\n";
+            cout << "next:\n";
+            cout << "shr rbx, 1\n";
+            cout << "jnz sqrt_loop\n";
+            cout << "write rax\n";
+            break;
+        case 7:
+            cout << "mov rax, rsi\n";
+            cout << "dec rax\n";
+            cout << "shr rax, 1\n";
+            cout << "or rax, rsi\n";
+            cout << "shr rax, 2\n";
+            cout << "or rax, rsi\n";
+            cout << "shr rax, 4\n";
+            cout << "or rax, rsi\n";
+            cout << "shr rax, 8\n";
+            cout << "or rax, rsi\n";
+            cout << "shr rax, 16\n";
+            cout << "or rax, rsi\n";
+            cout << "shr rax, 32\n";
+            cout << "or rax, rsi\n";
+            cout << "inc rax\n";
+            cout << "write rax\n";
+            break;
+    }
+    return 0;
+}

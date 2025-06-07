@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 115727997
+//  题目ID: P9462
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	printf("!\n");
+	printf("1 2\n");
+	printf("2 3\n");
+	printf("3 4\n");
+	printf("4 5\n");
+	return 0;
+}

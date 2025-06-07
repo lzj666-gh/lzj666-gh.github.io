@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 161417058
+//  题目ID: U437293
+#include<bits/stdc++.h>
+#ifdef ONLINE_JUDGE
+#define gcd __gcd
+#endif
+using namespace std;
+long long n, m, a[1000000 + 10], l, r, q[1000000 + 10], p[1000000 + 10], lzj[1000000 + 10];
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i], q[i] = q[i - 1] + a[i], p[i] = q[i] * i, lzj[i] = lzj[i - 1] + p[i];
+	while (m--) {
+		cin >> l >> r;
+		long long fz = 0, fm = 0;
+		fz = (q[r] - q[l - 1]) * q[r] - (lzj[r] - lzj[l - 1]);
+		fm = r * (r - l + 1) - ((l + r) * (r - l + 1) / 2);
+		int tmp = gcd(fm, fz);
+		if (tmp == fm) cout << fz << endl;
+		else cout << fz << '/' << fm << endl;
+	}
+	return 0;
+}
+//100pts

@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 151317488
+//  题目ID: P10252
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--){
+		long long x,a,b;
+		cin>>x>>a>>b;
+		if(a==0||x==0){
+			cout<<-b<<endl;
+			continue;
+		}
+		if(b==0){
+			cout<<x<<endl;
+			continue;
+		}
+		while(x>=0&&(a*x-b<x)) x=(a*x)-b;
+		cout<<x<<endl;
+	}
+	return 0;
+}

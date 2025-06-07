@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 155775395
+//  题目ID: T235116
+#include<bits/stdc++.h>
+#define ok(i) if (fa[i].t() == -1) fa[i].t() = i;
+#ifdef ONLINE_JUDGE
+#define map unordered_map
+#endif
+using namespace std;
+struct lzj {
+	int n;
+	int& t() { return n; }
+	lzj():n(-1){}
+};
+map<int, lzj>fa;
+int find(int k) {
+	if (fa[k].t() == k) return k;
+	return fa[k].t() = find(fa[k].t());
+}
+int n, m;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, l, r; i <= m; ++i) {
+		string cbc;
+		cin >> l >> r >> cbc;
+		ok(l - 1);
+		ok(r);
+		ok(l - 1 + n);
+		ok(r + n);
+		if (cbc == "even") {
+			if (find(l - 1) == find(r + n) || find(l - 1 + n) == find(r)) {
+				cout << i - 1 << endl;
+				return 0;
+			}
+			fa[find(l - 1)].t() = find(r);
+			fa[find(l - 1 + n)].t() = find(r + n);
+		}
+		else {
+			if (find(l - 1) == find(r) || find(l - 1 + n) == find(r + n)) {
+				cout << i - 1 << endl;
+				return 0;
+			}
+			fa[find(l - 1)].t() = find(r + n);
+			fa[find(l - 1 + n)].t() = find(r);
+		}
+	}
+	return 0;
+}

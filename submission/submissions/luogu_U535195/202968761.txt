@@ -1,0 +1,51 @@
+//  OJ: 洛谷
+//  提交ID: 202968761
+//  题目ID: U535195
+#include<bits/stdc++.h>
+#define File "game"
+using namespace std;
+using ll = long long;
+constexpr double eps = 1e-20;
+int a;
+long double b, c, d, e;
+long double dp[1000000];
+int main() {
+	// freopen(File".in", "r", stdin);
+	// freopen(File".out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> a >> b >> c >> d >> e;
+	if (e) {
+		long double tot = 1, D = d, exp = 0, ans = 0;
+		int i = 1;
+		while (tot > eps) {
+			if (i >= a) D += b;
+			D = min(D, 1.0lf);
+			dp[i] = tot * D;
+			exp += i * (tot * D);
+			tot *= (1 - D);
+			i++;
+		}
+		for (int j = 1; j <= i; ++j) 
+			ans += dp[j] * (1 - c) * j + dp[j] * c * (j + exp);
+		cout << fixed << setprecision(5) << ans << endl;
+	}
+	else {
+		long double tot = 1, D = d, exp = 0;
+		int i = 1;
+		while (tot > eps) {
+			if (i >= a) D += b;
+			D = min(D, 1.0lf);
+			exp += i * (tot * D);
+			tot *= (1 - D);
+			i++;
+		}
+		cout << fixed << setprecision(5) << exp << endl;
+	}
+	return 0;
+}
+/*
+74 0.06
+0.5
+0.006
+1
+*/

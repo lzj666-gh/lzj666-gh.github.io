@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 211668475
+//  题目ID: T568349
+#include<bits/stdc++.h>
+using namespace std;
+signed main(){
+	string s;
+	cin>>s;
+	cout<<s.size()%998244353;
+	return 0;
+}

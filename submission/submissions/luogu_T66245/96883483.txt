@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 96883483
+//  题目ID: T66245
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	cout<<"YES"; 
+
+	return 0;
+}
+

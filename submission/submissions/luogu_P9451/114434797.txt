@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 114434797
+//  题目ID: P9451
+#include<bits/stdc++.h>
+using namespace std;
+inline __int128 read(){
+	char c=getchar();
+	__int128 x=0,s=1; 
+	while(c<'0'||c>'9'){
+		if(c=='-') s=-1;
+		c=getchar();
+	}
+	while(c>='0'&&c<='9'){
+		x=x*10+c-'0';
+		c=getchar();
+	}
+	return x*s;
+}
+__int128 _builtin_popcount(__int128 x) {
+    __int128 count = 0;
+    while (x != 0) {
+        x &= x - 1;
+        count++;
+    }
+    return count;
+}
+inline __int128 popcount(__int128 x){
+	return _builtin_popcount(x);
+}
+inline void write(__int128 x){
+	if(x<0) putchar('-'),x=-x;
+	if(x>9) write(x/10);
+	putchar(x%10+'0');}
+int main(){
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);cout.tie(NULL);
+	int T;
+	cin>>T;
+	for(int i=1;i<=T;i++){
+		__int128 a;
+		a=read();
+		if(popcount(a)>=3){
+			cout<<"No,Commander"<<endl;
+		}
+		else{
+			while(popcount(++a)>=3);
+			
+		}
+	}
+	return 0;
+}
+

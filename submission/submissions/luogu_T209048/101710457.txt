@@ -1,0 +1,15 @@
+//  OJ: 洛谷
+//  提交ID: 101710457
+//  题目ID: T209048
+#include<bits/stdc++.h>
+using namespace std;
+int a,s,n;
+int main(){
+	cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>a;
+		s+=a;
+	}
+	printf("%.2lf",1.0*s/n);
+	return 0;
+}

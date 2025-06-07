@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 109369949
+//  题目ID: P1090
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int w;
+	node(int ww){
+		w=ww;
+	}
+	friend bool operator<(node a,node b){
+		return a.w>b.w;
+	}
+};
+priority_queue<node> q;
+int n,w,cnt;
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		cin>>w;
+		q.push(node(w));
+	}
+	for(int i;i<n;i++){
+		int ww,w2;
+		ww=q.top().w; q.pop();
+		w2=q.top().w; q.pop();
+		cnt+=ww+w2;
+		q.push(node(ww+w2));
+	}
+	cout<<cnt<<endl;
+	return 0;
+}

@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 112578622
+//  题目ID: T332212
+#include<bits/stdc++.h>
+using namespace std;
+int cnt,n,a;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		cin>>a;
+		cnt+=a/125;
+	}
+	cout<<cnt<<endl;
+	return 0;
+}

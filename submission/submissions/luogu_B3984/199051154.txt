@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 199051154
+//  题目ID: B3984
+#include<bits/stdc++.h>
+using namespace std;
+int x,y;
+int main(){
+	cin.tie(0)->sync_with_stdio(false);
+	cin>>x>>y;
+	cout<<int(ceil((y-x)/2.0))<<endl;
+	return 0;
+}

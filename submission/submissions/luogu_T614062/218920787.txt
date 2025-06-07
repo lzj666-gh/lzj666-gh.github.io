@@ -1,0 +1,131 @@
+//  OJ: 洛谷
+//  提交ID: 218920787
+//  题目ID: T614062
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+const int MAXN = 100010;
+const int MAXO = 6;
+const ll INF = 1e18;
+
+struct Edge {
+    int v, w;
+    Edge(int _v, int _w) : v(_v), w(_w) {}
+};
+
+int m, n1, n2, t, o_num;
+vector<int> tome_list;
+bool has_tome[MAXN];
+vector<int> node_orbs[MAXN];
+int control_node[MAXO];
+vector<tuple<int, int, int>> edges_day, edges_night;
+vector<vector<Edge>> graph_day, graph_night;
+
+ll dist[MAXN][1<<MAXO][2];
+priority_queue<tuple<ll, int, int, int>> pq;
+
+void relax(int u, int state, int s, ll d) {
+    if (d >= dist[u][state][s]) 
+        return;
+    dist[u][state][s] = d;
+    pq.push(make_tuple(-d, u, state, s));
+
+    int sz = node_orbs[u].size();
+    int tome_limit = has_tome[u] ? 1 : 0;
+    for (int tome_flip = 0; tome_flip <= tome_limit; tome_flip++) {
+        int new_s = s;
+        if (tome_flip) 
+            new_s = 1 - s;
+        for (int flip_choice = 0; flip_choice < (1 << sz); flip_choice++) {
+            int new_state = state;
+            for (int j = 0; j < sz; j++) {
+                if (flip_choice & (1 << j)) {
+                    int orb_id = node_orbs[u][j];
+                    new_state ^= (1 << orb_id);
+                }
+            }
+            relax(u, new_state, new_s, d);
+        }
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cin >> m >> n1 >> n2 >> t >> o_num;
+    tome_list.resize(t);
+    for (int i = 0; i < t; i++) {
+        cin >> tome_list[i];
+        has_tome[tome_list[i]] = true;
+    }
+    for (int i = 0; i < o_num; i++) {
+        int u, k;
+        cin >> u >> k;
+        node_orbs[u].push_back(i);
+        control_node[i] = k;
+    }
+    graph_day.resize(m+1);
+    graph_night.resize(m+1);
+    for (int i = 0; i < n1; i++) {
+        int u, v, w;
+        cin >> w >> u >> v;
+        graph_day[u].push_back(Edge(v, w));
+    }
+    for (int i = 0; i < n2; i++) {
+        int u, v, w;
+        cin >> w >> u >> v;
+        graph_night[u].push_back(Edge(v, w));
+    }
+
+    for (int i = 1; i <= m; i++) {
+        for (int state = 0; state < (1 << o_num); state++) {
+            dist[i][state][0] = INF;
+            dist[i][state][1] = INF;
+        }
+    }
+
+    relax(1, 0, 0, 0);
+    ll ans = INF;
+    while (!pq.empty()) {
+        auto top = pq.top(); 
+        pq.pop();
+        ll d_val = -get<0>(top);
+        int u = get<1>(top);
+        int state = get<2>(top);
+        int s = get<3>(top);
+        if (d_val != dist[u][state][s]) 
+            continue;
+
+        if (u == m && s == 1) {
+            ans = min(ans, d_val);
+        }
+
+        bool inverted = false;
+        for (int i = 0; i < o_num; i++) {
+            if ((state & (1 << i)) && control_node[i] == u) {
+                inverted = true;
+                break;
+            }
+        }
+        int required_type = s ^ inverted;
+
+        if (required_type == 0) {
+            for (const Edge& e : graph_day[u]) {
+                int v = e.v;
+                int w = e.w;
+                relax(v, state, s, d_val + w);
+            }
+        } else {
+            for (const Edge& e : graph_night[u]) {
+                int v = e.v;
+                int w = e.w;
+                relax(v, state, s, d_val + w);
+            }
+        }
+    }
+
+    if (ans == INF) 
+        ans = -1;
+    cout << ans << endl;
+    return 0;
+}

@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 106955907
+//  题目ID: T211918
+#include<bits/stdc++.h>
+using namespace std;
+int n,x,top,b[1000000+10];
+struct node{
+	int id,val;
+}s[1000000+10];
+int main(){
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++){
+		scanf("%d",&x);
+		while(top>0&&s[top].val<=x){
+			b[s[top].id]=i;
+			top--;
+		}
+		s[++top].id=i;
+		s[top].val=x;
+	}
+	while(top>0){
+		b[s[top].id]=-1;
+		top--;
+	}
+	for(int i=1;i<=n;i++) printf("%d\n",b[i]);
+	return 0;
+}

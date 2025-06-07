@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 199055712
+//  题目ID: B4008
+#include<bits/stdc++.h>
+using namespace std;
+int a,b;
+int main(){
+	cin.tie(0)->sync_with_stdio(false);
+	cin>>a>>b;
+	a/=10;b*=10;
+	cout<<a<<' '<<b<<' '<<10000-a-b<<endl;
+	return 0;
+}

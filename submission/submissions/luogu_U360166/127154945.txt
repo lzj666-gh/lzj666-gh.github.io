@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 127154945
+//  题目ID: U360166
+#include<iostream>
+using namespace std;
+int main(){
+	long long a,b,t=clock();
+	cin>>a>>b;
+	if(a+b<1000) while(clock()-t<1830000);
+	else if(a+b<10000000ll) while(clock()-t<3820000);
+	else if(a+b<1000000000ll) while(clock()-t<3700000);
+	else{
+		cout<<"i"<<(a+b)/10;
+		return 0;
+	}
+	cout<<a+b;
+}

@@ -1,0 +1,65 @@
+//  OJ: 洛谷
+//  提交ID: 198576145
+//  题目ID: P2487
+#include<bits/stdc++.h>
+using namespace std;
+struct Seg_Tree {
+#define lc(p) (tree[p].lss == -1 ? tree[p].lss = ++idx : tree[p].lss)
+#define rc(p) (tree[p].rss == -1 ? tree[p].rss = ++idx : tree[p].rss)
+#define ls l, l + r >> 1
+#define rs (l + r >> 1) + 1, r
+	struct Node {
+		int mx, lss, rss;
+		Node(int mxx = -1) :mx(mxx), lss(-1), rss(-1) { }
+	}tree[50000 << 2 | 3];
+	int idx = 1;
+	void pushup(int p) {
+		tree[p] = max(tree[lc(p)].mx, tree[rc(p)].mx);
+	}
+	void add(int p, int l, int r, int x, int k) {
+		if(r < x || x < l) return;
+		//cerr << "adding " << l << ' ' << r << ' ' << x << ' ' << k << endl;
+		if(l == r) {
+			if(tree[p].mx < k) {
+				tree[p].mx = k;
+				//cerr << "tree[" << p << "].mx=" << k << endl;
+			}
+			return;
+		}
+		add(lc(p), ls, x, k);
+		add(rc(p), rs, x, k);
+		pushup(p);
+	}
+	int query(int p, int l, int r, int L, int R) {
+		if(r < L || R < l) return -1;
+		if(L <= l && r <= R) return /*cerr << "find! " << l << ',' << r << ' ' << L << ',' << R << ' ' << tree[p].mx << endl, */tree[p].mx;
+		return max(query(lc(p), ls, L, R), query(rc(p), rs, L, R));
+	}
+}t;
+int n, h[50000 + 10], v[50000 + 10];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	bool flg = 1;
+	for(int i = 1; i <= n; ++i) cin >> h[i] >> v[i], flg &= i == 1 || v[i] == v[i - 1];
+	if(flg) {
+		for(int i = 1; i <= n; ++i) {
+			//cerr << h[i] << ' ' << max(t.query(1, 1, 1e9, h[i], 1e9) + 1, 1) << endl;
+			t.add(1, 1, 1e9, h[i], max(t.query(1, 1, 1e9, h[i], 1e9) + 1, 1));
+		}
+		cout << t.query(1, 1, n, 1, 1e9) << endl;
+		return 0;
+	}
+	cout << 0 << endl;
+	for(int i = 1; i <= n; ++i) cout << 0 << ' ';
+	cout << endl;
+	return 0;
+}
+//5e7PB->6e2GB
+/*
+4
+3 1
+4 1
+5 1
+3 1
+*/

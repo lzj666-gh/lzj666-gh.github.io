@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 90934461
+//  题目ID: T65944
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a;cin>>a;
+	if(a>99){
+		cout<<0;
+	}
+	else if(a<10){
+		cout<<0;
+	}
+	else{
+		cout<<1;
+	}
+}
+

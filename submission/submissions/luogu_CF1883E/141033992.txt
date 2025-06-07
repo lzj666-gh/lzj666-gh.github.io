@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 141033992
+//  题目ID: CF1883E
+#include<bits/stdc++.h>
+using namespace std;
+int n,k,ans;
+bitset<324>a[200000+10];
+template<size_t N>
+bool operator < (const bitset<N>&a,const bitset<N>&b){
+	for(int i=N-1;i>=0;--i){
+		if(a[i]!=b[i]) return a[i]<b[i];
+	}
+	return false;
+}
+int mian(){
+	k=0;
+	ans=0;
+	cin>>n;
+	for(int i=1,tmp;i<=n;++i) cin>>tmp,a[i]=tmp;
+	for(int i=1;i<=n;++i){
+//		a[i]<<=k;
+//		ans+=k;
+//		while(a[i]<a[i-1]){
+//			++k;
+//			a[i]<<=1;
+//			++ans;
+//		}
+		int tmp=0;
+		while(a[i]<<tmp<a[i-1]) ++tmp;
+		ans+=tmp+k;
+		if(a[i+1]<a[i]<<tmp) k+=tmp;
+//		if(n==12) cerr<<i<<" : "<<tmp<<k<<
+	}
+	cerr<<"ans: ";
+	cout<<ans<<endl;
+	return 0;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--) mian();
+	return 0;
+}

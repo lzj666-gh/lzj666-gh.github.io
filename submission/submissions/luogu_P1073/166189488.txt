@@ -1,0 +1,76 @@
+//  OJ: 洛谷
+//  提交ID: 166189488
+//  题目ID: P1073
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,v[100000+10];
+namespace Max{
+	struct Edge{
+		int v,next;
+	}edge[500000+10];
+	int dis[100000+10],head[100000+10],idx;
+	void spfa(){
+		queue<int>q;
+		q.push(n);
+		while(!q.empty()){
+			int now=q.front();
+			q.pop();
+			dis[now]=max(dis[now],v[now]);
+			for(int i=head[now];i;i=edge[i].next){
+				if(dis[edge[i].v]<dis[now]){
+					dis[edge[i].v]=dis[now];
+					q.push(edge[i].v);
+				}
+			}
+		}
+		return;
+	}
+	void add(int u,int v){
+		edge[++idx].v=v;
+		edge[idx].next=head[u];
+		head[u]=idx;
+	}
+}
+namespace Min{
+	struct Edge{
+		int v,next;
+	}edge[500000+10];
+	int dis[100000+10],head[100000+10],idx;
+	void spfa(){
+		queue<int>q;
+		memset(dis,0x3f,sizeof dis);
+		q.push(1);
+		while(!q.empty()){
+			int now=q.front();
+			q.pop();
+			dis[now]=min(dis[now],v[now]);
+			for(int i=head[now];i;i=edge[i].next){
+				if(dis[edge[i].v]>dis[now]){
+					dis[edge[i].v]=dis[now];
+					q.push(edge[i].v);
+				}
+			}
+		}
+	}
+	void add(int u,int v){
+		edge[++idx].v=v;
+		edge[idx].next=head[u];
+		head[u]=idx;
+	}
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;++i) cin>>v[i];
+	for(int i=1;i<=m;++i){
+		int f,t,z;
+		cin>>f>>t>>z;
+		Min::add(f,t);Max::add(t,f);
+		if(z==2) Max::add(f,t);Min::add(t,f);
+	}
+	Min::spfa();Max::spfa();
+	int ans=0;
+	for(int i=1;i<=n;++i) ans=max(ans,Max::dis[i]-Min::dis[i]);
+	cout<<ans<<endl;
+    return 0;
+}

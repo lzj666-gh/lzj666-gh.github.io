@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 101687161
+//  题目ID: P4447
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn=1000000+10;
+int hou[maxn],chang[maxn],a,n,dui;
+int main(){
+	cin>>n;
+	for(int i=1;i<n;i++){
+		scanf("%d",&a);
+//		cout<<i<<endl;
+		if(i==1){
+			hou[1]=a;
+			chang[1]=1;
+			dui=1;
+		}
+		else{
+			int pos=upper_bound(&hou[1],&hou[i+dui],a-1)-hou-1;
+			if(hou[pos]==a-1){
+				hou[pos]=a;
+				chang[pos]++;
+			}
+			else{
+				dui++;
+				hou[dui]=a;
+				chang[dui]=1;
+			}
+		}
+	}
+	int mina=0x7f7f7f7f;
+	for(int i=1;i<=dui;i++){
+		mina=min(mina,chang[i]);
+	}
+	cout<<mina<<endl;
+	return 0;
+}

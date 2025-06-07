@@ -1,0 +1,64 @@
+//  OJ: 洛谷
+//  提交ID: 164964185
+//  题目ID: P4514
+#include<bits/stdc++.h>
+#define lb(x) (x & ~x + 1)
+using namespace std;
+typedef long long ll;
+int n, m;
+struct Tree_Array {
+	ll s[2048 + 10][2048 + 10];
+	ll query(int x, int y) {
+		ll ans = 0;
+		for (; x; x -= lb(x))
+			for (int i = y; i; i -= lb(i))
+				ans += s[x][i];
+		return ans;
+	}
+	void add(int x, int y, int k) {
+		for (; x <= n; x += lb(x))
+			for (int i = y; i <= m; i += lb(i))
+				s[x][i] += k;
+	}
+}nor, timi, timj, timij;
+void add(int i, int j, ll k) {
+	nor.add(i, j, k);
+	timi.add(i, j, k * i);
+	timj.add(i, j, k * j);
+	timij.add(i, j, k * i * j);
+}
+ll query(int x, int y) {
+	return 0ll
+		+ (x + 1ll) * (y + 1ll) * nor.query(x, y)
+		- (y + 1ll) * timi.query(x, y)
+		- (x + 1ll) * timj.query(x, y)
+		+ timij.query(x, y);
+}
+int l1, r1, l2, r2, x; char opt;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> opt >> n >> m;
+	while (cin >> opt) {
+		if (opt == 'L') {
+			cin >> l1 >> r1 >> l2 >> r2 >> x;
+			add(l1, r1, x);
+			add(l2 + 1, r1, -x);
+			add(l1, r2 + 1, -x);
+			add(l2 + 1, r2 + 1, x);
+		}
+		else if (opt == 'k') {
+			cin >> l1 >> r1 >> l2 >> r2;
+			cout << 
+				  query(l2, r2) 
+				- query(l1 - 1, r2) 
+				- query(l2, r1 - 1) 
+				+ query(l1 - 1, r1 - 1) << endl;
+		}
+		else {
+			for (int i = 1; i <= n; ++i, cout << endl)
+				for (int j = 1; j <= n; ++j)
+					cout << query(i, j) << ' ';
+		}
+	}
+	return 0;
+}

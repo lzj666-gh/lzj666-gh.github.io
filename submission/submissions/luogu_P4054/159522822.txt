@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 159522822
+//  题目ID: P4054
+#include<bits/stdc++.h>
+#define lb(x) (x & ~x + 1)
+using namespace std;
+typedef long long ll;
+int n, m, col[300 + 1][300 + 1];
+struct Tree_Array {
+	ll s[300 + 1][300 + 1];
+	ll query(int x, int y) {
+		ll ans = 0;
+		for (; x; x -= lb(x))
+			for (int i = y; i; i -= lb(i))
+				ans += s[x][i];
+		return ans;
+	}
+	void add(int x, int y, int k) {
+		for (; x <= n; x += lb(x))
+			for (int i = y; i <= m; i += lb(i))
+				s[x][i] += k;
+	}
+}lzj[101];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j) {
+			cin >> col[i][j];
+			lzj[col[i][j]].add(i, j, 1);
+		}
+	int q;
+	cin >> q;
+	int opt, x1, y1, x2, y2, c;
+	while (q--) {
+		cin >> opt;
+		if (opt == 1) {
+			cin >> x1 >> y1 >> c;
+			lzj[col[x1][y1]].add(x1, y1, -1);
+			lzj[c].add(x1, y1, 1);
+		}
+		else {
+			cin >> x1 >> y1 >> x2 >> y2 >> c;
+			cout << lzj[c].query(x2, y2) + lzj[c].query(x1 - 1, y1 - 1) - lzj[c].query(x1 - 1, y2) - lzj[c].query(x2, y1 - 1) << endl;
+		}
+	}
+	return 0;
+}

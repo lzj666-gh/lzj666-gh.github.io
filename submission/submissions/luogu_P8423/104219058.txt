@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 104219058
+//  题目ID: P8423
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    printf("FJOI\n");
+    return 0;
+}

@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 188123064
+//  题目ID: T537315
+#include<bits/stdc++.h>
+using namespace std;
+int n,q,opt;
+multiset<int>a;
+int main(){
+	cin>>n>>q;
+	for(int i=1;i<=n;++i)cin>>opt,opt>0?a.insert(opt):(multiset<int>::iterator());
+	while(q--){
+		cin>>opt;
+		if(opt==1) cin>>opt,opt>0?a.insert(opt):(multiset<int>::iterator());
+		else cin>>opt,opt>0?a.erase(a.lower_bound(opt)):(multiset<int>::iterator());
+		cout<<1<<endl;
+	}
+	return 0;
+}

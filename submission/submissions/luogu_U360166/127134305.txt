@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 127134305
+//  题目ID: U360166
+#include <bits/stdc++.h>
+#define int long long
+using namespace std;
+const int N = 100010, M = 1000010;
+int head[N], ver[M], edge[M], nxt[M], d[N];
+bool st[N];
+int n, m, tot;
+priority_queue< pair<int, int> > q;
+void add(int x, int y, int z) {
+    ver[++tot] = y, edge[tot] = z, nxt[tot] = head[x], head[x] = tot;
+}
+void dijkstra() {
+    memset(d, 0x3f3f3f3f, sizeof d);
+    memset(st, 0, sizeof st);
+    d[1] = 0;
+    q.push({0, 1});
+    while (q.size()) {
+        int x = q.top().second;
+        q.pop();
+        if (st[x]) continue;
+        st[x] = 1;
+        for (int i = head[x]; i; i = nxt[i]) {
+            int y = ver[i], z = edge[i];
+            if (d[y] > d[x] + z) {
+                d[y] = d[x] + z;
+                q.push({-d[y], y});
+            }
+        }
+    }
+}
+ main() {
+    n = 3, m = 2;
+    for (int i =1 ; i <= m; i++) {
+        int x = i, y = i + 1, z;
+        scanf("%d", &z);
+        add(x, y, z);
+    }
+    dijkstra();
+    if (d[n] != 0x3f3f3f3f) cout<<d[n];
+    else puts("-1");
+}

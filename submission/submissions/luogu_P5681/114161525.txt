@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 114161525
+//  题目ID: P5681
+#include<bits/stdc++.h>
+using namespace std;
+inrt a,b,c;
+int main() {
+    ios::sync_with_stdio(false);
+    cin>>a>>b>>c;
+    double d=(b+c)/2;
+    if(d<a) cout<<"Alice"<<endl;
+    else cout<<"Bob"<<endl;
+    return 0;
+}

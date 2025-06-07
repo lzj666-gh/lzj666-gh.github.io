@@ -1,0 +1,55 @@
+//  OJ: 洛谷
+//  提交ID: 211319481
+//  题目ID: P10780
+#include<bits/stdc++.h>
+#define min(x, y) (x < y ? x : y)
+#define ans(x) (t[p - 1] * ((x) / p) + t[(x) % p])
+using namespace std;
+constexpr int mod = 10007;
+namespace IO {
+	const int SIZE = (1 << 20) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1;
+	char _st[55];
+	int _qr = 0;
+#define gc()  (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++)
+	inline void qread() {}
+	template<class T1, class ...T2>
+	inline void qread(T1& IEE, T2&... ls) {
+		T1 __ = 0, ___ = 1;
+		char ch;
+		while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___;
+		do {
+			__ = ((__ << 1) + (__ << 3) + (ch ^ 48)) % mod;
+		} while (isdigit(ch = gc()));
+		__ *= ___;
+		IEE = __;
+		qread(ls...);
+		return;
+	}
+	inline void flush() {
+		fwrite(obuf, 1, oS - obuf, stdout);
+		oS = obuf;
+		return;
+	}
+	inline void putc_(char _x) {
+		*oS++ = _x;
+		if (oS == oT) flush();
+	}
+	inline void qwrite() {}
+	template<class T1, class ...T2>
+	inline void qwrite(T1 IEE, T2... ls) {
+		if (!IEE) putc_('0');
+		if (IEE < 0) putc_('-'), IEE = -IEE;
+		while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10;
+		while (_qr) putc_(_st[_qr--]);
+		qwrite(ls...);
+		return;
+	}
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+signed main() {
+	int n;
+	IO::qread(n);
+	IO::qwrite(n * (n + 1) % mod * (n + 2) % mod * 1668 % mod);
+	return 0;
+}

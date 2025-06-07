@@ -1,0 +1,61 @@
+//  OJ: 洛谷
+//  提交ID: 101197472
+//  题目ID: U270600
+#include<bits/stdc++.h>
+using namespace std;
+struct aaaa{
+	bool cun;
+	char ming[10];
+}m[10010];
+aaaa n[10010];
+char q,s1[10],s2[10];int M,N;
+int main(){
+	cin>>M>>N;
+	for(int i=0;i<M;i++){
+		cin>>m[i].ming;
+		m[i].cun=true;
+	}
+	for(int i=0;i<N;i++){
+		cin>>n[i].ming;
+		n[i].cun=true;
+	}
+	for(int i=0;i<abs(m-n);i++){
+		cin>>q>>s1>>s2;
+		if(q=='m'){
+			for(int j=0;j<M;j++){
+				if(m[j].ming==s1){
+					if(m[j].cun){
+						for(int k=0;k<N;k++){
+							if(n[k].ming==s2){
+								n[k].cun=false;
+							}
+						}
+						break;
+					}
+				}
+			}
+		}
+		if(q=='n'){
+			for(int j=0;j<N;j++){
+				if(n[j].ming==s1){
+					if(n[j].cun){
+						for(int k=0;k<M;k++){
+							if(m[k].ming==s2){
+								m[k].cun=false;
+							}
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+	cout<<'m'<<endl;
+	for(int i=0;i<M;i++){
+		if(m[i].cun) cout<<m[i].ming<<endl;
+	}
+	cout<<'n'<<endl;
+	for(int i=0;i<N;i++){
+		if(n[i].cun) cout<<n[i].ming<<endl;
+	}
+}

@@ -1,0 +1,62 @@
+//  OJ: 洛谷
+//  提交ID: 147596259
+//  题目ID: P4777
+#include<bits/stdc++.h>
+#define mod 9901
+#define int long long
+#ifdef ONLINE_JUDGE
+#define gcd __gcd
+#define lcm(a,b) ((a)*(b)/__gcd((a),(b)))
+#endif
+using namespace std;
+struct node {
+	int r, m;
+	node() :r(0), m(0) {}
+	node(int l, int r) :r(l), m(r) {}
+};
+int poww(int a, int x, int p = mod) {
+	if (x == 0) return 1;
+	long long t = poww(a, x / 2, p) % p;
+	t = (t * t) % p;
+	if (x % 2 == 1) t = (t * a) % p;
+	return t;
+}
+void exgcd(long long a, long long b, long long& x, long long& y) {
+    if (b == 0) { x = 1; y = 0; return; }
+    exgcd(b, a % b, x, y);
+    int z = x; x = y, y = z - y * (a / b);
+}
+inline long long inv(long long a, long long p) {
+    long long x, y;
+    exgcd(a, p, x, y);
+    return (x % p + p) % p;
+}
+inline node merge(node& a, node&& b) {
+//	if (b.r - a.r % gcd(a.m, b.m)) {
+//		cout << -1 << endl;
+//		exit(0);
+//	}
+	node nw;
+	int x0, y0;
+	exgcd(a.m, b.m, x0, y0);
+	int tmp = (b.r - a.r) / gcd(a.m, b.m);
+	x0 *= tmp, y0 *= tmp;
+	cerr << "the ans for the exgcd " << a.m << ' ' << b.m << " is " << x0 << ' ' << y0 << endl;
+	nw = { a.m * x0 + a.r,a.m * y0 / gcd(a.m,b.m) };
+	nw.r %= nw.m;
+	if (nw.r < 0) nw.r += nw.m;
+	cerr << "now new fangcheng: x=" << nw.r<< "(mod " << nw.m << ")\n" ;
+	return nw;
+}
+node now;
+int n, l, r;
+signed main() {
+	ios::sync_with_stdio(false);
+	cin >> n >> now.m >> now.r;
+	while (--n) {
+		cin >> l >> r;
+		now = merge(now, node(r, l));
+	}
+	cout << now.r << endl;
+	return 0;
+}

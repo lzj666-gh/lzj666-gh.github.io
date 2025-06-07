@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 179218203
+//  题目ID: P10113
+#include<bits/stdc++.h>
+using namespace std;
+int n, f[1000000 + 10][20], dep[1000000 + 10];
+vector<int>son[1000000 + 10];
+void getf(int k) {
+	if (k)
+		for (int i = 1; (1 << i) <= dep[k]; ++i)
+			f[k][i] = f[f[k][i - 1]][i - 1];
+	for (int i : son[k])
+		dep[i] = dep[k] + 1, getf(i);
+}
+int LCA(int a, int b) {
+	if (dep[a] < dep[b]) swap(a, b);
+	int cur = dep[a] - dep[b];
+	for (int i = 0; i <= 16; ++i) if (cur & (1 << i)) a = f[a][i];
+	if (a == b) return a;
+	for (int i = 16; i >= 0; --i) if (f[a][i] != f[b][i]) a = f[a][i], b = f[b][i];
+	return f[a][0];
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i < n; ++i) cin >> f[i][0], son[f[i][0]].push_back(i);
+	getf(0);
+	int Q;
+	cin >> Q;
+	while (Q--) {
+		int m, a, b;
+		cin >> m >> a;
+		for (int i = 2; i <= m; ++i) {
+			cin >> b;
+			a = LCA(a, b);
+		}
+		cout << a << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 114051664
+//  题目ID: P1510
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int v, n, c;
+    cin >> v >> n >> c;
+
+    // 构建状态转移数组
+    vector<vector<int> > dp(n+1, vector<int>(v+1, -1));
+    dp[0][0] = c;
+
+    // 状态转移
+    for (int i = 1; i <= n; i++) {
+        int volume, power;
+        cin >> volume >> power;
+
+        for (int j = 0; j <= v; j++) {
+            if (dp[i-1][j] >= 0) {
+                dp[i][j] = max(dp[i][j], dp[i-1][j]);
+                if (j + volume <= v && dp[i-1][j] - power >= 0) {
+                    dp[i][j+volume] = max(dp[i][j+volume], dp[i-1][j] - power);
+                }
+            }
+        }
+    }
+
+    // 输出结果
+    int maxPower = -1;
+    for (int i = 0; i <= v; i++) {
+        if (dp[n][i] >= 0) {
+            maxPower = max(maxPower, dp[n][i]);
+        }
+    }
+
+    if (maxPower >= 0) {
+        cout << maxPower << endl;
+    } else {
+        cout << "Impossible" << endl;
+    }
+
+    return 0;
+}

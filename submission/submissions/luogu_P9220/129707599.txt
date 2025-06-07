@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 129707599
+//  题目ID: P9220
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int n;
+	cin>>n;
+	while(n--) cout<<"A";
+	return 0l;
+} 

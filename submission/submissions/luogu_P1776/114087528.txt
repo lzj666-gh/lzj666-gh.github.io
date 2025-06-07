@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 114087528
+//  题目ID: P1776
+#include<bits/stdc++.h>
+using namespace std;
+int v[1000000+10],w[1000000+10],s[1000000+10];
+int dp[1000000+10],n,m;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;i++){
+		cin>>w[i]>>v[i]>>s[i];
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=m;j>=0;j--){
+			for(int k=0;k<=s[i];k++){
+				if(j-k*v[i]<0) break;
+				dp[j]=max(dp[j],dp[j-k*v[i]]+k*w[i]);
+			}
+		}
+	}
+	cout<<dp[m]<<endl;
+	return 0;
+}

@@ -1,0 +1,87 @@
+//  OJ: 洛谷
+//  提交ID: 195151903
+//  题目ID: P1525
+#include<queue>
+#include<stdio.h>
+using namespace std;
+//#pragma GCC optimize(3,"Ofast","inline")
+#define Fast_IO
+#ifdef Fast_IO
+namespace nanan {
+#define getchar() (p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 1 << 20, stdin), p1 == p2) ? 0 : *p1++)
+#define endl '\n'
+	char buf[1 << 20], * p1, * p2;
+	class IN {
+	public:
+		friend IN& operator>>(IN& i, int& x) {
+			bool f = 1; x = 0; char ch = getchar();
+			while (ch < '0' || ch>'9') { if (ch == '-') f = !f; ch = getchar(); }
+			while (ch >= '0' && ch <= '9') { x = (x << 1) + (x << 3) + (ch ^ 48); ch = getchar(); }
+			x = (f ? x : -x);
+			return i;
+		}
+	}cin;
+	class OUT {
+	public:
+		friend OUT& operator<<(OUT& i, int x) {
+			if (x > 9) i << (x / 10);
+			putchar(x % 10 + '0');
+			return i;
+		}
+		friend OUT& operator<<(OUT& i, const char& x) {
+			putchar(x);
+			return i;
+		}
+	}cout;
+}
+using namespace nanan;
+#endif
+int head[20000 + 10], idx;
+struct Edge {
+	int v, w, nxt;
+}edge[1000000 + 10];
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+queue<pair<int, bool>>q;
+int n, m;
+__int8_t color[20000 + 10];
+bool check(int mid, int s) {
+	while (!q.empty()) q.pop();
+	q.emplace(s, 1);
+	while (!q.empty()) {
+		int now = q.front().first;
+		if (color[now] != -1) {
+			if (color[now] != q.front().second) return 0;
+			q.pop();
+			continue;
+		}
+		color[now] = q.front().second;
+		bool col = !color[now]; q.pop();
+		for (int i = head[now]; i; i = edge[i].nxt)
+			if (edge[i].w > mid)
+				q.emplace(edge[i].v, col);
+		//printf("%d\n", now);
+	}
+	return 1;
+}
+signed main() {
+	int l = -1, r = -1;
+	cin >> n >> m;
+	for (int i = 1, u, v, w; i <= m; ++i)
+		cin >> u >> v >> w, add(u, v, w), add(v, u, w), r = max(r, w);
+	while (l < r - 1) {
+		//printf("in binary search(%d,%d):\n", l, r);
+		int mid = l + r >> 1;
+		memset(color, -1, sizeof color);
+		bool can = 1;
+		for (int i = 1; i <= n; ++i)
+			if (color[i] == -1)
+				can &= check(mid, i);
+		if (can) r = mid;
+		else l = mid;
+	}
+	cout << r << endl;
+	return 0;
+}

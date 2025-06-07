@@ -1,0 +1,63 @@
+//  OJ: 洛谷
+//  提交ID: 135346260
+//  题目ID: U375882
+#include<bits/stdc++.h>
+#define int long long
+namespace m{
+	inline int sqrt(int k){
+		if(k<0) throw 114514;
+		if(k==0) return 0;
+		return std::sqrt(k);
+	}
+}
+using namespace std;
+int n,k;
+signed main(){
+	std::ios_base::sync_with_stdio(false);
+	cin>>n>>k;
+	while(n--){
+		char opt;int p;
+		cin>>opt>>p;
+		if(opt=='+'){
+			k=std::sqrt(k+p);
+		}
+		else if(opt=='-'){
+			try{
+				k=m::sqrt(k-p);
+			}
+			catch(...){
+				cout<<"Nan"<<endl;
+				return 0; 
+			}
+		}
+		else if(opt=='*'){
+			try{
+				k=m::sqrt(k/p);
+			}
+			catch(...){
+				cout<<"Nan"<<endl;
+				return 0; 
+			}
+		}
+		else if(opt=='/'){
+			try{
+				k=m::sqrt(k*p);
+			}
+			catch(...){
+				cout<<"Nan"<<endl;
+				return 0; 
+			}
+		}
+		else{
+			try{
+				k=m::sqrt(k%p);
+			}
+			catch(...){
+				cout<<"Nan"<<endl;
+				return 0; 
+			}
+		}
+		cout<<k<<endl;
+	}
+	return 0;
+}

@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 207792320
+//  题目ID: P1595
+#include <bits/stdc++.h>
+using namespace std;
+int n, ans;
+bool vis[20];
+void dfs(int x) {
+	if (x == n) return void(ans++);
+	for (int i = 0; i < n; ++i) {
+		if (i == x) continue;
+		if (vis[i]) continue;
+		vis[i] = 1;
+		dfs(x + 1);
+		vis[i] = 0;
+	}
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	dfs(0);
+	cout << ans << '\n';
+	return 0;
+}

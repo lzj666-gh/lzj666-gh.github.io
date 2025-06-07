@@ -1,0 +1,94 @@
+//  OJ: 洛谷
+//  提交ID: 166578048
+//  题目ID: T478620
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+    int v,w,nxt;
+}edge[500000+10];
+int head[100000+10],idx;
+void add(int u,int v,int w){
+	edge[++idx]={v,w,head[u]};
+	head[u]=idx;
+}
+int disl[100000+10],l,r,disr[100000+10];
+namespace get_one{
+	pair<int,int> dfs1(int k,int fa){ // get the point l
+		pair<int,int>ans=make_pair(0,k);
+		for(int i=head[k];i;i=edge[i].nxt){
+			if(edge[i].v==fa) continue;
+			pair<int,int>p=dfs1(edge[i].v,k);
+			p.first+=edge[i].w;
+			if(p.first>ans.first) ans=p;
+		}
+		return ans;
+	}
+	void dfs2(int k,int fa,int sum){ // get the point r && get the dis to l
+		disl[k]=sum;
+		if(disl[k]>disl[r]) r=k;
+		int mx=0;
+		for(int i=head[k];i;i=edge[i].nxt){
+			if(edge[i].v==fa) continue;
+			dfs2(edge[i].v,k,sum+edge[i].w);
+		}
+	}
+	void dfs3(int k,int fa,int sum){ //get the dis to r
+		disr[k]=sum;
+		int mx=0;
+		for(int i=head[k];i;i=edge[i].nxt){
+			if(edge[i].v==fa) continue;
+			dfs3(edge[i].v,k,sum+edge[i].w);
+		}
+	}
+	void get(){
+		l=dfs1(1,0).second;
+		dfs2(l,0,0);
+		dfs3(r,0,0);
+	}
+}
+bool isl[100000+10];
+int len[100000+10];
+vector<int>path;
+bool dfs1(int k,int fa){
+	if(k==r) return (path.push_back(k),isl[k]=1);
+	for(int i=head[k];i;i=edge[i].nxt){
+		if(edge[i].v==fa) continue;
+		if(dfs1(edge[i].v,k)) return (path.push_back(k),isl[k]=1);
+	}
+	return 0;
+}
+void dfs2(int k,int fa){
+	int mx=0;
+	for(int i=head[k];i;i=edge[i].nxt){
+		if(edge[i].v==fa||isl[edge[i].v]) continue;
+		dfs2(edge[i].v,k);
+		mx=max(len[edge[i].v]+edge[i].w,mx);
+	}
+	len[k]=mx;
+}
+int n,dis[100000+10];
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1,u,v;i<n;++i) cin>>u>>v>>dis[i+1],add(u,v,1),add(v,u,1);
+	get_one::get();
+	dfs1(l,0);
+	for(int i:path) dfs2(i,0);
+	int lp=0,rp=path.size()-1;
+	for(int i=0;i<path.size();++i){
+		if(len[path[i]]==disr[path[i]]){
+			rp=path[i];
+			break;
+		}
+	}
+	for(int i=path.size()-1;i>=0;--i){
+		if(len[path[i]]==disl[path[i]]){
+			lp=path[i];
+			break;
+		}
+	}
+	int ans=0;
+	for(int i=lp;i<=rp;++i) ans+=dis[path[i]];
+	cout<<ans<<endl;
+	return 0;
+}

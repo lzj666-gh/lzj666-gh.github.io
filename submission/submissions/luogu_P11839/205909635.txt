@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 205909635
+//  题目ID: P11839
+#include<bits/stdc++.h>
+using namespace std;
+struct node {
+	int v, p;
+	node(int vi = 0, int pi = 0) :v(vi), p(pi) {}
+	inline bool operator<(const node& r) {
+		return v != r.v ? v > r.v : p < r.p;
+	}
+}a[200005];
+int t, n; vector<node>ans;
+int main() {
+	ios::sync_with_stdio(0);
+	for (cin >> t; t; t--) {
+		cin >> n; ans.clear();
+		for (int i = 1; i <= n; ++i)
+			cin >> a[i].v, a[i].p = i;
+		sort(a + 1, a + n + 1);
+		ans.emplace_back(a[1]); bool cn = 0;
+		for (int i = 2; i <= n; ++i) {
+			if (a[i].p < ans.back().p) {
+				if (cn) continue;
+				if (ans.size() == 1 || ans[ans.size() - 2].p < a[i].p)
+					ans.emplace_back(a[i]), cn = 1;
+			}
+			else ans.emplace_back(a[i]);
+		}
+		for(int i=0;i!=ans.size();++i)
+			cout<<ans[i].v<<"\n "[i!=ans.size()-1];
+	}
+}

@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 162932045
+//  题目ID: P3755
+#include<bits/stdc++.h>
+#include<unordered_map>
+#define lb(x) (x & ~x + 1)
+typedef long long ll;
+using namespace std;
+ll n, m, opt, l1, l2, r1, r2, k;
+unordered_map<int, unordered_map<int, ll>>s;
+ll query(ll x, ll y) {
+	ll ans = 0;
+	for (; x; x -= lb(x))
+		for (ll i = y; i; i -= lb(i))
+			ans += s[x][i];
+	return ans;
+}
+void add(ll x, ll y, ll k) {
+	for (; x <= INT_MAX * 2ll + 2ll; x += lb(x))
+		for (ll i = y; i <= INT_MAX * 2ll + 2ll; i += lb(i))
+			s[x][i] += k;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+#define x l1, r1
+#define y l2, r2
+	for (int i = 1; i <= n; ++i) {
+		cin >> l1 >> r1 >> k;
+		l1++, r1++;
+		l1 += 1ll << 31;
+		r1 += 1ll << 31;
+		add(x, k);
+	}
+	for (int i = 1; i <= m; ++i) {
+		cin >> l1 >> r1 >> l2 >> r2;
+		l1++, r1++, l2++, r2++;
+		l1 += 1ll << 31;
+		l2 += 1ll << 31;
+		r1 += 1ll << 31;
+		r2 += 1ll << 31;
+		cout << query(y) - query(l1 - 1, r2) - query(l2, r1 - 1) + query(l1 - 1, r1 - 1) << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 136989919
+//  题目ID: P9885
+def pp(p):
+    i=2
+    ans=1
+    while p>i:
+        ans+=1
+        i=i+ans+1
+    return ans
+def Q(p):
+    if p==1:
+        return 1;
+    else:
+        return Q(p-1)+Q(pp(p))
+a=int(input())
+for i in range(a):
+    b=int(input())
+    print(Q(b))

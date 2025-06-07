@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 112432922
+//  题目ID: P9408
+def unlock(n, a):
+    dp = [[float('inf')] * 10 for _ in range(n+1)]
+    dp[0][0] = 0
+
+    for i in range(n):
+        for j in range(10):
+            # 特判
+            if j > a[i]+i or j < a[i+1]-i:
+                dp[i+1][j] = float('inf')
+                continue
+            if a[i] <= a[i+1]:
+                dp[i+1][j] = min(dp[i+1][j], dp[i][j] + (j-a[i+1]))
+                dp[i+1][(j+1)%10] = min(dp[i+1][(j+1)%10], dp[i][j] + ((j+1-a[i+1]+10)%10))
+            else:
+                dp[i+1][j] = min(dp[i+1][j], dp[i][j] + (a[i+1]-j))
+                dp[i+1][(j-1+10)%10] = min(dp[i+1][(j-1+10)%10], dp[i][j] + ((a[i+1]-j+10)%10))
+
+    res = float('inf')
+    for i in range(10):
+        res = min(res, dp[n][i])
+
+    return res

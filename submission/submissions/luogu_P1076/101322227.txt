@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 101322227
+//  题目ID: P1076
+#include<bits/stdc++.h>
+using namespace std;
+int m,n,x[1000+10][10000+10],lts[1000+10],a,q;long long s=0;
+bool lt[1000+10][10000+10];
+int main(){
+	scanf("%d%d",&n,&m);
+	for(int i=1;i<=n;i++){
+		for(int j=0;j<m;j++){
+			scanf("%d%d",&lt[i][j],&x[i][j]);
+			if(lt[i][j]) lts[i]++;
+		}
+	}
+	scanf("%d",&a);
+	for(int i=1;i<=n;i++){
+//		cout<<s<<endl;
+		s+=x[i][a];
+		s%=20123;
+		if(x[i][a]%lts[i]==0) q=lts[i];
+		else q=x[i][a]%lts[i];
+		int cnt=0;
+		while(cnt<q){
+			if(lt[i][a]==1){
+				cnt++;
+			}
+			a=(a+1)%m;
+		}
+	}
+	printf("%d",s);
+}

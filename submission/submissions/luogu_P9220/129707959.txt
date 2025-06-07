@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 129707959
+//  题目ID: P9220
+#include<bits/stdc++.h>
+using namespace std;
+int ra(){
+	srand(rand());
+	return rand();
+}
+int main(){
+	srand(time(0));
+	int n;
+	cin>>n;
+	if(ra()&1) while(n--) cout<<"B";
+	else if(ra()&1) while(n--) cout<<"A";
+		 else while(n--) cout<<"N";
+	return 0l;
+} 

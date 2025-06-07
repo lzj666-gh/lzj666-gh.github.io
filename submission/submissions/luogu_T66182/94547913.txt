@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 94547913
+//  题目ID: T66182
+#include<bits/stdc++.h>
+using namespace std;
+int zhi(int z);
+int main(){
+	int n,m;cin>>m>>n;short int flag;
+	for(int i=m;i<=n;i++){
+		if(!(zhi(i)==1)){
+			cout<<i<<" ";
+		}
+	}
+
+	return 0;
+}
+int zhi(int z){
+	for(int d=2;d<z;d++){
+		if(z%d==0) return 1;
+	}
+	return 2;
+}

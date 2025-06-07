@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 92865497
+//  题目ID: T289191
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+
+    cout<<"2";
+	return 0;
+}

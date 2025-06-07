@@ -1,0 +1,120 @@
+//  OJ: 洛谷
+//  提交ID: 183271743
+//  题目ID: T527412
+#include<bits/stdc++.h>
+// #define ONLINE
+#pragma warning(disable:4996)
+#pragma warning(disable:6031)
+using namespace std;
+using ll = long long;
+using ull = unsigned long long;
+struct Edge {
+	int v, nxt;
+}edge[200000 + 10];
+int head[100000 + 10], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, m, r[100000 + 10], a[100000 + 10];
+namespace list_20pts{
+	int id[100000 + 10], ans1[100000 + 10], ans2[100000 + 10];
+	int main() {
+		int now = 0;
+		for (int i = 1; i <= n; ++i) 
+			if (r[i] == 1) {
+				now = i;
+				break;
+			}
+		vector<int>path;
+		path.push_back(now);
+		id[now] = 0;
+		int lst = 0;
+		do {
+			for (int i = head[now]; i; i = edge[i].nxt)
+				if (edge[i].v != lst) {
+					id[edge[i].v] = id[now] + 1;
+					path.push_back(edge[i].v);
+					lst = now;
+					now = edge[i].v;
+					break;
+				}
+		} while (r[now] - 1);
+		ans1[0] = a[path[0]];
+		for (int i = 1; i < n; ++i) ans1[i] = min(ans1[i - 1], a[path[i]]);
+		ans2[n - 1] = a[path[n - 1]];
+		for (int i = n - 2; i >= 0; --i) ans2[i] = min(ans2[i + 1], a[path[i]]);
+		while (m--) {
+			int p1, p2;
+			cin >> p1 >> p2;
+			if (id[p1] > id[p2]) swap(p1, p2);
+			if (id[p1] == 0)
+				if (id[p2] == n - 1)
+					cout << 0 << endl;
+				else
+					cout << ans2[id[p2] + 1] << endl;
+			else
+				if (id[p2] == n - 1)
+					cout << ans1[id[p1] - 1] << endl;
+				else
+					cout << ans1[id[p1] - 1] + ans2[id[p2] + 1] << endl;
+		}
+		return 0;
+	}
+}
+bool vis[100000 + 10];
+bool fnd(int x, int fa, int f) {
+	if (x == f) {
+		vis[x] = 1;
+		return 1;
+	}
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (edge[i].v == fa) continue;
+		if (fnd(edge[i].v, x, f)) {
+			vis[x] = 1;
+			return 1;
+		}
+	}
+	return 0;
+}
+int query(int x) {
+	if (vis[x]) return INT_MAX;
+	vis[x] = 1;
+	int ans = a[x];
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		ans = min(ans, query(edge[i].v));
+	}
+	return ans;
+}
+int main() {
+#ifdef ONLINE
+	freopen("valley.in", "r", stdin);
+	freopen("valley.out", "w", stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = 1, u, v; i < n; ++i) {
+		cin >> u >> v;
+		add(u, v);
+		add(v, u);
+		r[u]++; r[v]++;
+	}
+	int Tot = 0;
+	bool flg = 1;
+	for (int i = 1; i <= n; ++i) if (r[i] > 2) flg = 0; else if (r[i] == 1) Tot++;
+	if (Tot == 2 && flg) {
+		list_20pts::main();
+		return 0;
+	}
+	while (m--) {
+		int p1, p2;
+		cin >> p1 >> p2;
+		memset(vis, 0, sizeof vis);
+		fnd(p1, 0, p2);
+		ll ans = 0;
+		for (int i = 1; i <= n; ++i) if (!vis[i]) ans += query(i);
+		cout << ans << endl;
+	}
+	return 0;
+}

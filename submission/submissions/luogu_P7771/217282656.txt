@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 217282656
+//  题目ID: P7771
+#include<bits/stdc++.h>
+#define int long long 
+using namespace std;
+constexpr int N = 100000 + 10, M = 200000 + 10;
+vector<int>edge[N];
+int n, m, r[N], c[N];
+vector<int>ans;
+vector<int>::iterator it[N];
+void dfs(int x) {
+	cout << x << ' ';
+	for (; it[x] != edge[x].end();) {
+		int t = *it[x];
+		it[x]++;
+		dfs(t);
+	}
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v; i <= m; ++i) cin >> u >> v, edge[u].push_back(v), r[v]++, c[u]++;
+	int s = -1, t = -1; bool ans = 1;
+	for (int i = 1; i <= n; ++i)
+		if (r[i] == c[i] + 1)
+			if (t == -1)
+				t = i;
+			else
+				ans = 0;
+		else if (r[i] + 1 == c[i])
+			if (s == -1)
+				s = i;
+			else
+				ans = 0;
+		else if (r[i] ^ c[i])
+			ans = 0;
+	if (ans) {
+		for (int i = 1; i <= n; ++i)
+			sort(edge[i].begin(), edge[i].end()), it[i] = edge[i].begin();
+		dfs(s == -1 ? 1 : 1);
+	}
+	else
+		cout << "No";
+	cout << endl;
+	return 0;
+}

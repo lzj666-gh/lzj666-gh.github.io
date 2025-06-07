@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 105679793
+//  题目ID: T201990
+#include<bits/stdc++.h> 
+using namespace std;
+int n,a[25][25],vit[25],jyh=0;
+int maxans=0;
+void lyt(int i,int ans){
+	for(int i1=1;i1<=n;i1++){
+		if(vit[i1]==0){
+			if(i==n){
+				maxans=max(maxans,ans+a[i][i1]);
+				return;
+			} 
+			i++;
+			vit[i1]=1; 
+			lyt(i,ans+a[i-1][i1]);
+			i--;
+			vit[i1]=0;
+		}
+	}
+	return;
+}
+int main(){
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		vit[i]=0;
+		for(int j=1;j<=n;j++){
+			cin>>a[i][j];
+		}
+	}
+	lyt(1,0);
+	cout<<maxans<<endl;
+	return 0;
+}

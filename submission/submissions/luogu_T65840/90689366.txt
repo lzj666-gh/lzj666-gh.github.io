@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 90689366
+//  题目ID: T65840
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int n,x,y;
+    cin>>n>>x>>y;
+    cout<<n-(y+x-1)/x;
+     
+ 
+    return 0;
+}

@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 115558615
+//  题目ID: T352164
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,k,a[100+10][100+10];
+inline long long hs(int x){
+	long long re=0;
+	for(int i=1;i<=n;i++){
+		re+=a[i][x];
+	}
+	return re;
+}
+inline long long ls(int x){
+	long long re=0;
+	for(int i=1;i<=m;i++){
+		re+=a[x][i];
+	}
+	return re;
+}
+inline void j(){
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			--a[i][j];
+		}
+	}
+}
+inline bool pd(){
+	int kk=0;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			if(hs(j)+ls(i)<=a[i][j]) kk++;
+		}
+	}
+	return kk>=k;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m>>k;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			cin>>a[i][j];
+		}
+	}
+	int s=0;
+	while(!pd()){
+		s++;
+		j();
+	}
+	cout<<s<<endl;
+    return 0;
+}

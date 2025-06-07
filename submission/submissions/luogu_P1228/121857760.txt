@@ -1,0 +1,55 @@
+//  OJ: 洛谷
+//  提交ID: 121857760
+//  题目ID: P1228
+#include<bits/stdc++.h>
+#define maxn 1000+10
+using namespace std;
+int n,x,y;
+void dfs(int start_x,int start_y,int square,int lost_x,int lost_y){
+	if(square==2){
+		if(lost_x==start_x&&lost_y==start_y) cout<<start_y+1<<' '<<start_x+1<<' '<<1<<endl;
+		if(lost_x==start_x&&lost_y==start_y+1) cout<<start_y<<' '<<start_x+1<<' '<<2<<endl;
+		if(lost_x==start_x+1&&lost_y==start_y) cout<<start_y+1<<' '<<start_x<<' '<<3<<endl;
+		if(lost_x==start_x+1&&lost_y==start_y+1) cout<<start_y<<' '<<start_x<<' '<<4<<endl;
+		return;
+	}
+	int line=(start_x+(square/2)),road=(start_y+(square/2));
+	if(lost_x<line){
+		if(lost_y<road){
+			cout<<line<<' '<<road<<' '<<1<<endl;
+			dfs(start_x,start_y,square/2,lost_x,lost_y);
+			dfs(line,start_y,square/2,line,road-1);
+			dfs(start_x,road,square/2,line-1,road);
+			dfs(line,road,square/2,line,road);
+		} 
+		else{
+			cout<<line<<' '<<road-1<<' '<<2<<endl;
+			dfs(start_x,start_y,square/2,line-1,road-1);
+			dfs(line,start_y,square/2,lost_x,lost_y);
+			dfs(start_x,road,square/2,line-1,road);
+			dfs(line,road,square/2,line,road);
+		} 
+	}
+	else{
+		if(lost_y<road){
+			cout<<line-1<<' '<<road<<' '<<3<<endl;
+			dfs(start_x,start_y,square/2,line-1,road-1);
+			dfs(line,start_y,square/2,line,road-1);
+			dfs(start_x,road,square/2,lost_x,lost_y);
+			dfs(line,road,square/2,line,road);
+		} 
+		else{
+			cout<<line-1<<' '<<road-1<<' '<<4<<endl;
+			dfs(start_x,start_y,square/2,line-1,road-1);
+			dfs(line,start_y,square/2,line,road-1);
+			dfs(start_x,road,square/2,line-1,road);
+			dfs(line,road,square/2,lost_x,lost_y);
+		} 
+	}
+}
+int main(){
+	cin>>n>>x>>y;
+	dfs(1,1,1<<n,x,y);
+	return 0;
+}
+

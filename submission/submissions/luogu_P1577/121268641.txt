@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 121268641
+//  题目ID: P1577
+#include<bits/stdc++.h>
+using namespace std;
+int n,k,a[100000+10];
+long long s;
+int longer(int x){
+	int cnt=0;
+	for(int i=1;i<=n;i++){
+		cnt+=a[i]/x;
+	}
+	return cnt;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>k;
+	for(int i=1;i<=n;i++){
+		double tmp;
+		cin>>tmp;
+		a[i]=tmp*100;
+		s+=a[i];
+	}
+	if(k>=s){
+		cout<<s/k<<endl;
+		return 0;
+	}
+	for(int i=s/k;i>=1;i--){
+		if(longer(i)>=k){
+			cout<<fixed<<setprecision(2)<<i/100.0<<endl;
+			return 0;
+		}
+	}
+	cout<<0<<endl;
+	return 0;
+}

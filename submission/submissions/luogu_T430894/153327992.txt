@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 153327992
+//  题目ID: T430894
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    ios_base::sync_with_stdio(false);
+	cout<<"被小 E 吃掉了。"<<endl; 
+	return 0;
+}

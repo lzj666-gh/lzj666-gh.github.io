@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 95283758
+//  题目ID: U212761
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	double a,b;
+	char ch;
+	cin>>a;
+	
+	while(cin>>ch>>b){
+		if(ch=='*') a=a*b;
+		if(ch=='-') a=a-b;
+		if(ch=='+') a=a+b;
+		if(ch=='/') a=a/b;
+	}
+	
+	printf("%.5lf",a);
+}

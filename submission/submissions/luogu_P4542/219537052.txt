@@ -1,0 +1,98 @@
+//  OJ: 洛谷
+//  提交ID: 219537052
+//  题目ID: P4542
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+constexpr ll inf = 0x3f3f3f3f3f3f3f3f;
+struct Edge {
+	int v, nxt;
+	ll w, c;
+	Edge(int v = 0, int w = 0, int c = 0, int nxt = 0):v(v), w(w), c(c), nxt(nxt) {}
+}edge[200000 + 10];
+int head[300 + 10], cur[300 + 10], idx = 1;
+void add(int u, int v, int w, int c) {
+	edge[++idx] = { v,w,c,head[u] };
+	head[u] = idx;
+}
+void addedge(int u, int v, int w, int c) {
+	add(u, v, w, c); add(v, u, 0, -c);
+}
+int val[300 + 10][300 + 10];
+int n, m, s, t, k;
+void floyd() {
+	for (int i = 0; i <= n; ++i) val[i][i] = 0;
+	for (int k = 0; k <= n; ++k)
+		for (int i = 0; i <= n; ++i)
+			for (int j = 0; j <= n; ++j)
+				if (k < max(i, j))
+					val[i][j] = min(val[i][j], val[i][k] + val[k][j]);
+}
+ll dis[300 + 10];
+bool vis[300 + 10];
+bool bfs() {
+	memset(vis, 0, sizeof vis);
+	queue<int>q;
+	for (int i = 0; i <= n; ++i) dis[i] = inf, cur[i] = head[i];
+	dis[s] = 0; q.push(s); vis[s] = 1;
+	bool flg = 0;
+	while (!q.empty()) {
+		int now = q.front(); q.pop(); vis[now] = 0;
+		flg |= now == t;
+		for (int i = head[now]; i; i = edge[i].nxt) {
+			int& v = edge[i].v;
+			if (dis[v] > dis[now] + edge[i].c && edge[i].w > 0) {
+				dis[v] = dis[now] + edge[i].c;
+				if (!vis[v]) q.push(v), vis[v] = 1;
+			}
+		}
+	}
+	return flg;
+}
+ll ans;
+int dfs(int x, ll flow) {
+	if (x == t) return flow;
+	vis[x] = 1;
+	int ret = 0;
+	for (int& i = cur[x]; i && flow; i = edge[i].nxt) {
+		int& v = edge[i].v;
+		if (!vis[v] && edge[i].w > 0 && dis[v] == dis[x] + edge[i].c) {
+			int k = dfs(v, min(flow, edge[i].w));
+			if (k == 0) dis[v] = inf;
+			edge[i].w -= k;
+			edge[i ^ 1].w += k;
+			ret += k; flow -= k; ans += k * edge[i].c;
+		}
+	}
+	vis[x] = 0;
+	return ret;
+}
+int Dinic() {
+	while (bfs()) dfs(s, inf);
+	return ans;
+}
+signed main() {
+//	freopen("pika.in", "r", stdin);
+//	freopen("pika.out", "w", stdout);
+	memset(val, 0x3f, sizeof(val));
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> k;
+	for (int i = 1, u, v, w; i <= m; i++) {
+		cin >> u >> v >> w;
+		val[u][v] = val[v][u] = min(val[u][v], w);
+	}
+	floyd();
+	s = n + n + 1; t = s + 1;
+	for (int i = 0; i <= n; i++) {
+		addedge(i + n, t, 1, 0);
+		if (i) addedge(s, i, 1, 0);
+		else addedge(s, 0, k, 0);
+	}
+	for (int i = 0; i <= n; i++)
+		for (int j = i + 1; j <= n; j++)
+			if (val[i][j] != inf)
+				addedge(i, j + n, 1, val[i][j]);
+	n = t;
+	cout << Dinic() << endl;
+	return 0;
+}

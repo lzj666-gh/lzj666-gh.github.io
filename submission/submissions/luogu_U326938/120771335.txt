@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 120771335
+//  题目ID: U326938
+#include<bits/stdc++.h>
+#define fori(a,b) for(register int i=a;i<=b;++i)
+using namespace std;
+inline int read(){register char c=cin.get();register int x=0,s=1;while((c<48)|(c>58)){if(c=='-')s=-1;c=cin.get();}while((c>=48)&(c<=58)){x=(x<<3)+(x<<1)+(c^48);c=cin.get();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+48);}
+int n,xb[1000000],yb[1000000],xe[1000000],ye[1000000],x,y;
+int main(){
+	ios_base::sync_with_stdio(false);
+	n=read();
+	fori(1,n){
+		xb[i]=read();
+		yb[i]=read();
+		xe[i]=read();
+		ye[i]=read();
+	}
+	x=read(),y=read();
+	fori(1,n){
+		int a=xb[i],b=yb[i],c=xe[i],d=ye[i];
+		int tmp1=(a-c),tmp2=(b-d),tmp3=(x-a),tmp4=(y-b),tmp5=(x-c),tmp6=(y-d);
+		if(sqrtf(tmp1*tmp1+tmp2*tmp2)==sqrtf(tmp3*tmp3+tmp4*tmp4)+sqrtf(tmp5*tmp5+tmp6*tmp6)){
+			cout<<"NO"<<endl;
+			return 0;
+		}
+	}
+	cout<<"YES"<<endl;
+	return 0;
+}

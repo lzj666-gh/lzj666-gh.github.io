@@ -1,0 +1,57 @@
+//  OJ: 洛谷
+//  提交ID: 206268962
+//  题目ID: P3768
+#include<bits/stdc++.h>
+#include<unordered_map>
+#define int ll
+using namespace std;
+using ll = long long;
+constexpr int N = 4700000;
+ll ssum[N + 10], sum[N + 10], n, p;
+unordered_map<int, ll>Sum;
+inline ll Sumans(int n) {
+	if (n <= N) return ssum[n];
+	if (Sum[n]) return Sum[n];
+	ll ret = n * (n + 1) / 2 % p;
+	ret = ret * ret % p;
+	for (int l = 2, r; l <= n; l = r + 1)
+		r = n / (n / l),
+		ret -= (sum[r] - sum[l - 1]) * Sumans(n / l) % p,
+		ret = (ret % p + p) % p;
+	return Sum[n] = ret;
+}
+vector<int>prm;
+bool vis[N + 10];
+int phi[N + 10];
+void iniit() {
+	for (int i = 1; i <= N; ++i)
+		sum[i] = (sum[i - 1] + i * i % p) % p;
+	ssum[1] = phi[1] = 1;
+	for (int i = 2; i <= N; i++) {
+		if (!vis[i]) {
+			prm.push_back(i);
+			phi[i] = i - 1;
+		}
+		for (int v : prm) {
+			if (i * v > N) break;
+			vis[i * v] = true;
+			if (i % v == 0) {
+				phi[i * v] = phi[i] * v;
+				break;
+			}
+			phi[i * v] = phi[i] * phi[v];
+		}
+		ssum[i] = (ssum[i - 1] + i * phi[i] % p * i % p) % p;
+	}
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> p >> n;
+	iniit();
+	cout << Sumans(n) << endl;
+	return 0;
+}
+/*
+1 2
+2 8
+*/

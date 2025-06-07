@@ -1,0 +1,57 @@
+//  OJ: 洛谷
+//  提交ID: 116258584
+//  题目ID: P3945
+#include <bits/stdc++.h>
+#define G 6.67408e-11
+//重力加速度 
+using namespace std;
+
+const double t0=0.01;//单位时间 
+const int MAXN=30+10;//最大值 
+
+int n;//天体个数 
+double tt;//时间 
+
+struct stars{
+	double x,y,z;//位置 
+	double xv,yv,zv;//三个方向上的速度
+	double nowx,nowy,nowz;//现在的速度改变量 
+	double changex,changey,changez;//计算时的改变量
+	double tmp;
+	double mass;//质量 
+}pt,m[MAXN];
+
+int main(){
+	cin>>n>>tt;
+	for(int i=1;i<=n;i++){
+		cin>>m[i].x>>m[i].y>>m[i].z;//现在的位置 
+		cin>>m[i].mass;//质量 
+		cin>>m[i].xv>>m[i].yv>>m[i].zv;
+	}
+	while(tt>0){
+		tt-=t0;
+		for(int i=1;i<=n;i++){
+			m[i].nowx=m[i].nowy=m[i].nowz=0;
+			for(int j=1;j<=n;j++){
+				if(i!=j){
+					m[i].changex=m[j].x-m[i].x; m[i].changey=m[j].y-m[i].y; m[i].changez=m[j].z-m[i].z;
+					//三个方向上的改变量 
+					m[i].tmp=sqrt(m[i].changex*m[i].changex + m[i].changey*m[i].changey + m[i].changez*m[i].changez);
+					
+					m[i].nowx += m[j].mass*G/(m[i].tmp*m[i].tmp)/*距离*/ * m[i].changex/(m[i].tmp);
+					m[i].nowy += m[j].mass*G/(m[i].tmp*m[i].tmp)/*距离*/ * m[i].changey/(m[i].tmp);
+					m[i].nowz += m[j].mass*G/(m[i].tmp*m[i].tmp)/*距离*/ * m[i].changez/(m[i].tmp);
+					//引力和距离平方成反比,再乘一个change/tmp
+				}
+			}
+		}
+		for(int i=1;i<=n;i++){
+			m[i].x+=t0*(m[i].xv+=t0*m[i].nowx);
+			m[i].y+=t0*(m[i].yv+=t0*m[i].nowy);
+			m[i].z+=t0*(m[i].zv+=t0*m[i].nowz);
+			//单位时间内的改变量 
+		}
+	}
+	for(int i=1;i<=n;i++) printf("%.12lf %.12lf %.12lf\n",m[i].x,m[i].y,m[i].z);
+	return 0;
+}

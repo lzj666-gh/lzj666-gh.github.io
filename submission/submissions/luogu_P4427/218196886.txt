@@ -1,0 +1,54 @@
+//  OJ: 洛谷
+//  提交ID: 218196886
+//  题目ID: P4427
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 300000 + 2, M = 600000 + 2, B = 20, K = 50 + 3, mod = 998244353;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx, f[N][B], dep[N], ans[N][K];
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+void dfs(int x, int fa) {
+	dep[x] = dep[fa] + 1;
+	f[x][0] = fa;
+	for (int i = 1; i < B; ++i) f[x][i] = f[f[x][i - 1]][i - 1];
+	ans[x][0] = 1;
+	for (int i = 1; i < K; ++i)
+		ans[x][i] = (1ll * ans[x][i - 1] * dep[x]) % mod;
+	for (int k = 0; k < K; ++k)
+		ans[x][k] = (ans[x][k] + ans[fa][k]) % mod;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs(edge[i].v, x);
+}
+int LCA(int x, int y) {
+	if (dep[x] < dep[y]) swap(x, y);
+	int cur = dep[x] - dep[y];
+	for (int i = 0; i < B; ++i)
+		if ((1 << i) & cur)
+			x = f[x][i];
+	if (x == y) return x;
+	for (int i = B - 1; i >= 0; --i)
+		if (f[x][i] ^ f[y][i])
+			x = f[x][i], y = f[y][i];
+	return f[x][0];
+}
+int n, m;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1, x, y; i < n; ++i) cin >> x >> y, add(x, y), add(y, x);
+	dep[0] = -1; dfs(1, 0);
+	cin >> m;
+	while (m--) {
+		int x, y, z;
+		cin >> x >> y >> z;
+		int l = LCA(x, y);
+		cout << (((((ans[x][z] + ans[y][z]) % mod - ans[l][z]) % mod - ans[f[l][0]][z]) % mod + mod) % mod) << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 128104614
+//  题目ID: P7072
+#include<bits/stdc++.h>
+using namespace std;
+int n,w;
+int a[100000+10];
+main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>w;
+	for(int i=1;i<=n;++i){
+		int p=i*w/100>1?i*w/100:1;
+		cin>>a[i];
+		for(int j=i-1;j>=1;--j) if(a[j]>a[j+1]) break; else swap(a[j],a[j+1]);
+//		cerr<<i<<" : p: "<<p;
+//		for(int j=1;j<=i;++j) cerr<<" a["<<j<<"] : "<<a[j];
+//		cerr<<endl;
+		cout<<a[p]<<' ';
+	}
+	cout<<endl;
+	return 0;
+} 

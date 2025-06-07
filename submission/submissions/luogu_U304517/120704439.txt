@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 120704439
+//  题目ID: U304517
+#include<bits/stdc++.h>
+#define maxn 1114514
+using namespace std;
+int n,l[maxn],r[maxn],m,k;
+bool b[maxn];
+inline int read(){char c=getchar();int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=x*10+c-'0';c=getchar();}return x*s;}
+int main(){
+	n=read();
+	m=read();
+	k=read();
+	for(int i=1;i<=m;++i) r[i]=read(),l[i]=read();
+	for(int i=1;i<=k;++i){
+		b[read()]=true;
+	}
+	for(int i=1;i<=m;++i){
+		if(!(b[r[i]]|b[l[i]])){
+			putchar('y');
+			putchar('e');
+			putchar('s');
+			return 0;
+		}
+	}
+	putchar('n');
+	putchar('o');
+	return 0;
+}

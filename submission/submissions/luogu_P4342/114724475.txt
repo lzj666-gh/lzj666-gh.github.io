@@ -1,0 +1,57 @@
+//  OJ: 洛谷
+//  提交ID: 114724475
+//  题目ID: P4342
+#include<bits/stdc++.h>
+#define inf 0x3f3f3f3f
+int n,ans=-inf,a[100+1000],dp[150+100][150+100],dp2[150+100][150+100];
+char c[100+100];
+int max(int x,int y){
+	return x>y?x:y;
+}
+int min(int x,int y){
+	return x<y?x:y;
+}
+int maxx(int a,int b,int c,int d,int e){
+	return max(a,max(b,max(c,max(d,e))));
+}
+int minn(int a,int b,int c,int d,int e){
+	return min(a,min(b,min(c,min(d,e))));
+}
+int pow(int a,int b){
+	if(b==0) return 1;
+	return pow(a,b-1)*a;
+}
+int main(){
+	scanf("%d\n",&n);
+	for(int i=1;i<=n;i++){
+		scanf("%c %d",&c[i],&a[i]);getchar();
+		a[n+i]=a[i];c[n+i]=c[i];
+	}
+	int nn=pow(2,n);
+	for(int i=1;i<=nn;i++){
+		for(int j=1;j<=nn;j++){
+			dp[i][j]=-inf,dp2[i][j]=inf;
+		}
+	}
+	for(int i=1;i<=nn;i++)dp[i][i]=dp2[i][i]=a[i];
+	for(int len=2;len<=n;len++){
+		for(int j=len;j<=nn;j++){
+			int i=j-len+1;
+			for(int k=i;k<j;k++){
+				if(c[k+1]=='x'){
+					dp[i][j]=maxx(dp[i][j],dp[i][k]*dp[k+1][j],dp2[i][k]*dp2[k+1][j],dp[i][k]*dp2[k+1][j],dp2[i][k]*dp[k+1][j]);
+					dp2[i][j]=minn(dp2[i][j],dp[i][k]*dp[k+1][j],dp2[i][k]*dp2[k+1][j],dp[i][k]*dp2[k+1][j],dp2[i][k]*dp[k+1][j]);
+				}
+				else{
+					dp[i][j]=max(dp[i][j],dp[i][k]+dp[k+1][j]);
+					dp2[i][j]=min(dp2[i][j],dp2[i][k]+dp2[k+1][j]);
+				}
+			}
+		}
+	}
+	for(int i=1;i<=n;i++) ans=max(ans,dp[i][i+n-1]);
+	printf("%d\n",ans);
+	for(int i=1;i<=n;i++) if(dp[i][i+n-1]==ans) printf("%d ",i);
+	return 0;
+}
+

@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 136169260
+//  题目ID: CF1023B
+#include<bits/stdc++.h>
+using namespace std;
+long long n,k;
+long long cnt;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>k;
+	for(int i=1;i<=n;++i) for(int j=i+1;j<=n;++j) if(i+j==k) ++cnt;
+	cout<<cnt<<endl;
+	cerr<<"I want pingce";
+	cerr<<"I want pingce";
+	cerr<<"I want pingce";
+	return 0;
+}

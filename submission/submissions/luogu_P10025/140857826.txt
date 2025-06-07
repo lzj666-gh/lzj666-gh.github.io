@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 140857826
+//  题目ID: P10025
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,k;
+vector<int>x,y;
+map<pair<int,int>,bool>mp;
+long long anss;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m>>k;
+	for(int i=1,xx,yx;i<=k;++i){
+		cin>>xx>>yx;
+		mp[{xx,yx}]=true;
+		x.push_back(xx);
+		y.push_back(yx);
+	}
+	for(int i=1;i<=n;++i){
+		for(int j=1;j<=m;++j){
+			long long ans=0;
+			bool c=1;
+			for(int kk=0;kk<k;++kk){
+				ans+=abs(x[kk]-i)+abs(y[kk]-j);
+				if(x[kk]==i&&y[kk]==j) {
+					c=0;
+					break;
+				}
+			}
+			if(c) anss=max(ans,anss);
+		}
+	}
+	cout<<anss<<endl;
+	return 0;
+}

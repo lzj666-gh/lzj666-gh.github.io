@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 101579375
+//  题目ID: P2082
+#include<bits/stdc++.h>
+using namespace std;
+struct qj{
+	long long st,ov;
+}a[100000+10];
+int n;
+long long over=0,ans=0;
+bool ikun(qj a1,qj a2){
+	if(a1.st==a2.st) return a1.ov<a2.ov;
+	else return a1.st<a2.st;
+}
+int main(){
+	cin>>n;
+	for(int i=0;i<n;i++){
+		scanf("%lld%lld",&a[i].st,&a[i].ov);
+	}
+	sort(&a[0],&a[n],ikun);
+	for(int i=0;i<n;i++){
+		if(a[i].st>over){
+			ans+=a[i].ov-a[i].st+1;
+			over=a[i].ov;
+		}
+		else{
+			if(a[i].ov>over){
+				ans+=a[i].ov-over;
+				over=a[i].ov;
+			}
+		}
+	}
+	cout<<ans<<endl;
+	return 0;
+}

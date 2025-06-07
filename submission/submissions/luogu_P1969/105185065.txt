@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 105185065
+//  题目ID: P1969
+#include<bits/stdc++.h>
+using namespace std;
+int n,h[100000+10],now[100000+10],cnt=0;
+int e=0;
+bool ok(){
+	for(int i=1;i<=n;i++){
+		if(now[i]!=h[i]) return false;
+	}
+	return true;
+}
+void dy(){
+	for(int i=1;i<=n;i++) cout<<now[i]<<" ";
+	cout<<ok()<<endl;
+	e++;
+	if(e>=10) exit(0);
+}
+int main(){
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++){
+		scanf("%d",&h[i]);
+	}
+	while(true){
+		for(int i=1;i<=n;i++){
+//			dy();
+			if(now[i]<h[i]){
+				cnt++;
+				int q=i;
+				while(now[++q]<h[q]);
+				for(int j=i;j<q;j++){
+					now[j]++;
+				}
+			}
+		}
+		if(ok()){
+			printf("%d",cnt);
+			return 0;
+		}
+	}
+}

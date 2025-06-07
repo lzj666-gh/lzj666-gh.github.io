@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 125794957
+//  题目ID: B3896
+#include<bits/stdc++.h>
+#define maxn 1000+10
+using namespace std;
+inline int read(){
+	register int x=0,s=1;
+	register char c=getchar();
+	if(c=='-'){
+		s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0'){
+		x=(x<<3)+(x<<1)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+}
+inline void write(auto x){
+	if(!x) return;
+	if(x<0) putchar('-'),x=~x+1;
+	write(x/10);
+	putchar(x%10+48);
+}
+int main(){
+	int n=read(),a=read(),k=read(),b=read();
+	if(n&1){
+		write(-1);
+		return 0;
+	}
+//	if(b*1.0/k>=a){
+//		write(a*n);
+//		return 0;
+//	}
+	n/=2;
+	write(max(n/k*b+n%k*a,(int)ceil(1.0*n/k)*b)*2);
+	return 0;
+}
+

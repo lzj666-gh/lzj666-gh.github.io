@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 211654116
+//  题目ID: T575392
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    cout<<"flag{268435456}"<<endl;
+}

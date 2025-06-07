@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 105199853
+//  题目ID: T201962
+#include<bits/stdc++.h>
+using namespace std;
+int n,ans=1,b[10000];
+void print(int k){
+	printf("%d.%d=",ans++,n);
+	for(int i=1;i<k;i++) printf("%d+",b[i]);
+	printf("%d\n",b[k]) ;
+}
+void dfs(int k,int x){
+	b[k]=x;
+	print(k);
+	for(int i=b[k-1];i<=x/2;i++){
+		b[k]=i;
+		dfs(k+1,x-i);
+	}
+}
+int main(){
+	scanf("%d",&n);
+	for(int i=1;i<=n/2;i++){
+		b[1]=i;
+		dfs(2,n-i);
+	}
+}

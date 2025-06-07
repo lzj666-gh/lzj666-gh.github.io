@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 110432222
+//  题目ID: P1331
+#include<bits/stdc++.h>
+using namespace std;
+char a[1020][1020];
+int r,c,s=1;
+bool b[1020][1020];
+void dy(){
+//	for(int i=0;i<r;i++){
+//		cout<<a[i]<<endl;
+//	}
+	for(int i=0;i<r;i++){
+		for(int j=0;j<c;j++){
+			cout<<b[i][j];
+		}
+		cout<<endl;
+	}
+}
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>r>>c;
+	for(int i=0;i<r;i++){
+		cin>>a[i];
+	}
+	for(int i=0;i<r;i++){
+		for(int j=0;j<c;j++){
+			cout<<i<<" "<<j<<endl;
+			if(a[i][j]=='.') continue;
+			if(b[i][j]==true) continue;
+			int r1=i-1,c1=j-1;
+			int ss=0;
+			while(a[++r1][j]=='#'&&r1>=0&&r1<r){
+				c1=j-1;
+				while(a[i][++c1]=='#'&&c1>=0&&c1<c);
+				if(s==0) s=c1;
+				else{
+					if(c1!=s){
+						cout<<"Bad placement."<<endl;
+//						dy(); 
+						return 0;
+					}
+				}
+			}
+			++s;
+		}
+	}
+	--s;
+//	dy();
+	cout<<"There are "<<s<<" ships."<<endl;
+	return 0;
+}

@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 140850440
+//  题目ID: P10026
+#include<bits/stdc++.h>
+using namespace std;
+int T;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>T;
+	while(T--){
+		int k,n;
+		cin>>k>>n;
+		if(n>pow(2,k)) cout<<"No\n";
+		else{
+			bool ca=1;
+			for(int i=1;i<=k;++i){
+				if(n==pow(2,i)-(k-i)){
+					cout<<"Yes\n",ca=0;
+					break;
+				}
+			}
+				if(ca) cout<<"No\n";
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 114288046
+//  题目ID: P2392
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    vector<int> s(4);
+    for (int i = 0; i < 4; i++) {
+        cin >> s[i];
+    }
+
+    vector<vector<int> > times(4);
+    for (int i = 0; i < 4; i++) {
+        int num;
+        for (int j = 0; j < s[i]; j++) {
+            cin >> num;
+            times[i].push_back(num);
+        }
+    }
+
+    const int maxTime = 60 * 4; // 最大时间为 60 分钟 * 4 道题目
+    vector<int> dp(maxTime + 1, maxTime); // 初始化 DP 数组为最大时间
+    dp[0] = 0;
+
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < s[i]; j++) {
+            int time = times[i][j];
+            for (int k = maxTime; k >= time; k--) {
+                dp[k] = min(dp[k], dp[k - time] + 1);
+            }
+        }
+    }
+
+    int minTime = maxTime;
+    for (int i = maxTime - 1; i >= 0; i--) {
+        if (dp[i] <= 4) { // 考虑只能同时计算两道题目的限制
+            minTime = i;
+            break;
+        }
+    }
+
+    cout << minTime+1 << endl;
+
+    return 0;
+}

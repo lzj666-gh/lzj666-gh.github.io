@@ -1,0 +1,62 @@
+//  OJ: 洛谷
+//  提交ID: 164545999
+//  题目ID: P4342
+#include<bits/stdc++.h>
+using namespace std;
+int n, f1[200 + 10][200 + 10], f2[200 + 10][200 + 10], ans[2];
+int* a;
+char* c;
+vector<int>anss;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	ans[0] = 0x3f3f3f3f;
+	a = new int[n + n + 3];
+	c = new char[n + n + 3];
+	for (int i = 1; i <= n; ++i) cin >> c[i] >> a[i];
+//	for (int i = 1; i <= n; ++i) cout << c[i] << ' ' << a[i] << endl;
+	for (int f = 1; f <= n; ++f) {
+		memset(f1, 0x3f, sizeof f1);
+		memset(f2, 0xcf, sizeof f2);
+		for (int i = 1; i <= n; ++i) f1[i][i] = f2[i][i] = a[i];
+		for (int l = 2; l <= n; ++l) 
+			for (int i = 1; i + l - 1 <= n; ++i) {
+#define j (i + l - 1)
+				for (int k = i; k < j; ++k) {
+					if (c[k+1] == 't') {
+						f1[i][j] = min(f1[i][j], f1[i][k] + f1[k + 1][j]);
+						f2[i][j] = max(f2[i][j], f2[i][k] + f2[k + 1][j]);
+					}
+					else {
+						f1[i][j] = 
+							min({ 
+							f1[i][j],
+							f1[i][k] * f1[k + 1][j],
+							f2[i][k] * f2[k + 1][j],
+							f1[i][k] * f2[k + 1][j],
+							f2[i][k] * f1[k + 1][j] });
+						f2[i][j] = 
+							max({ 
+							f2[i][j],
+							f1[i][k] * f1[k + 1][j],
+							f2[i][k] * f2[k + 1][j],
+							f1[i][k] * f2[k + 1][j],
+							f2[i][k] * f1[k + 1][j] });
+					}
+				}
+//				cout << i << ' ' << j << ' ' << f1[i][j] << ' ' << f2[i][j] << endl;
+			}
+		ans[0] = ans[1];
+		ans[1] = max(ans[1], f2[1][n]);
+		if (ans[0] ^ ans[1]) anss.clear();
+		a[n + 1] = a[1];
+		a = a + 1;
+		c[n + 1] = c[1];
+		c = c + 1;
+		if (ans[1] == f2[1][n]) anss.push_back(f);
+	}
+	cout << ans[1] << endl;
+	for (int jcy : anss) cout << jcy << ' ';
+	cout << endl;
+	return 0;
+}

@@ -1,0 +1,5 @@
+//  OJ: 洛谷
+//  提交ID: 127146153
+//  题目ID: U360166
+s = input().split()
+print(int(s[0]) + int(s[1]))

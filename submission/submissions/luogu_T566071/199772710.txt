@@ -1,0 +1,156 @@
+//  OJ: 洛谷
+//  提交ID: 199772710
+//  题目ID: T566071
+#include<bits/stdc++.h>
+using namespace std;
+int n, K;
+struct Seg_Tree {
+	struct RDS { //可撤销并查集
+		stack<int>stk;//被减数
+		stack<int>sizstk;//用于回溯
+		int fa[100000 + 10], siz[100000 + 10], ans;
+		RDS() {
+			memset(fa, 0, sizeof fa);
+			memset(siz, 0, sizeof siz);
+			ans = 0;
+		}
+		void clear(int sz) {
+			for (int i = 1; i <= sz; ++i)
+				fa[i] = i, siz[i] = 1;
+			ans = 0;
+		}
+		int find(int x) {
+			return fa[x] == x ? x : find(fa[x]);
+		}
+		static int C2(int k) {//计算贡献
+			return k * (k - 1) / 2;
+		}
+		void merge(int x, int y) {
+			x = find(x); y = find(y);
+			if (x == y) return;
+			if (siz[x] < siz[y]) swap(x, y);
+			ans -= C2(siz[x]); ans -= C2(siz[y]);
+			siz[x] += siz[y];
+			ans += C2(siz[x]);
+			fa[y] = x; stk.push(y);
+		}
+		void record() { //记录状态
+			sizstk.push(stk.size());
+		}
+		void reset() {//我呼唤你，欧洛尼斯，掀开记忆的帷幕，再度激起往昔的涟漪！
+			while (stk.size() != sizstk.top()) {
+				int nw = stk.top(); stk.pop();
+				ans -= C2(siz[fa[nw]]);
+				siz[fa[nw]] -= siz[nw];
+				ans += C2(siz[fa[nw]]); ans += C2(siz[nw]);
+				fa[nw] = nw;
+			}
+			sizstk.pop();
+		}
+		int query() { return ans; }
+	}s;
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define ls(p) lc(p), l, l + r >> 1
+#define rs(p) rc(p), (l + r >> 1) + 1, r
+	int ans;
+	struct Node {
+		struct Edge {
+			int u, v;
+			Edge(int l, int r) :u(l), v(r) {}
+		};
+		vector<Edge>v;
+	}tree[100005 << 2];
+	Seg_Tree() {
+		memset(tree, 0, sizeof tree);
+		ans = 0;
+	}
+	void clear(int p, int l, int r) {
+		tree[p].v.clear();
+		if (l == r) return;
+		clear(ls(p));
+		clear(rs(p));
+	}
+	void clear(int siz) {
+		ans = 0, s.clear(siz);
+		clear(1, 1, siz);
+	}
+	void add(int p, int l, int r, int L, int R, int u, int v) {
+		if (L > R) return; 
+		if (R < l || r < L) return;
+		if (L <= l && r <= R) {
+			cerr << tree[p].v.size() << endl;
+			tree[p].v.push_back(Seg_Tree::Node::Edge(u, v));
+			return;
+		}
+		add(ls(p), L, R, u, v);
+		add(rs(p), L, R, u, v);
+		return;
+	}
+	void query(int p, int l, int r) {
+		s.record();
+		for (auto& cbc : tree[p].v)
+			s.merge(cbc.u, cbc.v);
+		if (l == r) ans += s.query();
+		else query(ls(p)), query(rs(p));
+		s.reset();
+	}
+	int query(int siz) {
+		query(1, 1, siz);
+		return ans;
+	}
+}t;
+struct Edeg {
+	int v, w, nxt;
+}edge[200000 + 10];
+int head[100000 + 10], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> K;
+	for (int i = 1, a, b, c; i < n; ++i)
+		cin >> a >> b >> c,
+		add(a, b, c),
+		add(b, a, c);
+
+	int ans = 0;
+
+	t.clear(n);
+	for (int i = 1; i <= n; ++i)
+		for (int j = head[i]; j; j = edge[j].nxt)
+			t.add(1, 1, n, edge[j].w, min(edge[j].w + K, n), i, edge[j].v);
+	ans += t.query(n);
+
+	t.clear(n);
+	for (int i = 1; i <= n; ++i)
+		for (int j = head[i]; j; j = edge[j].nxt)
+			t.add(1, 1, n, edge[j].w, min(edge[j].w + K - 1, n), i, edge[j].v);
+	ans -= t.query(n);
+
+	t.clear(n);
+	for (int i = 1; i <= n; ++i)
+		for (int j = head[i]; j; j = edge[j].nxt)
+			t.add(1, 1, n, edge[j].w + 1, min(edge[j].w + K, n), i, edge[j].v);
+	ans -= t.query(n);
+
+	if (K ^ 1) {
+		t.clear(n);
+		for (int i = 1; i <= n; ++i)
+			for (int j = head[i]; j; j = edge[j].nxt)
+				t.add(1, 1, n, edge[j].w + 1, min(edge[j].w + K - 1, n), i, edge[j].v);
+		ans += t.query(n);
+	}
+
+	cout << ans << endl;
+	return 0;
+}
+/*
+5 2
+2 1 1
+3 1 4
+4 3 5
+5 4 3
+*/

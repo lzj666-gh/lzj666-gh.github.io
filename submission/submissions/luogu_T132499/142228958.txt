@@ -1,0 +1,66 @@
+//  OJ: 洛谷
+//  提交ID: 142228958
+//  题目ID: T132499
+#include<bits/stdc++.h>
+using namespace std;
+char g[500+10][500+10];
+int n,m,d[500+10][500+10][3],sx,sy,slife,ex,ey,dx[4]={1,-1,0,0},dy[4]={0,0,-1,1};
+int no_dx[3][4]={{-2,1,0,0},{-1,1,0,0},{-1,2,0,0}},no_dy[3][4]={{0,0,-2,1},{0,0,-1,2},{0,0,-1,1}},no_dlife[3][4]={{2,2,1,1},{1,1,0,0},{0,0,2,2}};
+struct node{
+	int x,y,life;
+	node(int x,int y,int life):x(x),y(y),life(life){} 
+};
+bool ok(int fx,int fy,int life){
+	if((fx<0||fy<0||fx>=n||fy>=m)||g[fx][fy]=='#') return false;
+	if(life==0) return g[fx][fy]!='E';
+	else if(life==1) return (fx<0||fy+1<0||fx>=n||fy+1>=m)&&g[fx][fy+1]!='#';
+	else return (fx+1<0||fy<0||fx+1>=n||fy>=m)&&g[fx+1][fy]!='#';
+}
+void bfs(){
+	queue<node>q;
+	q.push(node(sx,sy,slife));
+	d[sx][sy][slife]=0;
+	while(q.size()){
+		node t=q.front();
+		q.pop();
+		for(int i=0;i<4;i++){
+			int fy=no_dy[t.life][i]+t.y;
+			int flife=no_dlife[t.life][i];
+			if(ok(no_dx[t.life][i]+t.x,no_dy[t.life][i]+t.y,flife)&&d[no_dx[t.life][i]+t.x][no_dy[t.life][i]+t.y][flife]==-1){
+				d[no_dx[t.life][i]+t.x][no_dy[t.life][i]+t.y][flife]=d[t.x][t.y][t.life]+1;
+				q.push(node(no_dx[t.life][i]+t.x,no_dy[t.life][i]+t.y,flife));
+				if(flife==0&&no_dx[t.life][i]+t.x==ex&&no_dy[t.life][i]+t.y==ey) return void(printf("%d\n",d[ex][ey][0]));
+			}
+	 	} 
+	} 
+	printf("Impossible\n");
+}
+int main(){
+	while(scanf("%d%d",&n,&m),n){
+		for(int i=0;i<n;i++) scanf("%s",g[i]);
+		sx=sy=ex=ey=slife=0;
+		for(int i=0;i<n;i++){ 
+			for(int j=0;j<m;j++){
+				if(g[i][j]=='X'){
+					sx=i;sy=j;
+					for(int k=0;k<4;k++){
+						int fx=i+dx[k];
+						int fy=j+dy[k];
+						if((fx<0||fy<0||fx>=n||fy>=m)&&g[fx][fy]=='X'){
+							sx=min(i,fx);
+							sy=min(j,fy);
+							slife=k<2?2:1;
+							break;
+						} 
+					} 
+				} else if(g[i][j]=='O'){
+					ex=i,ey=j;
+				}
+			} 
+		}
+		memset(d,-1,sizeof d);
+		bfs();	
+	}
+	
+	return 0;
+}

@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 112735097
+//  题目ID: U114514
+#include <bits/stdc++.h>
+using namespace std;
+int a[6]={1,1,4,5,1,4},b;
+int main(){
+	while(cin>>b) cout<<a[b-1]<<endl;
+	return 0;
+}

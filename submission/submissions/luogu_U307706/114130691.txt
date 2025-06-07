@@ -1,0 +1,54 @@
+//  OJ: 洛谷
+//  提交ID: 114130691
+//  题目ID: U307706
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a=(getchar()-'0')*100+(getchar()-'0')*10+(getchar()-'0');
+	int c=getchar();
+	if(c!=EOF&&c!='\n'&&c!='\r'){
+		cout<<"记错了！\n";
+	}
+	else if(a==100){cout<<"【入门1】顺序结构	\n";}
+	else if(a==101){cout<<"【入门2】分支结构\n";}
+	else if(a==102){cout<<"【入门3】循环结构\n";}
+	else if(a==103){cout<<"【入门4】数组\n";}
+	else if(a==104){cout<<"【入门5】字符串\n";}
+	else if(a==105){cout<<"【入门6】函数与结构体\n";}
+	else if(a==106){cout<<"【算法1-1】模拟与高精度\n";}
+	else if(a==107){cout<<"【算法1-2】排序\n";}
+	else if(a==108){cout<<"【算法1-3】暴力枚举\n";}
+	else if(a==109){cout<<"【算法1-4】递推与递归\n";}
+	else if(a==110){cout<<"【算法1-5】贪心\n";}
+	else if(a==111){cout<<"【算法1-6】二分查找与二分答案\n";}
+	else if(a==112){cout<<"【算法1-7】搜索\n";}
+	else if(a==113){cout<<"【数据结构1-1】线性表\n";}
+	else if(a==114){cout<<"【数据结构1-2】二叉树\n";}
+	else if(a==115){cout<<"【数据结构1-3】集合\n";}
+	else if(a==116){cout<<"【数据结构1-4】图的基本应用\n";}
+	else if(a==117){cout<<"【数学1】基础数学问题\n";}
+	else if(a==200){cout<<"【算法2-1】前缀和、差分与离散化\n";}
+	else if(a==201){cout<<"【算法2-2】常见优化技巧\n";}
+	else if(a==202){cout<<"【算法2-3】分治与倍增\n";}
+	else if(a==203){cout<<"【算法2-4】字符串\n";}
+	else if(a==204){cout<<"【算法2-5】进阶搜索\n";}
+	else if(a==205){cout<<"【数据结构2-1】二叉堆与树状数组\n";}
+	else if(a==206){cout<<"【数据结构2-2】线段树\n";}
+	else if(a==207){cout<<"【图论2-1】树\n";}
+	else if(a==208){cout<<"【图论2-2】最短路\n";}
+	else if(a==209){cout<<"【图论2-3】最小生成树\n";}
+	else if(a==210){cout<<"【图论2-4】连通性问题\n";}
+	else if(a==211){cout<<"【动态规划1】动态规划的引入\n";}
+	else if(a==212){cout<<"【动态规划2】线性状态动态规划\n";}
+	else if(a==213){cout<<"【动态规划3】区间与环形动态规划\n";}
+	else if(a==214){cout<<"【动态规划4】树与图上的动态规划\n";}
+	else if(a==215){cout<<"【动态规划5】状态压缩动态规划\n";}
+	else if(a==216){cout<<"【数学2-1】进阶数论\n";}
+	else if(a==217){cout<<"【数学2-2】组合数学与计数\n";}
+	else if(a==218){cout<<"【数学2-3】概率与统计\n";}
+	else if(a==219){cout<<"【数学2-4】基础线性代数\n";}
+	else if(a==221){cout<<"【数据结构2-3】线段树的进阶用法\n";}
+	else if(a==225){cout<<"【动态规划6】动态规划的设计与优化\n";}
+	cout<<flush;
+	return 0;
+}

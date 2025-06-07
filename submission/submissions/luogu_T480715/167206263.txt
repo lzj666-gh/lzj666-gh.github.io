@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 167206263
+//  题目ID: T480715
+#include<bits/stdc++.h>
+using namespace std;
+long long a,b,c;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>a>>b;
+	a/=10,b*=10;
+	cout<<a<<' '<<b<<' '<<10000-a-b<<endl;
+	return 0;
+}

@@ -1,0 +1,15 @@
+//  OJ: 洛谷
+//  提交ID: 145813779
+//  题目ID: T230091
+#include<bits/stdc++.h>
+using namespace std;
+long long a,b;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>a>>b;
+	for(long long i=1;;++i)if(a*i%b==1){
+		cout<<i<<endl;
+		return 0;
+	}
+	return 0;
+}

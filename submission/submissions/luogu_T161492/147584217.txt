@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 147584217
+//  题目ID: T161492
+#include<bits/stdc++.h>
+using namespace std;
+bool vis[12][12],reall[12][12];
+void dfs(int x,int y){
+	if(x>11||x<0||y>11||y<0) return;
+	if(vis[x][y]||reall[x][y]) return;
+	vis[x][y]=1;
+	dfs(x+1,y);
+	dfs(x-1,y);
+	dfs(x,y+1);
+	dfs(x,y-1);
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	int tmp;
+	for(int i=1;i<=10;++i)
+		for(int j=1;j<=10;++j)
+			cin>>tmp,reall[i][j]=tmp;
+	dfs(0,0);
+	tmp=0;
+	for(int i=1;i<=10;++i)
+		for(int j=1;j<=10;++j)
+			if(!reall[i][j])
+				tmp+=!vis[i][j];
+	cout<<tmp<<endl;
+}

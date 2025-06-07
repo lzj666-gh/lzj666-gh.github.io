@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 147930586
+//  题目ID: P4035
+#include<bits/stdc++.h>
+#define eps 1e-8
+using namespace std;
+int n;
+double a[10 + 5][10 + 5], b[10 + 5][10 + 5];
+int work() {
+	for (int i = 1; i <= n; ++i) {
+		for (int j = i; j <= n; ++j)
+			if (a[j][i] > eps) {
+				swap(a[i], a[j]);
+				break;
+			}
+		if (a[i][i] == 0) return 1;
+		for (int j = n + 1; j >= i; --j)
+			a[i][j] /= a[i][i];
+		for (int j = 1; j <= n; ++j)
+			if (j != i)
+				for (int k = n + 1; k >= i; --k)
+					a[j][k] -= a[j][i] * a[i][k];
+	}
+	return 0;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n + 1; ++i)
+		for (int j = 1; j <= n; ++j)
+			cin >> b[i][j];
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= n; ++j) {
+			a[i][j] = b[i][j] - b[i + 1][j];
+			a[i][j] *= 2;
+		}
+	for (int i = 1; i <= n; ++i) 
+		for (int j = 1; j <= n; ++j) 
+			a[i][n + 1] += b[i][j] * b[i][j] - b[i + 1][j] * b[i + 1][j];
+	//for (int i = 1; i <= n; ++i, cout << endl)
+		//for (int j = 1; j <= n + 1; ++j)
+			//cout << a[i][j] << ' ';
+	work();
+	cout << fixed << setprecision(3);
+	for (int i = 1; i <= n; ++i)
+		cout << a[i][n + 1] << ' ';
+	return 0;
+}

@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 115720289
+//  题目ID: P9461
+#include<bits/stdc++.h>
+using namespace std;
+int a[1000000+10],n,ans;
+int c[1000000+10],maxl=-1;int ma=-1,re;
+vector <int> b;
+int bbb(int l,int r){
+//	cout<<l<<' '<<r<<endl;
+//	if(l>r) swap(l,r);
+	maxl=-1;
+	memset(c,0,sizeof(c));
+	for(int i=l;i<=r;++i){
+		++c[b[i]];
+		maxl=max(maxl,b[i]);
+	}
+	ma=-1;
+	for(int i=1;i<=maxl;++i){
+		if(c[i]>ma){
+			ma=c[i];
+			re=i;
+		}
+	}
+	return re;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n; 
+	b.push_back(0);
+	for(int i=1;i<=n;i++){
+		cin>>a[i];
+//		cout<<i<<endl;
+		for(int j=1;j<=a[i];j++){
+			b.push_back(j);
+		}
+	}
+	n=b.size()-1;
+	for(int i=1;i<=n;i++){
+//		cout<<i<<endl;
+		for(int j=i;j<=n;j++){
+			ans+=bbb(i,j);
+			ans%=998244353;
+		}
+	}
+	cout<<ans<<endl;
+    return 0;
+}

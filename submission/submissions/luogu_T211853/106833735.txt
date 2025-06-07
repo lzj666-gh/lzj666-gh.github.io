@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 106833735
+//  题目ID: T211853
+#include<bits/stdc++.h>
+using namespace std;
+int n,x;
+
+struct node{
+	int data;
+	node *next=NULL,*last=NULL;
+}*top=NULL;
+
+void cr(node *top,int x){
+	node *ne=new node;
+	ne->next=top->next;
+	ne->last=top;
+	top->next=ne;
+	ne->data=x;
+}
+
+void sc(node *top){
+	if(top->next!=NULL)top->next->last=top->last;
+	if(top->last!=NULL)top->last->next=top->next;
+	top=top->last;
+}
+
+int main(){
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++){
+		scanf("%d",&x) ;
+		if(x==1){
+			scanf("%d",&x);
+			if(top==NULL){
+				top=new node;
+				top->data=x;
+			}
+			else cr(top);
+		}
+		else if(x==2){
+			if(top!=NULL) sc(top);
+		}
+		else if(x==3) if(top!=NULL) top=top->data;
+		else if(x==4) if(top!=NULL) top=top->next;
+		else if(x==5){
+			
+		}
+	}
+}

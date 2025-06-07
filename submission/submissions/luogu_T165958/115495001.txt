@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 115495001
+//  题目ID: T165958
+#include<bits/stdc++.h>
+using namespace std;
+int n,m;
+struct node{
+	int l,r;
+}a[100000+10];
+bool b[100000+10];
+void dfs(int k,int len){
+	if(k==0) return;
+	if(a[k].l!=0) cout<<a[k].l<<' ';
+	if(a[k].r!=0) cout<<a[k].r<<' ';
+	dfs(a[k].l,len+1);
+	dfs(a[k].r,len+1);
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+	    int ii;
+	    cin>>ii;
+		cin>>a[ii].l>>a[ii].r;
+		b[a[ii].l]=true;
+		b[a[ii].l]=true;
+	}
+	for(int i=1;i<=n;i++){
+	    if(b[i]==false){
+	        cout<<i<<' ';
+	        dfs(i,0);
+	        return 0;
+	    }
+	}
+	return 0;
+}

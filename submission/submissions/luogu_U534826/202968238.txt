@@ -1,0 +1,68 @@
+//  OJ: 洛谷
+//  提交ID: 202968238
+//  题目ID: U534826
+#include<bits/stdc++.h>
+#define File "triangle"
+using namespace std;
+using ll = long long;
+namespace F__K_C_F {
+	void man() {
+		double k1, k2, k3, b1, b2, b3;
+		cin >> k1 >> b1 >> k2 >> b2 >> k3 >> b3;
+		double x1, x2, x3;
+		x1 = (b2 - b1) / (k1 - k2);
+		x2 = (b1 - b3) / (k3 - k1);
+		x3 = (b3 - b2) / (k2 - k3);
+		double h = abs(k1 * x1 + b1 - (k3 * x1 + b3));
+		cout << fixed << setprecision(3) << (h * (abs(x2 - x3)) / 2) << endl;
+	}
+}
+namespace _UC___C_ {
+	int n;
+	ll a[500], b[500];
+	vector<ll>v;
+	void mian() {
+		cin >> n;
+		for (int i = 1; i <= n; ++i) cin >> a[i];
+		for (int i = 1; i <= n; ++i) cin >> b[i];
+		sort(b + 1, b + n + 1);
+		for (int i = 1; i <= n; ++i)
+			for (int j = 1; j <= n; ++j)
+				v.push_back(a[i] + b[j]),
+				v.push_back(a[i] - b[j]);
+		sort(v.begin(), v.end());
+		v.erase(unique(v.begin(), v.end()), v.end());
+		ll cnt = 0; bool lst = 0; ll l = 0;
+		for (int j = 0; j < v.size(); ++j) {
+			ll& k = v[j];
+			sort(a + 1, a + n + 1, [&](const ll& a, const ll& b)->bool {return abs(a - k) < abs(b - k); });
+			bool flg = 1;
+			for (int i = 1; i <= n; ++i) if (abs(a[i] - k) > b[i]) { flg = 0; break; }
+			if (flg) {
+				if (!lst)
+					l = k;
+			}
+			else
+				if (lst)
+					cnt += v[j - 1] - l + 1;
+			lst = flg;
+		}
+		cout << cnt << endl;
+	}
+}
+int main() {
+	// freopen(File".in", "r", stdin);
+	// freopen(File".out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	F__K_C_F::man();
+	_UC___C_::mian();
+	return 0;
+}
+/*
+1 2
+ 3 4
+ -2 3
+ 4
+ -1 0 1 2
+ 1 2 4 5
+*/

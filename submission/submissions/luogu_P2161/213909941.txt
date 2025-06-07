@@ -1,0 +1,92 @@
+//  OJ: 洛谷
+//  提交ID: 213909941
+//  题目ID: P2161
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+namespace IO {
+	const int SIZE = (1 << 20) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1;
+	char _st[55];
+	int _qr = 0;
+	inline char gc() {
+		return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++);
+	}
+	inline void qread() {}
+	template<class T1, class ...T2>
+	inline void qread(T1& IEE, T2&... ls) {
+		if (is_same<T1, char>::value) {
+			IEE = gc();
+			qread(ls...);
+			return;
+		}
+		T1 __ = 0, ___ = 1;
+		char ch;
+		while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___;
+		do {
+			__ = (__ << 1) + (__ << 3) + (ch ^ 48);
+		} while (isdigit(ch = gc()));
+		__ *= ___;
+		IEE = __;
+		qread(ls...);
+		return;
+	}
+	inline void flush() {
+		fwrite(obuf, 1, oS - obuf, stdout);
+		oS = obuf;
+		return;
+	}
+	inline void putc_(char _x) {
+		*oS++ = _x;
+		if (oS == oT) flush();
+	}
+	inline void qwrite() {}
+	template<class T1, class ...T2>
+	inline void qwrite(T1 IEE, T2... ls) {
+		if (is_same<T1, char>::value) {
+			putc_(IEE);
+			qwrite(ls...);
+			return;
+		}
+		if (!IEE) putc_('0');
+		while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10;
+		while (_qr) putc_(_st[_qr--]);
+		qwrite(ls...);
+		return;
+	}
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using IO::qread;
+using IO::qwrite;
+struct Node {
+	int l, r;
+	friend bool operator<(Node a, Node b) {
+		return a.r < b.l;
+	}
+};
+set<Node>cbc;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n;
+	qread(n);
+	while (n--) {
+		int l, r; char opt;
+		qread(opt);
+		if (opt == 'A') {
+			qread(l, r);
+			auto it = cbc.find(Node{ l,r });
+			int tot = 0;
+			while (it != cbc.end()) {
+				tot++;
+				cbc.erase(it);
+				it = cbc.find(Node{ l,r });
+			}
+			cbc.emplace(Node{ l, r });
+			qwrite(tot, '\n');
+		}
+		else
+			qwrite(cbc.size(), '\n');
+	}
+	return 0;
+}

@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 122809351
+//  题目ID: T372664
+#include<bits/stdc++.h>
+#define f_u(a,b) for(register int i=a;i<=b;++i)
+#define f_d(a,b) for(register int i=a;i>=b;--i)
+#define F_u(a,b) for(register int j=a;j<=b;++j)
+#define F_d(a,b) for(register int j=a;j>=b;--j)
+using namespace std;
+inline int read(){register char c=getchar();register int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=(x<<3)+(x<<1)+(c^48);c=getchar();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+int n,ans,now_find;
+vector<int>a;vector<bool>b;
+inline bool ok(){
+	f_u(1,n) if(a[i]==0&&b[i]){
+//		cout<<i<<endl;
+		return true;
+	}
+	return false;
+}
+int main(){
+//	freopen("split.in","r",stdin),freopen("split.out","w",stdout);
+	n=read();
+	a.push_back(0),b.push_back(true);
+	f_u(1,n) a.push_back(read()),b.push_back(true);
+	sort(a.begin(),a.end());
+	while(ok()){
+		f_u(1,n){
+			if(a[i]==now_find&&b[i]){
+				b[i]=false;
+				++now_find;
+			}
+		}
+		ans+=now_find;
+		now_find=0;
+//		cout<<now_find<<endl;
+	}
+	write(ans);
+	return 0;
+}

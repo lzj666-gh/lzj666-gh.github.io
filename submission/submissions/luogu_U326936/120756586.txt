@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 120756586
+//  题目ID: U326936
+#include<bits/stdc++.h>
+#define fori(a,b) for(register int i=a;i<=b;++i)
+#define forj(a,b) for(register int j=a;j<=b;++j)
+using namespace std;
+inline int read(){register char c=cin.get();register int x=0,s=1; while((c<48)|(c>58)){if(c=='-')s=-1;c=cin.get();}while((c>=48)&(c<=58)){x=(x<<3)+(x<<1)+(c^48);c=cin.get();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+48);}
+int n,m,ans;
+bool t[1000000];
+int main(){
+	ios_base::sync_with_stdio(false);
+	m=read(),n=read();
+	fori(1,m){
+		int x=read(),y=read();
+		forj(x,y){
+			t[j]=true;
+		}
+	}
+	fori(1,n){
+		int x=read(),y=read();
+		forj(x,y){
+			t[j]=false;
+		}
+	}
+	fori(1,1000000){
+		if(t[i]) ++ans;
+	}
+	write(ans);
+	return 0;
+}

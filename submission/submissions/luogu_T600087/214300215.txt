@@ -1,0 +1,89 @@
+//  OJ: 洛谷
+//  提交ID: 214300215
+//  题目ID: T600087
+#include<bits/stdc++.h>
+#pragma warning (disable:4996)
+#pragma warning (disable:6031)
+using namespace std;
+void swap(int& x, int& y) {
+	x ^= y ^= x ^= y;
+}
+struct Edge {
+	int v, nxt, c;
+}edge[100000 + 10];
+int head[100000 + 10], idx = 1;
+void add(int u, int v, int c) {
+	edge[++idx] = { v,head[u],c };
+	head[u] = idx;
+}
+int n, m, vis[1000000 + 10], idk;
+bool rd[1000000 + 10];
+vector<pair<int, int>>rev;
+bool dfs(int x, int mid) {
+	if (vis[x] == idk) return 0;
+	else if (vis[x]) return 1;
+	vis[x] = idk;
+	//cerr << "begin " << x << endl;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (edge[i].c <= mid && edge[i ^ 1].c <= mid) {
+			//cerr << "try goto " << edge[i].v << endl;
+			rev.emplace_back(i ^ 1, edge[i ^ 1].c);
+			edge[i ^ 1].c = mid + 1;
+			bool tmpp = dfs(edge[i].v, mid);
+			if (!tmpp) {
+				//cerr << "Fail! reverse!" << endl;
+				while (rev.back().first != (i ^ 1)) 
+					edge[rev.back().first].c = rev.back().second, rev.pop_back();
+				edge[i ^ 1].c = rev.back().second;
+				rev.back().first = i, rev.back().second = edge[i].c;
+				edge[i].c = mid + 1;
+			}
+		}
+		else if (edge[i].c <= mid)
+			if (!dfs(edge[i].v, mid))
+				return 0;
+	}
+	return 1;
+}
+bool chk(int mid) {
+	memset(rd, 0, sizeof rd);
+	for (int i = 1; i <= idx; i += 2)
+		if (edge[i].c <= mid && edge[i + 1].c > mid)
+			rd[edge[i].v] = 1;
+	for (int i = 1; i <= n; ++i)
+		if (!rd[i]) {
+			idk = 1;
+			memset(vis, 0, sizeof vis);
+			bool tmp=dfs(i, mid);
+			for (int j = 1; j <= n; ++j) if (!vis[j]) idk++, tmp &= dfs(j, mid);
+			for (const pair<int, int>& tmp : rev) edge[tmp.first].c = tmp.second;
+			rev.clear();
+			return tmp;
+		}
+	return 0;
+}
+int main() {
+	// freopen("antidag.in", "r", stdin);
+	// freopen("antidag.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	int l = -1, r = 0, mid;
+	for (int i = 1, u, v, c; i <= m; ++i) cin >> u >> v >> c, add(u, v, 0), add(v, u, c), r = max(r, c);
+	r++;
+	while (l < r - 1) {
+		mid = l + r >> 1;
+		if (chk(mid)) r = mid;
+		else l = mid;
+	}
+	//cerr << l << ' ' << chk(l) << endl;
+	cout << r << endl;
+	return 0;
+}
+/*
+问题：在面对形如1->2;2->3;1<->3时不可以先从1到3，在DCL卡的情况下会炸得很惨。
+e.g. 大样例少1
+解决办法：topo序？bfs？
+没时间了。
+0~100
+期望 30 
+*/

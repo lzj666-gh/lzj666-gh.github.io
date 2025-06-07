@@ -1,0 +1,228 @@
+//  OJ: 洛谷
+//  提交ID: 198576366
+//  题目ID: P4216
+#include<bits/stdc++.h>
+using namespace std;
+int n, p[200000 + 10], siz[200000 + 10], top[200000 + 10], idx[200000 + 10], ind, hzy[200000 + 10];
+vector<int>son[200000 + 10];
+class Splay {
+#define lc child[0]
+#define rc child[1]
+public:
+	void ins(int x) {
+		if(!root) {
+			new_node<1>(x, 0);
+			return;
+		}
+		int now = root, fa = 0;
+		while(1) {
+			if(x == tree[now].val) {
+				tree[now].cnt++;
+				push_up(now);
+				push_up(fa);
+				splay(now);
+				return;
+			}
+			fa = now;
+			now = tree[now].child[tree[now].val < x];
+			if(!now) {
+				if(tree[fa].val < x) new_node<1>(x, fa);
+				else new_node<0>(x, fa);
+				push_up(fa);
+				splay(idx);
+				return;
+			}
+		}
+	}
+	void del(int x) {
+		ins(x);
+		tree[root].cnt--;
+		if(tree[root].cnt > 1) {
+			tree[root].cnt--;
+			push_up(root);
+			return;
+		}
+		if(!tree[root].lc && !tree[root].rc) {
+			tree[root] = Point();
+			root = 0;
+			return;
+		}
+		if(!tree[root].lc) {
+			int Tmp = root;
+			root = tree[root].rc;
+			tree[root].fa = 0;
+			tree[Tmp] = Point();
+			return;
+		}
+		else if(!tree[root].rc) {
+			int Tmp = root;
+			root = tree[root].lc;
+			tree[root].fa = 0;
+			tree[Tmp] = Point();
+			return;
+		}
+		int L = find(0), R = find(1);
+		splay(L);
+		splay(R, L);
+		tree[tree[root].rc].lc = 0;
+		push_up(tree[root].rc);
+		push_up(root);
+	}
+	int get_rank(int x) {
+		ins(x);
+		int ans = tree[tree[root].lc].size;
+		del(x);
+		return ans + 1;
+	}
+	int size() {
+		return tree[root].size;
+	}
+	Splay() {
+		idx = 0; root = 0;
+		tree.push_back(Point());
+	}
+protected:
+	struct Point {
+		int child[2], size, val, fa, cnt;
+		Point() :child { 0,0 }, size(0), val(0), fa(0), cnt(0) { }
+	};
+	vector<Point>tree;
+	int idx, root;
+	template<bool lrc = 0>
+	int new_node(int x, int fa) {
+		if(!fa) {
+			++idx;
+			tree.push_back(Point());
+			tree[idx].fa = tree[idx].lc = tree[idx].rc = 0;
+			root = idx;
+			tree[idx].val = x;
+			tree[idx].cnt = tree[idx].size = 1;
+			return idx;
+		}
+		++idx;
+		tree.push_back(Point());
+		tree[idx].fa = fa;
+		tree[idx].size = 1;
+		tree[idx].val = x;
+		if(lrc)
+			tree[fa].rc = idx;
+		else
+			tree[fa].lc = idx;
+		tree[idx].cnt = 1;
+		return idx;
+	}
+	void push_up(int p) {
+		tree[p].size = tree[tree[p].lc].size + tree[tree[p].rc].size + tree[p].cnt;
+	}
+	void rotate(int x) {
+		bool w = tree[tree[x].fa].rc == x;
+		int y = tree[x].fa, z = tree[y].fa, b = tree[x].child[!w];
+		if(z) tree[z].child[y == tree[z].rc] = x;
+		if(b) tree[b].fa = y;
+		tree[y].child[w] = b;
+		tree[x].child[!w] = y;
+		tree[y].fa = x;
+		tree[x].fa = z;
+		push_up(y);
+		push_up(x);
+	}
+	void splay(int x, int want = 0) {
+		while(tree[x].fa ^ want) {
+			int y = tree[x].fa, z = tree[y].fa;
+			if(z ^ want)
+				((tree[z].lc == y) ^ (tree[y].lc == x)) ? rotate(x) : rotate(y);
+			rotate(x);
+		}
+		if(!want) root = x;
+	}
+	inline int find(bool cbc, int from = -1) {
+		int now = tree[from ^ (-1) ? from : root].child[cbc];
+		while(tree[now].child[!cbc]) now = tree[now].child[!cbc];
+		return now;
+	}
+}tree[200000 + 10];
+int dep[200000 + 10];
+void iniit(int x) {
+	hzy[x] = x;
+	dep[x] = dep[p[x]] + 1;
+	for(const int& v : son[x]) {
+		iniit(v);
+		if(siz[v] > siz[hzy[x]]) hzy[x] = v;
+		siz[x] += siz[v];
+	}
+	siz[x]++;
+}
+void dfs(int x, int t) {
+	top[x] = t;
+	if(x == t) idx[x] = ++ind, tree[idx[x]].ins(INT_MAX), tree[idx[x]].ins(INT_MIN);
+	else idx[x] = idx[t];
+	tree[idx[x]].ins(INT_MIN + 10);
+	for(const int& i : son[x]) {
+		if(i == hzy[x]) dfs(i, t);
+		else dfs(i, i);
+	}
+}
+int K[200000 + 10];
+void query(int x, int y, int c) {
+	int anssum = 0, ansgreater = 0;
+	while(idx[x] ^ idx[y]) {
+		if(dep[x] < dep[y]) swap(x, y);
+		int size = tree[idx[x]].size(), rnk = tree[idx[x]].get_rank(c);
+		anssum += size - 2;
+		ansgreater += size - rnk - 1;
+		x = p[top[x]];
+	}
+	if(dep[x] < dep[y]) swap(x, y);
+	while(dep[x] < dep[y]) {
+		anssum++;
+		ansgreater += K[x] > c;
+		x = p[x];
+	}
+	cout << anssum << ' ' << ansgreater << endl;
+	//BUG
+}
+void chg(int x, int t) {
+	if(K[x]) return;
+	K[x] = t;
+	tree[idx[x]].del(INT_MIN + 10);
+	tree[idx[x]].ins(t);
+}
+int main() {
+	(cin).tie(0)->sync_with_stdio(0);
+	cin >> n;
+	for(int i = 1; i <= n; ++i) cin >> p[i], son[p[i]].push_back(i);
+	iniit(0);
+	dfs(0, 0);
+	int q;
+	cin >> q;
+	for(int i = 1; i <= q; ++i) {
+		int k;
+		cin >> k;
+		if(k == 1) {
+			int x, y, c;
+			cin >> x >> y >> c;
+			query(x, y, c - i);
+		}
+		else if(k == 2) {
+			int t;
+			cin >> t;
+			chg(t, -i);
+		}
+	}
+	return 0;
+}
+/*
+思路：重链剖分加 Splay （加分块？）
+其实就是对于每一条链，我们记录它的每个元素的值(k)，
+然后再在每次查询时将风险控制值减去当前时间，再去找最近公共祖先，在重链剖分跳跃的时候记录长度和超过个数。
+每次修改时再去删除值，加入值。3
+to-do：一种支持O(log)修改某元素值，O(log)查询某元素在子区间内排名的数据结构，没错就是你，平衡树（？）。
+坏了，伪了
+算了，平衡树打都打了，不用可惜了，正确性有误，启动！
+不对，好像可以这样，
+done.(?)
+
+y=x+k
+y>c
+k>c-x
+*/

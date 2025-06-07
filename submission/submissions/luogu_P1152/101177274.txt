@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 101177274
+//  题目ID: P1152
+#include<bits/stdc++.h>
+using namespace std;
+int a[1010];int b[1010]={0};
+int main(){
+	int i=0;
+	while(cin>>a[i]) i++;
+	int n=i+1;
+	for(i=0;i<n-1;i++){
+		b[abs(a[i+1]-a[i])]++;
+	}
+	for(i=1;i<n;i++){
+		if(b[i]==0){
+			cout<<"Not jolly";
+			return 0;
+		}
+	}
+	cout<<"Jolly";
+	return 0;
+}

@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 101238500
+//  题目ID: T209121
+#include<bits/stdc++.h>
+using namespace std;
+int a[110][110];int amax,maxh=0,maxl=0,amin,minl=0,minh=0;
+int main(){
+	int n,m;cin>>n>>m;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			cin>>a[i][j];
+			if(i==0&&j==0){
+				amax=a[i][j];
+				amin=a[i][j];
+			}
+			if(a[i][j]>amax){
+				amax=a[i][j];
+				maxh=i;maxl=j;
+			}
+			if(a[i][j]<amin){
+				amin=a[i][j];
+				minh=i;minl=j;
+			}
+		}
+	}
+	cout<<maxh+1<<" "<<maxl+1<<endl<<minh+1<<" "<<minl+1;	
+	return 0;
+}

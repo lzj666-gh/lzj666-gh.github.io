@@ -1,0 +1,15 @@
+//  OJ: 洛谷
+//  提交ID: 104116584
+//  题目ID: T201345
+#include<bits/stdc++.h>
+using namespace std;
+int k;
+int pell(int x){
+	if(x==1) return 1;
+	if(x==2) return 2;
+	return (2*(pell(x-1)%32767)+pell(x-2)%32767)%32767;
+}
+int main(){
+	scanf("%d",&k);
+	printf("%d",pell(k)%32767);
+}

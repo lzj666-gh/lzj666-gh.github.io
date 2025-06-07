@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 195927263
+//  题目ID: P11450
+#include<bits/stdc++.h>
+using namespace std;
+int n, q, x, y, z, h[1000 + 10][1000 + 10][3], ans;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> q;
+	while (q--) {
+		cin >> x >> y >> z;
+		h[x][y][0]++;
+		h[y][z][1]++;
+		h[x][z][2]++;
+		ans += h[x][y][0] == n;
+		ans += h[y][z][1] == n;
+		ans += h[x][z][2] == n;
+		cout << ans << endl;
+	}
+	return 0;
+}

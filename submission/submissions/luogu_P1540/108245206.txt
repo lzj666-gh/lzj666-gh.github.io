@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 108245206
+//  题目ID: P1540
+#include <bits/stdc++.h>
+using namespace std;
+int a[1010],m,n,c,ans;
+bool b[1010];
+queue<int>q;
+int main(){
+	scanf("%d%d",&m,&n);
+	for(int i=1;i<=n;i++) scanf("%d",&a[i]);
+	for(int i=1;i<=n;i++) {
+		if(q.size()>m) {
+			b[q.front()]=false;
+			q.pop();
+		}
+		if(b[a[i]]) continue;
+		else{
+			q.push(a[i]);
+			b[a[i]]=true;
+			ans++;
+		}
+	}
+	printf("%d\n",ans);
+	return 0;
+}

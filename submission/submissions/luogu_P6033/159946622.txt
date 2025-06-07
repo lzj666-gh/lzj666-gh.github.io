@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 159946622
+//  题目ID: P6033
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+struct node{
+	int xx;
+	node(int xxxx){
+		xx=xxxx;
+	}
+	friend bool operator<(node a,node b){
+		return a.xx>b.xx;
+	}
+};
+priority_queue<node> q;
+int n,xx,cnt;
+signed main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		cin>>xx;
+		q.push(node(xx));
+	}
+	for(int i=1;i<n;i++){
+		int xxxx,xx2;
+		xxxx=q.top().xx; q.pop();
+		xx2=q.top().xx; q.pop();
+		cnt+=xxxx+xx2;
+		q.push(node(xxxx+xx2));
+	}
+	cout<<cnt<<endl;
+	return 0;
+}

@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 168307628
+//  题目ID: U455019
+#include<bits/stdc++.h>
+using namespace std;
+long long dis[20+10][20+10],n,m,s,t;
+int main(){
+	ios_base::sync_with_stdio(false);
+	memset(dis,0x3f,sizeof dis);
+    cin>>n>>m;
+    return n;
+    for(int i=1;i<=m;++i){
+    	long long u,v,w;
+    	cin>>u>>v>>w;
+    	dis[u][v]=dis[v][u]=min(dis[u][v],w);
+	}
+	cin>>s>>t;
+	for(int k=1;k<=n;++k) for(int i=1;i<=n;++i) for(int j=1;j<=n;++j) dis[i][j]=min(dis[i][j],dis[i][k]+dis[k][j]);
+	cout<<dis[s][t]<<'\n';
+    return 0;
+}

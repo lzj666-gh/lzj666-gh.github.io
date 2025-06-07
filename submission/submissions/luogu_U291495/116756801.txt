@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 116756801
+//  题目ID: U291495
+#include<bits/stdc++.h>
+#define maxn 400000+10
+using namespace std;
+bool tea[50],stu[20];
+char tmp[maxn];
+const char spe[4][50]={
+	" opened florr.io",
+	" comes in",
+	" goes out",
+	" closed florr.io"
+};
+int n,m,k;
+vector<char>finds;
+bool find(char ch){
+	for(char c:finds) if(c==ch) return true;
+	return false;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m>>k;
+	for(int iii=0;iii<=n;iii++){
+		cin.getline(tmp,maxn);
+		int l=strlen(tmp);
+		bool special[4]={true,true,true,true};
+		for(int i=1;i<l;++i) if(tmp[i]!=spe[0][i-1]) special[0]=false;
+		for(int i=1;i<l;++i) if(tmp[i]!=spe[1][i-1]) special[1]=false;
+		for(int i=1;i<l;++i) if(tmp[i]!=spe[2][i-1]) special[2]=false;
+		for(int i=1;i<l;++i) if(tmp[i]!=spe[3][i-1]) special[3]=false;
+		if(special[0]){
+			stu[tmp[0]-'A'+1]=true;
+			for(int i=1;i<=k;i++){
+				if(tea[i]) if(find(tmp[0])) finds.push_back(tmp[0]);
+			}
+		}
+		else if(special[1]){
+			tea[tmp[0]-'0']=true;
+			for(int i=1;i<=m;i++){
+				if(stu[i]) if(find(tmp[0])) finds.push_back(tmp[0]);
+			}
+		}
+		else if(special[2]){
+			tea[tmp[0]-'0']=false;
+		}
+		else if(special[3]){
+			stu[tmp[0]-'A'+1]=false;
+		}
+	}
+	sort(finds.begin(),finds.end());
+	for(char c:finds) cout<<c<<' ';
+	cout<<endl;
+	if(finds.size()==m) cout<<"bad,bad,bad IOIers!!!"<<endl;
+	return 0;
+}

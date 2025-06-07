@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 153061738
+//  题目ID: CF1881C
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+char a[1000+10][1000+10];
+bool vis[1000+10][1000+10];
+long long ans;
+int main(){
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--){
+		cin>>n;
+		ans=0;
+		memset(vis,0,sizeof vis);
+		for(int i=1;i<=n;++i) cin>>a[i]+1;
+		for(int i=1;i<=n;++i){
+			for(int j=1;j<=n;++j){
+				if(vis[i][j]) continue;
+				vis[i][j]=vis[n-j+1][i]=vis[j][n-i+1]=vis[n-i+1][n-j+1]=1;
+				int want=max({a[i][j],a[j][n-i+1],a[n-j+1][i],a[n-i+1][n-j+1]});
+				for(char k:{a[i][j],a[j][n-i+1],a[n-j+1][i],a[n-i+1][n-j+1]}) ans+=want-k;
+			}
+		}
+		cerr<<"ans: ";
+		cout<<ans<<endl;
+	}
+	return 0;
+}

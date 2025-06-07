@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 90682182
+//  题目ID: T140101
+#include<iostream>
+using namespace std;
+int main(){
+    cout<<"正方形的面积为："<<1234*1234<<endl<<"正方形的周长为："<<1234*4;
+}

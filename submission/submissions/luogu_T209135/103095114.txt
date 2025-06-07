@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 103095114
+//  题目ID: T209135
+#include<bits/stdc++.h>
+using namespace std;
+long long a[500000+10];
+long long k,n;
+const int p=100003;
+int main() {
+	scanf("%d%d",&n,&k);
+	a[0]=1;
+	a[1]=1;
+	for(int i=2; i<=n; i++) {
+		if(i>=k){
+			for(int j=1;j<=k;j++) a[i]=(a[i]+a[i-j])%p;	
+		} else {
+			for(int j=1;j<=i;j++) a[i]=(a[i]+a[i-j])%p;	
+		}
+	}
+	cout<<a[n];
+	return 0;
+}

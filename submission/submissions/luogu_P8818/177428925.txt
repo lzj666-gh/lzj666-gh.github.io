@@ -1,0 +1,124 @@
+//  OJ: 洛谷
+//  提交ID: 177428925
+//  题目ID: P8818
+#include<bits/stdc++.h>
+using namespace std;
+struct Seg_Tree_max {
+#define lc(p) ((tree[p].ls == -1) ? (tree[p].ls = ++idx) : (tree[p].ls))
+#define rc(p) ((tree[p].rs == -1) ? (tree[p].rs = ++idx) : (tree[p].rs))
+	struct point {
+		int l, r, ls, rs;
+		long long sum;
+		point() :l(0), r(0), ls(-1), rs(-1), sum(LLONG_MIN) {}
+		point(int ll, int rr, long long ssum, long long lzy) :l(ll), r(rr), ls(-1), rs(-1), sum(ssum) {}
+	}tree[4 * 100000 + 10];
+	int idx = 1;
+	void pushup(int p) {
+		tree[p].sum = max(tree[lc(p)].sum, tree[rc(p)].sum);
+	}
+	long long query(int p, int l, int r) {
+		if (tree[p].l >= r || tree[p].r <= l) return LLONG_MIN;
+		if (tree[p].l == tree[p].r - 1) {
+			return tree[p].sum;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) return tree[p].sum;
+		long long ans = max(query(lc(p), l, r), query(rc(p), l, r));
+		pushup(p);
+		return ans;
+	}
+	void build(int p, int l, int r, const vector<int>& v) {
+		tree[p].l = l, tree[p].r = r;
+		if (l == r - 1) {
+			tree[p].sum = v[l];
+			return;
+		}
+		build(lc(p), l, l + r >> 1, v);
+		build(rc(p), l + r >> 1, r, v);
+		pushup(p);
+	}
+}a_max,a_nag_max,b_max;
+struct Seg_Tree_min {
+#define lc(p) ((tree[p].ls == -1) ? (tree[p].ls = ++idx) : (tree[p].ls))
+#define rc(p) ((tree[p].rs == -1) ? (tree[p].rs = ++idx) : (tree[p].rs))
+	struct point {
+		int l, r, ls, rs;
+		long long sum;
+		point() :l(0), r(0), ls(-1), rs(-1), sum(LLONG_MAX) {}
+		point(int ll, int rr, long long ssum, long long lzy) :l(ll), r(rr), ls(-1), rs(-1), sum(ssum) {}
+	}tree[4 * 100000 + 10];
+	int idx = 1;
+	void pushup(int p) {
+		tree[p].sum = min(tree[lc(p)].sum, tree[rc(p)].sum);
+	}
+	long long query(int p, int l, int r) {
+		if (tree[p].l >= r || tree[p].r <= l) return LLONG_MAX;
+		if (tree[p].l == tree[p].r - 1) {
+			return tree[p].sum;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) return tree[p].sum;
+		long long ans = min(query(lc(p), l, r), query(rc(p), l, r));
+		pushup(p);
+		return ans;
+	}
+	void build(int p, int l, int r, const vector<int>& v) {
+		tree[p].l = l, tree[p].r = r;
+		if (l == r - 1) {
+			tree[p].sum = v[l];
+			return;
+		}
+		build(lc(p), l, l + r >> 1, v);
+		build(rc(p), l + r >> 1, r, v);
+		pushup(p);
+	}
+}a_min,a_unnag_min,b_min;
+vector<int>a,b,Tmp;
+int n,m,q;
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m>>q;
+	a.push_back(0);
+	for(int i=1,tmp;i<=n;++i) cin>>tmp,a.push_back(tmp);
+	b.push_back(0);
+	for(int i=1,tmp;i<=m;++i) cin>>tmp,b.push_back(tmp);
+	Tmp=a;
+	a_max.build(1,1,n+1,Tmp);
+	a_min.build(1,1,n+1,Tmp);
+	for(int&i:Tmp) if(i<0) i=INT_MAX;
+	a_unnag_min.build(1,1,n+1,Tmp);
+	Tmp=a;
+	for(int&i:Tmp) if(i>=0) i=INT_MIN;
+	a_nag_max.build(1,1,n+1,Tmp);
+	Tmp=b;
+	b_max.build(1,1,m+1,Tmp);
+	b_min.build(1,1,m+1,Tmp);
+	while(q--){
+		int l1,r1,l2,r2;
+		cin>>l1>>l2>>r1>>r2;
+		int amx=a_max.query(1,l1,r2+1),
+			amn=a_min.query(1,l1,r1+1),
+			anx=a_nag_max.query(1,l1,r1+1),
+			ann=a_unnag_min.query(1,l1,r1+1),
+			bmx=b_max.query(1,l2,r2+1),
+			bmn=b_min.query(1,l2,r2+1);
+		int ans=INT_MIN;
+		if(amn>=0)
+			if(bmn>=0)
+				ans=amx*bmn;
+			else
+				ans=amn*bmx;
+		else if(amx<0)
+			if(bmx<0)
+				ans=amn*bmx;
+			else
+				ans=amx*bmx;
+		else
+			if(bmn>=0)
+				ans=amx*bmn;
+			else if(bmx<0)
+				ans=amn*bmx;
+			else
+				ans=max(ann*bmx,anx*bmx);
+		cout<<ans<<endl;
+	}
+	return 0;
+}

@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 196106989
+//  题目ID: P7692
+#include<bits/stdc++.h>
+//#define ONLINE
+#define NAME "race"
+using namespace std;
+int n, x[250000 + 10], v[250000 + 10];
+set<tuple<double, double, int, int>>s;
+int main() {
+#ifdef ONLINE
+	freopen(NAME".in", "r", stdin);
+	freopen(NAME".out", "w", stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> x[i] >> v[i];
+	int cnt = 0;
+	for (int i = 1; i <= n; ++i) {
+		for (int j = i + 1; j <= n; ++j) {
+			if (v[i] <= v[j]) continue;
+			s.emplace((x[j] - x[i]) * 1.0 / (v[i] - v[j]), x[i] + (x[j] - x[i]) * 1.0 / (v[i] - v[j]) * v[i], i, j);
+			cnt++;
+			if (s.size() > 1000000) s.erase(s.end());
+		}
+	}
+	cout << cnt << endl;
+	for (auto& i : s) {
+		cout << get<2>(i) << ' ' << get<3>(i) << endl;
+	}
+	return 0;
+}
+//O(n^2 log(n))

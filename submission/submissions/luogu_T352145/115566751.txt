@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 115566751
+//  题目ID: T352145
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+bool isValid(vector<pair<int, int> >& towers, int voltage){
+    int n=towers.size();
+    int maxRange=0;
+    for(int i=0; i < n; i++){
+        int requiredRange=towers[i].first-maxRange;
+        if(requiredRange > voltage){
+            return false;
+        }
+        maxRange=max(towers[i].first+towers[i].second, maxRange);
+    }
+    return true;
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<pair<int, int> > towers;
+    for(int i=0; i < n; i++){
+        int a, b;
+        cin>>a>>b;
+        towers.push_back(make_pair(a,b));
+    }
+    sort(towers.begin(),towers.end());
+    int left=0,right=towers.back().first;
+    int result=right;
+    while(left<=right){
+        int mid=left+(right-left)/ 2;
+        if(isValid(towers, mid)){
+            result=mid;
+            right=mid-1;
+        }
+        else{
+            left=mid+1;
+        }
+    }
+    cout<<result<<endl;
+    return 0;
+}

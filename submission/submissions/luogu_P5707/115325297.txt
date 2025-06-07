@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 115325297
+//  题目ID: P5707
+#include<bits/stdc++.h>
+using namespace std;
+int s,v,t;
+main(){
+	ios::sync_with_stdio(false);
+    cin>>s>>v;
+    t=ceil(1.0*s/v)+10;
+    t=480-t+24*60;
+    if(t/60>24) t-=24*60;
+    if(t/60<10) cout<<0;
+    cout<<t/60<<':';
+    if(t%60<10) cout<<0;
+    cout<<t%60<<endl;
+    return 0;
+}

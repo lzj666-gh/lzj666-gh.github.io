@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 101352074
+//  题目ID: P1540
+#include<bits/stdc++.h>
+using namespace std;
+int a[100+10]={-1},m,n,b,cnt=0;
+int main(){
+	cin>>m>>n;
+	for(int i=0;i<n;i++){
+		cin>>b;
+		bool cd=false,y_1=false;int y=0;
+		for(int j=0;j<m;j++){
+			if(a[j]==b) cd=true;
+			if(a[j]==-1){
+				y_1=true;
+				y=j;
+				break;
+			}
+		}
+		if(!cd){
+			cnt++;
+			if(y_1) a[y]=b;
+			else{
+				for(int i=0;i<n-1;i++){
+					a[i]=a[i+1];
+				}
+				a[n-1]=b;
+			}
+		}
+	}
+	cout<<cnt;
+}

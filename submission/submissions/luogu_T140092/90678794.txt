@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 90678794
+//  题目ID: T140092
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    cout<<"Hello,World!";
+    return 0;
+}
+ 

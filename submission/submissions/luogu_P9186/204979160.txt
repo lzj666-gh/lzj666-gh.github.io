@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 204979160
+//  题目ID: P9186
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+using ull = unsigned long long;
+ll n, a[150000 + 10], b[150000 + 10], Q;
+ull jb[150000 + 10];
+ull ans;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i], b[i] = a[i];
+	sort(a + 1, a + n + 1);
+	for (int i = 1; i <= n; ++i) ans += 1ll * i * a[i];
+	for (int i = 1; i <= n; ++i) jb[i] = jb[i - 1] + a[i];
+	//cout << ans << endl;
+	cin >> Q;
+	while (Q--) {
+		int i, j;
+		cin >> i >> j;
+		int idx1 = lower_bound(a + 1, a + n + 1, b[i]) - a, idx2 = lower_bound(a + 1, a + n + 1, j) - a;
+		if (idx1 < idx2) {
+			idx1 = upper_bound(a + 1, a + n + 1, b[i]) - a - 1;
+			ull tmp = ans;
+			tmp -= 1ll * a[idx1] * idx1;
+			tmp -= jb[idx2 - 1] - jb[idx1];
+			tmp += j * (idx2 - 1ll);
+			cout << tmp << endl;
+		}
+		else {
+			idx2 = upper_bound(a + 1, a + n + 1, j) - a - 1;
+			ull tmp = ans;
+			tmp -= 1ll * a[idx1] * idx1;
+			tmp += jb[idx1 - 1] - jb[idx2];
+			tmp += j * (idx2 + 1ll);
+			cout << tmp << endl;
+		}
+	}
+	return 0;
+}

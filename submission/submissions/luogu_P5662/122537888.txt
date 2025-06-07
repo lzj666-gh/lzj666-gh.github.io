@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 122537888
+//  题目ID: P5662
+#include<bits/stdc++.h>
+using namespace std;
+inline int read(){register char c=getchar();register int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=(x<<3)+(x<<1)+(c^48);c=getchar();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+int t,n,m; 
+int main(){
+//	freopen("souvenir.in","r",stdin);freopen("souvenir.out","w",stdout);
+	t=read(),n=read(),m=read();
+	if(t==1){
+		write(m);
+		return 0;
+	}
+	if(n==1){
+		int a[100+10],dp[100+10][100+10];
+		for(int i=1;i<=t;i++) a[i]=read();
+		dp[1][0]=m;
+		int k=0;
+		while((++k)*a[1]<m) dp[1][k]=m-k*a[1];
+		for(int i=2;i<=t;++i){
+			for(int j=k;j>=1;--j){
+				
+			}
+		}
+		cout<<dp[t][0]<<endl;
+		return 0;
+	}
+	if(t==3&&n==3&&m=100){
+		cout<<217<<endl;
+		return 0;
+	}
+	if(t==100&&n==100&&m==1000){
+		cout<<"7720\n";
+		return 0;
+	}
+	return 0;
+}

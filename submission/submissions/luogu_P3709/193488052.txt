@@ -1,0 +1,68 @@
+//  OJ: 洛谷
+//  提交ID: 193488052
+//  题目ID: P3709
+#include<bits/stdc++.h>
+#ifndef ONLINE_JUDGE
+#define __gcd gcd
+#endif // !ONLINE_JUDGE
+using namespace std;
+int a[200000 + 10];
+long long sum, lst;
+unordered_map<int, int>vis;
+void add(int x) {
+	vis[a[x]]++;
+	sum = max(sum, vis[a[x]] * 1ll);
+}
+int n, Q, bel[200000 + 10], R[200000 + 10];
+struct query {
+	int l, r, id; long long ans;
+	friend bool operator<(const query& a, const query& b) {
+		return bel[a.l] == bel[b.l] ? a.r < b.r : bel[a.l] < bel[b.l];
+	}
+}q[100000 + 10];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> Q;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	int t1 = 0, t2 = pow(n, 0.5), t3 = 1;
+	for (int i = 1; i <= n; ++i) {
+		bel[i] = t3;
+		t1++;
+		if (t1 == t2) R[t3] = i, t1 = 0, t3++;
+	}
+	//for (int i = 1; i <= n; ++i) cout << bel[i] << ' '; cout << endl;
+	for (int j = 1; j <= Q; ++j) cin >>  q[j].l >> q[j].r, q[j].id = j;
+	sort(q + 1, q + Q + 1);
+	int r = 0;
+	for (int j = 1; j <= Q; ++j) {
+		//cout << q[j].l << ' ' << q[j].r << ' ' << bel[q[j].l] << endl;
+		if (bel[q[j - 1].l] ^ bel[q[j].l]) {
+			unordered_map<int, int>().swap(vis);
+			sum = 0;
+			while (bel[q[j].r] == bel[q[j].l]) {
+				//cout << "BF: " << q[j].l << ' ' << q[j].r << ' ' << bel[q[j].l] << endl;
+				for (int i = q[j].l; i <= q[j].r; ++i) add(i);
+				q[j].ans = sum;
+				unordered_map<int, int>().swap(vis);
+				sum = 0;
+				if (bel[q[j].l] ^ bel[q[j + 1].l]) break;
+				j++;
+			}
+			if ((bel[q[j].l] ^ bel[q[j + 1].l]) && bel[q[j].r] == bel[q[j].l]) continue;
+			r = R[bel[q[j].l]] + 1;
+			add(r);
+		}
+		1;
+		while (r < q[j].r) add(++r);
+		lst = sum;
+		int l = R[bel[q[j].l]]; add(l);
+		while (l > q[j].l) add(--l);
+		//cout << "add " << "[" << l << '(' << q[j].l << ')' << ',' << r << '(' << q[j].r << ')' << "] with vis:"; for (int i = 1; i <= 10; ++i) cout << vis[i] << ' '; cout << endl;
+		q[j].ans = sum;
+		while (l <= R[bel[q[j].l]]) vis[a[l]]--, l++;
+		sum = lst;
+	}
+	sort(q + 1, q + Q + 1, [](const query& a, const query& b)->bool {return a.id < b.id; });
+	for (int i = 1; i <= Q; ++i) cout << -q[i].ans << endl;
+	return 0;
+}

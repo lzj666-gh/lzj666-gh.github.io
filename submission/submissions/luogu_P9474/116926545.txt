@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 116926545
+//  题目ID: P9474
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,a[100000+10],ans=0x3f3f3f3f;
+int now[100000+10];
+void dfs(int k,int sum){
+	if(k>=n&&sum!=m) return;
+	now[sum]=a[k];
+	if(sum==m){
+		int maxa=-0x3f3f3f3f,mina=-maxa;
+		for(int i=1;i<=m;i++){
+			mina=min(mina,now[i]);
+			maxa=max(maxa,now[i]);
+		}
+		ans=min(ans,maxa-mina);
+		return;
+	}
+	for(int i=k+2;i<=n;i++){
+		dfs(i,sum+1);
+	}
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;i++) cin>>a[i],cout<<i<<" "<<endl;
+	if(m==ceil(1.0*n/2)){
+		if(n%2==1){
+			int maxa=-0x3f3f3f3f,mina=-maxa;
+			for(int i=1;i<=n;i+=2){
+				mina=min(mina,a[i]);
+				maxa=max(maxa,a[i]);
+			}
+			cout<<maxa-mina<<endl;
+			return 0;
+		}
+	}
+	for(int i=1;i<=n;i++){
+		dfs(i,1);
+	}
+	cout<<ans<<endl;
+	return 0;
+}

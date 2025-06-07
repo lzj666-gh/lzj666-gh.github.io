@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 124003979
+//  题目ID: U285704
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    ios_base::sync_with_stdio(false);
+	int a,b;
+	cin>>a>>b;
+	cout<<a+b;
+	return 0;
+}

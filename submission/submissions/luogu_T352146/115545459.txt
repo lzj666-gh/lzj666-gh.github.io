@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 115545459
+//  题目ID: T352146
+#include<bits/stdc++.h>
+using namespace std;
+int k,n,a[500000+!0];
+long long sp[1000+10];
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>k;
+	for(int i=1;i<=2*n;i++){
+		cin>>a[i];
+		sp[i%k]+=a[i];
+	}
+	for(int i=1;i<=2*n;i+=2){
+		a[i]=sp[i%k]%i;
+	}
+	for(int i=1;i<=2*n;i++){
+		cout<<a[i]<<' '; 
+	}
+	cout<<endl;
+	return 0;
+}

@@ -1,0 +1,58 @@
+//  OJ: 洛谷
+//  提交ID: 202141607
+//  题目ID: P3809
+#include<bits/stdc++.h>
+#include<array>
+#define first comp_first()
+#define second comp_second()
+using namespace std;
+string s;
+int n, w;
+array<int, 2000000 + 5>rk, oldrk;
+struct Node {
+	int data;
+	int& first{ 
+		return rk[data];
+	}
+	int& second{
+		return rk[data + w];
+	}
+}sa[1000000];
+void sort() {
+	static vector<Node> t[1000000 + 5];
+
+	for (int i = 0; i <= 1000000; ++i) t[i].clear();
+	for (int i = 1; i <= n; ++i) 
+		t[sa[i].second].push_back(sa[i]);
+	for (int i = 0, p = 0; i <= 1000000; ++i) 
+		for (const auto& j : t[i]) 
+			sa[++p] = j;
+
+	for (int i = 0; i <= 1000000; ++i) t[i].clear();
+	for (int i = 1; i <= n; ++i)
+		t[sa[i].first].push_back(sa[i]);
+	for (int i = 0, p = 0; i <= 1000000; ++i)
+		for (const auto& j : t[i])
+			sa[++p] = j;
+}
+int main() {
+	cin >> s;
+	n = s.size();
+	s = ' ' + s;
+	for (int i = 1; i <= n; ++i) sa[i].data = i, rk[i] = s[i];
+	for (w = 1; w < n; w <<= 1) {
+		sort();
+		
+		/*sort(sa + 1, sa + n + 1, [](int x, int y) {
+			return rk[x] == rk[y] ? rk[x + w] < rk[y + w] : rk[x] < rk[y];
+		});*/
+		
+		oldrk = rk;
+		for (int i = 1, p = 0; i <= n; ++i) {
+			if (oldrk[sa[i].data] != oldrk[sa[i - 1].data] || oldrk[sa[i].data + w] != oldrk[sa[i - 1].data + w]) ++p;
+			rk[sa[i].data] = p;
+		}
+	}
+	for (int i = 1; i <= n; ++i) cout << sa[i].data << ' ';
+	return 0;
+}

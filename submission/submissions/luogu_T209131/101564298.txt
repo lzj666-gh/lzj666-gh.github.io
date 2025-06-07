@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 101564298
+//  题目ID: T209131
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,over=1,cnt=0,amax=-1;
+struct ren{
+	int st,ov;
+}a[1000+10];
+bool ikun(ren a1,ren a2){
+	return a1.st<a2.st;
+}
+int main(){
+	scanf("%d%d",&n,&m);
+	for(int i=0;i<n;i++){
+		scanf("%d%d",&a[i].st,&a[i].ov);
+	}
+	sort(&a[0],&a[n],ikun);
+	for(int i=0;i<n;){
+		if(over>=m) break;
+		if(a[i].st>over){
+			cout<<-1<<endl;
+			return 0;
+		}
+		else{
+			cnt++;
+			while(a[i].st<=over&&i<n){
+				amax=max(amax,a[i].ov);
+				i++;
+			}
+			over=amax;
+		}
+	}
+	if(over<m) cout<<-1<<endl;
+	else cout<<cnt<<endl;
+	return 0;
+}

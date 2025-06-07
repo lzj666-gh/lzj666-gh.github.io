@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 95277826
+//  题目ID: U212627
+#include<bits/stdc++.h>
+#include<cmath>
+using namespace std;
+int main(){
+	double a;cin>>a;
+	double ans;
+	ans=sqrt(a);
+	printf("%.5lf",ans);
+}

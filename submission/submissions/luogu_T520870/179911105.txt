@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 179911105
+//  题目ID: T520870
+#include<bits/stdc++.h>
+//#pragma warning(disable:4996)
+//#define ONLINE
+using namespace std;
+using ll = long long;
+constexpr long long mod = 998244353;
+ll a[10000 + 10], b[10000 + 10], c[10000 + 10], t[10000 + 10], k, n;
+bool die[1000 + 10];
+__int128 ans = LLONG_MAX;
+void dfs(int x, __int128 bef, __int128 atk) {
+	if (x == n + 1) {
+		ans = min(ans, atk);
+		return;
+	}
+	for (int i = 1; i <= n; ++i) {
+		if (die[i]) continue;
+		die[i] = 1;
+		dfs(x + 1, bef - b[i], atk + bef * t[i] - b[i]);
+		die[i] = 0;
+	}
+}
+int main() {
+#ifdef ONLINE
+	freopen("matrix.in", "r", stdin);
+	freopen("matrix.out", "w", stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	cin >> n >> k;
+	ll tot = 0;
+	for (int i = 1; i <= n; ++i)
+		cin >> a[i] >> b[i] >> c[i],
+		tot += b[i],
+		t[i] = ceil(a[i] * 1.0 / (k - c[i]));
+	dfs(1, tot, 0);
+	ll tmp = ans % mod;
+	cout << tmp << endl;
+	return 0;
+}

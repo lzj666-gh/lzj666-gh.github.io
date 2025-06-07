@@ -1,0 +1,84 @@
+//  OJ: 洛谷
+//  提交ID: 211741936
+//  题目ID: T571828
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+vector<string> generate_instructions(int task) {
+    vector<string> instructions;
+    switch(task) {
+        case 1:
+            // Sample task 1 solution
+            instructions.push_back("+ a x");
+            instructions.push_back("< x 8");
+            instructions.push_back("- x a");
+            instructions.push_back("< x 4");
+            instructions.push_back("! x");
+            break;
+        case 2:
+            // This is a placeholder; actual solution requires more steps
+            instructions.push_back("; Placeholder for task 2");
+            break;
+        case 3:
+            // Generate 4080 using shifts and subtract
+            instructions.push_back("sub rax, rax");
+            instructions.push_back("sub rax, 1");
+            instructions.push_back("shl rax, 4");
+            instructions.push_back("shr rax, 52");
+            instructions.push_back("! a");
+            break;
+        case 4:
+            // Placeholder for multiplication
+            instructions.push_back("; Placeholder for task 4");
+            break;
+        case 5:
+            // Placeholder for division
+            instructions.push_back("; Placeholder for task 5");
+            break;
+        case 6:
+            // Placeholder for square root
+            instructions.push_back("; Placeholder for task 6");
+            break;
+        case 7:
+            // Smallest power of 2 >= x
+            instructions.push_back("sub rax, rsi");
+            instructions.push_back("sub rax, 1");
+            instructions.push_back("mov rbx, rax");
+            instructions.push_back("shr rbx, 1");
+            instructions.push_back("or rax, rbx");
+            instructions.push_back("mov rbx, rax");
+            instructions.push_back("shr rbx, 2");
+            instructions.push_back("or rax, rbx");
+            instructions.push_back("mov rbx, rax");
+            instructions.push_back("shr rbx, 4");
+            instructions.push_back("or rax, rbx");
+            instructions.push_back("mov rbx, rax");
+            instructions.push_back("shr rbx, 8");
+            instructions.push_back("or rax, rbx");
+            instructions.push_back("mov rbx, rax");
+            instructions.push_back("shr rbx, 16");
+            instructions.push_back("or rax, rbx");
+            instructions.push_back("mov rbx, rax");
+            instructions.push_back("shr rbx, 32");
+            instructions.push_back("or rax, rbx");
+            instructions.push_back("add rax, 1");
+            instructions.push_back("! a");
+            break;
+        default:
+            break;
+    }
+    return instructions;
+}
+
+int main() {
+    int task;
+    cin >> task;
+    vector<string> instructions = generate_instructions(task);
+    for (const string& instr : instructions) {
+        cout << instr << endl;
+    }
+    return 0;
+}

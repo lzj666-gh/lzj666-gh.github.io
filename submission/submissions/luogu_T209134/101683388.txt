@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 101683388
+//  题目ID: T209134
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[1000000+10],m,b;
+int zhongfen(int s){
+	int L=1,R=n;
+	while(L<=R){
+		int mid=(R+L)/2;
+		if(a[mid]<s){
+			L=mid+1;
+		}
+		else{
+			R=mid-1;
+		} 
+	}
+	return R;
+}
+int main(){
+	int m;
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		scanf("%d",&a[i]);
+	}
+	sort(&a[1],&a[n+1]);
+	cin>>m;
+	for(int i=0;i<m;i++){
+		cin>>b;
+		int p=zhongfen(b);
+		if(a[p+1]==b) cout<<p+1<<endl;
+		else cout<<"No Number"<<endl;
+	}
+	return 0;
+} 

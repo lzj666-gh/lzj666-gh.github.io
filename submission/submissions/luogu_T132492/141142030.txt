@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 141142030
+//  题目ID: T132492
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 30010;
+int now[20], w[20], cnt, m, n, ans;
+void dfs(int u, int sum) {
+    if (sum >= ans) return;
+    if (u == n + 1) {
+        ans = min(ans, sum);
+        return;
+    }
+    for (int i = 1; i <= sum; i++) {
+        if (now[i] + w[u] <= m) {
+            now[i] += w[u];
+            dfs(u + 1, sum);
+            now[i] -= w[u];
+        }
+    }
+    now[sum + 1] = w[u];
+    dfs(u + 1, sum + 1);
+    now[u + 1] = 0;
+}
+int main()
+{
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++) cin >> w[i];
+    sort(w + 1, w + n + 1);
+    reverse(w + 1, w + n + 1);
+    ans = n;
+    dfs(1, 0);
+    cout << ans << endl;
+    return 0;
+}

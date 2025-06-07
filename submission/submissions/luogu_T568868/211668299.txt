@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 211668299
+//  题目ID: T568868
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+int n;
+signed main() {
+	cin>>n;
+	int ans=0;
+	for(int i=1;i<=n;i++) ans+=n-i+1;
+	cout<<ans;
+	return 0;
+}

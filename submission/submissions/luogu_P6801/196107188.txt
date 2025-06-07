@@ -1,0 +1,68 @@
+//  OJ: 洛谷
+//  提交ID: 196107188
+//  题目ID: P6801
+#include<bits/stdc++.h>
+//#define ONLINE
+#define NAME "fence"
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int n, h[100000 + 10], w[100000 + 10], t1[100000 + 10], ans;
+long long s[100000 + 10];
+stack<int>st;
+int main() {
+#ifdef ONLINE
+	freopen(NAME".in", "r", stdin);
+	freopen(NAME".out", "w", stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> h[i];
+	for (int i = 1; i <= n; ++i) cin >> w[i];
+	/*if (n <= 50) {
+		static bool vis[50 + 10][50 + 10];
+		for (int i = 1; i <= n; ++i) for (int j = 1; j <= h[i]; ++j) vis[i][j] = 1;
+		auto check = [&](int x, int y, int l, int r)->bool {
+			bool flg = 1;
+			for (int i = 0; i < l; ++i)
+				for (int j = 0; j < r; ++j)
+					flg &= vis[x + i][y + j];
+			return flg;
+			};
+		for (int i = 1; i <= n; ++i) 
+			for (int j = 1; j <= n; ++j) 
+				for (int x = 1; x <= n; ++x) 
+					for (int y = 1; y <= n; ++y) 
+						ans += check(i, j, x, y);
+		cout << ans << endl;
+		return 0;
+	}*/
+	for (int i = 1; i <= n; ++i)
+		ans += ((((h[i] + 1ll) * h[i] / 2) % mod) * ((w[i] + 1ll) * w[i] / 2)) % mod,
+		ans %= mod/*,
+		cerr << ans << endl*/;
+	for (int i = n; i >= 1; --i) s[i] = s[i + 1] + w[i];
+	for (int i = 1; i <= n + 1; ++i) {
+		while (!st.empty() && h[i] < h[st.top()]) t1[st.top()] = i, st.pop();
+		st.push(i);
+	}
+	//for (int i = 1; i <= n; ++i) cout << t1[i] << ' ';
+	for (int i = 1; i <= n; ++i) {
+		//int tmp = ans;
+		if (t1[i] != n + 1)
+			ans += (h[t1[i]] + 1ll) * h[t1[i]] / 2 % mod * w[i] % mod * (s[t1[i]] - s[t1[t1[i]]]) % mod,
+			ans %= mod;
+		//正确性假了，只考虑有两个递减的情况
+		//修改方法：或许可以把每个t点的情况分开处理，但是没时间了。
+		ans += (h[i] + 1ll) * (h[i]) / 2 % mod * w[i] % mod * (s[i + 1] - s[t1[i]]) % mod;
+		ans %= mod;
+		//cout << ans - tmp << endl;
+	}
+	cout << ans << endl;
+	return 0;
+}
+//O(n)
+/*
+4
+2 3 4 2
+2 1 2 1
+*/

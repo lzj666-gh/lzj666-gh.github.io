@@ -1,0 +1,106 @@
+//  OJ: 洛谷
+//  提交ID: 195029645
+//  题目ID: P4688
+#include<bits/stdc++.h>
+//#pragma GCC optimize(3,"Ofast","inline")
+#define Fast_IO
+#ifdef Fast_IO
+namespace nanan {
+#define getchar() (p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 1 << 20, stdin), p1 == p2) ? 0 : *p1++)
+#define endl '\n'
+	char buf[1 << 20], * p1, * p2;
+	class IN {
+	public:
+		friend IN& operator>>(IN& i, int& x) {
+			bool f = 1; x = 0; char ch = getchar();
+			while (ch < '0' || ch>'9') { if (ch == '-') f = !f; ch = getchar(); }
+			while (ch >= '0' && ch <= '9') { x = (x << 1) + (x << 3) + (ch ^ 48); ch = getchar(); }
+			x = (f ? x : -x);
+			return i;
+		}
+	}cin;
+	class OUT {
+	public:
+		friend OUT& operator<<(OUT& i, unsigned long long x) {
+			if (x > 9) i << (x / 10);
+			putchar(x % 10 + '0');
+			return i;
+		}
+		friend OUT& operator<<(OUT& i, const char& x) {
+			putchar(x);
+			return i;
+		}
+	}cout;
+}
+using namespace nanan;
+#endif
+using std::bitset;
+using std::vector;
+using std::sort;
+const int SizeLen = 100000 + 3, SizeBlock = 319;
+int n, m, a[SizeLen], bel[SizeLen], cnt[SizeLen], Ans[SizeLen];
+bitset<SizeLen>ans[SizeLen / 3], now, vis;
+struct Query {
+	int l, r, id;
+	friend bool operator<(const Query& a, const Query& b) {
+		return (bel[a.l] == bel[b.l] ? ((bel[a.l] & 1) ? a.r<b.r : a.r>a.r) : bel[a.l] < bel[b.l]);
+	}
+};
+vector<Query>q;
+vector<int>lsh;
+void add(const int& x) {
+	now[a[x] + cnt[a[x]]] = 1;
+	cnt[a[x]]++;
+}
+void del(const int& x) {
+	cnt[a[x]]--;
+	now[a[x] + cnt[a[x]]] = 0;
+}
+void solve(vector<Query>&q) {
+	int l = q[0].l + 1, r = q[0].l;
+	for (int j = 0; j < m; ++j) {
+		while (r < q[j].r) add(r + 1), r++;
+		while (l > q[j].l) add(l - 1), l--;
+		while (r > q[j].r) del(r), r--;
+		while (l < q[j].l) del(l), l++;
+		if (vis[q[j].id]) ans[q[j].id] &= now;
+		else vis[q[j].id] = 1, ans[q[j].id] = now;
+	}
+	while (l <= r) del(l), l++;
+}
+void Solve() {
+	vis.reset();
+	for (int i = 0; i < m; ++i) {
+		int l, r; Ans[i] = 0;
+		cin >> l >> r;
+		q[i * 3] = { l,r,i };
+		Ans[i] += r - l + 1;
+		cin >> l >> r;
+		q[i * 3 + 1] = { l,r,i };
+		Ans[i] += r - l + 1;
+		cin >> l >> r;
+		q[i * 3 + 2] = { l,r,i };
+		Ans[i] += r - l + 1;
+	}
+	sort(q.begin(), q.end()); m *= 3;
+	if (m) solve(q); m /= 3;
+	for (int i = 0; i < m; ++i) cout << Ans[i] - ans[i].count() * 3 << endl;
+}
+signed main() {
+	int m;
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i], lsh.push_back(a[i]);
+	sort(lsh.begin(), lsh.end());
+	for (int i = 1; i <= n; ++i) a[i] = lower_bound(lsh.begin(), lsh.end(), a[i]) - lsh.begin();
+	int Block = sqrt(n);
+	for (int i = 1; i <= n; ++i)
+		bel[i] = (i - 1) / Block;
+	::m = m / 3;
+	q.resize(::m * 3);
+	Solve();
+	Solve();
+	::m = m - ::m * 2;
+	q.resize(::m * 3);
+	Solve();
+	return 0;
+}

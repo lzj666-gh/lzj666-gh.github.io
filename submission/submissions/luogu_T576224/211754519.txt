@@ -1,0 +1,59 @@
+//  OJ: 洛谷
+//  提交ID: 211754519
+//  题目ID: T576224
+MOD = 10**9 + 7 
+ 
+# 快速幂函数 
+def quick_pow(base, exponent): 
+    result = 1 
+    while exponent: 
+        if exponent & 1: 
+            result = result * base % MOD 
+        base = base * base % MOD 
+        exponent >>= 1 
+    return result 
+ 
+# 读取输入 
+n, k = map(int, input().split()) 
+s = input() 
+ 
+# 统计问号的数量 
+question_count = s.count('?')  
+# 所有可能的填充方式 
+total_ways = quick_pow(3, question_count) 
+ 
+# 动态规划数组 
+dp = [[[[0] * (k + 1) for _ in range(n + 1)] for _ in range(n + 1)] for _ in range(n + 1)] 
+ 
+# 初始化边界条件 
+for x in range(n + 1): 
+    for y in range(k + 1): 
+        dp[1][0][x][y] = 1 if x == 0 else 0 
+ 
+# 动态规划计算符合规范的轴对称超级括号序列的数量 
+for length in range(1, n + 1): 
+    for i in range(1, n - length + 2): 
+        j = i + length - 1 
+        for x in range(n + 1): 
+            for y in range(k + 1): 
+                # 根据不同的字符情况进行状态转移 
+                if s[i - 1] == '?' or s[i - 1] == '(': 
+                    for new_y in range(k + 1): 
+                        dp[i][j][x + 1][0] = (dp[i][j][x + 1][0] + dp[i + 1][j][x][new_y]) % MOD 
+                if s[i - 1] == '?' or s[i - 1] == ')': 
+                    if x > 0: 
+                        for new_y in range(k + 1): 
+                            dp[i][j][x - 1][0] = (dp[i][j][x - 1][0] + dp[i + 1][j][x][new_y]) % MOD 
+                if s[i - 1] == '?' or s[i - 1] == '*': 
+                    if y < k: 
+                        for new_y in range(k + 1): 
+                            dp[i][j][x][y + 1] = (dp[i][j][x][y + 1] + dp[i + 1][j][x][new_y]) % MOD 
+ 
+# 最终符合规范的轴对称超级括号序列的数量 
+valid_ways = dp[1][n][0][0] 
+ 
+# 计算结果 
+result = (total_ways - valid_ways + MOD) % MOD 
+ 
+# 输出结果 
+print(result) 

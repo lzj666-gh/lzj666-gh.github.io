@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 115669059
+//  题目ID: P9460
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int main() {
+    int n, k;
+    cin >> n >> k;
+    vector<int> a(n);
+    vector<int> freq(n+1, 0);
+    for (int i = 0; i < n; ++i) {
+        cin >> a[i];
+        freq[a[i]]++;
+    }
+    int maxFreq = *max_element(freq.begin(), freq.end());
+    int cnt = 0;
+    for (int i = 1; i <= n; ++i) {
+        if (freq[i] == maxFreq) {
+            cnt++;
+        }
+    }
+    if (k == 0) {
+        cout << cnt << endl;
+    } else if (k >= cnt) {
+        cout << "pigstd" << endl;
+    } else {
+        cout << cnt + k << endl;
+    }
+    return 0;
+}

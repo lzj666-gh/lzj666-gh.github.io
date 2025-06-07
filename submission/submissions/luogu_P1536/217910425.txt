@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 217910425
+//  题目ID: P1536
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 2e5 + 10, M = 1e6 + 10;
+int n, m;
+int fa[N];
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	while (cin >> n >> m) {
+		int ans = 1;
+		for (int i = 1; i <= n; ++i) fa[i] = i;
+		while (m--) {
+			int x, y;
+			cin >> x >> y;
+			if (find(x) != find(y)) {
+				fa[find(x)] = find(y);
+				ans++;
+			}
+		}
+		cout << n - ans << endl;
+	}
+	return 0;
+}

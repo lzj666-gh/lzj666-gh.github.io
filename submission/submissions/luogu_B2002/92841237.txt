@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 92841237
+//  题目ID: B2002
+#include<bits/stdc++.h/algorithm/cstdlib>
+using namespace std;
+int main()
+{
+	cout<<"Hello,World!";
+
+	return 0;
+}
+

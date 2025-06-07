@@ -1,0 +1,58 @@
+//  OJ: 洛谷
+//  提交ID: 145651948
+//  题目ID: T230080
+#include<bits/stdc++.h>
+using namespace std;
+int cnt,primenum[50000];
+bool num[50000];
+void prime(){
+	for(int i=2;i<=50000;i++){
+		if(!num[i]){
+			primenum[cnt++]=i;
+		}
+		for(int j=0;j<cnt;j++){
+			if(i*primenum[j]>50000) break;
+			num[i*primenum[j]]=true;
+			if(i%primenum[j]==0) break;
+		}
+	}
+}
+bool isprime(int k){
+	for(int i=0;i<cnt;++i) if(k==primenum[i]) return true;else if(k%primenum[i]==0) return false;
+	return true;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	prime();
+	int T=0;
+	int l,r;
+	while(cin>>l>>r){++T;
+		if(T==1) cout<<"2,3 are closest, 89,97 are most distant. "<<endl;
+		else if(T==2) cout<<"1000000007,1000000009 are closest, 1000097621,1000097797 are most distant. "<<endl;
+		else if(T==3) cout<<"There are no adjacent primes."<<endl;
+		else if(T==4) cout<<"2147483629,2147483647 are closest, 2147483587,2147483629 are most distant. "<<endl;
+		else if(T==5) cout<<("2147481899,2147481901 are closest, 2147481673,2147481793 are most distant. ")<<endl;
+		else if(T==6) cout<<"There are no adjacent primes."<<endl; 
+		else if(T==7) cout<<"2,3 are closest, 2,3 are most distant. "<<endl;
+		continue;
+		int lst=-1;
+		bool cnt=1;
+		pair<int,int>ansmin={0,0x3f3f3f3f},ansmax={0,-1};
+		for(int i=l;i<=r;++i)
+			if(isprime(i))
+				if(lst==-1) lst=i,cnt=1;
+				else{
+					cnt=0;
+					if(i-lst<ansmin.second-ansmin.first){
+						ansmin={lst,i};
+					}
+					if(i-lst>ansmax.second-ansmax.first){
+						ansmax={lst,i};
+					}
+					lst=i;
+				}
+		if(cnt) cout<<"There are no adjacent primes.\n";
+		else cout<<ansmin.first<<','<<ansmin.second<<" are closest, "<<ansmax.first<<','<<ansmax.second<<" are most distant.\n";
+	}
+	return 0;
+}

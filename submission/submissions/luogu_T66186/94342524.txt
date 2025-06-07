@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 94342524
+//  题目ID: T66186
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int a;cin>>a;
+	int m[a];
+	m[1]=1;
+	m[2]=1;
+	for(int i=3;i<=a+2;i++){
+		m[i]=m[i-1]+m[i-2];
+	}
+	cout<<m[a];
+
+	return 0;
+}

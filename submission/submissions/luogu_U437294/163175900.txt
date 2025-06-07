@@ -1,0 +1,101 @@
+//  OJ: 洛谷
+//  提交ID: 163175900
+//  题目ID: U437294
+#include<bits/stdc++.h>
+using namespace std;
+int n,tmp;
+string s;
+struct node{
+	struct point{
+		string data;
+		point*nxt;
+		point(string s):data(s),nxt(nullptr){}
+		point():data(string()),nxt(nullptr){}
+	};
+	point*front=nullptr;
+	point*back=nullptr;
+	point*pt=nullptr;
+	int val=0;
+	void push(string s){
+		pt=new point;
+		pt->data=s;
+		back->nxt=pt;
+		back=pt;
+	}
+	void pop(){
+		if(empty()) return;
+		pt=front->nxt;
+		free(front);
+		front=pt;
+	}
+	node(string s,int x){
+		val=x;
+		pt=new point;
+		pt->data=s;
+		front=back=pt;
+	}
+	node(){
+		pt=new point;
+		val=0;
+		front=back=pt=nullptr;
+	}
+	string frt(){
+		return front->data;
+	}
+	bool empty(){
+		return front==nullptr;
+	}
+};
+struct Node{
+	struct point{
+		node data;
+		point*nxt;
+		point*frt;
+		point(node s):data(s),nxt(nullptr),frt(nullptr){}
+		point():data(node()),nxt(nullptr),frt(nullptr){}
+	};
+	point*front=nullptr;
+	point*Back=nullptr;
+	point*pt=nullptr;
+	void push_back(node s){
+		pt=new point;
+		pt->data=s;
+		if(empty()) front=Back=pt;
+		else Back->nxt=pt,pt->frt=Back,Back=pt;
+	}
+	Node(){
+		front=Back=pt=nullptr;
+	}
+	node&back(){
+		return (Back->data);
+	}
+	bool empty(){
+		return front==nullptr;
+	}
+	void pop_back(){
+		if(empty()) return;
+		pt=Back->frt;
+		free(Back);
+		Back=pt;
+	}
+}v;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	while(n--){
+		cin>>s;
+		if(s=="push"){
+			cin>>s>>tmp;
+			if(v.empty()) v.push_back(node(s,tmp));
+			else if(tmp==v.back().val) v.back().push(s);
+			else v.push_back(node(s,tmp));
+		}
+		else{
+			cout<<v.back().frt()<<endl;
+			v.back().pop();
+			if(v.back().empty()) v.pop_back();
+		}
+		
+	}
+	return 0;
+}

@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 90897487
+//  题目ID: T65868
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int n,an,d,a1;
+	cin>>n>>an>>d;
+	a1=an-(n-1)*d;
+	cout<<a1;
+	return 0;
+}
+

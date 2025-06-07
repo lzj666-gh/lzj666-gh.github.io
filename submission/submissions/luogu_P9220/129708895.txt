@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 129708895
+//  题目ID: P9220
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ifstream fin("ikun.abcde");
+	if(!fin.good()){
+		fin.close();
+		ofstream fout("ikun.abcde");
+		fout<<"SB";
+		fout.close();
+		int n;
+	cin>>n;
+	while(n--) cout<<"B";
+	}
+	else{
+		int n;
+	cin>>n;
+	while(n--) cout<<"A";
+	}
+	return 0l;
+} 

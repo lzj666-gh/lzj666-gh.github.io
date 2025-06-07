@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 106830028
+//  题目ID: T211861
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a,c;char b;
+	long long s=0;
+	cin>>s;
+	while(cin>>b>>c){
+		if(b=='+') s+=c;
+		else if(b=='-') s-=c;
+		else if(b=='*') s*=c;
+		else if(b=='/') s/=c;
+	}
+	cout<<s;
+}

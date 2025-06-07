@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 139557955
+//  题目ID: T138171
+#include<bits/stdc++.h>
+using namespace std;
+int nxt[1000000 + 10];
+string s;
+void iniit() {
+	int j = 0, k = -1;
+	nxt[0] = -1;
+	while (j < s.size()) {
+		if (k == -1 || s[j] == s[k]) 
+			nxt[++j] = ++k;
+		else k = nxt[k];
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> s;
+	iniit();
+	for (int i = 1; i <= s.size(); ++i) {
+		cout << nxt[i] << ' ';
+	}
+	cout << endl;
+	return 0;
+}

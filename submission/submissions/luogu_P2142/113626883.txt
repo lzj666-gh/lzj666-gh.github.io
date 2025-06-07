@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 113626883
+//  题目ID: P2142
+#include<bits/stdc++.h>
+using namespace std;
+int a[10086+10],b[10086+10];
+char str[10086+10];
+bool bijiao(){
+	for(int i=a[0];i>=1;--i){
+		if(a[i]>b[i]) return false;
+	}
+	return true;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);cout.tie(NULL);
+	cin>>str;
+	a[0]=strlen(str);
+	for(int i=a[0]-1,j=1;i>=0;--i,++j){
+		a[j]=str[i]-'0';
+		str[i]='\0';
+	}
+	cin>>str;
+	b[0]=strlen(str);
+	for(int i=b[0]-1,j=1;i>=0;--i,++j){
+		b[j]=str[i]-'0';
+	}
+	if(a[0]<b[0]||(a[0]==b[0]&&bijiao())){
+		for(int i=max(a[0],b[0]);i>=0;--i){
+			swap(a[i],b[i]);
+		}
+		cout<<'-';
+	}
+	for(int i=a[0];i>=1;--i){
+		a[i]-=b[i];
+		if(a[i]<0){
+			a[i]+=10;
+			a[i-1]--;
+		}
+	}
+	for(int i=a[0];i>=1;--i){
+		cout<<a[i];
+	}
+	cout<<endl;
+	return 0;
+}
+

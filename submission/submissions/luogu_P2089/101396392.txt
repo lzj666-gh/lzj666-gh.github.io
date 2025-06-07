@@ -1,0 +1,60 @@
+//  OJ: 洛谷
+//  提交ID: 101396392
+//  题目ID: P2089
+#include<bits/stdc++.h>
+using namespace std;
+int a[10+5],n,cnt=0;
+int main(){
+	cin>>n;
+	if(n>30||n<10){
+		cout<<0;
+		return 0;
+	}
+	for(int b=1;b<=3;b++){
+		for(int c=1;c<=3;c++){
+			for(int d=1;d<=3;d++){
+				for(int e=1;e<=3;e++){
+					for(int f=1;f<=3;f++){
+						for(int g=1;g<=3;g++){
+							for(int h=1;h<=3;h++){
+								for(int i=1;i<=3;i++){
+									for(int j=1;j<=3;j++){
+										for(int k=1;k<=3;k++){
+											if(b+c+d+e+f+g+h+i+j+k==n){
+												cnt++;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	cout<<cnt<<endl;
+	for(int b=1;b<=3;b++){
+		for(int c=1;c<=3;c++){
+			for(int d=1;d<=3;d++){
+				for(int e=1;e<=3;e++){
+					for(int f=1;f<=3;f++){
+						for(int g=1;g<=3;g++){
+							for(int h=1;h<=3;h++){
+								for(int i=1;i<=3;i++){
+									for(int j=1;j<=3;j++){
+										for(int k=1;k<=3;k++){
+											if(b+c+d+e+f+g+h+i+j+k==n){
+												cout<<b<<" "<<c<<" "<<d<<" "<<e<<" "<<f<<" "<<g<<" "<<h<<" "<<i<<" "<<j<<" "<<k<<endl;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

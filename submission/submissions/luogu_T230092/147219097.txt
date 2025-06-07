@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 147219097
+//  题目ID: T230092
+#include<bits/stdc++.h>
+using namespace std;
+int a[25+5],b[25+5],n;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=0;i^n;++i){
+		cin>>a[i]>>b[i];
+		b[i]%=a[i];
+	}
+	for(int i=0;;++i){
+		if(i>2*1e8){
+			cout<<-1<<endl;
+			return 0;
+		}
+		bool can=0;
+		for(int j=0;j^n;++j){
+			if((i%a[j])^b[j]){
+				can=1;break;
+			}
+		}
+		if(can) continue;
+		cout<<i<<endl;
+		return 0;
+	}
+	return 0;
+} 

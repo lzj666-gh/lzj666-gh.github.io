@@ -1,0 +1,55 @@
+//  OJ: 洛谷
+//  提交ID: 165679296
+//  题目ID: P4360
+#include<bits/stdc++.h>
+#define min(a,b) ((a)<(b)?(a):(b))
+using namespace std;
+long long n,w[20000+21],d[20000+21],s[20000+21],ans,tot;
+int main(){
+// 	freopen("wood.in","r",stdin);
+// 	freopen("wood.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i) cin>>w[i]>>d[i];
+	for(int i=n;i>=1;--i) d[i]+=d[i+1];
+	for(int i=1;i<=n;++i) tot+=w[i]*d[i],w[i]+=w[i-1],s[i]=w[i]*d[i];
+	ans=tot;
+	for(int i=1;i<n;++i){
+		for(int j=i+1;j<=n+15;j+=16){
+			ans=min(ans,tot+w[i]*d[j]-s[j]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+1]-s[j+1]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+2]-s[j+2]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+3]-s[j+3]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+4]-s[j+4]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+5]-s[j+5]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+6]-s[j+6]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+7]-s[j+7]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+9]-s[j+9]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+8]-s[j+8]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+10]-s[j+10]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+11]-s[j+11]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+12]-s[j+12]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+13]-s[j+13]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+14]-s[j+14]-s[i]);
+			ans=min(ans,tot+w[i]*d[j+15]-s[j+15]-s[i]);
+		}
+	}
+	cout<<ans<<endl;
+	return 0;
+}
+/*
+9
+1 2
+2 1
+3 3
+1 1 
+3 2
+1 6
+2 1
+1 2
+1 1
+*/
+// may 50pts
+// O(n^2) but have 1/2 always
+// in n<1000(50%)
+// 你说的对，但是循环展开 

@@ -1,0 +1,64 @@
+//  OJ: 洛谷
+//  提交ID: 121151863
+//  题目ID: P1281
+#include<bits/stdc++.h>
+#define maxn 50000+10
+#define f_u(a,b) for(register int i=a;i<=b;++i)
+#define f_d(a,b) for(register int i=a;i>=b;--i)
+using namespace std;
+struct node{
+	int l,r;
+};
+inline int read(){register char c=getchar();register int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=(x<<3)+(x<<1)+(c^48);c=getchar();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+int m,k,a[maxn],sum;
+inline bool check(int kk){
+	int now=0;
+	f_u(1,k){
+		int tmp=0;
+		while(tmp<kk){
+			if(now>m) return true;
+			tmp+=a[++now];
+		}
+		--now;
+		tmp-=a[now+1];
+	}
+	if(now==m) return true;
+	return false;
+}
+void zhongfen(){
+	register int l=1,r=sum,mid;
+	while(l<r){
+		mid=(l+r+1)/2;
+		if(check(mid)) r=mid-1;
+		else l=mid;
+	}
+	int now=m;
+	node per[500+10]={{0,0}};
+	for(register int i=k;i>=1;--i){
+		if(now==0){
+			per[i].r=per[i].l=0;
+			continue;
+		}
+		per[i].r=now;
+		register int tmp=0;
+		while(tmp<l){
+			tmp+=a[now],now--;
+			if(tmp>l){
+				now++;
+				break;
+			}
+			if(now==1) break;
+		}
+		per[i].l=now+1;
+	}
+	per[1].l=1;
+	for(register int i=1;i<=k;++i) printf("%d %d\n",per[i].l,per[i].r);
+	return;
+}
+int main(){
+	m=read();k=read();
+	f_u(1,m) a[i]=read(),sum+=a[i];
+	zhongfen();
+	return 0;
+}

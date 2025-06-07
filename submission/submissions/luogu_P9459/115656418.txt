@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 115656418
+//  题目ID: P9459
+#include<bits/stdc++.h>
+#define maxn 1000+10
+using namespace std;
+int n;
+string a[maxn];
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		bool pd=true;
+		cin>>a[i];
+		if(a[i][0]!='y') pd=false;
+		
+		cin>>a[i];
+		if(a[i][0]!='y') pd=false;
+		
+		cin>>a[i];
+		if(a[i]!="ding") pd=false;
+		
+		cin>>a[i];
+		if(a[i]!="zhen") pd=false;
+		
+		if(pd) cout<<"Yes"<<endl;
+		else cout<<"No"<<endl;
+	}
+	return 0;
+}

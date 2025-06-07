@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 179918184
+//  题目ID: T520878
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+using lb = long double;
+constexpr ll mod = 998244353;
+struct Node {
+	lb a, b, c, d;
+	friend bool operator<(const Node& a, const Node& b) {
+		return a.b / a.d > b.b / b.d;
+	}
+}a[1000000 + 10];
+ll n, k, ans;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> k;
+	ll tot = 0;
+	for (int i = 1; i <= n; ++i)
+		cin >> a[i].a >> a[i].b >> a[i].c,
+		tot += a[i].b,
+		a[i].d = ceil(a[i].a / (k - a[i].c));
+	sort(a + 1, a + n + 1);
+	//for (int i = 1; i <= n; ++i) cout << a[i].b << ' ' << a[i].d << endl;
+	for (int i = 1; i <= n; ++i) {
+		lb atk = a[i].d * tot - a[i].b;
+		atk = atk - (floor(atk / mod) * mod);
+		ans += atk + 1e-6;
+		ans %= mod;
+		tot -= a[i].b;
+	}
+	cout << ans << endl;
+	return 0;
+}

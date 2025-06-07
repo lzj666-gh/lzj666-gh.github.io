@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 101191389
+//  题目ID: U278066
+#include<bits/stdc++.h>
+using namespace std;
+double a,s=100;int b;
+int main(){
+	int n;cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>a;
+		b=ceil(a);
+		s+=b;
+	}
+	cout<<s;
+	return 0;
+} 

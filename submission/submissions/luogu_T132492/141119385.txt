@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 141119385
+//  题目ID: T132492
+#include<bits/stdc++.h>
+using namespace std;
+int n,w,c[20],now[20],ans=INT_MAX;
+void dfs(int k,int cnt){
+	if(cnt>ans) return;
+	if(k==n+1){
+		ans=min(ans,cnt);
+		return;
+	}
+	for(int i=1;i<=cnt;++i){
+		if(c[k]+now[i]<=w){
+			now[i]+=c[k];
+			dfs(k+1,cnt);
+			now[i]-=c[k];
+		}
+	}
+	now[cnt+1]=c[k];
+	dfs(k+1,cnt+1);
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>w;
+	for(int i=1;i<=n;++i) cin>>c[i];
+	sort(c+1,c+n+1,[&](const int&a,const int&b)->bool{return a<b;});
+	dfs(0,0);
+	cout<<ans<<endl;
+	return 0;
+}

@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 104461396
+//  题目ID: P1885
+//老师我是李梓加
+//我在玩游戏
+//我在玩洛谷和C++
+#include<bits/stdc++.h>
+using namespace std;
+int a[1000000]={1,2,0},n,p=1;
+long long cnt=3;
+int main(){
+	scanf("%d",&n);
+	while(cnt<n){
+		cnt*=2;cnt+=2;
+		a[++p]=1;
+	}
+}

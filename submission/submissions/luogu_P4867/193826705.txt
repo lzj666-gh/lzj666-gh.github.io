@@ -1,0 +1,59 @@
+//  OJ: 洛谷
+//  提交ID: 193826705
+//  题目ID: P4867
+#include<bits/stdc++.h>
+using namespace std;
+int n, Q, bel[1000000 + 10], a[1000000 + 10], R[1000000 + 10];
+struct Query {
+	int l, r, a, b, id; long long ans;
+	friend bool operator<(const Query& a, const Query& b) {
+		return bel[a.l] == bel[b.l] ? bel[a.l] % 2 == 1 ? a.r<b.r : a.r>b.r : bel[a.l] < bel[b.l];
+	}
+}q[1000000 + 10];
+namespace {
+	int vis[1000000 + 10], Sum[1000000 + 10];
+	void add(int x) {
+		vis[a[x]]++;
+		Sum[bel[a[x]]] += vis[a[x]] == 1;
+	}
+	void del(int x) {
+		vis[a[x]]--;
+		Sum[bel[a[x]]] -= vis[a[x]] == 0;
+	}
+	long long query(int a, int b) {
+		int ans = 0;
+		if (bel[a] == bel[b]) {
+			for (int i = a; i <= b; ++i) ans += bool(vis[i]);
+			return ans;
+		}
+		for (int i = bel[a] + 1; i < bel[b]; ++i) ans += Sum[i];
+		for (int i = a; i <= R[bel[a]]; ++i) ans += bool(vis[i]);
+		for (int i = R[bel[b] - 1] + 1; i <= b; ++i) ans += bool(vis[i]);
+		return ans;
+	}
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> Q;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	int t = max(n, Q);
+	int t1 = 1, t2 = pow(t, 0.5), t3 = 1;
+	for (int i = 1; i <= t; ++i) {
+		bel[i] = t3;
+		if (t1 == t2) t1 = 1, R[t3] = i, t3++;
+		t1++;
+	}
+	for (int j = 1; j <= Q; ++j) cin >> q[j].l >> q[j].r >> q[j].a >> q[j].b, q[j].id = j, q[j].l--;
+	sort(q + 1, q + Q + 1);
+	q[0].l = 1;
+	for (int j = 1; j <= Q; ++j) {
+		while (q[j - 1].l < q[j].l) del(q[j - 1].l), q[j - 1].l++;
+		while (q[j - 1].l > q[j].l) add(q[j - 1].l - 1), q[j - 1].l--;
+		while (q[j - 1].r < q[j].r) add(q[j - 1].r + 1), q[j - 1].r++;
+		while (q[j - 1].r > q[j].r) del(q[j - 1].r), q[j - 1].r--;
+		q[j].ans = query(q[j].a, q[j].b);
+	}
+	sort(q + 1, q + Q + 1, [](const Query& a, const Query& b)->bool {return a.id < b.id; });
+	for (int i = 1; i <= Q; ++i) cout << q[i].ans << endl;
+	return 0;
+}

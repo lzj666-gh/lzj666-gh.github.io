@@ -1,0 +1,74 @@
+//  OJ: 洛谷
+//  提交ID: 115991954
+//  题目ID: P5076
+#include<bits/stdc++.h>
+using namespace std;
+priority_queue< int , vector<int> , greater<int> > q;
+int no(int x){
+	stack <int> p;
+	int i=1;
+	for(;q.top()<x;i++){
+		p.push(q.top());
+		q.pop();
+	}
+	while(!p.empty()) q.push(p.top()),p.pop();
+	return i;
+}
+int xx(int no){
+	stack <int> p;
+	for(int i=1;i<=no;i++){
+		p.push(q.top());
+		q.pop();
+	}
+	int re=p.top();
+	while(!p.empty()) q.push(p.top()),p.pop();
+	return re;
+}
+int last(int x){
+	if(q.empty()) return -2147483647;
+	stack <int> p;
+	for(int i=1;q.top()<x;i++){
+		p.push(q.top());
+		q.pop();
+		if(q.empty()) return -2147483647;
+	}
+	int re=p.top();
+	while(!p.empty()) q.push(p.top()),p.pop();
+	return re;
+}
+int next(int x){
+	if(q.empty()) return 2147483647;
+	stack <int> p;
+	for(int i=1;q.top()<=x;i++){
+		p.push(q.top());
+		q.pop();
+		if(q.empty()) return 2147483647;
+	}
+	int re=q.top();
+	while(!p.empty()) q.push(p.top()),p.pop();
+	return re;
+}
+int qq,opt,x;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>qq;
+	for(int i=1;i<=qq;i++){
+		cin>>opt>>x;
+		if(opt==1){
+			cout<<no(x)<<endl;
+		}
+		else if(opt==2){
+			cout<<xx(x)<<endl;
+		}
+		else if(opt==3){
+			cout<<last(x)<<endl;
+		}
+		else if(opt==4){
+			cout<<next(x)<<endl;
+		}
+		else if(opt==5){
+			q.push(x);
+		}
+	}
+	return 0;
+}

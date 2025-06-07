@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 135874632
+//  题目ID: T146953
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int do_(int *a,int n){
+	int s[100000+10]; long long ans=0,cnt=0;
+	for(int i=1;i<=n;++i) cnt+=a[i];
+	cnt/=n;
+	for(int i=1;i<=n;++i) s[i]=s[i-1]+a[i]-cnt;
+	sort(&s[1],&s[n+1]);
+	int idx=(n>>1)+(n&1);
+	for(int i=1;i<=n;++i) ans+=abs(s[i]-s[idx]);
+	return ans;
+}
+int a[100000+10],b[100000+10],n,m,k;
+signed main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m>>k;
+	for(int i=1,l,r;i<=k;++i) cin>>l>>r,a[l]++,b[r]++;
+	if(k%n&&k%m) cout<<"impossible"<<endl;
+	else if(k%n) cout<<"column " <<do_(b,m);
+	else if(k%m) cout<<"row "<<do_(a,n);
+	else cout<<"both "<<do_(a,n)+do_(b,m);
+	return 0;
+}

@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 219417646
+//  题目ID: P6076
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int qpow(int a, int b) {
+	long long ans = 1;
+	while (b) {
+		if (b & 1) ans = ans * a % mod;
+		a = a * a % mod; b >>= 1;
+	}
+	return ans;
+}
+int C[400 + 5][400 + 5], n, m, c, f[500 + 10];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> c; int t = max({ n,m,c });
+	for (int i = 0; i <= t; ++i) C[i][0] = 1, f[i] = qpow(qpow(i + 1, m) - 1, n);
+	for (int i = 1; i <= t; ++i)
+		for (int j = 1; j <= t; ++j)
+			C[i][j] = (C[i - 1][j - 1] + C[i - 1][j]) % mod;
+	for (int i = 1; i <= c; ++i) 
+		for (int j = m, k = 1; j >= 1; --j, k = k * (i + 1) % mod)
+			f[i] -= (j & 1 ? 1 : -1) * qpow(k - 1, n) * C[m][j] % mod;
+	int ans = f[c];
+	for (int i = 1; i <= c; ++i) ans -= (i & 1 ? 1 : -1) * f[c - i] * C[c][i] % mod;
+	cout << (ans % mod + mod) % mod << endl;
+	return 0;
+}

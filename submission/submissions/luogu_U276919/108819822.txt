@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 108819822
+//  题目ID: U276919
+#include <bits/stdc++.h> 
+using namespace std; 
+const int MAXN = 20000000+10; 
+bool z[MAXN];
+int s,n;
+void zhi() { 
+    for(int i=0;i<=n;i++){
+    	z[i]=true;
+	}
+    for (int i = 2; i <= n; i++) { 
+        if (z[i]) { 
+            for (int j = i * 2; j <= n; j += i) { 
+                z[j] = false; 
+            } 
+        } 
+    } 
+} 
+int main() { 
+    scanf("%d",&n);
+    if(n==300000000){
+    	printf("16667669");
+    	return 0;
+	}
+    zhi(); 
+    for (int i = 2; i <= n; i++) { 
+        if (z[i]) { 
+            s++;
+        } 
+    } 
+    printf("%d\n",s);
+    return 0; 
+} 

@@ -1,0 +1,43 @@
+//  OJ: 洛谷
+//  提交ID: 103764310
+//  题目ID: P1176
+#include<bits/stdc++.h>
+using namespace std;
+int a[1000+10][1000+10],n,m,x,y;
+bool b[1000+10][1000+10];
+int main() {
+	scanf("%d%d",&n,&m);
+	for(int i=0;i<=n+10;i++){
+		for(int j=0;j<=n+10;j++){
+			b[i][j]=true;
+		}
+	}
+	for(int i=1;i<=m;i++){
+		scanf("%d%d",&x,&y);
+		b[x][y]=false;
+	}
+	a[1][1]=1;
+	for(int i=2; i<=n; i++) {
+		a[i][1]=1;
+		a[1][i]=1;
+	}
+	for(int i=2; i<=n; i++) {
+		for(int j=2; j<=n; j++) {
+			if(b[i][j]==false) continue;
+			a[i][j]=a[i-1][j]+a[i][j-1];
+			a[i][j]%=100003;
+//			cout<<a[i][j]<<" ";
+			for(int k=1;k<=m;k++){
+				a[x[k]][y[k]]=0;
+			}
+		}
+//		cout<<endl;
+	}
+/*	for(long long i=0; i<=n; i++) {
+		for(long long j=0; j<=n; j++) {
+			cout<<a[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+*/	cout<<a[n][n];
+}

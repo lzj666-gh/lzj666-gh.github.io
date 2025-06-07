@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 93893479
+//  题目ID: T66227
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int m,n;
+	cin>>m>>n;
+	for(int a=1;a<=m;a+=1){
+		for(int b=1;b<=n;b+=1){
+			cout<<"*";
+		}
+		cout<<endl; 
+	}
+
+	return 0;
+}
+
+
+

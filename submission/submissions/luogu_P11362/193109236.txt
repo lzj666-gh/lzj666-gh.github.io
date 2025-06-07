@@ -1,0 +1,53 @@
+//  OJ: 洛谷
+//  提交ID: 193109236
+//  题目ID: P11362
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int mod=1e9+7;
+using ll=long long;
+int n,m,v;
+unordered_map<int,int>mp;
+ll poww(ll x,ll k){
+	if(k==1) return x;
+	if(k==0) return 1;
+	ll tmp=poww(x,k/2);
+	tmp=tmp*tmp%mod;
+	if(k%2==1) return tmp*x%mod;
+	return tmp;
+}
+//this fast pow is O(log)!!!
+//I will never write it to O(n) again!!!
+int main(){
+// 	freopen("assign.in","r",stdin);
+// 	freopen("assign.out","w",stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--){
+		cin>>n>>m>>v;
+		unordered_map<int,int>().swap(mp);
+		bool can=1;
+		for(int i=1,c,d;i<=m;++i) cin>>c>>d,can&=(mp[c]==0||mp[c]==d),mp[c]=d;
+		if(!can){
+			cout<<0<<endl;
+			continue;
+		}
+		ll ans=poww(v*v,n-1);
+//		cerr<<n<<' '<<m<<' '<<v<<' '<<ans<<endl;
+		for(unordered_map<int,int>::iterator it=mp.begin();it!=mp.end();it++){
+			try{
+				mp.at(it->first+1);
+				ans-=(poww(v*v,n-2)*(v-1)%mod);
+				ans=(ans+mod)%mod;
+			}
+			catch(...){
+//				ans-=(poww(v*v,n-3)*(v)*(v-1)%mod);
+//				ans=(ans+mod)%mod;
+			}
+		}
+		cout<<ans<<endl;
+		//how could it be???
+	}
+	return 0;
+}
+//x[7]=2

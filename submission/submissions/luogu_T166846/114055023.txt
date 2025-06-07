@@ -1,0 +1,51 @@
+//  OJ: 洛谷
+//  提交ID: 114055023
+//  题目ID: T166846
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<pair<int, int>> selectedItems;
+
+bool findSolution(const vector<int>& weights, int targetWeight, int currentIndex) {
+    if (targetWeight == 0) {
+        return true;
+    }
+
+    if (currentIndex < 0 || targetWeight < 0 || currentIndex >= weights.size()) {
+        return false;
+    }
+
+    // 选择当前物品
+    selectedItems.push_back(make_pair(currentIndex + 1, weights[currentIndex]));
+    bool includeCurrent = findSolution(weights, targetWeight - weights[currentIndex], currentIndex + 1);
+
+    if (includeCurrent) {
+        return true;
+    }
+
+    // 不选择当前物品
+    selectedItems.pop_back();
+    return findSolution(weights, targetWeight, currentIndex + 1);
+}
+
+int main() {
+    int n, s;
+    cin >> n >> s;
+
+    vector<int> weights(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> weights[i];
+    }
+
+    if (findSolution(weights, s, 0)) {
+        for (int i = 0; i < selectedItems.size(); ++i) {
+            cout << "number:" << selectedItems[i].first << "  weight:" << selectedItems[i].second << endl;
+        }
+    } else {
+        cout << "not found" << endl;
+    }
+
+    return 0;
+}

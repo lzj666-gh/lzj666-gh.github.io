@@ -1,0 +1,84 @@
+//  OJ: 洛谷
+//  提交ID: 122042325
+//  题目ID: P5121
+#include<bits/stdc++.h>
+using namespace std;
+int n,k;
+int a[1000+100][10+10];
+bool vis[1000+100][10+10];
+void dfs(int x,int y,int last){
+	if(x>n||x<1||y>10||y<1) return;
+	if(a[x][y]!=last||a[x][y]==0) return;
+	if(vis[x][y]) return;
+	vis[x][y]=true;
+	dfs(x+1,y,last);
+	dfs(x-1,y,last);
+	dfs(x,y+1,last);
+	dfs(x,y-1,last);
+}
+void down(){
+	for(register int i=n;i>1;i--){
+		for(register int j=1;j<=10;++j){
+			if(a[i-1][j]==0){
+				int k=i;
+				while(k<=n&&a[k][j]!=0) ++k;
+				--k;
+				int to=i-1;
+				while(to>=1&&a[to][j]==0) --to;
+				++to;
+				for(int l=to,r=i;r<=k;l++,r++){
+					a[l][j]=a[r][j];
+					a[r][j]=0;
+				}
+			}
+		}
+	}
+}
+bool check(auto vis,auto vis2){
+	int re=0;
+	for(register int i=1;i<=n;++i){
+		for(register int j=1;j<=10;++j){
+			if(vis[i][j]!=vis2[i][j]) re++;
+		}
+	}
+	return re>=k;
+}
+int main(){
+// 	freopen("mooyo.in","r",stdin);
+// 	freopen("mooyo.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>n>>k;
+	for(register int i=n;i>=1;i--){
+		for(register int j=1;j<=10;++j){
+			char c;
+			cin>>c;
+			a[i][j]=c-'0';
+		}
+	}
+	for(register int ioi=1;;ioi++){
+		memset(vis,0,sizeof(vis));
+		bool g=true;
+		for(register int i=n;i>=1;i--){
+			for(register int j=1;j<=10;++j){
+				bool vis2[1000+10][100+5];
+				memcpy(vis2,vis,sizeof vis);
+				dfs(i,j,a[i][j]);
+				if(!check(vis,vis2)) memcpy(vis,vis2,sizeof vis);
+			}
+		}
+		for(register int i=n;i>=1;i--){
+			for(register int j=1;j<=10;++j){
+				if(vis[i][j]) a[i][j]=0,g=false;
+			}
+		}
+		down();
+		if(g) break;
+	}
+	for(register int i=n;i>=1;i--){
+		for(register int j=1;j<=10;++j){
+			cout<<a[i][j];
+		}
+		cout<<endl;
+	}
+	return 0;
+}

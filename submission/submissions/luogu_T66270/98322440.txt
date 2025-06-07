@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 98322440
+//  题目ID: T66270
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int a[101]={0};int b;
+	while(b>0){
+		cin>>b;
+		a[b]++;
+	}
+	for(int i=1;i<=100;i++){
+		if(a[i]!=0){
+			cout<<i<<": "<<a[i]<<endl;
+		}
+	}
+}
+

@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 112205171
+//  题目ID: P1095
+#include<bits/stdc++.h>
+#define maxn 1000000
+using namespace std;
+long long dp[maxn];
+int m,s,t;
+int main(){
+	cin>>m>>s>>t;
+	for(int i=1;i<=t;i++){
+		if(m>=10){
+			dp[i]=dp[i-1]+60;
+			m-=10;
+		}
+		else{
+			dp[i]=dp[i-1];
+			m+=4;
+		}
+	}
+	for(int i=1;i<=t;i++){
+		if(dp[i]<dp[i-1]+17) dp[i]=dp[i-1]+17;
+		if(dp[i]>=s){
+			cout<<"YES"<<endl;
+			cout<<i<<endl;
+			return 0;
+		}
+	}
+	cout<<"NO"<<endl;
+	cout<<dp[t]<<endl;
+	return 0;
+}

@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 202521418
+//  题目ID: P3846
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+int p, a, n;
+int poww(int x, int k) {
+	if (k == 0) return 1;
+	if (k == 1) return x;
+	long long tmp = poww(x, k / 2);
+	tmp = tmp * tmp % p;
+	if (k & 1) return tmp * x % p;
+	else return tmp;
+}
+int BSGS_basic(int a, int n, int p) {
+	a %= p;
+	unordered_map<int, int>mp;
+	int t = ceil(sqrt(p));
+	int k = 1;
+	for (int i = 0; i < t; ++i)
+		mp[1ll * n * k % p] = i,
+		k = 1ll * k * a % p;
+	if (!k) return -1 + 2 * (n == 0);
+	for (int i = 1, q = 1; i <= t; ++i) {
+		q = 1ll * q * k % p;
+		try {
+			if (i * t - mp.at(q) >= 0) return i * t - mp[q];
+		}
+		catch (...) {}
+	}
+	return -1;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> p >> a >> n;
+	int res = BSGS_basic(a, n, p);
+	if (res == -1) cout << "no solution" << endl;
+	else cout << res << endl;
+	return 0;
+}

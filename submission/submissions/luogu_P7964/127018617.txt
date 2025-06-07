@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 127018617
+//  题目ID: P7964
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	freopen("kaucuk.in","r",stdin);
+	freopen("kaucuk.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	int line;
+	cin>>line;
+	string opt;
+	for(int now=1,now1=0,now2=0,now3=0;now<=line;++now){
+		cin>>opt;
+		if(opt=="section"){
+			string tmp;
+			cin>>tmp;
+			now2=0;
+			now3=0;
+			cout<<++now1<<' '<<tmp<<endl;
+		}
+		else if(opt=="subsection"){
+			string tmp;
+			cin>>tmp;
+			now3=0;
+			cout<<now1<<'.'<<++now2<<' '<<tmp<<endl;
+		}
+		else if(opt=="subsubsection"){
+			string tmp;
+			cin>>tmp;
+			cout<<now1<<'.'<<now2<<'.'<<++now3<<' '<<tmp<<endl;
+		}
+	}
+	return 0;
+}

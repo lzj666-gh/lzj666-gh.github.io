@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 143330570
+//  题目ID: P1063
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[300],dp[300][300],ans=INT_MIN;
+int max(int a,int b){
+	return a>b?a:b;
+}
+int main(){
+    cin>>n;
+    for(int i=1;i<=n;i++){
+		cin>>a[i];
+		a[i+n]=a[i];
+	}
+    for(int i=2;i<2*n;i++){
+        for(int j=i-1;j>max(i-n,0);j--){
+            for(int k=j;k<i;k++) dp[j][i]=max(dp[j][i],dp[j][k]+dp[k+1][i]+a[j]*a[k+1]*a[i+1]);
+            ans=max(dp[j][i],ans);
+        }
+    } 
+    cout<<ans<<endl;
+    return 0;
+}

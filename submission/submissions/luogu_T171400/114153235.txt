@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 114153235
+//  题目ID: T171400
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    vector<int> weights(6);
+    for (int i = 0; i < 6; i++) {
+        cin >> weights[i];
+    }
+    int total = 0;
+    for (int i = 0; i <= 1000; i++) {
+        bool possible = false;
+        for (int j = 0; j < 6; j++) {
+            if (weights[j] > 0 && i - (j + 1) >= 0) {
+                possible = true;
+                break;
+            }
+        }
+        if (possible) {
+            total++;
+        }
+    }
+    cout << "Total=" << total << endl;
+
+    return 0;
+}

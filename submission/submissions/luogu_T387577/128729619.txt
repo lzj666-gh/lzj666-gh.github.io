@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 128729619
+//  题目ID: T387577
+#include<bits/stdc++.h>
+using namespace std;
+long long n;
+long long ans=0;
+inline long long max(const long long &a,const long long &b){return a<b?b:a;}
+int main(){
+//	freopen("module.in","r",stdin);
+//	freopen("module.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=0;i<=n>>1;++i){
+		ans=max(ans,1ll*i*(n%((n>>1)+i)));
+		ans=max(ans,1ll*i*(n%((n>>1)-i)));
+		if(i%114514==0){
+			if(clock()*1.0/CLOCKS_PER_SEC>1.99){
+				cout<<ans<<endl;
+				return 0;
+			}
+		}
+	}
+	cout<<ans<<endl;
+	return 0;
+}

@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 145035253
+//  题目ID: T132508
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+	int v,w,nxt;
+}edge[10000*2+10];
+struct City{
+	int idx,f,val;
+	friend bool operator < (const City&a,const City&b){
+		return a.val<b.val;
+	}
+};
+int head[1000+10],idx;
+inline void add(int u,int v,int w){edge[++idx]={v,w,head[u]};head[u]=idx;}
+int n,m,pri[1000+10];
+inline void solve(int c,int s,int t){
+	memset(dp,0,sizeof dp);
+	priority_queue<City>q;
+	q.push({})
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=0;i^n;++i) cin>>pri[i];
+	for(int j=0;j^m;++j){
+		int u,v,d;
+		cin>>u>>v>>d;
+		add(u,v,d);
+	}
+	cin>>q;
+	for(int i=0;i^q;++i){
+		int c,s,e;
+		cin>>c>>s>>e;
+		solve(c,s,e);
+	}
+	return 0;
+}

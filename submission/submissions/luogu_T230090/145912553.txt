@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 145912553
+//  题目ID: T230090
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n;
+__int128 poww(long long a,long long x,long long p){ //a^b mod p
+	if(x==0) return 1;
+	__int128 t=poww(a,x/2,p)%p;
+	t=(t*t)%p;
+	if(x%2==1) t=(t*a)%p;
+	return t;
+}
+signed main(){
+	ios_base::sync_with_stdio(false);
+	int T=0;
+	while(cin>>n,n){
+		int p=n/__gcd(n,8ll)*9,phi=p,x=p;
+		for(int i=2;i*i<=x;++i){
+			if(x%i==0){
+				while(x%i==0)x/=i;
+				phi=phi/i*(i-1);
+			}
+		}
+//		cout<<"phi(new n): "<<phi<<endl;
+		if(x>1) phi=phi/x*(x-1);
+		x=phi;
+		int ans=LLONG_MAX;
+		for(int i=1;i*i<=x;++i){
+			if(x%i==0){
+				// cout<<"find: "<<i<<" with "<<poww(10,i,p)<<" and "<<x/i<<" with "<<poww(10,x/i,p)<<endl;
+				if(poww(10,i,p)==1) ans=min(ans,(int)(i));
+				if(i*i!=n&&poww(10,x/i,p)==1) ans=min(ans,(int)(x/i));
+			}
+		}
+		if(ans==LLONG_MAX) ans=0;
+		cout<<"Case "<<++T<<": "<<ans<<endl;
+	} 
+	return 0;
+}

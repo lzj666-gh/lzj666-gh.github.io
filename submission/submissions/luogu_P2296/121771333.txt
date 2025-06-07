@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 121771333
+//  题目ID: P2296
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int step,num;
+};
+int n,m,s,t;
+vector<int>a[10000],aa[10000];
+bool b[10000];
+bool can[10000];
+void dfs(int k){
+	if(b[k]) return;
+	b[k]=true;
+	for(auto kk:a[k]){
+		dfs(kk);
+	}
+}
+int bfs(){
+	int dis[10000];
+	memset(dis,0x3f,sizeof dis);
+	queue<node> q;
+	q.push({0,t});
+	while(!q.empty()){
+		node now=q.front();
+		if(now.num==s){
+			return now.step;
+		}
+		q.pop();
+		if(now.step>=dis[now.num]) continue;
+		if(!can[now.num]) continue;
+		dis[now.num]=now.step;
+		for(int i=1;i<=a[now.num].size();++i){
+			q.push({now.step+1,a[now.num][i]});
+		}
+	}
+	return dis[s]==0x3f3f3f3f?-1:dis[s];
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1,x,y;i<=m;++i){
+		cin>>x>>y;
+		aa[x].push_back(y);
+		a[y].push_back(x);
+	}
+	cin>>s>>t;
+	dfs(t);
+	for(int i=1;i<=n;++i){
+		can[i]=true;
+		for(auto k:aa[i]) if(!b[k]) can[i]=false;
+	}
+	cout<<bfs()<<endl;
+	return 0;
+}

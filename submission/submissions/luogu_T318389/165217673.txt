@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 165217673
+//  题目ID: T318389
+#include<bits/stdc++.h>
+using namespace std;
+struct Worker {
+	int l, p, s;
+	friend bool operator<(const Worker& a, const Worker& b) {
+		return a.s < b.s;
+	}
+}a[16000 + 10];
+int n, m;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i].l >> a[i].p >> a[i].s;
+	sort(a + 1, a + n + 1);
+	for (int i = 1; i <= n; ++i) {
+		
+	}
+	return 0;
+}

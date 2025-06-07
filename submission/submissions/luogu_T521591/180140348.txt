@@ -1,0 +1,101 @@
+//  OJ: 洛谷
+//  提交ID: 180140348
+//  题目ID: T521591
+#include<bits/stdc++.h>
+#define int long long 
+#define __int64 long long
+// #define ONLINE
+//#pragma warning(disable:4996)
+using namespace std;
+int n, d[100000 + 10], a[100000 + 10];
+namespace beg1{
+	set<int>front, back;
+	int now;
+	int main() {
+#ifdef ONLINE
+		freopen("jump_example2.in", "r", stdin);
+		freopen("jump_example2.out", "w", stdout);
+#endif
+		cin.tie(0)->sync_with_stdio(false);
+		__int64 ans = 0;
+		cin >> n;
+		for (int i = 1; i <= n; ++i) cin >> d[i] >> a[i];
+		for (int i = 1; i <= n; ++i) {
+			if (now == 0) {
+				if (d[i] == 1) {
+					front.insert(a[i]);
+					now++;
+				}
+				else {
+					if (back.size()) {
+						if (a[i] > *back.begin()) {
+							back.erase(back.begin());
+							back.insert(a[i]);
+						}
+					}
+				}
+			}
+			else {
+				if (d[i] == 1) {
+					front.insert(a[i]);
+					now++;
+				}
+				else {
+					back.insert(a[i]);
+					now--;
+				}
+			}
+		}
+		while (now) front.erase(front.begin()), now--;
+		while (*back.begin() + *front.begin() < 0) front.erase(front.begin()), back.erase(back.begin());;
+		for (int i : front) ans += i;
+		for (int i : back) ans += i;
+		cout << ans << endl;
+		return 0;
+	}
+}
+namespace beg2 {
+	namespace Sub1 {
+		int dp[1000 + 10][1000 + 10];
+		int main() {
+			memset(dp, 0xcf, sizeof dp);
+			for (int i = 0; i <= n; ++i) dp[i][0] = 0;
+			for (int i = 1; i <= n; ++i)
+				for (int j = 0; j <= n; ++j) {
+					dp[i][j] = dp[i - 1][j];
+					dp[i][j] = dp[i - 1][j - d[i]] + a[i] > dp[i][j] ? dp[i - 1][j - d[i]] + a[i] : dp[i][j];
+					//cout << i << ' ' << j << ' ' << dp[i][j] << ' ' << dp[i - 1][j] << endl;
+				}
+			cout << dp[n][0] << endl;
+			return 0;
+		}
+	}
+	namespace Sub2 {
+		vector<int>front, back;
+		int main() {
+			for (int i = 1; i <= n; ++i) if (d[i] == 1) front.push_back(a[i]); else back.push_back(a[i]);
+			sort(front.begin(), front.end());
+			sort(back.begin(), back.end());
+			int i = 0;
+			while (i < front.size() && i < back.size() && front[i] + back[i] < 0) i++;
+			int ans = 0;
+			for (; i < front.size() && i < back.size(); ++i) ans += front[i] + back[i];
+			cout << ans << endl;
+			return 0;
+		}
+	}
+	int main() {
+#ifdef ONLINE
+		freopen("jump.in", "r", stdin);
+		freopen("jump.out", "w", stdout);
+#endif
+		cin.tie(0)->sync_with_stdio(false);
+		cin >> n;
+		for (int i = 1; i <= n; ++i) cin >> d[i] >> a[i];
+		if (n <= 1000) return Sub1::main();
+		return Sub2::main();
+	}
+}
+signed main() {
+	return beg2::main();
+}

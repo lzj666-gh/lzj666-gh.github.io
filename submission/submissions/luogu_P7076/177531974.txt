@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 177531974
+//  题目ID: P7076
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n,m,c,k,p,q,tot;
+unsigned long long now;
+vector<int> cant;
+signed main(){
+// 	freopen("zoo.in","r",stdin);
+// 	freopen("zoo.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m>>c>>k;
+	for(int i=1,tmp;i<=n;++i) cin>>tmp,now|=tmp;
+	while(m--){
+		cin>>p>>q;
+		if(!(now&(1ull<<p))) cant.push_back(p);
+	}
+	sort(cant.begin(),cant.end());
+	cant.erase(unique(cant.begin(),cant.end()),cant.end());
+	cout<<(1ull<<(k-cant.size()))-n<<endl;
+	return 0;
+}

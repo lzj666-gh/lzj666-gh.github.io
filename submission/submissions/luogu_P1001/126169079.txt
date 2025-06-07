@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 126169079
+//  题目ID: P1001
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a,b;
+	cin.operator>>(a).operator>>(b);
+	a+=(b);
+	cout.operator<<(a);
+}

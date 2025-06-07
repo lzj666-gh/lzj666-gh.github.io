@@ -1,0 +1,64 @@
+//  OJ: 洛谷
+//  提交ID: 121568517
+//  题目ID: P1530
+#include<bits/stdc++.h>
+using namespace std;
+int n,d;
+int now_char=0;//当前输出字符个数 
+int x;//余数 
+bool xed[100000+10];
+int now_put;
+string ans;
+inline int w(int x){
+	int ret=1;
+	while(x/=10) ++ret;
+	return ret;
+}
+int main(){
+//	freopen("fractions.in","r",stdin);
+//	freopen("fractions.out","w",stdout); 
+	ios::sync_with_stdio(false);
+	cin>>n>>d;
+	int g=__gcd(n,d);
+	n/=g;
+	d/=g; 
+	cout<<n/d<<'.';
+	x=n%d;
+	n%=d;
+	do{
+		if(xed[x]){
+			now_char=w(n/d)+1;
+			int now_x=x;
+			x=n%d;
+			bool aaa=true;
+			while(x!=0){
+				if(x==now_x){
+					if(aaa) cout<<'(',aaa=false,++now_char;
+					else{
+						cout<<')'<<endl;
+						return 0;
+					}
+				}
+				x*=10;
+				cout<<x/d;
+				++now_char;
+				x=x%d;
+				if(now_char==76){
+					cout<<endl;
+					now_char=0;
+				}
+			}
+		}
+		xed[x]=true;
+		x*=10;
+		ans+=x/d+'0';
+		++now_char;++now_put;
+		x=x%d;
+		if(now_char==76){
+			ans+='\n';
+			now_char=0;
+		}
+	}while(x!=0);
+	cout<<ans;
+	return 0;
+}

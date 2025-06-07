@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 101265578
+//  题目ID: B2137
+#include<bits/stdc++.h>
+using namespace std;
+bool zhi(int x) {
+	if(x==1) return false;
+	for(int i=2; i*i<=x; i++) {
+		if(x%i==0) return false;
+	}
+	return true;
+}//判断质数
+int main() {
+	int x,y;
+	cin>>x>>y;
+	int cnt=0;
+	if(x>=y) {
+		for(int i=y; i<=x; i++) {
+			if(zhi(i)) cnt++;
+		}
+	}
+	else{
+		for(int i=x; i<=y; i++) {
+			if(zhi(i)) cnt++;
+		}
+	}
+	cout<<cnt;
+	return 0;
+}

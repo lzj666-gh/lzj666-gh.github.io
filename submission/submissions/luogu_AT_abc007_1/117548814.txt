@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 117548814
+//  题目ID: AT_abc007_1
+#include<bits/stdc++.h>
+using namespace std;
+long long n;
+int main(){
+	ios::sync_with_stdio(false);
+    cin>>n;
+    cout<<--n;
+    return 0;
+}

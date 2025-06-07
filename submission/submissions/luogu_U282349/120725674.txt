@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 120725674
+//  题目ID: U282349
+#include<bits/stdc++.h>
+#define maxn 114514
+using namespace std;
+int k;
+vector<int>a(maxn);
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>k;
+	a[1]=1;
+	for(int i=1;i<=k;i++){
+		int num;
+		cin>>num;
+		if(a[num]!=0) cout<<a[num]<<endl;
+		else{
+			int n=num;
+			for(int j=2;j<=n;++j){
+				if(n%j==0){
+					++a[num];
+					while(n%j==0) n/=j;
+				}
+			}
+			cout<<a[num]<<endl;
+		}
+	}
+	return 0;
+}

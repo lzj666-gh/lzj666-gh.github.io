@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 145608225
+//  题目ID: P5091
+def poww(a,x,p):
+    if x==0:
+        return 1
+    t=poww(a,x/2,p)%p;
+    t=(t*t)%p;
+    if x%2==1:
+        t=(t*a)%p;
+    return t;
+s=input().split()
+print(poww(int(s[0]),int(s[1]),int(s[2])))

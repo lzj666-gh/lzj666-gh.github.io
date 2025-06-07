@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 110041640
+//  题目ID: U294569
+#include<bits/stdc++.h>
+using namespace std;
+int mian(){
+	new int[44444];
+	return mian();
+}
+int main(){
+	ios::sync_with_stdio(false);
+	int a;cin>>a;
+	if(a==1){
+		cout<<1;
+	}if(a==2){
+		cout<<2-2;
+	}if(a==3){
+		exit(3);
+	}if(a==4){
+		cout<<mian(); 
+	}if(a==5){
+		while(1)cout<<5;
+	}if(a==6){
+		string n="688888777777777777777777777777777777777777777777777777777777";
+		while(1)cout<<n;
+	}if(a==7){
+		int k=1e7;
+		while(k--)std::printf("\xcc");
+	}
+	return 0;
+}

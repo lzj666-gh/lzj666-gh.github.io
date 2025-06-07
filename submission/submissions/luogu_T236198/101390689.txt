@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 101390689
+//  题目ID: T236198
+#include<bits/stdc++.h>
+using namespace std;
+int a[1000000],tmp=0;
+bool zhi(int a){
+	if(a==1||a==0) return false;
+	for(int i=2;i<a;i++){
+		if(a%i==0) return false;
+	}
+	return true;
+}
+int fan(int a){
+	int ret=0;
+	while(a){
+		ret*=10;ret+=a%10;
+		a/=10;
+	}
+	return ret;
+}
+int main(){
+	int m,n;cin>>m>>n;
+	for(int i=m;i<=n;i++){
+		if(zhi(i)&&zhi(fan(i))){
+			a[tmp]=i;
+			tmp++;
+		}
+	}
+	tmp--;
+	for(int i=0;i<tmp;i++){
+		cout<<a[i]<<",";
+	}
+	cout<<a[tmp];
+	return 0;
+}

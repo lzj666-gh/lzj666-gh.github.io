@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 174688188
+//  题目ID: P10997
+#include<bits/stdc++.h>
+using namespace std;
+long long n, m, a[2000 + 10][2000 + 10], ans = INT_MIN;
+int col[2000 + 10][2000 + 10];
+// 1:red 2:orange 3:yellow 4:green
+void dfs(int x, int y, long long tot) {
+	if (y == m + 1) x++, y = 1;
+	if (x == n + 1) {
+		ans = max(ans, tot);
+		return;
+	}
+	if (col[x - 1][y] != 2 && col[x - 1][y] != 3 && col[x - 1][y] != 4
+		&& col[x][y - 1] != 2 && col[x - 1][y] != 4 &&
+		(col[x - 1][y] == 1 || col[x - 1][y] == 0) && (col[x][y - 1] == 1 || col[x][y - 1] == 3 || col[x][y - 1] == 0))
+		col[x][y] = 1, dfs(x, y + 1, tot + a[x][y] * 1);
+	if (col[x - 1][y] != 4 && col[x - 1][y] != 3 &&
+		(col[x - 1][y] == 1 || col[x - 1][y] == 2 || col[x - 1][y] == 0))
+		col[x][y] = 2, dfs(x, y + 1, tot + a[x][y] * 2);
+	if (col[x - 1][y] != 2 && col[x - 1][y] != 4
+		&& col[x][y - 1] != 2 && col[x][y - 1] != 3 && col[x - 1][y] != 4 &&
+		(col[x][y - 1] == 3 || col[x][y - 1] == 0) && (col[x - 1][y] == 1 || col[x - 1][y] == 3 || col[x - 1][y] == 0))
+		col[x][y] = 3, dfs(x, y + 1, tot + a[x][y] * 3);
+	if (col[x][y - 1] != 1 && col[x][y - 1] != 2 &&
+		(col[x][y - 1] == 3 || col[x][y - 1] == 4 || col[x][y - 1] == 0))
+		col[x][y] = 4, dfs(x, y + 1, tot + a[x][y] * 4);
+
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j)
+			cin >> a[i][j];
+	if (n <= 5 && m <= 5) dfs(1, 1, 0);
+	else{
+		ans = 0;
+		for (int i = 1; i <= n; ++i)
+			for (int j = 1; j <= m; ++j)
+				ans += a[i][j] * 4;
+	}
+	cout << ans << endl;
+	return 0;
+}

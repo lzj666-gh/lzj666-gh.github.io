@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 108330477
+//  题目ID: P1540
+#include<bits/stdc++.h>
+using namespace std;
+int m,n,ans,a,r=1,l,c[1005];
+bool b[1005];
+int main(){
+	r=l=1;
+	cin>>m>>n;
+	for(int i=1;i<=n;i++){
+		cin>>a;
+		if(b[a]==0){
+			b[a]=1;
+			ans++;
+			c[r++]=a[i];
+			if(r-l>m){
+				l++;
+				b[a[i]]=0;
+			}
+		}
+//		for(int i=l;i<r;i++){
+//			cout<<c[i]<<" ";
+//		}
+//		cout<<endl;
+	}
+	cout<<ans;
+	return 0;
+}

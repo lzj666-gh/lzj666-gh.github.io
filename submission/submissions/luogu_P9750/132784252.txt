@@ -1,0 +1,65 @@
+//  OJ: 洛谷
+//  提交ID: 132784252
+//  题目ID: P9750
+#include<bits/stdc++.h>
+using namespace std;
+int t,m,a,b,c;
+pair<int,int> mp[1000000+10];
+pair<int,int> fj(int k){
+	if(mp[k].first) return mp[k];
+	int x=1;
+	for(int i=2;i*i<k;++i){
+		while(k%(i*i)==0) x*=i,k=k/(i*i);
+	}
+	return mp[k]=make_pair(x,k);
+}
+void printsqrt(int k,bool s){
+	//sqrt{k}
+	int x=fj(k).first;k=fj(k).second;
+	if(x!=1){
+		if(b)
+			if(x<0) cout<<x;
+			else cout<<'+'<<x;
+		else 
+			if(-x<0) cout<<-x;
+			else cout<<'+'<<-x;
+		if(k!=1) cout<<"*sqrt("<<k<<")";
+	}
+	else if(k!=1) 
+		if(b) cout<<"+sqrt("<<k<<")";
+		else cout<<"-sqrt("<<k<<")";
+	else cout<<1;
+}
+pair<int,int> yf(pair<int,int> p){
+	int tmp=__gcd(abs(p.first),abs(p.second));
+	if(p.first<0&&p.second<0) p.first=-p.first,p.second=-p.second;
+	if(p.second<0) p.first=-p.first,p.second=-p.second;
+	return make_pair(p.first/tmp,p.second/tmp);
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>t>>m;
+	while(t--){
+		cin>>a>>b>>c;
+		if(b*b-4*a*c<0){
+			cout<<"NO"<<endl;
+			continue;
+		}
+		pair<int,int> x=make_pair(-b,2*a),y=make_pair(fj(b*b-a*c*4).first,2*a);
+		if(fj(b*b-a*c*4).second==1){
+			x=yf(x);
+			if(a>0) x.first+=fj(b*b-a*c*4).first*x.second;
+			else x.first-=fj(b*b-a*c*4).first*x.second;
+			x=yf(x);
+			if(x.second==1) cout<<x.first<<endl;
+			else cout<<x.first<<'/'<<x.second<<endl;
+			continue;
+		}
+		x=yf(x);
+		y=yf(y);
+		cout<<x.first<<'/'<<x.second<<'+';
+		printsqrt(y.first*y.first+fj(b*b-4*a*c).second,a>0);
+		cout<<'/'<<y.second<<endl;
+	}
+	return 0;
+}

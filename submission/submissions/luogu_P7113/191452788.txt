@@ -1,0 +1,70 @@
+//  OJ: 洛谷
+//  提交ID: 191452788
+//  题目ID: P7113
+#include<bits/stdc++.h>
+// #define ONLINE
+#define gcd __gcd
+using namespace std;
+using ll = long long;
+#define ll __int128
+int n, m, r[100000 + 10];
+vector<int>son[100000 + 10];
+struct fraction {
+	//p/q
+	ll p, q;
+	fraction() :p(0), q(1) {};
+	fraction(ll qwq) :p(qwq), q(1) {};
+	void upd() {
+		if (p == 0) {
+			q = 1;
+			return;
+		}
+		ll tmp = gcd(p, q);
+		p /= tmp; q /= tmp;
+	}
+	fraction& operator+=(const fraction& b) {
+		p = p * b.q + q * b.p;
+		q *= b.q;
+		upd();
+		return *this;
+	}
+	fraction& operator/=(const ll& a) {
+		q *= a;
+		upd();
+		return *this;
+	}
+}ans[100000 + 10];
+int main() {
+#ifdef ONLINE
+	freopen("water.in", "r", stdin);
+	freopen("water.out", "w", stdout);
+#endif
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) {
+		static int d;
+		cin >> d;
+		for (int j = 1, v; j <= d; ++j)
+			cin >> v, son[i].push_back(v), r[v]++;
+	}
+	queue<int>q;
+	for (int i = 1; i <= m; ++i) ans[i] = 1;
+	for (int i = 1; i <= n; ++i) if (!r[i]) q.push(i);
+	while (!q.empty()) {
+		int now = q.front();
+		q.pop();
+		if (son[now].empty()) continue;
+		ans[now] /= son[now].size();
+		//cerr << now << "   " << ans[now].p << ' ' << ans[now].q << endl;
+		for (const int& s : son[now]) {
+			ans[s] += ans[now];
+			r[s]--;
+			if (!r[s]) q.push(s);
+		}
+		ans[now] = 0;
+	}
+	for (int i = 1; i <= n; ++i)
+		if (ans[i].p)
+			cout << ans[i].p << ' ' << ans[i].q << endl;
+	return 0;
+}

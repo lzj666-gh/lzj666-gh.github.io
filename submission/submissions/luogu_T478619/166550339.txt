@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 166550339
+//  题目ID: T478619
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+    int v,w,nxt;
+}edge[500000+10];
+int head[100000+10],idx;
+void add(int u,int v,int w){
+	edge[++idx]={v,w,head[u]};
+	head[u]=idx;
+}
+pair<int,int> dfs1(int k,int fa){ // get the point l
+	pair<int,int>ans=make_pair(0,k);
+	for(int i=head[k];i;i=edge[i].nxt){
+		if(edge[i].v==fa) continue;
+		pair<int,int>p=dfs1(edge[i].v,k);
+		p.first+=edge[i].w;
+		if(p.first>ans.first) ans=p;
+	}
+	return ans;
+}
+int disl[100000+10],r,disr[100000+10];
+void dfs2(int k,int fa,int sum){ // get the point r && get the dis to l
+	disl[k]=sum;
+	if(disl[k]>disl[r]) r=k;
+	int mx=0;
+	for(int i=head[k];i;i=edge[i].nxt){
+		if(edge[i].v==fa) continue;
+		dfs2(edge[i].v,k,sum+edge[i].w);
+	}
+}
+void dfs3(int k,int fa,int sum){ //get the dis to r
+	disr[k]=sum;
+	int mx=0;
+	for(int i=head[k];i;i=edge[i].nxt){
+		if(edge[i].v==fa) continue;
+		dfs3(edge[i].v,k,sum+edge[i].w);
+	}
+}
+int n;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1,u,v,w;i<n;++i) cin>>u>>v>>w,add(u,v,w),add(v,u,w);
+	int l=dfs1(1,0).second;
+	dfs2(l,0,0);
+	dfs3(r,0,0);
+	for(int i=1;i<=n;++i) cout<<i<<' '<<disl[i]<<' '<<disr[i]<<endl;
+	return 0;
+}

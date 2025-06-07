@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 141148202
+//  题目ID: T237473
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, opt, x, y, k;
+struct Tree {
+#define lc(p) (p>>1)
+#define rc(p) ((p>>1)+1)
+	struct point {
+		int l, r, sum;
+	}tree[4 * 100000];
+	void query(int p, int l, int r, int& ans) {
+		if (l <= tree[p].l && tree[p].r <= r) {
+			ans += tree[p].sum;
+			return;
+		}
+		if (tree[p].r<l || tree[p].l>r)return;
+		query(lc(p), l, r, ans);
+		query(rc(p), l, r, ans);
+	}
+	void plus(int p, int k) {
+		if (tree[p].l == tree[p].r && tree[p].l == k){
+			tree[p].sum += k;
+			return;
+		}
+		if (tree[lc(p)].l <= k && tree[lc(p)].r >= k) {
+			plus(lc(p), k);
+		}
+		else {
+			plus(rc(p), k);
+		}
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+	}
+	void build(int p, int l, int r, const vector<int>& v) {
+		if (l == r) {
+			tree[p] = v[l];
+			return;
+		}
+		build(lc(p), l, l + r >> 1, v);
+		build(rc(p), (l + r >> 1) + 1, r, v);
+	}
+}t;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) {
+	}
+	return 0;
+}

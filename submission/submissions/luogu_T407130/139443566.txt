@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 139443566
+//  题目ID: T407130
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int nxt, v;
+	Edge(int n, int vv) {
+		nxt = n;
+		v = vv;
+	}
+};
+vector<Edge>edge;
+int n, m, k, sg[2000 + 10], head[2000 + 10];
+bool vis[2000 + 10];
+static void add(int u, int v) {
+	edge.push_back(Edge(head[u], v));
+	head[u] = edge.size() - 1;
+}
+static int SG(int k) {
+	if (vis[k]) return sg[k];
+	vis[k] = true;
+	set<int>nw;
+	for (int i = head[k]; i; i = edge[i].nxt) {
+		nw.insert(SG(edge[i].v));
+	}
+	for (int i = 0;; ++i) {
+		if (!nw.count(i)) {
+			sg[k] = i;
+			return i;
+		}
+	}
+	return 0;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> k;
+	for (int i = 1, x, y; i <= m; ++i) cin >> x >> y, add(x, y);
+	int s = 0;
+	for (int i = 1, x; i <= k; ++i) {
+		cin >> x;
+		s ^= SG(x);
+	}
+	cout << (s ? "win" : "lose") << endl;
+	return 0;
+}

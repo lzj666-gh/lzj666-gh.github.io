@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 100963862
+//  题目ID: T209110
+#include<bits/stdc++.h>
+using namespace std;
+char a[100005];int b[300]={0};int c[26];int q=0;
+int main(){
+	cin>>a;
+	int L=strlen(a);
+	for(int i=0;i<L;i++){
+		b[a[i]]++;
+	}
+	for(int i=0;i<300;i++){
+		if(b[i]==1){
+			c[q]=i;q++;
+		}
+	}
+	for(int i=0;i<L;i++){
+		for(int j=0;j<=q;j++){
+			if(a[i]==(char)c[j]){
+				cout<<(char)c[j];
+				return 0;
+			}
+		}
+	}
+}

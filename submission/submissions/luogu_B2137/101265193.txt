@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 101265193
+//  题目ID: B2137
+#include<bits/stdc++.h>
+using namespace std;
+bool zhi(int x){
+	if(x==1) return false;
+	for(int i=2;i*i<=x;i++){
+		if(x%i==0) return false;
+	}
+	return true;
+}
+int main(){
+	int x,y;
+	cin>>x>>y;
+	int cnt1=0,cnt2=0;
+	for(int i=2;i<=x;i++){
+		if(zhi(i)) cnt1++;
+	}
+	for(int i=2;i<=y;i++){
+		if(zhi(i)) cnt2++;
+	}
+	cout<<abs(cnt2-cnt1);
+	return 0;
+}

@@ -1,0 +1,87 @@
+//  OJ: 洛谷
+//  提交ID: 176119964
+//  题目ID: T508934
+#include<bits/stdc++.h>
+using namespace std;
+multiset<string>s;
+int n; string tmp;
+int main() {
+//	freopen("bead.in", "r", stdin);
+//	freopen("bead.out", "w", stdout);
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> tmp, s.insert(tmp);
+	for (int i = 1; i < n; ++i) {
+		auto a = s.begin(), b = s.begin();
+		b++;
+		auto c = s.upper_bound(*a);
+		if (c == s.end()) {
+			string nw = min(*a + *b, *b + *a);
+			s.erase(a);
+			s.erase(b);
+			s.insert(nw);
+			continue;
+		}
+		auto d = s.upper_bound(*c);
+		if (d == s.end()) {
+			string a1 = *a + *b, a2 = *b + *a, a3 = *a + *c;
+			string nw = min({ a1,a2,a3 });
+			if (nw == a1) {
+				s.erase(a);
+				s.erase(b);
+			}
+			else if (nw == a2) {
+				s.erase(a);
+				s.erase(b);
+			}
+			else if (nw == a3) {
+				s.erase(a);
+				s.erase(c);
+			}
+			s.insert(nw);
+			continue;
+		}
+		//a+b,b+a,a+c,a+d,c+d,d+c,c+a,d+a
+		string a1 = *a + *b, a2 = *b + *a, a3 = *a + *c, a4 = *a + *d, a5 = *c + *d, a6 = *d + *c, a7 = *c + *a, a8 = *d + *a;
+		string nw = min({ a1,a2,a3,a4,a5,a6,a7,a8 });
+		if (nw == a1) {
+			s.erase(a);
+			s.erase(b);
+		}
+		else if (nw == a2) {
+			s.erase(a);
+			s.erase(b);
+		}
+		else if (nw == a3) {
+			s.erase(a);
+			s.erase(c);
+		}
+		else if (nw == a4) {
+			s.erase(a);
+			s.erase(d);
+		}
+		else if (nw == a5) {
+			s.erase(c);
+			s.erase(d);
+		}
+		else if (nw == a6) {
+			s.erase(c);
+			s.erase(d);
+		}
+		else if (nw == a7) {
+			s.erase(c);
+			s.erase(a);
+		}
+		else if (nw == a8) {
+			s.erase(a);
+			s.erase(d);
+		}
+		s.insert(nw);
+	}
+	cout << *s.begin() << endl;
+	return 0;
+}
+//find problem:like cdca and cdc always chose cdc but may cdca is the better one
+//but can't simply chose cdc because sometimes can {cdca,cdc,zzz} , or {cdca,cdc,cee}
+//it can get some pts too
+//Pian Fen !!!

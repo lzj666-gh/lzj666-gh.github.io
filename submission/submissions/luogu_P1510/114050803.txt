@@ -1,0 +1,43 @@
+//  OJ: 洛谷
+//  提交ID: 114050803
+//  题目ID: P1510
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int v, n, c;
+    cin >> v >> n >> c;
+    vector<int> volume(n+1);
+    vector<int> energy(n+1);
+    for (int i = 1; i <= n; i++) {
+        cin >> volume[i] >> energy[i];
+    }
+    
+    vector<vector<int>> dp(n+1, vector<int>(c+1, -1));
+    dp[0][c] = v;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 0; j <= c; j++) {
+            if (dp[i-1][j] >= volume[i]) {
+                dp[i][j-energy[i]] = max(dp[i][j-energy[i]], dp[i-1][j] - volume[i]);
+            }
+            dp[i][j] = max(dp[i][j], dp[i-1][j]);
+        }
+    }
+    
+    int ans = -1;
+    for (int j = 0; j <= c; j++) {
+        if (dp[n][j] >= 0) {
+            ans = j;
+        }
+    }
+    
+    if (ans == -1) {
+        cout << "Impossible" << endl;
+    } else {
+        cout << ans << endl;
+    }
+    
+    return 0;
+}

@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 123627149
+//  题目ID: U335101
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	string now("1.out");
+	for(int i=1;i<=10;++i){
+		now=to_string(i)+".out";
+		ifstream fin(now.c_str());
+		if(!fin.good()){
+			ofstream fout((to_string(i-1)+".out").c_str());
+			if(i==1){
+				int a,b,c;
+				cin>>a>>b>>c;
+				cout<<a*3+b*2+c*1<<endl;
+				return 0;
+			}
+			int ans;
+			fin>>ans;
+			fout<<ans-1;
+			return 0;
+		}
+	}
+	return 0;
+}
+

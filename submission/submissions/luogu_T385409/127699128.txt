@@ -1,0 +1,76 @@
+//  OJ: 洛谷
+//  提交ID: 127699128
+//  题目ID: T385409
+#include<bits/stdc++.h>
+#define f(i,a,b,k) for(register int i=a;i<=b;i+=k)
+using namespace std;
+struct pii {
+	long long first,second;
+	friend bool operator < (const pii &a,const pii &b) {
+		return a.first==b.first?a.second<b.second:a.first<b.first;
+	}
+};
+inline int read() {
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c<'0'||c>'9') {
+		if(c=='-') s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0') {
+		x=(x<<1)+(x<<3)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+}
+inline void write(int x) {
+	if(x<0) {
+		x=~x+1;
+		putchar('-');
+	} else if(!x) return;
+	write(x/10);
+	putchar(x%10+48);
+}
+int n,m,kk;
+long long ans,sum;
+map<pair<int,pii>,pii>ma;
+int main() {
+//	freopen("mix.in","r",stdin),freopen("mix.out","w",stdout);
+	int T=read();
+	for(int II=1; II<=T; ++II) {
+		m=read(),n=read(),kk=read();
+		try {
+			pii p=ma.at({m,{n,kk}});
+			write(p.first);
+			putchar(' ');
+			write(p.second);
+			putchar('\n');
+		} catch(...) {
+			int ik=1;
+			f(i,m,n,ik) {
+				int sumi=0;
+				long long cnti=1;
+				int k=i;
+				while(k) {
+					sumi+=k%10;
+					cnti*=k%10;
+					k/=10;
+				}
+				if(sumi==kk) {
+					if(cnti>ans) {
+						ans=cnti;
+						sum=i;
+					}
+					ik=9;
+				}
+			}
+			write(sum);
+			putchar(' ');
+			write(ans);
+			putchar('\n');
+			ma[ {m,{n,kk}}]= {sum,ans};
+		}
+//		cerr<<II<<endl;
+	}
+	return 0;
+}

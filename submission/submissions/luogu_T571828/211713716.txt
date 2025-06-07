@@ -1,0 +1,59 @@
+//  OJ: 洛谷
+//  提交ID: 211713716
+//  题目ID: T571828
+#include <iostream>
+using namespace std;
+ 
+int main() {
+    int task;
+    cin >> task;
+    switch (task) {
+        case 1: // 4080x (5条指令，无乘除/常数)
+            cout << "add rax, rsi\n";
+            cout << "shl rax, 12\n";
+            cout << "add rbx, rsi\n";
+            cout << "shl rbx, 4\n";
+            cout << "sub rax, rbx\n";
+            cout << "write rax\n";
+            break;
+        case 2: // x/4080 (使用除法指令)
+            cout << "movabs rcx, 4080\n";
+            cout << "div rsi, rcx\n";
+            cout << "write rsi\n";
+            break;
+        case 3: // 输出4080 (必须用常数指令)
+            cout << "movabs rax, 4080\n";
+            cout << "write rax\n";
+            break;
+        case 4: // x*y (使用乘法指令)
+            cout << "mul rsi, rdi\n";
+            cout << "write rsi\n";
+            break;
+        case 5: // x/y (使用除法指令)
+            cout << "div rsi, rdi\n";
+            cout << "write rsi\n";
+            break;
+        case 7: // 最小2的幂 (位填充法)
+            cout << "movabs rax, rsi\n";
+            cout << "dec rax\n";
+            cout << "shr rax, 1\n";
+            cout << "or rax, rsi\n";
+            cout << "shr rax, 2\n";
+            cout << "or rax, rsi\n";
+            cout << "shr rax, 4\n";
+            cout << "or rax, rsi\n";
+            cout << "shr rax, 8\n";
+            cout << "or rax, rsi\n";
+            cout << "shr rax, 16\n";
+            cout << "or rax, rsi\n";
+            cout << "shr rax, 32\n";
+            cout << "or rax, rsi\n";
+            cout << "inc rax\n";
+            cout << "write rax\n";
+            break;
+        // 其他任务需要更复杂逻辑，此处省略 
+        default:
+            cerr << "Invalid task number\n";
+    }
+    return 0;
+}

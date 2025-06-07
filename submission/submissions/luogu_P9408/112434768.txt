@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 112434768
+//  题目ID: P9408
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+const int N = 1e5 + 10;
+int a[N];
+int main() {
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i];
+    }
+    int i = 1;
+    while (i < n && a[i] < a[i + 1])
+        i++;
+    int j = n;
+    while (j > 1 && a[j] < a[j - 1]) 
+        j--;
+    int ans = min(n - i, j - 1);
+    for (int l = i, r = j; l <= j; ) {
+        if (a[l] < a[r]) {
+            ans = min(ans, r - 1 - j + l - i);
+            l++;
+        } else {
+            ans = min(ans, j - i - r + l + 1);
+            r--;
+        }
+    }
+    cout << ans << endl;
+    return 0;
+}

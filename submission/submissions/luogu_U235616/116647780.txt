@@ -1,0 +1,65 @@
+//  OJ: 洛谷
+//  提交ID: 116647780
+//  题目ID: U235616
+#include<bits/stdc++.h>
+#include <time.h>
+
+using namespace std;
+
+string arr[] = {"AC","WA","RE","TLE","MLE","OLE","UKE","AC","WA","RE","TLE","MLE","OLE","UKE","AC","WA","RE","TLE","MLE","OLE","UKE","AC","WA","RE","TLE","MLE","OLE","UKE","AC","WA","RE","TLE","MLE","OLE","UKE","AC","WA","RE","TLE","MLE","OLE","UKE"};
+
+struct MLE_ {
+	int arr[10000];
+};
+
+void AC() {
+	cout << "AC";
+}
+void WA() {
+	cout << "WA";
+}
+void RE() {
+	cout << (1/0);
+}
+void TLE(){
+	double endtime;
+	clock_t start,stop;
+    start = clock();
+	while(1) {
+		stop = clock();
+	    endtime=(stop-start);
+//	    cout << endtime/1000 << endl;
+		if((endtime/1000)>113) break; 
+	};
+}
+void MLE(){
+    std::vector<MLE_> a;
+	for(;;)a.push_back(MLE_());
+}
+void OLE(){
+    char c[] = "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE";
+	for(;;)
+	    fwrite(c, 1, sizeof(c), stdout);
+}
+
+void UKE(){
+	cout << "PC";
+}
+
+int main(){
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+
+	int n;
+	cin >> n;
+	if(arr[n]=="AC") AC();
+	else if(arr[n]=="WA") WA();
+	else if(arr[n]=="RE") RE();
+	else if(arr[n]=="TLE") TLE();
+	else if(arr[n]=="MLE") MLE();
+	else if(arr[n]=="OLE") OLE();
+	else if(arr[n]=="UKE") UKE();
+
+	return 0;
+}

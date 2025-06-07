@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 176135093
+//  题目ID: P11021
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, x[100000 + 10], t[100000 + 10];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> x[i] >> t[i];
+	while (m--) {
+		int u, v;
+		cin >> u >> v;
+		int tmp = t[u],ans=0;
+		t[u] = v;
+		for (int i = 1; i <= n; ++i)
+			for (int j = i + 1; j <= n; ++j)
+				ans = max(ans, abs((x[i] - x[j]) / (t[i] - t[j])));
+		cout << ans << endl;
+		t[u] = tmp;
+	}
+	return 0;
+}

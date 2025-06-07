@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 121137737
+//  题目ID: T159031
+#include<bits/stdc++.h>
+#define maxn 100000+10
+#define f_u(a,b) for(register int i=a;i<=b;++i)
+#define f_d(a,b) for(register int i=a;i>=b;--i)
+#define F_u(a,b) for(register int j=a;j<=b;++j)
+#define F_d(a,b) for(register int j=a;j>=b;--j)
+using namespace std;
+inline int read(){register char c=getchar();register int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=(x<<3)+(x<<1)+(c^48);c=getchar();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+int q[maxn],n,ans;
+void qiu_ni_xu_dui_hai_you_bing_gui_pai_xu(int q[],int l,int r){
+	if(l>=r) return;
+	int mid=(l+r)>>1;
+	qiu_ni_xu_dui_hai_you_bing_gui_pai_xu(q,l,mid);qiu_ni_xu_dui_hai_you_bing_gui_pai_xu(q,mid+1,r);
+	int k=0,i=1,j=mid+1,tmp[maxn];
+	while(i<=mid&&j<=r){
+		if(q[i]<=q[j]) tmp[k++]=q[i++];
+		else tmp[k++]=q[j++],ans+=mid-i+1;
+	}
+	while(i<=mid) tmp[k++]=q[i++];
+	while(j<=r) tmp[k++]=q[j++];
+	for(k=0,i=l;i<=r;k++,i++){
+		q[i]=tmp[k];
+	}
+}
+int main(){
+//	ios_base::sync_with_stdio(false);
+	n=read();
+	f_u(1,n) q[i]=read();
+	qiu_ni_xu_dui_hai_you_bing_gui_pai_xu(q,1,n);
+	write(ans);
+	return 0;
+}
+
+

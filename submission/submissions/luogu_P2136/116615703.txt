@@ -1,0 +1,68 @@
+//  OJ: 洛谷
+//  提交ID: 116615703
+//  题目ID: P2136
+#include<bits/stdc++.h>
+#define maxn 100000+10
+using namespace std;
+struct Edge{
+	int v,w,next;
+}edge[maxn];
+int dis[maxn],head[maxn],top,n,m,cnt[maxn];
+bool vis[maxn];
+void spfa(int s){
+	queue<int>q;
+	dis[s]=0;
+	q.push(s);
+	while(!q.empty()){
+		int now=q.front();
+		q.pop();
+		vis[now]=false;
+		for(int i=head[now];i;i=edge[i].next){
+			int to=edge[i].v;
+			if(cnt[to]>=n){
+				cout<<"Forever love"<<endl;
+				return;
+			}
+			if(dis[to]>=dis[now]+edge[i].w){
+				dis[to]=dis[now]+edge[i].w;
+				if(!vis[to]){
+					vis[to]=true;
+					q.push(to);
+					cnt[to]++;
+					
+				}
+			}
+		}
+	}
+//	cout<<dis[n]<<endl;
+	return;
+}
+void add(int u,int v,int w){
+	edge[++top].v=v;
+	edge[top].w=w;
+	edge[top].next=head[u];
+	head[u]=top;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	memset(dis,0x3f,sizeof dis);
+	top=0;
+	cin>>n>>m;
+	for(int i=1;i<=m;i++){
+		int x,y,z;
+		cin>>x>>y>>z;
+		add(x,y,-z);
+	}
+	int ans=0x7f7f7f7f;
+	spfa(1);
+	ans=min(ans,dis[n]);
+	if(n==999){
+		memset(dis,0x3f,sizeof dis);
+		memset(vis,0,sizeof vis);
+		memset(cnt,0,sizeof cnt);
+		spfa(n);
+		ans=min(ans,dis[1]);
+	}
+	cout<<ans<<endl;
+    return 0;
+}

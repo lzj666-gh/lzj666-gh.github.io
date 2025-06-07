@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 121122991
+//  题目ID: T76601
+#include<bits/stdc++.h>
+using namespace std;
+inline void write(__int128 x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+int main(){
+	long long b,p,k;
+	cin>>b>>p>>k;
+	__int128 z=1;
+	for(int i=1;i<=p;i++){
+		z*=b;
+		z%=k;
+	} 
+	cout<<b<<"^"<<p<<" mod "<<k<<"=";
+	write(z);
+	return 0;
+}

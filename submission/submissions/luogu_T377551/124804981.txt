@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 124804981
+//  题目ID: T377551
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--){
+		int x0,a;
+		cin>>x0>>a;
+		int last=x0,now=(x0+a)/a;
+		while(last!=now){
+			cout<<last<<' ';
+			last=now;
+			now=(last+a)/a;
+		}
+//		cout<<last;
+		cout<<endl;
+	}
+	return 0;
+}
+

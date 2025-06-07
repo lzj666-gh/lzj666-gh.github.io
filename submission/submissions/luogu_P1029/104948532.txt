@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 104948532
+//  题目ID: P1029
+#include<bits/stdc++.h>
+using namespace std;
+long long x,y;
+long long zdgys(int x,int y){
+	if(y==0) return x;
+	return zdgys(y,x%y);
+}
+main()
+{
+	scanf("%lld%lld",&x,&y);
+	int cnt=0;
+	long long a=sqrt(x*y);
+	for(int i=1;i<=a;i++){
+		if(x*y%i==0&&zdgys(i,x*y/i)==x) cnt++;
+	}
+	cnt*=2;
+	if(x==y) cnt--;
+	printf("%d",cnt);
+	return 0;
+}

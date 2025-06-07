@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 95700013
+//  题目ID: U266709
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int a,b,s,l=100;
+	cin>>a>>b>>s;
+	for(int i=1;i<=s;i++){
+		l-=a;
+		l+=b;
+	}
+	cout<<l;
+
+	return 0;
+}

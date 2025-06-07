@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 216971248
+//  题目ID: P12509
+#include<string>
+int Alice(std::string S) {
+	constexpr int mod = 1 << 20, p = 131;
+	int cur = 1, ans = 0;
+	for (const char& c : S) {
+		ans += 1ll * (c == '0') * cur % mod;
+		ans %= mod;
+		cur = 1ll * cur * p % mod;
+	}
+	return ans;
+}
+int Bob(std::string T, int X) {
+	constexpr int mod = 1 << 20, p = 131;
+	int cur = 1, ans = 0;
+	for (const char& c : T) {
+		ans += 1ll * (c == '0') * cur % mod;
+		ans %= mod;
+		cur = 1ll * cur * p % mod;
+	}
+	cur = 1;
+	if (ans == X) return 0;
+	for (int i = 0; i < T.size(); ++i) {
+		ans -= 1ll * (T[i] == '0') * cur % mod;
+		ans += 1ll * (T[i] == '1') * cur % mod;
+		ans = (ans % mod + mod) % mod;
+		if (ans == X) {
+			return i + 1;
+		}
+		ans += 1ll * (T[i] == '0') * cur % mod;
+		ans -= 1ll * (T[i] == '1') * cur % mod;
+		ans = (ans % mod + mod) % mod;
+		cur = 1ll * cur * p % mod;
+	}
+	return 0;
+}

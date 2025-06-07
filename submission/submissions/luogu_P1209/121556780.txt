@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 121556780
+//  题目ID: P1209
+#include<bits/stdc++.h>
+using namespace std;
+int m,ss,c,a[200+10],s[200+10];
+inline bool cmp(int x,int y){
+	return x>y;
+}
+int main(){
+// 	freopen("barn.in","r",stdin);
+// 	freopen("barn.out","w",stdout); 
+	ios::sync_with_stdio(false);
+	cin>>m>>ss>>c;
+	if(m>=c){
+		cout<<c<<endl;
+		return 0;
+	}
+	for(int i=1;i<=c;++i){
+		cin>>a[i];
+		
+	}
+	sort(&a[1],&a[c+1]);
+	for(int i=1;i<=c;++i) s[i]=a[i]-a[i-1]-1;
+	sort(&s[1],&s[c+1],cmp);
+	--m;
+	int ans=0;
+	for(int i=1;i<=m;++i) ans+=s[i];
+	cout<<a[c]-a[1]+1-ans<<endl;
+	return 0;
+}

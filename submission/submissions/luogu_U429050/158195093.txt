@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 158195093
+//  题目ID: U429050
+#include<bits/stdc++.h>
+using namespace std;
+int n,p[1000+10],w[1000+10],m,tmp;
+struct node{
+	int z,m,cbc;
+	friend bool operator<(const node&a,const node&b){
+		return 1.0*a.z/a.m>1.0*b.z/b.m;
+	}
+	friend ostream&operator<<(ostream&out,const node&a){
+        if(a.z==0){
+            out<<"0/1";
+            return out;
+        }
+		int tp=__gcd(a.z,a.m);
+		out<<a.z/tp<<'/'<<a.m/tp;
+		return out;
+	}
+};
+priority_queue<node,vector<node>,less<node>>q;
+int main(int argc,char**argv){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;++i) cin>>p[i]>>w[i],q.push({w[i],p[i],i}),tmp+=w[i];
+	if(tmp>m){
+		cout<<"Zip file size too big after extraction.Poor CBC!"<<endl;
+		return 0;
+	}
+	if(tmp==m){
+		cout<<q.top()<<endl;
+		for(int i=1;i<=n;++i) cout<<w[i]<<' ';
+		return 0;
+	}
+	do{
+		if(tmp==m) break;
+		node a=q.top();q.pop();
+//      cout<<a.z<<' '<<a.m<<' '<<a.cbc<<endl;
+		a.z++;
+		tmp++;
+		w[a.cbc]++;
+		q.push(a);
+	}while(tmp<=m);
+	cout<<q.top()<<endl;
+	for(int i=1;i<=n;++i) cout<<-1<<' ';
+	return 0;
+}

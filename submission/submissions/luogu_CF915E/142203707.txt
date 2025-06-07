@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 142203707
+//  题目ID: CF915E
+#include<bits/stdc++.h>
+#define N (int(6e5))
+#define mid (l+r>>1)
+#define lc(x) (x<<1)
+#define rc(x) (x<<1|1)
+using namespace std;
+int n,m,s[N],sz,ans;
+struct Order{
+	int l,r,k;
+}a[N>>1];
+struct Tree{
+	int sum,val;bitset<2> flg;
+}tree[N<<2];
+void pushup(int x){tree[x].sum=tree[lc(x)].sum+tree[rc(x)].sum;}
+void pushdown(int x,int l,int r){
+	if(tree[x].flg==0) return;
+	tree[lc(x)].flg=tree[rc(x)].flg=tree[x].flg;
+	if(tree[x].flg==1) tree[lc(x)].sum=tree[rc(x)].sum=0;
+	else tree[lc(x)].sum=tree[lc(x)].val,tree[rc(x)].sum=tree[rc(x)].val;
+	tree[x].flg=0;
+}
+void build_tree(int x,int l,int r){
+	tree[x].flg=0;
+	if(l==r) return tree[x].sum=tree[x].val=s[l+1]-s[l],void();
+	build_tree(lc(x),l,mid),build_tree(rc(x),mid+1,r);
+	pushup(x),tree[x].val=tree[lc(x)].val+tree[rc(x)].val;
+}
+void add(int x,int l,int r,int L,int R,int k){
+	if(l>=L&&r<=R) return void((tree[x].flg=k)^(bitset<2>)(tree[x].sum=k==1?0:tree[x].val));
+	pushdown(x,l,r);
+	if(mid>=L) add(lc(x),l,mid,L,R,k);
+	if(R>mid) add(rc(x),mid+1,r,L,R,k);
+	pushup(x);
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=m;++i)
+		cin>>a[i].l>>a[i].r>>a[i].k,s[++sz]=a[i].l,s[++sz]=++a[i].r;
+	sort(s+1,s+1+sz);sz=unique(s+1,s+1+sz)-s-1;
+	ans=s[1]-1+n-s[sz]+1;
+	build_tree(1,1,sz-1);
+	for(int i=1;i<=m;++i){
+		int x=lower_bound(s+1,s+1+sz,a[i].l)-s,y=lower_bound(s+1,s+1+sz,a[i].r)-s-1;
+		add(1,1,sz-1,x,y,a[i].k);
+		cout<<tree[1].sum+ans<<endl;
+	}
+	return 0;
+}

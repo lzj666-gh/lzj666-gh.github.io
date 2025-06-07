@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 120753174
+//  题目ID: U327030
+#include<bits/stdc++.h>
+#define maxn 500+10
+using namespace std;
+int dis[maxn][maxn],n,m,tea[maxn];
+void florr_id(){
+	for(int k=1;k<=n;k++) for(int i=1;i<=n;++i) for(int j=1;j<=n;j++) if(min(dis[i][k]-tea[k],dis[k][j]-tea[j])>dis[i][j]-tea[j]) dis[i][j]=min(dis[i][k]-tea[k],dis[k][j]-tea[j])-tea[i];
+}
+main(){
+	ios::sync_with_stdio(false);
+	memset(dis,-1,sizeof dis);
+	cin>>n>>m;
+	for(int i=1;i<=m;++i){
+		int x,y,z;
+		cin>>x>>y>>z;
+		dis[x][y]=z;
+		dis[y][x]=z;
+	}
+	for(int i=1;i<=n;++i){
+		cin>>tea[i];
+		dis[i][i]=0x3f3f3f3f;
+	}
+	florr_id();
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			cout<<dis[i][j]-tea[j]<<' ';
+		}
+		cout<<endl;
+	}
+	int x,y;
+	cin>>x>>y;
+	if(dis[x][y]==0) cout<<"volleketball"<<endl;
+	else cout<<dis[x][y]-tea[y]-tea[y]+2<<endl;
+	return 0;
+}

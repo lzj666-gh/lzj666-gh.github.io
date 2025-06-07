@@ -1,0 +1,72 @@
+//  OJ: 洛谷
+//  提交ID: 145116778
+//  题目ID: U296282
+#include<bits/stdc++.h>
+#define maxn (1000+10)
+#define maxm (100000+10)
+using namespace std;
+struct Edge{
+	int v,w,nxt;
+}edge[maxm],edge2[maxm];
+int head[maxn],idx,head2[maxn],idx2;
+inline void add(int u,int v,int w){edge[++idx]={v,w,head[u]};head[u]=idx;}
+inline void add2(int u,int v,int w){edge2[++idx2]={v,w,head2[u]};head2[u]=idx2;}
+int n,m,k,s,t,l,b,a,dis[maxn];
+bool vis[maxn];
+void dij(){
+	priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> q;
+	q.push({0,t});
+	memset(dis,0x3f,sizeof dis);
+	dis[t]=0;
+	while(!q.empty()){
+		pair<int,int> now=q.top();
+		q.pop();
+		int nownode=now.second,nowdis=now.first;
+		if(dis[nownode]<nowdis||vis[nownode]) continue;
+		vis[nownode]=true;
+		for(int k=head2[nownode];k;k=edge2[k].nxt){
+			int newdis=edge2[k].w+nowdis;
+			if(newdis<dis[edge2[k].v]){
+				dis[edge2[k].v]=newdis;
+				q.push({newdis,edge2[k].v});
+			}
+		}
+	}
+// 	for(int i=1;i<=n;++i) cout<<dis[i]<<' ';
+}
+struct Node{
+	int first,second;
+	friend bool operator<(const Node&a,const Node&b){
+		return a.first+dis[a.second]>b.first+dis[b.second];
+	}
+};
+int ans=-1;
+void bfs(){
+	int cnt=0;
+	priority_queue<Node>q;
+	if(dis[s]==0x3f3f3f3f) return;
+	q.push({0,s});
+	while(!q.empty()){
+		Node now=q.top();
+//		cout<<now.second<<' '<<now.first<<endl;
+		q.pop();
+		if(now.second==t){
+			cout<<now.first<<' ';
+			if(++cnt==k) return;
+		}
+		for(int k=head[now.second];k;k=edge[k].nxt){
+			q.push({edge[k].w+now.first,edge[k].v});
+		}
+	}
+	while(cnt++^k) cout<<-1<<endl;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m>>k;
+	for(int i=1;i<=m;++i){
+		cin>>a>>b>>l;add(a,b,l);add2(b,a,l);
+	}
+	s=1,t=n;
+	dij();bfs();
+	return 0;
+}

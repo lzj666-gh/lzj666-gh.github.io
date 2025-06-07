@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 137034736
+//  题目ID: T147029
+#include<bits/stdc++.h>
+using namespace std;
+int n,d,ans;
+pair<double,double> a[1000+10];
+pair<double,double> gett(pair<int,int> p){
+	double jj=sqrt(d*d-p.second*p.second);
+	if(p.second>d){
+		cout<<-1<<endl;
+		exit(0); 
+	}
+	return make_pair(p.first+jj,p.first-jj);
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>d;
+	for(int i=1,x,y;i<=n;++i) cin>>x>>y,a[i]=gett(make_pair(x,y));
+	sort(&a[1],&a[n+1]);
+	double lst=-10000;
+	for(int i=1;i<=n;++i)
+		if(a[i].second>lst)
+			lst=a[i].first,++ans;
+	cout<<ans<<endl;
+	return 0;
+}

@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 104459231
+//  题目ID: P1028
+//老师我是李梓加
+//我在玩游戏
+//我在玩洛谷和C++
+#include<bits/stdc++.h>
+using namespace std;
+long long cnt=0,n;
+void digui(int x){
+	if(x==1){
+		return;
+	}
+	for(int i=1;i<=x/2;i++){
+		cnt++;
+		digui(i);
+	}
+}
+int main(){
+	scanf("%lld",&n);
+	cnt++;
+	digui(n);
+	printf("%lld",cnt);
+}

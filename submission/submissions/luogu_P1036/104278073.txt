@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 104278073
+//  题目ID: P1036
+#include<bits/stdc++.h>
+using namespace std;
+bool zhi(int x){
+	int a=sqrt(x);
+	if(x==1||x==0) return false;
+	for(int i=2;i<=a;i++){
+		if(x%i==0) return false;
+	}
+	return true;
+}
+int a[20+5],n,k,cnt=0;
+void dg(int x,int s,int shu){
+	if(x>k){
+		if(zhi(s)) cnt++;
+		return;
+	}
+	for(int i=shu+1;i<n;i++){
+		dg(x+1,s+a[i],i);
+	}
+}
+int main()
+{
+	scanf("%d%d",&n,&k);
+	for(int i=0;i<n;i++){
+		scanf("%d",&a[i]);
+	}
+	dg(1,0,-1);
+	printf("%d",cnt);
+	return 0;
+}
+

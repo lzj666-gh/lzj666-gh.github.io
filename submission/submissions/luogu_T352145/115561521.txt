@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 115561521
+//  题目ID: T352145
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define int long long
+using namespace std;
+main() {
+    int n;
+    cin>>n;
+    vector<pair<int, int> > towers;
+    for (int i=0; i < n; i++) {
+        int a,b;
+        cin>>a>>b;
+        towers.push_back(make_pair(a,b));
+    }
+    sort(towers.begin(),towers.end());
+    int minVoltage=0;
+    int maxRange=0;
+    for (int i=0;i<n;i++) {
+        int currentVoltage=max((long long)0,towers[i].first-maxRange);
+        maxRange=max(maxRange,towers[i].first+towers[i].second);
+        minVoltage+=currentVoltage;
+    }
+    cout<<minVoltage<<endl;
+    return 0;
+}

@@ -1,0 +1,79 @@
+//  OJ: 洛谷
+//  提交ID: 163680721
+//  题目ID: P1006
+#include<bits/stdc++.h>
+#define Vis(a) 
+#define D(a) [a.x][a.y]
+using namespace std;
+//template<typename T1,typename T2> ostream& operator << (ostream&out,pair<T1,T2>&p){out<<'{'<<p.first<<','<<p.second<<'}';return out;}
+//template<typename T>inline ostream& operator<<(ostream&out,vector<T>v){out<<'{';for(T k:v) out<<k<<' ';out<<'}';return out;}
+int m,n,a[55][55],ans[55][55][2];
+struct Node{
+	int sum,x,y;
+	bool Mode;
+	array<bitset<55>,55>vis;
+//	vector<pair<int,int>>path;
+	Node(bool mode){
+		vis.fill(bitset<55>());
+		sum=0;
+		Mode=mode;
+//		path=vector<pair<int,int>>();
+		if(mode){
+			vis[m][n]=1;
+			sum=a[m][n];
+			x=m;y=n;
+//			path.push_back({m,n});
+		}
+		else{
+			vis[1][1]=0;
+			sum=a[1][1];
+			x=y=1;
+//			path.push_back({1,1});
+		}
+	}
+	Node(Node oth,bool f){
+		sum=oth.sum;
+		vis=oth.vis;
+		Mode=oth.Mode;
+		x=oth.x+(f?Mode?-1:1:0);
+		y=oth.y+(f?0:Mode?-1:1);
+		vis[x][y]=1;
+		sum=oth.sum+a[x][y];
+		ans[x][y][Mode]=max(ans[x][y][Mode],sum);
+//		path=oth.path;
+//		path.push_back({x,y});
+	}
+}; 
+queue<Node>q;
+int main(){
+	ios_base::sync_with_stdio(false);
+//	memset(l,0x3f,sizeof l);
+//	memset(r,0x3f,sizeof r);
+	cin>>m>>n;
+	for(int i=1;i<=m;++i)
+		for(int j=1;j<=n;++j)
+			cin>>a[i][j];
+	while(!q.empty()) q.pop();
+	q.push(Node(0));
+	while(!q.empty()){
+		Node now=q.front();q.pop();
+		if(now.x==m&&now.y==n) now.Mode=1;
+		if(now.sum<ans[now.x][now.y][now.Mode]*0.8) continue;
+		if(now.Mode){
+//			cerr<<now.x<<' '<<now.y<<' '<<now.sum<<' '<<now.Mode
+//			<<' '<<now.path
+//			<<endl;
+			if(now.x>1&&!now.vis[now.x-1][now.y]) q.push(Node(now,1));
+			if(now.y>1&&!now.vis[now.x][now.y-1]) q.push(Node(now,0));
+		}
+		else{
+//			cerr<<now.x<<' '<<now.y<<' '<<now.sum<<' '<<now.Mode
+//			<<' '<<now.path
+//			<<endl;
+			if(now.x<m&&!now.vis[now.x+1][now.y]) q.push(Node(now,1));
+			if(now.y<n&&!now.vis[now.x][now.y+1]) q.push(Node(now,0));
+		}
+	}
+	cout<<ans[1][1][1];
+	return 0;
+}

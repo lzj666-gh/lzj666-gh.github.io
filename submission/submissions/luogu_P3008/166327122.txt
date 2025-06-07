@@ -1,0 +1,89 @@
+//  OJ: 洛谷
+//  提交ID: 166327122
+//  题目ID: P3008
+#include<bits/stdc++.h>
+using namespace std;
+int n,m1,m2,s,a,b,c;
+struct Edge{
+	int v,nxt,w;
+}edge[500000+500000+10];
+int head[250000+10],dis[250000+10],idx,ltk[250000+10],tot;
+vector<int>num[250000+10];
+inline void add(int u,int v,int val){
+	edge[++idx]={v,head[u],val};
+	head[u]=idx;
+}
+namespace get_ltk{
+	void dfs(int k,int idk){
+		if(ltk[k]) return;
+		ltk[k]=idk;
+		num[idk].push_back(k);
+		for(int i=head[k];i;i=edge[i].nxt)
+			dfs(edge[i].v,idk);
+	}
+	void get(){
+		for(int i=1;i<=n;++i){
+			if(ltk[i]) continue;
+			dfs(i,++tot);
+		}
+	}
+}
+namespace top{
+	int rd[250000+10];
+	queue<int>q;
+	namespace Dij{
+		struct Node{
+			int first,second;
+			friend bool operator<(const Node&a,const Node&b){
+				return a.first>b.first;
+			}
+		};
+		priority_queue<Node>q;
+		bool vis[250000+10];
+		void dij(vector<int>&ss){
+			for(int&s:ss)q.push({dis[s],s});
+			while(!q.empty()){
+				Node p=q.top();q.pop();
+				if(vis[p.second]) continue;
+				vis[p.second]=1;
+				for(int i=head[p.second];i;i=edge[i].nxt){
+					if(dis[edge[i].v]>dis[p.second]+edge[i].w){
+						dis[edge[i].v]=dis[p.second]+edge[i].w;
+						if(ltk[edge[i].v]==ltk[p.second]) q.push({dis[p.second]+edge[i].w,edge[i].v});
+					}
+					if((ltk[edge[i].v]^ltk[p.second])&&(--rd[ltk[edge[i].v]]==0)) top::q.push(ltk[edge[i].v]);
+//					cout<<"try del "<<edge[i].v<<endl;
+				}
+			}
+		}
+		void init(){
+			memset(dis,0x3f,sizeof dis);
+			dis[s]=0;
+		}
+	}
+	void top_sort(){
+		q.push(ltk[s]);
+		for(int i=1;i<=tot;++i) if(!rd[i]) q.push(i);
+		while(!q.empty()){
+			int now=q.front();q.pop();
+//			cout<<"begin chg "<<now<<endl;
+			Dij::dij(num[now]);
+//			cout<<"end chg "<<now<<endl;
+//			for(int i=1;i<=tot;++i) cout<<top::rd[i]<<' ';
+//			cout<<endl;
+		}
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m1>>m2>>s;top::Dij::init();
+	for(int i=1;i<=m1;++i) cin>>a>>b>>c,add(a,b,c),add(b,a,c);
+	get_ltk::get();
+	for(int i=1;i<=m2;++i) cin>>a>>b>>c,top::rd[ltk[b]]++,add(a,b,c);
+	top::top_sort();
+	for(int i=1;i<=n;++i){
+		if(dis[i]==0x3f3f3f3f) cout<<"NO PATH\n";
+		else cout<<dis[i]<<endl;
+	}
+	return 0;
+}

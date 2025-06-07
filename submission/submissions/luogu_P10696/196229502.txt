@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 196229502
+//  题目ID: P10696
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[200010],ans;
+int main(){
+	ios_base::sync_with_stdio(false);
+	int T=0;
+	cin>>T;
+	while(T--){
+	    ans=0;
+    	cin>>n;
+    	for(int i=1;i<=n;i++){
+    		cin>>a[i];
+    		ans=max(ans,a[i]);
+    	}
+    	cout<<ans<<endl;
+	}
+	return 0;
+} 

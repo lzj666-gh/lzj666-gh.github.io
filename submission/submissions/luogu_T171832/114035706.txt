@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 114035706
+//  题目ID: T171832
+#include<bits/stdc++.h>
+using namespace std;
+ int n,ans=1,b[10001],cnt;
+inline void dfs(int k,int x){
+	b[k]=x;
+	++cnt;
+	for(int i=b[k-1];i<=x/2;++i){
+		b[k]=i;
+		dfs(k+1,x-i);
+	}
+}
+int main(){
+	scanf("%d",&n);
+	for(int i=1;i<=n/2;++i){
+		b[1]=i;
+		dfs(2,n-i);
+	}
+	printf("%d\n",cnt);
+	return 0;
+}

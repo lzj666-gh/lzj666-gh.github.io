@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 174358874
+//  题目ID: P10920
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	int t;
+	cin >> t;
+	while (t--) {
+		int ans = 0;
+		int n; string s;
+		cin >> n >> s;
+		for (int i = 0; i < n - 1; ++i) {
+			string ss = string();
+			for (int j = 1; i + j < n; j += 2) {
+				ss += s[i + j - 1]; ss += s[i + j];
+				bool flg = 1;
+				for (int k = 0; k < ss.size() / 2; k++) {
+					if (ss[k] != '?' && ss[ss.size() / 2 + k] != '?' && ss[k] != ss[ss.size() / 2 + k]) {
+						flg = 0;
+						break;
+					}
+				}
+				if (flg) ans = max(ans, (j + 1) / 2);
+			}
+		}
+		cout << ans << endl;
+	}
+	return 0;
+}

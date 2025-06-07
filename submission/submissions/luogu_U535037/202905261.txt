@@ -1,0 +1,84 @@
+//  OJ: 洛谷
+//  提交ID: 202905261
+//  题目ID: U535037
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+const int MOD = 3499999;
+
+// 计算两个数的最大公约数（GCD）
+ll gcd(ll a, ll b) {
+    return b == 0 ? a : gcd(b, a % b);
+}
+
+// 计算两个数的最小公倍数（LCM）
+ll lcm(ll a, ll b) {
+    return a * b / gcd(a, b);
+}
+
+// 计算所有数对的 LCM 之和的模 MOD
+ll calculate_k(const vector<int>& a) {
+    ll sum = 0;
+    int n = a.size();
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            sum = (sum + lcm(a[i], a[j])) % MOD;
+        }
+    }
+    return sum;
+}
+
+// 计算一个数的数位累加和
+int digit_sum(ll num) {
+    int sum = 0;
+    while (num > 0) {
+        sum += num % 10;
+        num /= 10;
+    }
+    return sum;
+}
+
+// 找到满足 k+1 | S 且数位累加和最小的 S
+ll find_min_S(ll k) {
+    ll target = k + 1; // S 必须是 target 的倍数
+    ll min_S = target; // 最小的 S 至少是 target
+    int min_sum = digit_sum(min_S); // 当前最小数位和
+
+    // 尝试将 S 的某些位替换为更小的数字，同时保持 S 是 target 的倍数
+    // 这里可以采用贪心策略，优先减少高位数字
+    for (ll S = target; S <= 1e18; S += target) {
+        int current_sum = digit_sum(S);
+        if (current_sum < min_sum) {
+            min_sum = current_sum;
+            min_S = S;
+        }
+        if (min_sum == 1) break; // 最小数位和为 1，直接退出
+    }
+
+    return min_S;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    // 输入数据
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+
+    // 计算 k
+    ll k = calculate_k(a);
+
+    // 找到满足条件的 S
+    ll S = find_min_S(k);
+
+    // 输出结果
+    cout << S << endl;
+
+    return 0;
+}

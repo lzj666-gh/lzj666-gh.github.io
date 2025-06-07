@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 136173071
+//  题目ID: CF1023B
+#include<bits/stdc++.h>
+using namespace std;
+long long n,k;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>k;
+	if(2*n-1<k) cout<<0;
+	else if(k%2==0) cout<<min(k/2-1,n-k/2);
+	else cout<<min(k/2,n-k/2);
+	cerr<<"ikun";
+	cerr<<"ikun";
+	cerr<<"ikun";
+	cerr<<"ikun";
+	return 0;
+}

@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 163252532
+//  题目ID: U437294
+#include<bits/stdc++.h>
+using namespace std;
+int n,tmp;
+char s[6];
+struct pli{
+	struct ls{
+		char data[6];
+		ls(char*ans){
+			for(int i=0;i<6;++i) data[i]=ans[i];
+		}
+	};
+	list<ls>first;
+	int second;
+};
+stack<pli>v;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	while(n--){
+		cin>>s;
+		if(s[1]=='u'){
+			cin>>s>>tmp;
+			if(v.empty()) v.push(pli{{pli::ls(s)},tmp});
+			else if(tmp==v.top().second) v.top().first.push_back(s);
+			else v.push(pli{{pli::ls(s)},tmp});
+		}
+		else{
+			cout<<v.top().first.front().data<<endl;
+			v.top().first.pop_front();
+			if(v.top().first.empty()) v.pop();
+		}
+		
+	}
+	return 0;
+}

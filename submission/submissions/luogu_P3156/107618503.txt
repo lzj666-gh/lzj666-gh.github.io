@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 107618503
+//  题目ID: P3156
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,a[100000+10];
+int main(){
+	scanf("%d%d",&n,&m);
+	for(int i=1;i<=n;i++){
+		scanf("%d",&a[i]);
+	}
+	for(int i=1;i<=m;i++){
+		scanf("%d",&n);
+		printf("%d\n",a[n]);
+	}
+}

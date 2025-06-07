@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 115086769
+//  题目ID: T138174
+#include<bits/stdc++.h>
+using namespace std;
+
+int pa[100], n, k;
+int cnt[100], st[100], ma = -1, maxa;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin >> n >> k;
+    for (int i = 1; i <= n; i++) pa[i] = i;
+    for (int i = 1; i <= k; i++) {
+        int x, y;
+        cin >> x >> y;
+        pa[y] = x;
+        st[++cnt[x]] = y;
+    }
+    for (int i = 1; i <= n; i++) {
+        if (cnt[i] > ma) {
+            ma = cnt[i];
+            maxa = i;
+        }
+        if (pa[i] == i) cout << i << endl;
+    }
+    cout << maxa << endl;
+    
+    sort(st + 1, st + cnt[maxa] + 1);
+    for (int i = 1; i <= cnt[maxa]; i++) {
+        cout << st[i] << ' ';
+    }
+    cout << endl;
+    return 0;
+}

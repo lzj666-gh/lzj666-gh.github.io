@@ -1,0 +1,15 @@
+//  OJ: 洛谷
+//  提交ID: 95468310
+//  题目ID: T295181
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int n;cin>>n;
+	for(int i=n-1;i>1;i--){
+		if(n%i==0){
+			cout<<i;
+			return 0;
+		}
+	}
+}

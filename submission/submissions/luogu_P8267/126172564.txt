@@ -1,0 +1,66 @@
+//  OJ: 洛谷
+//  提交ID: 126172564
+//  题目ID: P8267
+#include<bits/stdc++.h>
+#define online
+using namespace std;
+inline int read(){
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c>'9'||c<'0'){
+		if(c=='-'){
+			s=-1;
+		}
+		c=getchar();
+	}
+	while(c<='9'&&c>='0'){
+		x=(x<<3)+(x<<1)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+}
+inline void write(int x){
+	if(x<0){
+		putchar('-');
+		x=~x+1;
+	}
+	else if(x==0){
+		return;
+	}
+	write(x/10);
+	putchar(x%10+'0');
+}
+inline int min(const int &a,const int &b){
+	return a<b?a:b;
+}
+int n,topl,topg,ans;
+array<int,1000+10>l,g;
+int main(){
+	#ifdef online
+//	freopen("liars.in","r",stdin);
+//	freopen("liars.out","w",stdout);
+	#endif
+	n=read();
+	ans=n-1;
+	for(int i=1;i<=n;++i){
+		if(getchar()=='G'){
+			g.at(++topg)=read();
+		}
+		else{
+			l.at(++topl)=read();
+		}
+	}
+	sort(g.begin(),g.begin()+topg+1);
+	sort(l.begin(),l.begin()+topl+1);
+	l[++topl]=2147483647>>2;
+	for(int i=1;i<=topl;++i){
+		for(int j=1;j<=topg;++j){
+			if(l[i]>=g[j]) ans=min(ans,i-j+topg-1);
+			else break;
+		}
+	}
+	if(ans) write(ans);
+	else putchar('0');
+	putchar('\n');
+	return 0;
+}

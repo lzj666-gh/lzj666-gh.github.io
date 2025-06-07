@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 129542415
+//  题目ID: T389301
+#include<bits/stdc++.h>
+using namespace std;
+long long a,b,f,n,fl=0;
+string aa;
+int main(){
+	cin>>aa>>b;
+	--b;
+	for(auto x:aa){
+		a=x^48;
+		n=n*10+a;
+		f=n/b;
+		n%=b;
+		if(fl||f){
+			fl=1;
+			cout<<f;
+		}
+	}
+	return 0;
+}

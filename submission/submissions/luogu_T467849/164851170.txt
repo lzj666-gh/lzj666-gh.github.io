@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 164851170
+//  题目ID: T467849
+#include<bits/stdc++.h>
+using namespace std;
+int x, y, k, b, a[31 + 1];
+int dp[31 + 5][20 + 5];
+int get(int n) {
+	int cnt = 0;
+	while (n) a[++cnt] = n % b, n /= b;
+	int ans = 0, tot = 0;
+	for (int i = cnt; i; --i) {
+		if (a[i]) {
+			ans += dp[i - 1][k - tot];
+			if (x > 1) {
+				if (k - tot - 1 ^ -1) ans += dp[i - 1][k - tot - 1];
+				break;
+			}
+			else {
+				tot++;
+				if (tot > k) break;
+			}
+		}
+		if (i == 1 && tot == k) ans++;
+	}
+	return ans;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> x >> y >> k >> b;
+	for (int i = 1; i <= 31; ++i)
+		for (int j = 0; j <= i; ++j)
+			dp[i][j] = j == 0 ? 1 : dp[i - 1][j - 1] + dp[i - 1][j];
+	cout << get(y) - get(x - 1) << endl;
+	return 0;
+}

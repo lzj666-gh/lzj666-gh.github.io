@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 174692864
+//  题目ID: P10998
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+int n, m;
+struct LZJ {
+	int u, v, w;
+};
+unordered_map<int, unordered_map<int, bool>> head, ht;
+int main() {
+	ios::sync_with_stdio(false);
+	cin >> n >> m;
+	vector<LZJ> a(m);
+	for (int i = 0, u, v, w; i < m; ++i) {
+		cin >> u >> v >> w;
+		a[i] = { u, v, w };
+		head[u * n + v][w] = 1;
+		ht[u * n + w][v] = 1;
+	}
+	int ans = 0;
+	for (int i = 0; i < m; ++i) {
+		int u = a[i].u, v = a[i].v, w = a[i].w;
+		bool bl;
+		for (unordered_map<int, bool>::iterator it = head[v * n + w].begin(); it != head[v * n + w].end(); it++) {
+			int x = it->first;
+			if (x > u && x > v)
+				ans += ht[u * n + x][v] && ht[u * n + x][w];
+
+		}
+	}
+	cout << ans << endl;
+	return 0;
+}

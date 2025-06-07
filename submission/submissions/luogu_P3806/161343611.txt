@@ -1,0 +1,96 @@
+//  OJ: 洛谷
+//  提交ID: 161343611
+//  题目ID: P3806
+#include<bits/stdc++.h>
+using namespace std;
+int head[10000 + 10], idx;
+struct Edge {
+	int v, w, nxt;
+}edge[10000 + 10];
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int n, m, u, v, w, g[10000 + 10];
+bool vis[10000 + 10];
+bitset<100000000 + 10>judge;
+vector<int>q, lst;
+namespace ROOT {
+	int f[10000 + 10];
+	void dfs(int x) {
+		vis[x] = 1;
+		int p = head[x];
+		while (p) {
+			if (!vis[edge[p].v]) {
+				dfs(edge[p].v);
+				g[x] += g[edge[p].v] + 1;
+				f[x] = max(f[x], g[edge[p].v] + 1);
+			}
+			p = edge[p].nxt;
+		}
+		f[x] = max(f[x], n - g[x] - 1);
+		vis[x] = 0;
+	}
+	int gtrt(int rt) {
+		memset(f, 0, sizeof f);
+		memset(g, 0, sizeof g);
+		dfs(rt);
+		f[0] = INT_MAX;
+		int O = 0;
+		for (int i = 1; i <= n; ++i)
+			if (f[O] > f[i] && f[i])
+				O = i;
+		memset(g, 0, sizeof(g));
+		dfs(O);
+		return O;
+	}
+}
+void calc(int x, int frt, int fa) {
+	if (vis[x]) return;
+	q.push_back(frt);
+	for (int k = head[x]; k; k = edge[k].nxt) {
+		if (edge[k].v == fa) continue;
+		calc(edge[k].v, frt + edge[k].w, x);
+	}
+}
+void DFZ(int x) {
+	if (vis[x]) return;
+	int tmp = ROOT::gtrt(x);
+	if (tmp != x) DFZ(tmp);
+	q.clear();
+	calc(x, 0, -1);
+	vector<int> qq(q);
+	vis[x] = 1;
+	vector<int>llst, lllst;
+	unordered_map<int, bool> ed;
+	for (int k = head[x]; k; k = edge[k].nxt) {
+		DFZ(edge[k].v);
+		for (int i : lst)
+			for (int j : llst) {
+				judge[i + j] = 1;
+			}
+		for (int i : lst)
+			lllst.push_back(i + edge[k].w);
+		for (int i : lst)
+			if (!ed[i])
+				llst.push_back(i), ed[i] = 1;
+	}
+	lst = lllst;
+	for (int i : qq) {
+		judge[i] = 1;
+		lst.push_back(i);
+	}
+//	cerr << "debug: on point " << x << ' '; for (int k : qq) cerr << k << ' '; cerr << endl;
+}
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i < n; ++i) cin >> u >> v >> w, add(u, v, w), add(v, u, w);
+	DFZ(ROOT::gtrt(1));
+	for (int i = 1; i <= m; ++i) {
+		int tmp;
+		cin >> tmp;
+		cout << (judge[tmp] ? "AYE" : "NAY") << '\n';
+	}
+	return 0;
+}

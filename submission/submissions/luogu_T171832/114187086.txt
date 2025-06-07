@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 114187086
+//  题目ID: T171832
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    int N;
+    cin >> N;
+
+    vector<int> dp(N + 1);
+    dp[0] = 1;
+
+    for (int i = 1; i <= N; i++) {
+        for (int j = i; j <= N; j++) {
+            dp[j] = (dp[j] + dp[j - i]) % 2147483648;
+        }
+    }
+
+    cout << dp[N] << endl;
+
+    return 0;
+}

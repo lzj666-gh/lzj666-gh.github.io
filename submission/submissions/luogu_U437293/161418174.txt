@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 161418174
+//  题目ID: U437293
+#include<bits/stdc++.h>
+#ifdef ONLINE_JUDGE
+#define gcd __gcd
+#endif
+using namespace std;
+int n, m, a[10000000 + 10], l, r, q[10000000 + 10];
+inline int read() {
+	int r = 0; char c = getchar();
+	while (c < '0' || c>'9') c = getchar();
+	while (c >= '0' && c <= '9') r = r * 10 + (c ^ 48), c = getchar();
+	return r;
+}
+inline void write(int x) {
+	if (x > 9) write(x / 10);
+	putchar(x % 10 ^ 48);
+	return;
+}
+signed main() {
+	n = read(); m = read();
+	for (int i = 1; i <= n; ++i) (a[i] = read()), q[i] = q[i - 1] + a[i];
+	while (m--) {
+		cin >> l >> r;
+		long long fz = 0, fm = 0;
+		for (int i = l; i <= r; ++i) {
+			fz += 1ll * a[i] * (0ll + q[r] - q[i]);
+			fm += (0ll + r - i);
+		}
+		long long tmp = gcd(fm, fz);
+		if (tmp == 0) write(0), putchar(10);
+		else if (tmp == fm) write(fz / tmp), putchar(10);
+		else write(fz / tmp), putchar('/'), write(fm / tmp), putchar(10);
+	}
+	return 0;
+}
+//50pts

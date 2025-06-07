@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 111192747
+//  题目ID: T338934
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	std::ios::sync_with_stdio(false);
+	long long n=0,s=0;
+	cin>>n;
+	n-=1000;s+=16;
+	while(n>0){
+		s+=10;
+		n-=500;
+	}
+	cout<<s<<endl;
+	return 0;
+}

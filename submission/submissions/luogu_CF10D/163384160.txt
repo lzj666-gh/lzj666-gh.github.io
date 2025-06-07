@@ -1,0 +1,57 @@
+//  OJ: 洛谷
+//  提交ID: 163384160
+//  题目ID: CF10D
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, a[500 + 10], b[500 + 10], dp[500 + 10][500 + 10], mxl;
+vector<int>path[500 + 10][500 + 10];
+template<typename T1,typename T2> 
+ostream& operator << (ostream&out,pair<T1,T2>&p){out<<'{'<<p.first<<','<<p.second<<'}';return out;}
+template<typename T>
+inline ostream& operator<<(ostream&out,vector<T>v){out<<'{';for(int k:v) out<<k<<' ';out<<'}';return out;}
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	cin >> m;
+	for (int i = 1; i <= m; ++i) cin >> b[i];
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j) {
+			dp[i][j] = dp[i - 1][j];
+			path[i][j] = path[i - 1][j];
+			if (a[i] == b[j]) {
+				mxl = 1;
+				int put = 0;
+				for (int k = 1; k < j; ++k)
+					if (a[i] > b[k]) {
+						if (dp[i - 1][k] + 1 > mxl) {
+							mxl = dp[i - 1][k] + 1;
+							put = k;
+						}
+					}
+//				cout << "begin " << i << ' ' << j << endl;
+//				cout << dp[i][j] << ' ' << mxl << ' ' << put << endl;
+				if (mxl > dp[i][j]) {
+//					cout << "upd with " << put << '(' << path[i - 1][put] << ')' << endl;
+					dp[i][j] = mxl;
+					path[i][j] = path[i - 1][put];
+					path[i][j].push_back(b[j]);
+				}
+//				cout << dp[i][j] << ' ' << mxl << ' ' << put << endl;
+//				cout << path[i][j] << endl;
+//				cout << "end " << i << ' ' << j << endl;
+			}
+		}
+	int x = 0, y = 0;
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 1; j <= m; ++j) {
+			if (dp[i][j] > dp[x][y]) {
+				x = i;
+				y = j;
+			}
+		}
+	}
+	cout << dp[x][y] << endl;
+	for (int k : path[x][y]) cout << k << ' ';
+	return 0;
+}

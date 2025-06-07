@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 112253461
+//  题目ID: P1077
+#include<bits/stdc++.h>
+#define inf 1000007
+using namespace std;
+const int maxn=150+10;
+int n,m,a[200],f[200][200];
+void dp(){
+	for(int i=0;i<=a[1];i++){
+		f[1][i]=1;
+	}
+	for(int i=2;i<=n;i++){
+		for(int j=0;j<=m;j++){
+			int cnt=min(j,a[i]);
+			for(int k=0;k<=cnt;k++){
+				f[i][j]=(f[i][j]+f[i-1][j-k])%inf;
+			}
+		}
+	}
+	cout<<f[n][m]<<endl;
+}
+int main(){
+	ios::sync_with_stdio(false);cin>>n>>m;
+	for(int i=1;i<=n;i++) cin>>a[i];
+	dp();
+	return 0;
+}

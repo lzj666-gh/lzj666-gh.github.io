@@ -1,0 +1,70 @@
+//  OJ: 洛谷
+//  提交ID: 162672673
+//  题目ID: U437294
+#include<bits/stdc++.h>
+using namespace std;
+int n,tmp;
+string s;
+char*c;
+char*chg(string s){
+	c=new char[6];
+	memcpy(c,s.c_str(),sizeof s.c_str());
+	return c;
+}
+struct node{
+	struct point{
+		char *data;
+		point*nxt;
+		point(string s):data(chg(s)),nxt(nullptr){}
+		point():data(0),nxt(nullptr){}
+	};
+	point*front=nullptr;
+	point*back=nullptr;
+	point*pt=nullptr;
+	int val;
+	void push(string s){
+		pt=new point;
+		pt->data=chg(s);
+		back->nxt=pt;
+		back=pt;
+	}
+	void pop(){
+		if(empty()) return;
+		pt=front->nxt;
+		free(front);
+		front=pt;
+	}
+	node(string s,int x){
+		val=x;
+		pt=new point;
+		pt->data=chg(s);
+		front=back=pt;
+	}
+	string frt(){
+		return string(front->data);
+	}
+	bool empty(){
+		return front==nullptr;
+	}
+};
+vector<node>v;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	while(n--){
+		cin>>s;
+		if(s=="push"){
+			cin>>s>>tmp;
+			if(v.empty()) v.push_back(node(s,tmp));
+			else if(tmp==v.back().val) v.back().push(s);
+			else v.push_back(node(s,tmp));
+		}
+		else{
+			cout<<v.back().frt()<<endl;
+			v.back().pop();
+			if(v.back().empty()) v.pop_back();
+		}
+		
+	}
+	return 0;
+}

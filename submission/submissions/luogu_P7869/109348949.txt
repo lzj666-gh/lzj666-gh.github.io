@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 109348949
+//  题目ID: P7869
+#include<bits/stdc++.h>
+using namespace std;
+char a[10000000+10];
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>a;
+	for(int i=0;i<=strlen(a);++i){
+		if(a[i]=='\\'&&a[i+1]=='r'){
+			if(a[i+2]=='\\'&&a[i+3]=='n'){
+				puts("windows");
+				return 0;
+			}
+			puts("mac");
+			return 0;
+		}
+		else if(a[i]=='\\'&&a[i+1]=='n'){
+			puts("linux");
+			return 0;
+		}
+	}
+}

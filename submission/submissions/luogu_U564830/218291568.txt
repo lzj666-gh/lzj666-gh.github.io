@@ -1,0 +1,79 @@
+//  OJ: 洛谷
+//  提交ID: 218291568
+//  题目ID: U564830
+#include<bits/stdc++.h>
+using namespace std;
+namespace IO {
+	const int SIZE = (1 << 21) + 1;
+    const char endl = '\n';
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+	struct Fastin {
+		inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+		inline void operator()() {}
+		inline void operator()(char& IEE) { IEE = gc(); }
+		template<class T1, class ...T2> inline void operator()(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; operator()(ls...); }
+		template<class... T2> inline void operator()(char& IEE, T2&... ls) { IEE = gc(); operator()(ls...); }
+		template<typename T> friend Fastin& operator>>(Fastin& fin, T& val) { fin(val); return fin; }
+	}fin;
+	struct Fastout {
+		inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+		inline void operator()() {}
+		inline void operator()(char IEE) { putc_(IEE); }
+		inline void operator()(const char* str) { while (*str != '\0') putc_(*str++); }
+		inline void operator()(const std::string& IEE) { operator()(IEE.c_str()); }
+		template<class... T2> inline void operator()(const char IEE, T2... ls) { putc_(IEE); operator()(ls...); }
+		template<class... T2> inline void operator()(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); operator()(ls...); }
+		template<class... T2> inline void operator()(const std::string& IEE, T2... ls) { operator()(IEE.c_str(), ls...); }
+		template<class T1, class ...T2> inline void operator()(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); operator()(ls...); }
+		template<typename T> friend Fastout& operator<<(Fastout& fout, const T& val) { fout(val); return fout; }
+	}fout;
+}
+using namespace IO;
+#define cin fin
+#define cout fout
+constexpr int N = 1e7 + 10, M = 1e7 + 10, B = 30;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx, f[N][B], dep[N];
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+void dfs(int x, int fa) {
+	dep[x] = dep[fa] + 1;
+	f[x][0] = fa;
+	for (int i = 1; i < B; ++i) f[x][i] = f[f[x][i - 1]][i - 1];
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs(edge[i].v, x);
+}
+int LCA(int x, int y) {
+	if (dep[x] < dep[y]) swap(x, y);
+	int cur = dep[x] - dep[y];
+	for (int i = 0; i < B; ++i)
+		if ((1 << i) & cur)
+			x = f[x][i];
+	//assert(dep[x] == dep[y]);
+	if (x == y) return x;
+	for (int i = B - 1; i >= 0; --i)
+		if (f[x][i] ^ f[y][i])
+			x = f[x][i], y = f[y][i];
+	//assert(x != y);
+	//assert(f[x][0] == f[y][0]);
+	return f[x][0];
+}
+int n, m, s;
+int main() {
+	cin >> n >> m >> s;
+	for (int i = 1, x, y; i < n; ++i) cin >> x >> y, add(x, y), add(y, x);
+	dfs(s, 0);
+	while (m--) {
+		int x, y;
+		cin >> x >> y;
+		cout << LCA(x, y) << endl;
+	}
+	return 0;
+}

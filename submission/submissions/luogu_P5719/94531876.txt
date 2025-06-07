@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 94531876
+//  题目ID: P5719
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int n, k, sum;
+
+int main () {
+	cin>>n>>k;
+	for (int i = k; i <= n; i += k)
+		sum += i;
+	printf ("%.1f ", double (sum) / (n / k)); 
+	printf ("%.1f\n", double (sum) / (n - n / k));
+	return 0;
+}

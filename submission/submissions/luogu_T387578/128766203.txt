@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 128766203
+//  题目ID: T387578
+#include<bits/stdc++.h>
+using namespace std;
+int opt,k=-1,l,ans;
+string s;
+inline long long read(){
+	register long long x=0;
+	register char c=s[++k];
+	while(c<'0'||c>'9'){
+		c=s[++k];
+		if(k>=l) return -5;
+	}
+	while(c>='0'&&c<='9'){
+		x=(x<<1)+(x<<3)+(c^48);
+		c=s[++k];
+		if(k>=l) return x;
+	}
+	return x;
+}
+int main(){
+//	freopen("digt.in","r",stdin);
+//	freopen("digt.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>opt;
+	cin>>s;
+	l=s.size();
+	while(k<l){
+		ans+=read()+5;
+	}
+	cout<<ans<<endl;
+	return 0;
+}

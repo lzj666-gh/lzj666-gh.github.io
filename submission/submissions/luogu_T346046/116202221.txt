@@ -1,0 +1,51 @@
+//  OJ: 洛谷
+//  提交ID: 116202221
+//  题目ID: T346046
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+	vector <int> nei;
+//	void s(){sort(nei.begin(),nei.end());}
+}edge[1000000];
+int n,m;
+bool b[100000+10];
+int ans[100000+10];
+int dfs(int k){
+	if(ans[k]!=0) return ans[k];
+	if(b[k]) return k;
+	ans[k]=k;
+	b[k]=true;
+	for(register int i=0;i<edge[k].nei.size();++i){
+		ans[k]=max(ans[k],dfs(edge[k].nei[i]));
+	}
+	return ans[k];
+}
+inline int bfs(int x){
+	int maxa=-1;
+	queue <int> q;
+	q.push(x);
+	b[x]=true;
+	while(!q.empty()){
+		int d=q.front();
+		maxa=max(maxa,d);
+		q.pop();
+		for(register int i=0;i<edge[d].nei.size();++i){
+			if(b[edge[d].nei[i]]==false) b[edge[d].nei[i]]=true,q.push(edge[d].nei[i]);
+		}
+	}
+	return maxa;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(register int i=1;i<=m;++i){
+		int x,y;
+		cin>>x>>y;
+		edge[x].nei.push_back(y);
+//		edge[y].nei.push_back(x);
+	}
+//	for(register int i=1;i<=n;++i) edge[i].s();
+	for(register int i=1;i<=n;++i) memset(b,0,sizeof(b)),cout<<dfs(i)<<' ';
+	cout<<endl;
+	return 0;
+}

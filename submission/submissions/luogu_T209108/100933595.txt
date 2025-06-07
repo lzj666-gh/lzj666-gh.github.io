@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 100933595
+//  题目ID: T209108
+#include<bits/stdc++.h>
+using namespace std;
+char a;int b[10];
+int main(){
+	while(cin>>a){
+		if(a>='0'&&a<='9') b[(int)a-(int)'0']++;
+	}
+	for(int i=0;i<10;i++){
+		cout<<b[i]<<" ";
+	}
+}

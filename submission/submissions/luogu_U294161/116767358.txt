@@ -1,0 +1,15 @@
+//  OJ: 洛谷
+//  提交ID: 116767358
+//  题目ID: U294161
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[33000];
+__int128 ans=0;
+inline void write(__int128 x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+int main(){
+//	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;i++) cin>>a[i],ans+=a[i]*i;
+	write(ans);
+	return 0;
+}

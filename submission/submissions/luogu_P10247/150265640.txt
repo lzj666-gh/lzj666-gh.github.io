@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 150265640
+//  题目ID: P10247
+#include<bits/stdc++.h>
+#define fc(a,b,c,d) (a!=b&&a!=c&&a!=d&&b!=c&&b!=d&&c!=d)
+using namespace std;
+int n,m,u[300000+10],v[300000+10];
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=m;++i) cin>>u[i]>>v[i];
+	for(int i=1;i<=m;++i){
+		if(u[i]==v[i]){
+			cout<<0<<' ';
+			continue;
+		}
+		bool flg=true;
+		for(int j=1;j<=m;++j){
+			if(fc(u[i],u[j],v[i],v[j])){
+				cout<<j<<' ';
+				flg=false;
+				break;
+			}
+		}
+		if(flg) cout<<0<<' ';
+	}
+}

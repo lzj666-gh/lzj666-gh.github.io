@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 147364484
+//  题目ID: P1082
+#include<bits/stdc++.h>
+using namespace std;
+void exgcd(long long a, long long b, long long& x, long long& y) {
+    if (b == 0) { x = 1; y = 0; return; }
+    exgcd(b, a % b, x, y);
+    int z = x; x = y, y = z - y * (a / b);
+}
+inline long long inv(long long a, long long p) {
+    long long x, y;
+    exgcd(a, p, x, y);
+    return (x % p + p) % p;
+}
+long long a, b;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin >> a >> b;
+    cout << inv(a, b) << endl;
+    return 0;
+}

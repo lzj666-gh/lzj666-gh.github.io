@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 128245364
+//  题目ID: P7911
+#include<bits/stdc++.h>
+#define t to_string
+using namespace std;
+#define io ios_base::sync_with_stdio(false); \
+		   cin.tie(nullptr);\
+		   cout.tie(nullptr);
+string opt,tmp;
+int top;
+map<string,pair<bool,int>> m;
+int main(){
+	io
+	int tt;
+	cin>>tt;
+	for(int I=1;I<=tt;++I){
+		cin>>opt>>tmp;
+		int a,b,c,d,e;
+		if(sscanf(tmp.c_str(),"%d.%d.%d.%d:%d",&a,&b,&c,&d,&e)){
+			if(a>255||b>255||c>255||d>255||e>65535||a<0||b<0||c<0||d<0||e<0||(t(a)+'.'+t(b)+'.'+t(c)+'.'+t(d)+'.'+t(e)).size()!=tmp.size()){
+				cout<<"ERR"<<endl;
+				continue;
+			}
+		}
+		else{
+			cout<<"ERR"<<endl;
+			continue;
+		}
+		if(opt=="Server"){
+			if(m[tmp].first==false) m[tmp]={true,I},cout<<"OK"<<endl;
+			else cout<<"FAIL"<<endl; 
+		}
+		else{
+			if(m[tmp].first) cout<<m[tmp].second<<endl;
+			else cout<<"FAIL"<<endl;
+		}
+	}
+} 

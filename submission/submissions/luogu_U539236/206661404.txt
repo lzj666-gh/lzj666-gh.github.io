@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 206661404
+//  题目ID: U539236
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+using ull = unsigned long long;
+ull n, m, a[10000000], h[10000000], l1, r1, l2, r2;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i)
+		cin >> a[i],
+		h[i] = h[i - 1] ^ (a[i] ^ (a[i] * 3) ^ (a[i] / 2 * 7));
+	while (m--) {
+		cin >> l1 >> r1 >> l2 >> r2;
+		if ((h[r1] ^ h[l1 - 1]) != (h[r2] ^ h[l2 - 1]))
+			cout << "No" << endl;
+		else
+			cout << "Yes" << endl;
+	}
+	return 0;
+}

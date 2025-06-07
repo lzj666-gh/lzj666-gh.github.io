@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 151773418
+//  题目ID: T234809
+#include<bits/stdc++.h>
+#define cbc(k) (k>13?k-13:0)
+using namespace std;
+int a,b,c,d;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>a>>b>>c>>d;
+	if(a+b+c+d>54||(cbc(a)+cbc(b)+cbc(c)+cbc(d)>2)){
+		cout<<"-1.000"<<endl;
+		return 0;
+	}
+	
+	return 0;
+}

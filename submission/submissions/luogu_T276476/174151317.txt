@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 174151317
+//  题目ID: T276476
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr signed prime[25] = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97 };
+vector<int>use;
+int dp[1 << 24], l, r;
+bool cur[25];
+signed main() {
+//	freopen("rlprime.in", "r", stdin);
+//	freopen("rlprime.out", "w", stdout);
+	ios_base::sync_with_stdio(false);
+	cin >> l >> r;
+	dp[0] = 1;
+	for (int i = l; i <= r; ++i)
+		for (signed j = 0; j < 25; ++j)
+			if (i % prime[j] == 0)
+				cur[j] = 1;
+	for (signed j = 0; j < 25; ++j)
+		if (cur[j])
+			use.push_back(prime[j]);
+	// use : which prime i use
+	int all = (1 << use.size()) - 1;
+	for (int i = l; i <= r; ++i) {
+		int tmp = 0;
+		for (signed j = 0; j < use.size(); ++j)
+			if (i % prime[j] == 0)
+				tmp |= (1ll << j);
+		// get now number use which prime
+		int qwq = tmp ^ all;
+		for (int j = qwq; j; j = (j - 1) & qwq)
+			// all kinds of exp. this number, j|tmp -> all kinds inc. this number
+			dp[j | tmp] += dp[j];
+		dp[tmp] += dp[0];
+	}
+	int ans = 0;
+	for (int i = 0; i <= all; ++i)
+		ans += dp[i];
+	cout << ans - 1 << endl;
+	return 0;
+}
+// why -1?
+// exp 40~100

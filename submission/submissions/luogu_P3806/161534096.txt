@@ -1,0 +1,107 @@
+//  OJ: 洛谷
+//  提交ID: 161534096
+//  题目ID: P3806
+#include<bits/stdc++.h>
+#include<unordered_set>
+using namespace std;
+int head[10000 + 10], idx;
+struct Edge {
+	int v, w, nxt;
+}edge[20000 + 10];
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int n, m, u, v, w, q[100 + 10];
+bool vis[10000 + 10], qry[100 + 10], num[100000000 + 10];
+namespace ROOT {
+	int f[10000 + 10], g[10000 + 10], Vis[10000 + 10];
+	void dfs(int x) {
+		Vis[x] = 1;
+		int p = head[x];
+		while (p) {
+			if (!vis[edge[p].v]&&!Vis[edge[p].v]) {
+				dfs(edge[p].v);
+				g[x] += g[edge[p].v] + 1;
+				f[x] = max(f[x], g[edge[p].v] + 1);
+			}
+			p = edge[p].nxt;
+		}
+		f[x] = max(f[x], n - g[x] - 1);
+		Vis[x] = 0;
+	}
+	int gtrt(int rt) {
+		memset(f, 0, sizeof f);
+		memset(g, 0, sizeof g);
+		dfs(rt);
+		f[0] = INT_MAX;
+		int O = 0;
+		for (int i = 1; i <= n; ++i)
+			if (f[O] > f[i] && f[i])
+				O = i;
+		return O;
+	}
+}
+int now_dis[10000 + 10];
+vector<int>stk;
+#define tp now_dis[0]
+void sontree(int p, int dis, int fa) {
+//	cerr << "calc son tree " << p << "  with dis " << dis << " and it's father " << fa << endl;
+	now_dis[++tp] = dis;
+	for (int i = head[p]; i; i = edge[i].nxt) {
+		if (edge[i].v == fa || vis[edge[i].v]) continue;
+//		cerr << edge[i].v << endl;
+		sontree(edge[i].v, dis + edge[i].w, p);
+	}
+}
+void Now(int p) {
+//	cerr << "gone to " << p << endl;
+	stk.clear(); num[0] = 1;
+	for (int k = head[p]; k; k = edge[k].nxt) {
+		if (vis[edge[k].v]) continue;
+		tp = 0;
+		sontree(edge[k].v, edge[k].w, p);
+//		for (int i = 1; i <= tp; ++i) cerr << now_dis[i] << ' '; cerr << endl;
+		for (int i = 1; i <= tp; ++i)
+			for (int j = m; j; --j)
+				if (q[j] >= now_dis[i])
+					qry[j] |= num[q[j] - now_dis[i]];
+		for (int i = 1; i <= tp; ++i) num[now_dis[i]] = 1, stk.push_back(now_dis[i]);
+	}
+	for (int i : stk) num[i] = 0;
+}
+void DFZ(int k) {
+	if (vis[k]) return;
+	vis[k] = 1;
+	Now(k);
+	for (int i = head[k]; i; i = edge[i].nxt) {
+		DFZ(ROOT::gtrt(edge[i].v));
+	}
+
+}
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i < n; ++i) cin >> u >> v >> w, add(u, v, w), add(v, u, w);
+/*	for (int i = 1; i <= n; ++i) {
+		cerr << "on idx:" << i << " : ";
+		for (int j = head[i]; j; j = edge[j].nxt) {
+			cerr << "{ " << edge[j].v << ',' << edge[j].w << " },";
+		}
+		cerr << endl;
+	}*/
+	for (int i = 1; i <= m; ++i) cin >> q[i];
+	DFZ(ROOT::gtrt(1));
+	for (int i = 1; i <= m; ++i) cout << (qry[i] ? "AYE\n" : "NAY\n");
+	return 0;
+}
+/*
+5 1
+1 2 1
+1 3 1
+3 4 2
+3 5 1
+6
+
+NAN?!!!!!
+*/

@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 128108943
+//  题目ID: P7911
+#include<bits/stdc++.h>
+using namespace std;
+#define io ios_base::sync_with_stdio(false); \
+		   cin.tie(nullptr);\
+		   cout.tie(nullptr);
+string opt,tmp;
+map<string,bool> m;
+int main(){
+	io
+	int t;
+	cin>>t;
+	while(t--){
+		cin>>opt>>tmp;
+		int a,b,c,d,e;
+		if(sscanf(tmp.c_str(),"%d.%d.%d.%d:%d",&a,&b,&c,&d,&e)){
+			if(a>255||b>255||c>255||d>255||e>65535){
+				cout<<"ERR"<<endl;
+				continue;
+			}
+		}
+		if(opt=="Server")
+	}
+} 

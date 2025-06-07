@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 111456889
+//  题目ID: P1052
+#include<bits/stdc++.h>
+using namespace std;
+int l,s,t,m,dp[100000000+20];
+bool b[100000000+20];
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+	cin>>l>>s>>t>>m;
+	for(int i=1;i<=m;i++){
+		int x;
+		cin>>x;
+		b[x]=true;
+	}
+	dp[1]=b[1];
+	for(int i=2;i<=l+t;i++){
+		int mina=0x7f7f7f7f;
+		for(int j=i-t;j<=i-s;j++){
+			if(j<1) continue;
+			mina=min(mina,dp[j]);
+		}
+		dp[i]=mina+b[i];
+	}
+	int mina=0x7f7f7f7f;
+	for(int i=l;i<=l+t;i++){
+		mina=min(mina,dp[i]);
+	}
+	cout<<mina<<endl;
+	return 0;
+}

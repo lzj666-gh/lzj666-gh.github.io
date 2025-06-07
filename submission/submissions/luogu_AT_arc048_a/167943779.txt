@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 167943779
+//  题目ID: AT_arc048_a
+#include<bits/stdc++.h>
+using namespace std;
+long long a,b;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>a>>b;
+	if(a<0&&0<b) cout<<b-a-1<<endl;
+	else cout<<b-a<<endl;
+	return 0;
+}

@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 108331042
+//  题目ID: T214849
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    int max_height = 0, prev_height = 0, changes = 0;
+    for (int i = 1; i <= n; i++) {
+        int h;
+        cin >> h;
+
+        if (i <= m) { // 仍在前M位追求者中
+            if (h > max_height) {
+                max_height = h;
+                changes++;
+            }
+        } else { // 已经遍历了前M位追求者
+            if (prev_height == max_height) { // 上一次最高身高的追求者已经被跳过，所以需要重新查找最高身高
+                max_height = 0;
+                for (int j = i - m + 1; j <= i; j++) {
+                    int height_j = h[j];
+                    if (height_j > max_height) {
+                        max_height = height_j;
+                    }
+                }
+            }
+
+            if (h > max_height) {
+                max_height = h;
+                changes++;
+            }
+
+            prev_height = h - m;
+        }
+    }
+
+    cout << changes << " " << max_height << endl;
+
+    return 0;
+}

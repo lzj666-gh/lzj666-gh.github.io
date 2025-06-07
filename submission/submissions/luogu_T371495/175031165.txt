@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 175031165
+//  题目ID: T371495
+#include<bits/stdc++.h>
+using namespace std;
+const int mod = 993244853;
+int n, m, dp[2][505][505], cur[505][505], L, R;
+bool now, lst;
+char s[505][505];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= m; ++j)
+			cin >> s[i][j];
+	for (int i = 1; i <= n && i <= m; i++)dp[0][i][i] = 1;
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= m; j++)
+			cur[i][j] = cur[i - 1][j + 1] + 1;
+	L = (n + m + 1) >> 1, R = (n + m + 2) - L;
+	while (L > 1) {
+		now = !now, lst = !now;
+		memset(dp[now], 0, sizeof dp[now]);
+		for (int i = 1; i <= n && i <= L; i++) {
+			int l = L - i;
+			if (l > m) continue;
+			for (int j = i; j <= n && j <= R; j++) {
+				int r = R - j;
+				if (r > m || r < l)continue;
+				if (s[i][l] == s[j][r])
+					if (i + l + 1 == j + r && (i + 1 == j || l + 1 == r))
+						dp[now][cur[i][l]][cur[j][r]] = 1;
+					else dp[now][cur[i][l]][cur[j][r]] = ((long long)
+							dp[lst][cur[i + 1][l]][cur[j][r - 1]] +
+							dp[lst][cur[i + 1][l]][cur[j - 1][r]] +
+							dp[lst][cur[i][l + 1]][cur[j][r - 1]] +
+							dp[lst][cur[i][l + 1]][cur[j - 1][r]]
+							) % mod;
+			}
+		}
+		L--, R++;
+	}
+	cout << dp[now][1][1] << endl;
+}

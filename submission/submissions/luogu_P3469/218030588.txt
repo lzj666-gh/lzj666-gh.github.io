@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 218030588
+//  题目ID: P3469
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 2e5 + 10, M = 4e5 + 10;
+struct Edge {
+	int u, v, nxt;
+}edge[M];
+int head[N], idx, a[N];
+void add(int u, int v) {
+	edge[++idx] = { u,v,head[u] };
+	head[u] = idx;
+}
+int n, m, siz[N], scc[N], dfn[N], low[N], cnt, root;
+int ans[N];
+void tarjan(int x) {
+	static int idx;
+	dfn[x] = low[x] = ++idx;
+	siz[x] = 1;
+	int chd = 0, sum = 0;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (!dfn[edge[i].v]) {
+			tarjan(edge[i].v);
+			siz[x] += siz[edge[i].v];
+			low[x] = min(low[x], low[edge[i].v]);
+			if (low[edge[i].v] >= dfn[x]) {
+				chd++;
+				sum += siz[edge[i].v];
+				ans[x] += siz[edge[i].v] * (n - siz[edge[i].v]);
+			}
+		}
+		else
+			low[x] = min(low[x], dfn[edge[i].v]);
+	if (chd > 1 - (x != root))
+		ans[x] += n - 1 + (n - sum - 1) * (sum + 1);
+	else
+		ans[x] = (n - 1) * 2;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v; i <= m; ++i)
+		cin >> u >> v, add(u, v), add(v, u);
+	for (int i = 1; i <= n; ++i) if (!dfn[i]) root = i, tarjan(i);
+	for (int i = 1; i <= n; ++i)
+		cout << ans[i] << endl;
+	return 0;
+}

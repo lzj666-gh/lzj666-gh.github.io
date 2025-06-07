@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 90938435
+//  题目ID: T65937
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a,b,c;cin>>a>>b>>c;
+	int d;
+	if(b>a){
+		d=a;a=b;b=d;
+	}
+	else if(c>a){
+		d=a;a=c;c=d;
+	}
+	//a最大 
+	
+	
+	if(c>b){
+		cout<<a<<" "<<c<<" "<<b;
+	}
+	else{
+		cout<<a<<" "<<b<<" "<<c;
+	}
+}
+

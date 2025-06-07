@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 195927186
+//  题目ID: P11449
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+double L[] = { 1e0,1e1,1e2,1e3,1e4,1e5,1e6,1e7,1e8,1e9,1e10,1e11,1e12 };
+double f[] = { 1e0,1e1,1e2,1e3,1e4,1e5,1e6,1e7,1e8,1e9,1e10,1e11,1e12 };
+int calc(int n) {
+	int l = 1, ans = 0;
+	while (9 * f[l - 1] + L[l] * 4 <= n) {
+		ans += 5 * f[l - 1];
+		l++;
+	}
+	int tmp = 4 * f[l - 1] + L[l] * 4 + 1;
+	if (n - tmp + 1 >= 0) ans += n - tmp + 1;
+	return ans;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin >> T;
+	for (int i = 1; i <= 12; ++i) f[i] += f[i - 1];
+	while (T--) {
+		int n;
+		cin >> n;
+		cout << calc(n) << endl;
+	}
+	return 0;
+}

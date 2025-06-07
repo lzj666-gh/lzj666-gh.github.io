@@ -1,0 +1,91 @@
+//  OJ: 洛谷
+//  提交ID: 140209222
+//  题目ID: T219542
+#include<iostream>
+#include<vector>
+#include <algorithm>
+using namespace std;
+_EXPORT_STD template <class _Ty, class _Container = vector<_Ty>, class _Pr = less<typename _Container::value_type>>
+class priority_queue {
+public:
+    using value_type = typename _Container::value_type;
+    using reference = typename _Container::reference;
+    using const_reference = typename _Container::const_reference;
+    using size_type = typename _Container::size_type;
+    using container_type = _Container;
+    using value_compare = _Pr;
+    static_assert(is_same_v<_Ty, value_type>, "container adaptors require consistent types");
+    static_assert(is_object_v<_Ty>, "The C++ Standard forbids container adaptors of non-object types "
+        "because of [container.requirements].");
+    priority_queue() = default;
+    explicit priority_queue(const _Pr& _Pred) noexcept(
+        is_nothrow_default_constructible_v<_Container>&& is_nothrow_copy_constructible_v<value_compare>) // strengthened
+        : c(), comp(_Pred) {}
+    priority_queue(const _Pr& _Pred, _Container&& _Cont) : c(_STD move(_Cont)), comp(_Pred) {
+        _STD make_heap(c.begin(), c.end(), comp);
+    }
+    _NODISCARD_EMPTY_ADAPTOR_MEMBER bool empty() const noexcept(noexcept(c.empty())) /* strengthened */ {
+        return c.empty();
+    }
+    _NODISCARD size_type size() const noexcept(noexcept(c.size())) /* strengthened */ {
+        return c.size();
+    }
+    _NODISCARD const_reference top() const noexcept(noexcept(c.front())) /* strengthened */ {
+        return c.front();
+    }
+    void push(const value_type& _Val) {
+        c.push_back(_Val);
+        _STD push_heap(c.begin(), c.end(), comp);
+    }
+    void push(value_type&& _Val) {
+        c.push_back(_STD move(_Val));
+        _STD push_heap(c.begin(), c.end(), comp);
+    }
+    void pop() {
+        _STD pop_heap(c.begin(), c.end(), comp);
+        c.pop_back();
+    }
+
+protected:
+    _Container c{};
+    _Pr comp{};
+};
+const int MAX = 10010;
+struct Store {
+    int profit, days;
+    friend bool operator < (const Store& a, const Store& b) {
+        return a.profit > b.profit;
+    }
+}s[10000 + 10];
+bool cmp(Store a, Store b){
+    return a.days < b.days;
+}
+int n;
+priority_queue<Store> q;
+int main() {
+	ios_base::sync_with_stdio(false);
+    while (cin >> n) {
+        while (!q.empty())
+            q.pop();
+        for (int i = 0; i < n; i++) {
+            cin >> s[i].profit >> s[i].days;
+        }
+        sort(s, s + n, cmp);
+        for (int i = 0; i < n; i++)
+        {
+            if (q.empty()) q.push(s[i]);
+            else if (s[i].days > (int)q.size()) q.push(s[i]);
+            else if (q.top().profit < s[i].profit) {
+                q.pop();
+                q.push(s[i]);
+            }
+        }
+        int ans = 0;
+        while (!q.empty()) {
+            ans += q.top().profit;
+            q.pop();
+        }
+        cout << ans << endl;
+    }
+    return 0;
+}

@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 115382354
+//  题目ID: P2235
+# 在这里写上你的代码 :-)
+del fun (x):
+    if x==1:
+        return 1
+    if x==3:
+        return 3
+    if x%2==0:
+        return fun(x/2)
+    if x%4==1:
+        return 2*fun((x-1)/2+1)-fun((x-1)/4)
+    if x%4==3:
+        return 3*fun((x-3)/2+1)-2*fun((x-3)/4)
+m=int(input())
+cnt=0
+for i in range(m):
+    if fun(i)==i:
+        cnt=cnt+1
+print(cnt)
+exit()

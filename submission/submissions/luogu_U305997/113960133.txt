@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 113960133
+//  题目ID: U305997
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,z,x,y;
+int main(){
+	ios::sync_with_stdio(false); 
+	cin>>n>>m>>z;
+	//5x+3y+z=m
+	//x+y+z=n
+	//3x+3y+3z=3n
+	//2x-2z=m-3n
+	x=(m-3*n)/2+z;
+	y=n-z-x;
+	cout<<x<<' '<<y<<endl;
+}

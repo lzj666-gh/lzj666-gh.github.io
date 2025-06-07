@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 179984376
+//  题目ID: T520878
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int mod = 998244353;
+struct Node {
+	__int128 a, b, c, d;
+	friend bool operator<(const Node& a, const Node& b) {
+		return a.b * b.d > b.b * a.d;
+	}
+}a[1000000 + 10];
+int n, k;
+__int128 ans;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> k;
+	__int128 tot = 0;
+	for (int i = 1; i <= n; ++i) {
+		long long aa, b, c;
+		cin >> aa >> b >> c;
+		a[i].a = aa; a[i].b = b; a[i].c = c;
+		tot += a[i].b;
+		a[i].d = a[i].a / (k - a[i].c);
+		if (a[i].a % (k - a[i].c)) a[i].d++;
+	}
+	sort(a + 1, a + n + 1);
+	//for (int i = 1; i <= n; ++i) cout << a[i].b << ' ' << a[i].d << endl;
+	for (int i = 1; i <= n; ++i) {
+		ans += a[i].d * tot - a[i].b;
+		ans %= mod;
+		tot -= a[i].b;
+	}
+	long long tmp = ans;
+	cout << tmp << endl;
+	return 0;
+}

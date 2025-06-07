@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 165560475
+//  题目ID: P3195
+#include<bits/stdc++.h>
+using namespace std;
+long long n, l, c[50000 + 10], dp[50000 + 10];
+#define min(a, b) ((a) > (b) ? b : a)
+int main() {
+	ios_base::sync_with_stdio(false); 
+	cin >> n >> l; l++;
+	for (int i = 1; i <= n; ++i) cin >> c[i], c[i]++, c[i] += c[i - 1];
+	memset(dp, 0x3f, sizeof dp);
+	dp[0] = 0;
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 1; j <= i; ++j) {
+			long long x = c[i] - c[j - 1] - l;
+			dp[i] = min(dp[i], x * x + dp[j - 1]);
+		}
+	}
+	cout << dp[n] << endl;
+	return 0;
+}

@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 120707137
+//  题目ID: U301254
+#include <iostream>
+#define int long long
+using namespace std;
+inline int aa(int n){
+    int re=0,tmp=1;
+    while(n>0){
+        if(n%2==1) re+=tmp;
+        n/=2;
+    	tmp*=2;
+    }
+    return re;
+}
+main() {
+    int n;
+    scanf("%d",&n);
+    cout<<aa(n)<<endl;
+    return 0;
+}

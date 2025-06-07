@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 114015247
+//  题目ID: P1049
+#include<bits/stdc++.h>
+using namespace std;
+int m,n,w[1000+10],dp[1000+10];
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>m>>n;
+	for(int i=1;i<=n;++i){
+		cin>>w[i];
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=m;j>=w[i];j--){
+			if(dp[j-w[i]]+w[i]>dp[j]) dp[j]=dp[j-w[i]]+w[i];
+		}
+	}
+	cout<<m-dp[m]<<endl;
+	return 0;
+}

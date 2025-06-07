@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 108234189
+//  题目ID: T214846
+#include<bits/stdc++.h>
+using namespace std;
+int x,n,m,a[1000000+10],l,r;
+int main(){
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++){
+		scanf("%d",&a[r++]);
+	}
+	scanf("%d",&m);
+	for(int i=1;i<=m;i++){
+		scanf("%d",&x);
+		if(x==2){
+			scanf("%d",&x);
+			a[r++]=x;
+		}
+		else if(x==1){
+			if(r-l!=0){
+				r--;
+			}
+		}
+		else if(x==3){
+			if(r-l!=0){
+				l++;
+			}
+		}
+		else if(x==4){
+			scanf("%d",&a[--l]);
+		}
+	}
+	long long abc=0;
+	for(int i=l;i<r;i++){
+		abc+=a[i];
+	}
+	cout<<abc;
+	return 0;
+} 

@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 108331499
+//  题目ID: T214849
+#include <iostream>
+#include <deque>
+using namespace std;
+
+const int N = 1e6 + 10;
+int h[N], maxh[N], maxh_cnt[N];  // maxh[i]表示从第i位开始长度为M的区间内的最大值，maxh_cnt[i]表示该区间内最大值出现的次数
+
+int n, m;
+
+void build() {
+    deque<int> q, cnt;  // 双端队列，分别维护元素值和元素出现次数
+    for (int i = 1; i <= n; i++) {
+        while (q.size() && h[q.back()] < h[i]) {
+            q.pop_back();
+            cnt.pop_back();
+        }
+        q.push_back(i);
+        cnt.push_back(1);
+        if (i >= m) {  // 区间长度达到M后，队首元素出区间一格向右移动，需弹出队首
+            maxh[i - m + 1] = h[q.front()];
+            maxh_cnt[i - m + 1] = cnt.front();
+            if (q.front() == i - m + 1) {  // 如果队首元素已经出区间，需要弹出队首
+                q.pop_front();
+                cnt.pop_front();
+            }
+        }
+    }
+}
+
+int main() {
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++) {
+        cin >> h[i];
+    }
+
+    build();
+
+    for (int i = 1; i <= n - m + 1; i++) {  // i表示区间左端点
+        cout << maxh_cnt[i] << " " << maxh[i] << endl;
+    }
+
+    return 0;
+}

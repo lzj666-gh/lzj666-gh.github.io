@@ -1,0 +1,102 @@
+//  OJ: 洛谷
+//  提交ID: 202410990
+//  题目ID: T572396
+#include<bits/stdc++.h>
+#define int long long
+#define File "ironclad"
+using namespace std;
+int n;
+struct Node {
+	int a, b;
+	friend bool operator<(const Node& a, const Node& b) {
+		return a.b == b.b ? a.a > b.a:a.b > b.b;
+	}
+}a[5000 + 10];
+multiset<int>s;
+bool vis[5000 + 10];
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define ls lc(p), l, l + r >> 1
+#define rs rc(p), (l + r >> 1) + 1, r
+	struct Node {
+		long long sum;
+		int mx, mn;
+		Node(long long s = 0, int l = 0, int m = 0, int n = 0) :sum(s), mx(m), mn(n) {  }
+	}tree[5000 << 2 | 3];
+	void pushup(int p) {
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+		tree[p].mx = max(tree[rc(p)].mx, tree[lc(p)].mx);
+		tree[p].mn = min(tree[rc(p)].mn, tree[lc(p)].mn);
+	}
+	void set(int p, int l, int r, int x, int k) {
+		if (!(l <= x && x <= r)) return;
+		if (l == r) {
+			tree[p].sum = tree[p].mx = tree[p].mn = k;
+			return;
+		}
+		set(ls, x, k);
+		set(rs, x, k);
+		pushup(p);
+	}
+	long long query(int p, int l, int r, int x) {
+		if (tree[p].mx < x) return tree[p].sum;
+		if (tree[p].mn > x) return 0;
+		if (l == r) return 0;
+		return query(ls, x) + query(rs, x);
+	}
+}t;
+signed main() {
+//	freopen(File".in", "r", stdin);
+//	freopen(File".out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i].a >> a[i].b;
+	sort(a + 1, a + n + 1);
+	long long tot = 0;
+	for (int i = 1; i <= n; ++i) {
+		int k = -1, cnt = 0, tt = 0;
+		long long d = 0;
+		for (int j = 1; j <= n; ++j) {
+			if (vis[j]) {
+				if (j > 1 && a[j].b != a[j - 1].b) cnt += tt, tt = 0;
+				tt++;
+				continue;
+			}
+			if (a[j].b != a[j - 1].b) cnt += tt, tt = 0;
+			int l = s.size() + 1;
+			long long dt = t.query(1, 1, n, a[j].b);
+			dt += (l - cnt) * a[j].b + a[j].a - a[j].b;
+			//cerr << (l - cnt) << ' ' << j << ' ' << dt << endl;
+			if (k == -1 || dt < d) {
+				k = j;
+				d = dt;
+				continue;
+			}
+		}
+		vis[k] = 1;
+		s.insert(a[k].b);
+		t.set(1, 1, n, k, a[k].b);
+		tot += a[k].a - a[k].b;
+		long long ans = tot;
+		int j = 1;
+		for (auto it = s.rbegin(); it != s.rend(); it++)
+			ans += *it * j,
+			j++;
+		cout << ans << endl;
+		//cerr << ' ' << d << endl;
+	}
+	return 0;
+}
+/*
+9
+3 1
+1 4
+4 3
+1 2
+3 6
+5 1
+9 1
+4 4
+4 7
+*/

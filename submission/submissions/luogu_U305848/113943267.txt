@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 113943267
+//  题目ID: U305848
+#include<bits/stdc++.h>
+#define last a[i-1]
+using namespace std;
+int a[100000000],n,ans,now;
+int main(){
+	ios::sync_with_stdio(false); 
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		cin>>a[i];
+	}
+	for(int i=2;i<=n;i++){
+		if(a[i]==last+1){
+			now++;
+			ans=max(ans,now);
+		}
+		else {
+			now=1;
+		}	
+	}
+	cout<<ans<<endl;
+}

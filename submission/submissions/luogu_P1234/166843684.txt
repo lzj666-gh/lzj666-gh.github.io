@@ -1,0 +1,43 @@
+//  OJ: 洛谷
+//  提交ID: 166843684
+//  题目ID: P1234
+#include<bits/stdc++.h>
+using namespace std;
+char a[1000+10][1000+10];
+int m,n,cnt=0;
+int main()
+{
+	cin>>n>>m;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			cin>>a[i][j];
+		}
+	}
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			if(i>3){
+				if(a[i][j]=='h'&&a[i-1][j]=='e'&&a[i-2][j]=='h'&&a[i-3][j]=='e'){
+					cnt++;
+				}
+			}
+			if(j>3){
+				if(a[i][j]=='h'&&a[i][j-1]=='e'&&a[i][j-2]=='h'&&a[i][j-3]=='e'){
+					cnt++;
+				}
+			}
+			if(n-i>3){
+				if(a[i][j]=='h'&&a[i+1][j]=='e'&&a[i+2][j]=='h'&&a[i+3][j]=='e'){
+					cnt++;
+				}
+			}
+			if(n-j>3){
+				if(a[i][j]=='h'&&a[i][j+1]=='e'&&a[i][j+2]=='h'&&a[i][j+3]=='e'){
+					cnt++;
+				}
+			}
+		}
+	}
+	cout<<cnt<<endl;
+	return 0;
+}
+

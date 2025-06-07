@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 108390064
+//  题目ID: T214855
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,a[2000000+20],d[2000000+20];
+queue<int> b,c;
+int main(){
+    scanf("%d%d",&n,&m);
+    for(int i=1;i<=n;++i) {
+        scanf("%d",&a[i]);
+        while(!b.empty()&&b.back()>=a[i]){
+            b.pop();
+            c.pop();
+        }
+        b.push(a[i]);
+        c.push(i);
+        while(c.front()<i-m+1) {
+            b.pop();
+            c.pop();
+        }
+        if(b.empty()){
+        	d[i]=0;
+		}
+		else{
+			d[i]=b.front();
+		}
+    }
+    for(int i=0;i<n;i++){
+    	printf("%d\n",d[i]);
+	}
+    return 0;
+}

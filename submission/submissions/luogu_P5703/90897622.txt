@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 90897622
+//  题目ID: P5703
+#include<iostream>
+using namespace std;
+int main() {
+    int t, n;
+    //每个人的苹果数量 和 学生数量
+    cin >> t >> n;
+    cout << t * n << endl;
+    return 0;
+}

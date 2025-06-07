@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 94549990
+//  题目ID: T66197
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int n,l=1;cin>>n;
+	if(n<3){
+		cout<<0;
+		return 0;
+	}
+	else{
+		for(int i=n;i>=n-2;i--){
+			l*=n;
+		}
+		cout<<l;
+	}
+
+	return 0;
+}
+

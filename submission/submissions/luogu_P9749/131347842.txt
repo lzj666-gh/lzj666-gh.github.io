@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 131347842
+//  题目ID: P9749
+#include<bits/stdc++.h>
+#define inf 0x3f3f3f3f;
+using namespace std;
+inline int min(const int &a,const int &b){return a<b?a:b;}
+int n,v[100000+10],a[100000+10],d,k;
+int nw=0x3f3f3f3f;
+long long ans;
+int main(){
+	ios::sync_with_stdio(false);
+//	freopen("road.in","r",stdin);
+//	freopen("road.out","w",stdout);
+	cin>>n>>d;
+	for(int i=2;i<=n;++i) cin>>v[i];
+	for(int i=1;i<=n;++i) cin>>a[i];
+	nw=a[1];
+	for(int i=2;i<=n;++i){
+		int tmp=ceil((v[i]-k)*1.0/d);
+		k=tmp*d-(v[i]-k);
+		ans+=nw*tmp;
+		nw=min(nw,a[i]);
+	}
+	cout<<ans<<endl;
+	return 0;
+}
+/*
+5 4
+10 10 10 10
+9 8 9 6 5
+*/

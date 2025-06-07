@@ -1,0 +1,64 @@
+//  OJ: 洛谷
+//  提交ID: 116613364
+//  题目ID: T347078
+#include<bits/stdc++.h>
+#define maxn 100000+10
+using namespace std;
+struct Edge{
+	int v,w,next;
+}edge[maxn];
+int dis[maxn],head[maxn],top,n,m,cnt[maxn];
+bool vis[maxn];
+int l[10000][10000];
+void spfa(){
+	queue<int>q;
+	dis[1]=0;
+	q.push(1);
+	while(!q.empty()){
+		int now=q.front();
+		q.pop();
+		vis[now]=false;
+		for(int i=head[now];i;i=edge[i].next){
+			int to=edge[i].v;
+			if(cnt[to]>=n){
+				cout<<"Forever love"<<endl;
+				return;
+			}
+			if(dis[to]>dis[now]+edge[i].w){
+				dis[to]=dis[now]+edge[i].w;
+				if(!vis[to]){
+					vis[to]=true;
+					q.push(to);
+					cnt[to]++;
+					
+				}
+			}
+		}
+	}
+	for(int k=1;k<=n;k++){
+		dis[n]=min(dis[n],l[1][k]+l[k][n]);
+	}
+	cout<<dis[n]<<endl;
+	return;
+}
+void add(int u,int v,int w){
+	l[u][v]=w;
+	edge[++top].v=v;
+	edge[top].w=w;
+	edge[top].next=head[u];
+	head[u]=top;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	memset(dis,0x3f,sizeof dis);
+	top=0;
+	cin>>n>>m;
+	for(int i=1;i<=n;i++) for(int j=1;j<=n;j++) l[i][j]=0x3f3f3f3f;
+	for(int i=1;i<=m;i++){
+		int x,y,z;
+		cin>>x>>y>>z;
+		add(x,y,-z);
+	}
+	spfa();
+    return 0;
+}

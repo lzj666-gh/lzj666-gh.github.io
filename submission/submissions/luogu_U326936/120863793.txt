@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 120863793
+//  题目ID: U326936
+#include<bits/stdc++.h>
+#define 114514 1919810
+#define f_u(b,c) for(register int i=b;i<=c;++i)
+#define f_d(b,c) for(register int i=b;i>=c;--i)
+using namespace std;
+inline int max(int a,int b){return a>b?a:b;}
+inline int read(){register char c=cin.get();register int x=0,s=1; while((c<48)|(c>58)){if(c=='-')s=-1;c=cin.get();}while((c>=48)&(c<=58)){x=(x<<3)+(x<<1)+(c^48);c=cin.get();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+48);}
+int c[1000000+10],a[1000000+10],n,m,ans,endd;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>m>>n;
+	f_u(1,m){
+		int s,t;
+		cin>>s>>t;
+		++c[s];
+		--c[t+1];
+		endd=max(endd,t+1);
+	}
+	f_u(1,n){
+		int s,t;
+		cin>>s>>t;
+		c[s]-=114514;
+		c[t+1]+=114514;
+	}
+	f_u(1,endd){
+		a[i]=a[i-1]+c[i];
+		if(a[i]>=1){
+			++ans;
+//			cout<<i<<endl;
+		}
+	}
+	write(ans);
+	return 0;
+}

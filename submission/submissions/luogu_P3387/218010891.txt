@@ -1,0 +1,78 @@
+//  OJ: 洛谷
+//  提交ID: 218010891
+//  题目ID: P3387
+#include<bits/stdc++.h>
+#define int long long 
+using namespace std;
+constexpr int N = 1e4 + 10, M = 2e5 + 10;
+struct Edge {
+	int u, v, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { u,v,head[u] };
+	head[u] = idx;
+}
+namespace Main {
+	struct Edge {
+		int v, nxt;
+	}edge[M];
+	int head[N], idx, a[N], r[N];
+	void add(int u, int v) {
+		edge[++idx] = { v, head[u] };
+		head[u] = idx;
+		r[v]++;
+	}
+	int n, dis[N];
+	void main() {
+		queue<int>q;
+		for (int i = 1; i <= n; ++i) if (!r[i]) q.push(i);
+		while (!q.empty()) {
+			int now = q.front(); q.pop();
+			dis[now] += a[now];
+			for (int i = head[now]; i; i = edge[i].nxt) {
+				dis[edge[i].v] = max(dis[edge[i].v], dis[now]);
+				if (!--r[edge[i].v])
+					q.push(edge[i].v);
+			}
+		}
+		int ans = 0;
+		for (int i = 1; i <= n; ++i) ans = max(ans, dis[i]);
+		cout << ans << endl;
+	}
+}
+int scc[N], dfn[N], low[N], idk;
+void Tarjan(int x) {
+	static int idx;
+	static stack<int>st;
+	low[x] = dfn[x] = ++idx;
+	st.push(x);
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (!dfn[edge[i].v])
+			Tarjan(edge[i].v),
+			low[x] = min(low[x], low[edge[i].v]);
+		else if (!scc[edge[i].v])
+			low[x] = min(low[x], dfn[edge[i].v]);
+	if (low[x] == dfn[x]) {
+		scc[x] = ++idk;
+		while (st.top() ^ x) scc[st.top()] = idk, st.pop();
+		st.pop();
+	}
+}
+int n, m, a[N];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = 1, u, v; i <= m; ++i) cin >> u >> v, add(u, v);
+	for (int i = 1; i <= n; ++i)
+		if (!dfn[i])
+			Tarjan(i);
+	for (int i = 1; i <= n; ++i) Main::a[scc[i]] += a[i];
+	for (int i = 1; i <= m; ++i)
+		if (scc[edge[i].u] ^ scc[edge[i].v])
+			Main::add(scc[edge[i].u], scc[edge[i].v]);
+	Main::n = idk;
+	Main::main();
+	return 0;
+}

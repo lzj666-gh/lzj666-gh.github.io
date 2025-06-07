@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 175032938
+//  题目ID: T371497
+#include<bits/stdc++.h>
+using namespace std;
+int a[1000000 + 5], b[1000000 + 5], c[1000000 + 5], tot, topb, top;
+int main() {
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		int n;
+		cin >> n;
+		tot = 0, topb = 1, top = 0;
+		for (int i = 1; i <= n; i++) {
+			string s;
+			cin >> s;
+			if (s != "nan") a[i] = stoi(s), b[++tot] = a[i];
+			else a[i] = -1;
+		}
+		sort(b + 1, b + tot + 1);
+		b[tot + 1] = 1e9 + 7;
+		for (int i = 1; i <= n; i++) {
+			if (a[i] == -1) c[++top] = -1;
+			else {
+				if (b[topb] > a[i]) continue;
+				while (b[topb] < a[i]) c[++top] = b[topb++];
+				c[++top] = b[topb++];
+			}
+		}
+		for (int i = 1; i <= n; i++) {
+			if (~c[i]) cout << c[i] << ' ';
+			else cout << "nan ";
+		}
+		cout << endl;
+	}
+}

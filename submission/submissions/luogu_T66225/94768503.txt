@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 94768503
+//  题目ID: T66225
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n;cin>>n;
+	for(int i=n;i>=1;i--){
+		for(int c=1;c<=i;c++){
+			cout<<"*";
+		}
+		cout<<endl;
+	}
+
+	return 0;
+}

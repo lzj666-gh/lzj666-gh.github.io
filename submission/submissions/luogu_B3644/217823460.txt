@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 217823460
+//  题目ID: B3644
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 100 + 10, M = 20000 + 10;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, rd[N];
+signed main(){
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		int v;
+		while (cin >> v, v) add(i, v), rd[v]++;
+	}
+	queue<int>q;
+	for (int i = 1; i <= n; ++i) if (!rd[i]) q.push(i);
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		cout << now << ' ';
+		for (int i = head[now]; i; i = edge[i].nxt)
+			if (!--rd[edge[i].v])
+				q.push(edge[i].v);
+	}
+	return 0;
+}

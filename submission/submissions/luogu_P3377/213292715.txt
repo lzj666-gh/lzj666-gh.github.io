@@ -1,0 +1,60 @@
+//  OJ: 洛谷
+//  提交ID: 213292715
+//  题目ID: P3377
+#include <bits/stdc++.h>
+#include <ext/pb_ds/priority_queue.hpp> 
+#define int long long 
+using namespace std;
+struct Node {
+	int x, idx;
+	Node(int x = 0, int idx = 0) : x(x), idx(idx) {}
+};
+struct Comp {
+	bool operator()(const Node& a, const Node& b) {
+		return (a.x != b.x) ? (a.x > b.x) : (a.idx > b.idx);
+	}
+};
+vector<__gnu_pbds::priority_queue<Node, Comp, __gnu_pbds::pairing_heap_tag>> v;
+int fa[100010];
+bool del[100010];
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+signed main() {
+	ios::sync_with_stdio(false), cin.tie(0);
+	int n, m;
+	cin >> n >> m;
+	v.resize(n + 1);
+	for (int i = 1; i <= n; i++) {
+		int x;
+		cin >> x;
+		v[i].push(Node(x, i));
+		fa[i] = i;
+	}
+	while (m--) {
+		int opt, x, y;
+		cin >> opt >> x;
+		if (opt == 1) {
+			cin >> y;
+			if (del[x] || del[y] || find(x) == find(y)) continue;
+			x = find(x), y = find(y);
+			if (v[x].size() < v[y].size()) swap(x, y);
+			v[x].join(v[y]);
+			fa[y] = x;
+		}
+		else {
+			if (del[x]) {
+				cout << "-1\n";
+				continue;
+			}
+			x = find(x);
+			if (v[x].empty()) {
+				cout << "-1\n";
+				continue;
+			}
+			Node top = v[x].top();
+			cout << top.x << '\n';
+			del[top.idx] = true;
+			v[x].pop();
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 108276228
+//  题目ID: P1016
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn=100000+10;
+struct node{
+	double p,c;
+}qwe[maxn];
+double d1,c,d2,p,maxa,lis[maxn],op[maxn],ans,d,cnt;
+int n,head,tail;
+int main()
+{
+	scanf("%lf%lf%lf%lf",&d1,&c,&d2,&p);
+	scanf("%d",&n);
+	maxa=c*d2;
+	for(int i=1;i<=n;i++){
+		scanf("%lf%lf",&lis[i],&op[i]);
+		if(lis[i]-lis[i-1]>maxa) { 
+			printf("No Solution\n");return 0;
+		}
+	}
+	lis[n+1]=d1;
+	head=tail=0;
+	qwe[++tail].p=p;qwe[tail].c=c;
+	for(int i=1;i<=n+1;i++) {
+		cnt=0; 
+		d=lis[i]-lis[i-1];
+		while(qwe[head].c*d2<d){
+			ans+=qwe[head].c*qwe[head].p;
+			d-=qwe[head].c*d2;
+			cnt+=qwe[head].c;
+			head++;
+		}
+		ans+=qwe[head].p*d/d2;
+		qwe[head].c-=(d/d2);
+		cnt+=(d/d2);
+		if(i==n+1) break;
+		while(qwe[tail].p>op[i]){
+			cnt+=qwe[tail--].c;
+		}
+		qwe[++tail].p=op[i];qwe[tail].c=cnt;
+	}
+	printf("%.2f\n",ans);
+	return 0;
+} 

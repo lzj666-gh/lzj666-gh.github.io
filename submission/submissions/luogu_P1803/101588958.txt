@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 101588958
+//  题目ID: P1803
+#include<bits/stdc++.h>
+using namespace std;
+struct ti{
+	int s,o;
+}a[1000+10];
+int n,cnt=0,over=0;
+bool ikun(ti a1,ti a2){
+	return a1.o<a2.o;
+}
+int main(){
+	scanf("%d",&n);
+	for(int i=0;i<n;i++){
+		scanf("%d%d",&a[i].s,&a[i].o);
+	}
+	sort(&a[0],&a[n],ikun);
+	for(int i=0;i<n;i++){
+		if(a[i].s>=over){
+			cnt++;
+			over=a[i].o;
+		}
+	}
+	cout<<cnt<<endl;
+	return 0;
+}

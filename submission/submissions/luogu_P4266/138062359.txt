@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 138062359
+//  题目ID: P4266
+#include<bits/stdc++.h>
+using namespace std;
+int l,n,rf,rb;
+int main(){
+//	freopen("rest.in","r",stdin);
+//	freopen("rest.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>l>>n>>rf>>rb;
+	for(int i=1,x,y;i<=n;++i){
+		cin>>x>>y;
+		if(i==n){
+			cout<<y*abs(x/rf-x/rb);
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 137278562
+//  题目ID: P2201
+#include<bits/stdc++.h>
+using namespace std;
+vector<int>l,r,sum,summax;
+int q,opt;char oopt;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>q;
+	while(q--){
+		cin>>oopt;
+		switch(oopt){
+			case 'I':{
+				cin>>opt;
+				l.push_back(opt);
+				if(sum.size()) sum.push_back(sum.back()+opt),summax.push_back(max(summax.back(),sum.back()));
+				else sum.push_back(opt),summax.push_back(opt);
+				break;
+			}
+			case 'D':{
+				if(l.size()) l.pop_back(),sum.pop_back(),summax.pop_back();
+				break;
+			}
+			case 'L':{
+				if(l.size()) r.push_back(l.back()),l.pop_back(),sum.pop_back(),summax.pop_back();
+				break;
+			}
+			case 'R':{
+				if(r.size()){
+					l.push_back(r.back());
+					opt=l.back();
+					if(sum.size()) sum.push_back(sum.back()+opt),summax.push_back(max(summax.back(),sum.back()));
+					else sum.push_back(opt),summax.push_back(opt);
+					r.pop_back();
+				}
+				break;
+			}
+			case 'Q':{
+				cin>>opt;
+				cout<<summax[opt-1]<<endl;
+				break;
+			}
+		}
+	}
+	return 0;
+}
+/*
+ ______      ______  __  __      ______   _____   ______     
+/\__  _\    /\  _  \/\ \/\ \    /\__  _\ /\  __`\/\__  _\    
+\/_/\ \/    \ \ \-\ \ \ \/ /   \/_/\ \/ \ \ \/\ \/_/\ \/    
+   \ \ \     \ \  __ \ \ / <       \ \ \  \ \ \ \ \ \ \ \    
+    \_\ \__   \ \ \/\ \ \ \\ \      \_\ \__\ \ \_\ \ \_\ \__ 
+    /\_____\   \ \_\ \_\ \_\ \_\    /\_____\\ \_____\/\_____\
+    \/_____/    \/_/\/_/\/_/\/_/    \/_____/ \/_____/\/_____/
+*/

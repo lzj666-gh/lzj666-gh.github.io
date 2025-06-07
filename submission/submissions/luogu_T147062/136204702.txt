@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 136204702
+//  题目ID: T147062
+#include<bits/stdc++.h>
+using namespace std;
+long long a[500005],b[500005],t;
+int n,m;
+long long check(int l,int r){
+    long long sum=0;int top=0;
+    for(int i=l;i<r;i++){
+	    b[++top]=a[i];
+	}
+	sort(&b[1],&b[top+1]);
+	for(int i=1;i<=top&&i<=m;i++,top--){
+		sum+=(b[i]-b[top-1])*(b[i]-b[top-1]);
+	}
+	return sum;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+    int T;
+    cin>>T;
+    while(T--){
+	    int ans=0;
+	    cin>>n>>m>>t;
+	    for(int i=1;i<=n;i++) cin>>a[i];
+	    int l=1,r=1;
+	    while(r<=n){
+			int p=1;
+			while(p){
+				if(r+p<=n+1&&check(l,r+p)<=t){
+					r+=p;
+					p<<=1;
+				}
+				else p=p>>1;
+			}
+			l=++r;
+			ans++;
+		}
+	    cout<<ans<<endl;
+	}
+}

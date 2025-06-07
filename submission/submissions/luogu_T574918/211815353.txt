@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 211815353
+//  题目ID: T574918
+#include<bits/stdc++.h>
+using namespace std;
+int op;
+int main(){
+    cin>>op;
+if(op==1)printf("VerY51mpl3RSA\n");
+if(op==2)printf("P0lL4rD_RhO_is_OK\n");
+if(op==3)printf("FeRmat_i5_AWeS0m3\n");
+if(op==4)printf("GCD_solves_th1S_Quiz\n");
+if(op==5)printf("E_1s_n0t_useLE55\n");
+if(op==6)printf("D0_Not_S4y_it_2_T1m3s\n");
+if(op==7)printf("3_t1m35_is_Al50_wE4k\n");
+if(op==8)printf("AtT3nT10n_1s_4LL_U_need\n");
+if(op==9)printf("THX_FOR_YOUR_PLAYING\n");
+	return 0;
+} 

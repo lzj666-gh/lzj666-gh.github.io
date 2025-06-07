@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 217917752
+//  题目ID: B3874
+#include<bits/stdc++.h>
+using namespace std;
+int a[30010],n;
+int main(){
+	cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>a[i];
+	}
+	int cnt=0;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n-i-1;j++){
+			if(a[j]>a[j+1]){
+				cnt++;
+				swap(a[j],a[j+1]);
+			}
+		}
+	}
+	cout<<cnt;
+	return 0;
+}

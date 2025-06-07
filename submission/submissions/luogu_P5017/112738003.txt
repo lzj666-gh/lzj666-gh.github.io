@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 112738003
+//  题目ID: P5017
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,maxt,t[114514],cnt[114514],s[114514],dp[114514],val,x;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	if(m==1){
+		cout<<0<<endl;
+		return 0;
+	}
+	for(int i=1;i<=n;i++){
+		cin>>x;
+		maxt=max(maxt,x);
+		t[x]++;
+		s[x]+=x;
+	}
+	maxt+=m-1;
+	for(int i=1;i<=maxt;i++){
+		t[i]=t[i-1]+t[i];
+		s[i]=s[i-1]+s[i];
+	}
+	for(int i=1;i<=maxt;i++){
+		if(i>=m&&t[i-m]==t[i]){
+			dp[i]=dp[i-m];
+			continue;
+		}
+		dp[i]=t[i]*i-s[i];
+		for(int j=max(i-2*m,0);j<=i-m;j++){
+			val=(t[i]-t[j])*i-(s[i]-s[j]);
+			dp[i]=min(dp[i],dp[j]+val);
+		}
+	}
+	cout<<dp[n];
+	return 0;
+}

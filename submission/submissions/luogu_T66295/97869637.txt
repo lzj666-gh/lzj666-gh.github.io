@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 97869637
+//  题目ID: T66295
+#include<bits/stdc++.h>
+using namespace std;
+long int a[1000005];
+int main()
+{
+	int n,d=1;cin>>n;
+	for(int i=1;i<=n;i++){
+		cin>>a[i];
+	}
+	int chang=1;
+	for(int i=2;i<=n;i++){
+		if(a[i]>a[i-1]) chang+=1;
+		else{
+			if(d>chang){
+				d=d;
+			}
+			else{
+				d=chang;
+			}
+			chang=1;
+		}
+	}
+	cout<<chang;
+	return 0;
+}
+

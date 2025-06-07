@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 114217900
+//  题目ID: P1679
+#include<bits/stdc++.h>
+using namespace std;
+int n,ans=INT_MAX-114514;
+void dfs(int cnt,int k,int shang){
+	if(k>ans||cnt>n) return;
+	if(cnt==n){
+		if(ans>k) ans=k;
+		return;
+	}
+	int i=shang;
+	while(i*i*i*i<=n-cnt) i++;
+	for(;i>=shang;i--) dfs(cnt+i*i*i*i,k+1,i);
+}
+int main(){
+	cin>>n;
+	dfs(0,0,1);
+	cout<<ans<<endl;
+	return 0;
+}

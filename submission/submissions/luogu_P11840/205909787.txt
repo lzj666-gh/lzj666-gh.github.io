@@ -1,0 +1,43 @@
+//  OJ: 洛谷
+//  提交ID: 205909787
+//  题目ID: P11840
+﻿#include<bits/stdc++.h>
+using namespace std;
+int n;
+struct Edge {
+	int v, nxt;
+}edge[1000000 + 10];
+int head[1000000 + 10], p[1000000 + 10], idx, dep[1000000 + 10];
+bool vis[1000000 + 10];
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+vector<int>v;
+int query(int k) {
+	while (!vis[p[k]]) vis[k] = 1, k = p[k];
+	vis[k] = 1;
+	return dep[k];
+}
+void dfs(int x) {
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		dep[edge[i].v] = dep[x] + 1;
+		dfs(edge[i].v);
+	}
+}
+vector<int>qry;
+vector<int>ans;
+int main() {
+	cin.tie(nullptr)->sync_with_stdio(false);
+	//p[0] = -1;
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> p[i], add(p[i], i);
+	dfs(0);
+	int k;
+	while (cin >> k) qry.push_back(k);
+	reverse(qry.begin(), qry.end());
+	for (auto& t : qry) ans.push_back(query(t));
+	reverse(ans.begin(), ans.end());
+	for (auto& t : ans) cout << t << endl;
+	return 0;
+}

@@ -1,0 +1,119 @@
+//  OJ: 洛谷
+//  提交ID: 127281299
+//  题目ID: P6705
+#include<bits/stdc++.h>
+using namespace std;
+struct pii {
+	int first,second;
+	friend ostream& operator << (ostream&out,pii p) {
+		out<<'{'<<p.first<<' '<<p.second<<'}';
+		return out;
+	}
+};
+inline int max(const int &a,const int &b) {
+	return a>b?a:b;
+}
+inline int min(const int &a,const int &b) {
+	return a<b?a:b;
+}
+const pii c[9]= {{1,1},{1,0},{1,-1},{0,1},{0,0},{0,-1},{-1,1},{-1,0},{-1,-1}};
+int read() {
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c<'0'||c>'9') {
+		if(c=='-') s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0') {
+		x=(x<<1)+(x<<3)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+}
+inline void write(int x) {
+	if(x<0) {
+		x=~x+1;
+		putchar('-');
+	} else if(!x) return;
+	write(x/10);
+	putchar(x%10+48);                       
+}
+int h[250+10][250+10];
+char t[250+10][250+10];
+int n,cntk;
+int maxtop,mintop=0x3f3f3f3f;
+pii p;
+int maxh,minh=0x3f3f3f3f;
+int bfs(int lo,int hi) {
+	if(h[p.first][p.second]>hi||h[p.first][p.second]<lo) return 0;
+//	cout<<endl<<"from "<<hi<<" to "<<lo<<endl;
+	int ret=0;
+	array<array<bool,50+10>,50+10>vis;
+	for(int i=1; i<=n; ++i) vis[i].fill(false);
+	queue<pii>q;
+	q.push(p);
+//	cout<<"in"<<p<<endl;
+	while(!q.empty()) {
+		pii top=q.front();
+		q.pop();
+//		cout<<"out"<<top<<endl;
+		if(vis[top.first][top.second]) continue;
+		vis[top.first][top.second]=true;
+		if(t[top.first][top.second]=='K') ++ret;
+		if(ret==cntk) {
+//			cout<<"end "<<ret<<endl;
+			return ret;
+		}
+		for(pii ch:c) {
+			pii now= {top.first+ch.first,top.second+ch.second};
+//			cout<<"try"<<now<<endl;
+			if(h[now.first][now.second]<=hi&&h[now.first][now.second]>=lo) {
+				q.push(now);
+//				cout<<"in"<<now<<endl;
+			}
+		}
+	}
+//	getchar();
+//	cout<<"end "<<ret<<endl;
+	return ret;
+}
+int main() {
+//	freopen("postar.in","r",stdin);
+//	freopen("postar.out","w",stdout);
+	n=read();
+	for(int i=1; i<=n; ++i) {
+		for(int j=1; j<=n; ++j) {
+			t[i][j]=getchar();
+			if(t[i][j]=='P') p= {i,j};
+			if(t[i][j]=='K') ++cntk;
+		}
+		getchar();
+	}
+	for(int i=1; i<=n; ++i) {
+		for(int j=1; j<=n; ++j) {
+			h[i][j]=read();
+			maxh=max(maxh,h[i][j]);
+			minh=min(minh,h[i][j]);
+			if(t[i][j]=='K'||t[i][j]=='P') mintop=min(mintop,h[i][j]),maxtop=max(maxtop,h[i][j]);
+		}
+	}
+	int ans=0x3f3f3f3f;
+	for(int ii=1;ii<=n;++ii) for(int jj=1;jj<=n;++jj){
+		int i=h[ii][jj];
+		int l=i,r=maxh;
+		while(l<r) {
+			int mid=l+r>>1;
+			if(bfs(i,mid)==cntk) r=mid;
+			else l=mid+1;
+		}
+		if(l!=maxh) ans=min(ans,l-i);
+		if(ans==0){
+			putchar('0');
+			return 0;
+		}
+//		cerr<<i<<':'<<ans<<' '<<l<<endl;
+	}
+	if(ans) write(ans);
+	else putchar('0');
+	return 0;
+}

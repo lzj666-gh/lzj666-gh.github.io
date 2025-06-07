@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 114642324
+//  题目ID: P1455
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios::sync_with_stdio(false);
+	srand(time(0));
+    cout<<rand()%10<<endl;
+}

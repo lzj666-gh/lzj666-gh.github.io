@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 101815642
+//  题目ID: T261052
+#include<bits/stdc++.h>
+using namespace std;
+long long  x=0,y=0;
+char k[100000+10];
+int main() {
+	int n;
+	cin>>n;
+	getchar();
+	fgets(k,100000+10,stdin);
+	for(int i=0; i<n; i++) {
+		if(k[i]=='W'){
+			y++;
+		}
+		else if(k[i]=='A'){
+			x--;
+		}
+		else if(k[i]=='S'){
+			y--;
+		}
+		else if(k[i]=='D'){
+			x++;
+		}
+	}
+	cout<<x<<" "<<y<<endl;
+	return 0;
+}

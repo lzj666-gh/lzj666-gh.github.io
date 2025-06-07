@@ -1,0 +1,165 @@
+//  OJ: 洛谷
+//  提交ID: 218920907
+//  题目ID: T614062
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cstring>
+#include <climits>
+#include <algorithm>
+#include <unordered_map>
+using namespace std;
+
+typedef long long ll;
+const ll INF = 1e18;
+
+struct State {
+    int u;          // 当前节点
+    int s;          // 当前昼夜状态 (0:永昼, 1:永夜)
+    int b;          // 宝珠开关状态 (位掩码)
+    ll dist;        // 当前距离
+    State(int u, int s, int b, ll dist) : u(u), s(s), b(b), dist(dist) {}
+    bool operator>(const State& other) const {
+        return dist > other.dist;
+    }
+};
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int m, n1, n2, t, o_val;
+    cin >> m >> n1 >> n2 >> t >> o_val;
+
+    // 读取奇迹宝典位置
+    vector<int> books(m + 1, 0);
+    for (int i = 0; i < t; i++) {
+        int node;
+        cin >> node;
+        books[node] = 1;
+    }
+
+    // 读取奇迹宝珠信息
+    vector<int> node_orb[m + 1];  // 每个节点上的宝珠索引
+    vector<int> control[m + 1];   // 控制每个节点的宝珠索引
+    vector<pair<int, int>> orbs;
+
+    for (int i = 0; i < o_val; i++) {
+        int a, k;
+        cin >> a >> k;
+        orbs.push_back({a, k});
+        node_orb[a].push_back(i);
+        control[k].push_back(i);
+    }
+
+    // 计算每个节点的控制掩码
+    vector<int> mask(m + 1, 0);
+    for (int i = 1; i <= m; i++) {
+        for (int orb_id : control[i]) {
+            mask[i] |= (1 << orb_id);
+        }
+    }
+
+    // 构建图
+    vector<tuple<int, int, int>> graph[m + 1]; // (v, w, type)
+    for (int i = 0; i < n1; i++) {
+        int w, u, v;
+        cin >> w >> u >> v;
+        graph[u].push_back({v, w, 0}); // 永昼边
+    }
+    for (int i = 0; i < n2; i++) {
+        int w, u, v;
+        cin >> w >> u >> v;
+        graph[u].push_back({v, w, 1}); // 永夜边
+    }
+
+    // 初始化距离数组
+    unordered_map<int, unordered_map<int, unordered_map<int, ll>>> dist;
+    for (int i = 1; i <= m; i++) {
+        for (int s = 0; s < 2; s++) {
+            for (int b = 0; b < (1 << o_val); b++) {
+                dist[i][s][b] = INF;
+            }
+        }
+    }
+
+    // 优先队列
+    priority_queue<State, vector<State>, greater<State>> pq;
+    dist[1][0][0] = 0;
+    pq.push(State(1, 0, 0, 0));
+
+    while (!pq.empty()) {
+        State state = pq.top();
+        pq.pop();
+        int u = state.u, s = state.s, b = state.b;
+        ll d = state.dist;
+
+        // 检查是否已找到更优路径
+        if (d != dist[u][s][b]) continue;
+
+        // 到达终点且为永夜状态
+        if (u == m && s == 1) {
+            cout << d << endl;
+            return 0;
+        }
+
+        // 计算当前节点控制效果
+        int c0 = __builtin_popcount(b & mask[u]) % 2;
+        int s_eff = s ^ c0;
+
+        // 处理操作：不切换昼夜
+        for (auto& edge : graph[u]) {
+            int v = get<0>(edge), w = get<1>(edge), type = get<2>(edge);
+            if (type != s_eff) continue;
+            
+            // 枚举当前节点宝珠的翻转组合
+            int k = node_orb[u].size();
+            for (int flip = 0; flip < (1 << k); flip++) {
+                int new_b = b;
+                for (int j = 0; j < k; j++) {
+                    if (flip & (1 << j)) {
+                        int orb_id = node_orb[u][j];
+                        new_b ^= (1 << orb_id);
+                    }
+                }
+                
+                // 更新状态
+                if (d + w < dist[v][s][new_b]) {
+                    dist[v][s][new_b] = d + w;
+                    pq.push(State(v, s, new_b, d + w));
+                }
+            }
+        }
+
+        // 处理操作：切换昼夜（如果有宝典）
+        if (books[u]) {
+            int new_s = 1 - s;
+            for (auto& edge : graph[u]) {
+                int v = get<0>(edge), w = get<1>(edge), type = get<2>(edge);
+                if (type != s_eff) continue;
+                
+                // 枚举当前节点宝珠的翻转组合
+                int k = node_orb[u].size();
+                for (int flip = 0; flip < (1 << k); flip++) {
+                    int new_b = b;
+                    for (int j = 0; j < k; j++) {
+                        if (flip & (1 << j)) {
+                            int orb_id = node_orb[u][j];
+                            new_b ^= (1 << orb_id);
+                        }
+                    }
+                    
+                    // 更新状态
+                    if (d + w < dist[v][new_s][new_b]) {
+                        dist[v][new_s][new_b] = d + w;
+                        pq.push(State(v, new_s, new_b, d + w));
+                    }
+                }
+            }
+        }
+    }
+
+    // 无法到达终点
+    cout << -1 << endl;
+    return 0;
+}

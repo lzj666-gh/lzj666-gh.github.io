@@ -1,0 +1,86 @@
+//  OJ: 洛谷
+//  提交ID: 165065610
+//  题目ID: P4644
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, e;
+struct Cow {
+	int l, r, w;
+	friend bool operator<(const Cow& a, const Cow& b) {
+		return a.r < b.r;
+	}
+}a[10000 + 10];
+int dp[87000];
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) ((p << 1) + 1)
+	struct point {
+		int l, r, ans;
+		point() :l(0), r(0), ans(0x3f3f3f3f) {}
+		point(int ll, int rr, int sans) :l(ll), r(rr), ans(sans) {}
+	}tree[4 * 100000 + 10];
+	void pushup(int p) {
+		tree[p].ans = min(tree[lc(p)].ans, tree[rc(p)].ans);
+	}
+	void add(int p, int q, int k) {
+		if (tree[p].l > q || tree[p].r <= q) return;
+		if (tree[p].l == tree[p].r - 1) {
+			tree[p].ans = k;
+			return;
+		}
+		add(lc(p), q, k);
+		add(rc(p), q, k);
+		pushup(p);
+	}
+	int query(int p, int l, int r) {
+//		cout << "{begin query" << l << " to " << r << " on point " << p << " with " << tree[p].l << " to " << tree[p].r << ":\n";
+		if (tree[p].l >= r || tree[p].r <= l) {
+//			cout << "out of range!}\n";
+			return 0x3f3f3f3f;
+		}
+		if (tree[p].l == tree[p].r - 1) {
+//			cout << "in leaf point!" << tree[p].ans << "}\n";
+			return tree[p].ans;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) {
+//			cout << "all include!" << tree[p].ans << "}\n";
+			return tree[p].ans;
+		}
+		int ans = min(query(lc(p), l, r), query(rc(p), l, r));
+		pushup(p);
+//		cout << "normal return " << ans << " }\n";
+		return ans;
+	}
+	void build(int p, int l, int r) {
+		tree[p].l = l, tree[p].r = r;
+		if (l == r - 1) {
+			tree[p] = { l,r,0x3f3f3f3f };
+			return;
+		}
+		build(lc(p), l, l + r >> 1);
+		build(rc(p), l + r >> 1, r);
+		pushup(p);
+	}
+}t;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> e;
+	m += 2; e += 2;
+	for (int i = 1; i <= n; ++i)
+		cin >> a[i].l >> a[i].r >> a[i].w, a[i].l += 2, a[i].r += 2;
+	sort(a + 1, a + n + 1);
+	memset(dp, 0x3f, sizeof dp);
+	dp[m] = 0;
+	t.build(1, 1, a[n].r);
+	for (int i = 1; i <= n; ++i) {
+		dp[a[i].r] = min(dp[a[i].r], t.query(1, a[i].l - 1, a[i].r + 1) + a[i].w);
+		t.add(1, a[i].r, dp[a[i].r]);
+	}
+	for (int i = a[n].r; i <= e; ++i) 
+		if (dp[i] ^ 0x3f3f3f3f) {
+			cout << dp[i] << endl; 
+			return 0;
+		}
+	cout << -1 << endl;
+	return 0;
+}

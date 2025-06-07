@@ -1,0 +1,53 @@
+//  OJ: 洛谷
+//  提交ID: 104501790
+//  题目ID: P2078
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,p,q,man=1,woman=1;
+struct py{
+	int x,y;
+}a[20000+10];
+bool b[100000+10]={true,true,false};
+bool cmp(py a1,py a2){
+	if(a1.x==a2.x){
+		return a1.y<a2.y;
+	}
+	return a1.x<a2.x;
+}
+int main(){
+	scanf("%d%d%d%d",&n,&m,&p,&q);
+	for(int i=1;i<=p;i++){
+		scanf("%d%d",&a[i].x,&a[i].y); 
+	}
+	sort(a+1,a+1+p,cmp);
+	for(int i=1;i<=p;i++){
+		if(b[a[i].x]){
+			b[a[i].y]=true;
+			man++;
+		}
+		else if(b[a[i].y]){
+			b[a[i].x]=true;
+			man++;
+		}
+	}
+	memset(b,0,sizeof(b));
+	b[1]=1;
+	for(int i=1;i<=q;i++){
+		scanf("%d%d",&a[i].x,&a[i].y); 
+		a[i].x=abs(a[i].x);
+		a[i].y=abs(a[i].y);
+	}
+	sort(a+1,a+1+q,cmp);
+	for(int i=1;i<=q;i++){
+		if(b[a[i].x]){
+			b[a[i].y]=true;
+			woman++;
+		}
+		else if(b[a[i].y]){
+			b[a[i].x]=true;
+			woman++;
+		}
+	}
+	cout<<min(man,woman);
+	return 0;
+}

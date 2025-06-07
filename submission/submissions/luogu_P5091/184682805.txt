@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 184682805
+//  题目ID: P5091
+#include<bits/stdc++.h>
+using namespace std;
+int read() {
+	int x = 0; char c = getchar();
+	while (c > '9' || c < '0') c = getchar();
+	while (c >= '0' && c <= '9') x = x * 10 + (c ^ 48), c = getchar();
+	return x;
+}
+void print(int x) {
+	if (x < 10) return putchar(x + '0'), void();
+	print(x / 10); putchar(x % 10 + '0');
+}
+int a, m, b;
+int poww(int x, int k) {
+	if (k == 0) return 1;
+	if (k == 1) return x;
+	long long tmp = poww(x, k / 2);
+	tmp *= tmp;
+	tmp %= p;
+	if (k % 2 == 1) return tmp * x % p;
+	else return tmp;
+}
+signed main() {
+	a = read(); m = read();
+	a %= m; int phi = 0;
+	for (int i = 1; i <= m; ++i)
+		if (__gcd(i, m) == 1) 
+			phi++;
+	char c = getchar();
+	while (c > '9' || c < '0') c = getchar();
+	while (c >= '0' && c <= '9') {
+		b = b * 10 + (c ^ 48);
+		c = getchar();
+		b %= phi;
+	}
+	print(poww(a, b));
+	return 0;
+}

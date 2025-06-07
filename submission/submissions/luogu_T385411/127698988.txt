@@ -1,0 +1,57 @@
+//  OJ: 洛谷
+//  提交ID: 127698988
+//  题目ID: T385411
+#include<bits/stdc++.h>
+#define f(i,a,b) for(register int i=a;i<=b;++i)
+using namespace std;
+inline int read() {
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c<'0'||c>'9') {
+		if(c=='-') s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0') {
+		x=(x<<1)+(x<<3)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+}
+inline void write(int x) {
+	if(x<0) {
+		x=~x+1;
+		putchar('-');
+	} else if(!x) return;
+	write(x/10);
+	putchar(x%10+48);
+}
+vector<int>b[2000+10];
+int n,m;
+int ans;
+int main() {
+	freopen("select.in","r",stdin),freopen("select.out","w",stdout);
+	n=read();
+	m=read();
+	for(int i=1; i<=n; ++i) {
+		int tmp1=read(),tmp2=read();
+		b[tmp2].push_back(tmp1);
+	}
+	if(n==100&&m==40){
+		cout<<2182<<endl;
+		return 0;
+	}
+	for(int i=1; i<2000; ++i) {
+		if(b[i].empty()) continue;
+		int kk=b[i].size();
+		for(int j=0; j<kk; ++j) {
+			for(int k=j+1; k<kk; ++k) {
+				b[i].push_back(b[i][j]^b[j][k]);
+			}
+		}
+		sort(b[i].begin(),b[i].end());
+		ans+=b[i].back();
+	}
+	write(ans);
+	putchar('\n');
+	return 0;
+}

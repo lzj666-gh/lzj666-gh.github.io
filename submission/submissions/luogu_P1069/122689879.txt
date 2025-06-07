@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 122689879
+//  题目ID: P1069
+#include<bits/stdc++.h>
+#define f_u(a,b) for(register int i=a;i<=b;++i)
+#define f_d(a,b) for(register int i=a;i>=b;--i)
+#define F_u(a,b) for(register int j=a;j<=b;++j)
+#define F_d(a,b) for(register int j=a;j>=b;--j)
+using namespace std;
+inline int read(){register char c=getchar();register int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=(x<<3)+(x<<1)+(c^48);c=getchar();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+inline int min(int a,int b){return a<b?a:b;}
+inline int max(int a,int b){return a>b?a:b;}
+int n,m1,m2,a[10000],now_min=0x7fffffff,max_mikun;
+int mikun[200];
+int min_(int k){   
+	if((k&1)!=(m1&1)) return 0x7fffffff;
+	int ret=0;
+	int *ikun=new int [k+1];
+	memset(ikun,0,sizeof ikun);
+	for(int i=2;i<=k&&i<=max_mikun;++i){
+		if(k==1) break;
+		while(k%i==0) k/=i,++ikun[i];
+		if(ikun[i]) ret=max(ret,(mikun[i]+ikun[i]-1)/ikun[i]);
+		else if(!ikun[i]&&mikun[i]) return 0x7fffffff;
+	}
+	free(ikun);
+	return ret;
+}
+int main(){
+// 	freopen("cell.in","r",stdin);freopen("cell.out","w",stdout);
+	n=read();m1=read(),m2=read();
+	for(int i=2;i<=m1;++i){
+		max_mikun=i;
+		if(m1==1) break;
+		while(m1%i==0) m1/=i,++mikun[i];
+		mikun[i]*=m2;
+	}
+	f_u(1,n) a[i]=min_(read()),now_min=min(now_min,a[i]);
+	write(now_min==0x7fffffff?-1:now_min);
+	return 0;
+}

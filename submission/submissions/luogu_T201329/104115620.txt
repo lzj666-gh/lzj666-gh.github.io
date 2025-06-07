@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 104115620
+//  题目ID: T201329
+#include<bits/stdc++.h>
+using namespace std;
+int n,x;
+int f(int n){
+	if(n==0) return 1;
+	if(n>0){
+		return f(n-1)%2021*x;
+	}
+}
+int main(){
+	scanf("%d%d",&n,&x);
+	printf("%d",f(n));
+}
+//卷不死你们 

@@ -1,0 +1,15 @@
+//  OJ: 洛谷
+//  提交ID: 140823749
+//  题目ID: P10024
+#include<bits/stdc++.h>
+using namespace std;
+long long l,r;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>l>>r;
+	if(l-r>12) cout<<2;
+	else cout<<1;
+//	if((l/10!=r/10||l%10<=2&&r%10>=3)&&r>=l) cout<<2;
+//	else cout<<1;
+	return 0;
+}

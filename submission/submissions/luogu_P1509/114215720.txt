@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 114215720
+//  题目ID: P1509
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int n,m,r;
+const int kMaxN=100,kMaxM=100,kMaxR=100;
+int rmb[kMaxN+5],rp[kMaxN+5],time[kMaxN+5];
+int dpNum[kMaxM+5][kMaxR+5],dpTime[kMaxM+5][kMaxR+5];
+int main(){
+	cin>>n;
+	for(int i=1;i<=n;++i)cin>>rmb[i]>>rp[i]>>time[i];
+	cin>>m>>r;
+	for(int i=1;i<=n;++i)
+		for(int j=m;j>=rmb[i];--j)
+			for(int k=r;k>=rp[i];--k){
+				if(dpNum[j][k]<dpNum[j-rmb[i]][k-rp[i]]+1){
+					dpNum[j][k]=dpNum[j-rmb[i]][k-rp[i]]+1;
+					dpTime[j][k]=dpTime[j-rmb[i]][k-rp[i]]+time[i];
+				}
+				else if(dpNum[j][k]==dpNum[j-rmb[i]][k-rp[i]]+1)
+					dpTime[j][k]=min(dpTime[j][k],dpTime[j-rmb[i]][k-rp[i]]+time[i]);
+			}
+	cout<<dpTime[m][r]<<endl;
+}

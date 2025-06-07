@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 120709997
+//  题目ID: U263229
+#include<iostream>
+using namespace std;
+int n,m;
+inline int read(){char c=getchar();int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=x*10+c-'0';c=getchar();}return x*s;}
+string s[100000];
+int main(){
+    n=read(),m=read();
+    for(int i=1;i<=n;++i){
+    	int num=read();
+    	cin>>s[num];
+	}
+	for(int i=1;i<=m;++i){
+		int tmp=read();
+		for(char c:s[tmp]) putchar(c=='1'?'#':' ');
+		putchar('\n');
+	}
+    return 0;
+}

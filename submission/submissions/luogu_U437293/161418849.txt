@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 161418849
+//  题目ID: U437293
+#include<bits/stdc++.h>
+#ifdef ONLINE_JUDGE
+#define gcd __gcd
+#endif
+using namespace std;
+long long n, m, a[1000000 + 10], l, r, q[1000000 + 10], p[1000000 + 10], lzj[1000000 + 10];
+inline int read() {
+	int r = 0; char c = getchar();
+	while (c < '0' || c>'9') c = getchar();
+	while (c >= '0' && c <= '9') r = r * 10 + (c ^ 48), c = getchar();
+	return r;
+}
+inline void write(long long x) {
+	if (x > 9) write(x / 10);
+	putchar(x % 10 ^ 48);
+	return;
+}
+signed main() {
+	n = read(); m = read();
+	for (int i = 1; i <= n; ++i) (a[i] = read()), q[i] = q[i - 1] + a[i], p[i] = q[i] * a[i], lzj[i] = lzj[i - 1] + p[i];
+	while (m--) {
+		l = read(), r = read();
+		if (l == r) {
+			puts("0");
+			continue;
+		}
+		long long fz = 0, fm = 0;
+		fz = 1ll * (q[r] - q[l - 1]) * q[r] - (lzj[r] - lzj[l - 1]);
+		fm = (1ll * (l - r) * (l - r) + (r - l)) / 2;
+		int tmp = gcd(fm, fz);
+		if (tmp == fm) write(fz / tmp), putchar(10);
+		else write(fz / tmp), putchar('/'), write(fm / tmp), putchar(10);
+	}
+	return 0;
+}
+//100pts

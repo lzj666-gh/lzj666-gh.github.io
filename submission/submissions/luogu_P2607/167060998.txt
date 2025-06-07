@@ -1,0 +1,61 @@
+//  OJ: 洛谷
+//  提交ID: 167060998
+//  题目ID: P2607
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[1000000 + 10];
+int idx, head[1000000 + 10];
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, d1[1000000 + 10], d2[1000000 + 10], r[1000000 + 10];
+bool vis[1000000 + 10];
+void dfs(int k, int rt) {
+	d1[k] = r[k]; d2[k] = 0;
+	for (int i = head[k]; i; i = edge[i].nxt) {
+		if (edge[i].v == rt) continue;
+		dfs(edge[i].v, rt);
+		d1[k] += d2[edge[i].v];
+		d2[k] += max(d1[edge[i].v], d2[edge[i].v]);
+	}
+}
+void find(int k, int rt, int &d1, int &d2) {
+	vis[k] = 1;
+	for (int i = head[k]; i; i = edge[i].nxt) {
+		if (edge[i].v == rt) {
+			d1 = k;
+			d2 = rt;
+			return;
+		}
+		find(edge[i].v, rt, d1, d2);
+		if (d2 == rt) return;
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1, v; i <= n; ++i){
+		cin >> r[i] >> v; 
+		d1[i] = r[i]; 
+		add(v, i); 
+	}
+	int tot = 0;
+	for (int i = 1; i <= n; ++i) 
+		if (!vis[i]) {
+			int d1 = -1, d2 = -1;
+			find(i, i, d1, d2);
+			dfs(d1, d1);
+			int ans = ::d2[d1];
+			dfs(d2, d2);
+//			cout<<d2<<endl;
+//			for(int i=1;i<=n;++i) cout<<::d2[i]<<' ';cout<<endl;
+//			for(int i=1;i<=n;++i) cout<<::d1[i]<<' ';cout<<endl;
+			ans = max(ans, ::d2[d2]);
+			tot += ans;
+		}
+	cout << tot << endl;
+	return 0;
+}

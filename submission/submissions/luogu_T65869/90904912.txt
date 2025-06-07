@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 90904912
+//  题目ID: T65869
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int A,B,A1,A2,A3,B1,B2,B3;
+	cin>>A>>B;
+	A1=A/100;
+	A2=A/10%10;
+	A3=A%10;
+	B1=B/100;
+	B2=B/10%10;
+	B3=B%10;
+	printf("%d",A1*B1+A1*B2+A1*B3+A2*B1+A2*B2+A2*B3+A3*B1+A3*B2+A3*B3);
+	return 0;
+}
+

@@ -1,0 +1,59 @@
+//  OJ: 洛谷
+//  提交ID: 215420150
+//  题目ID: P3376
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+	Edge(int v = 0, int w = 0, int nxt = 0) :v(v), w(w), nxt(nxt) {}
+}edge[100000 + 10];
+int head[1000 + 10], idx = 1;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int n, m, s, t;
+int dis[1000 + 10];
+int cur[1000 + 10];
+bool bfs() {
+	queue<int>q;
+	for (int i = 1; i <= n; ++i) dis[i] = n + 1, cur[i] = head[i];
+	dis[s] = 0;
+	q.push(s); bool flg = 0;
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		flg |= now == t;
+		for (int i = head[now]; i; i = edge[i].nxt) {
+			int& v = edge[i].v;
+			if (dis[v] == n + 1 && edge[i].w > 0)
+				q.push(v), dis[v] = dis[now] + 1;
+		}
+	}
+	return flg;
+}
+int dfs(int x, int flow) {
+	if (x == t) return flow;
+	int ans = 0;
+	for (int& i = cur[x]; i; i = edge[i].nxt) {
+		int& v = edge[i].v;
+		if (edge[i].w > 0 && dis[v] == dis[x] + 1) {
+			int k = dfs(v, min(flow, edge[i].w));
+			if (k == 0) dis[v] = n + 1;
+			edge[i].w -= k;
+			edge[i ^ 1].w += k;
+			ans += k; flow -= k;
+		}
+	}
+	return ans;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> s >> t;
+	for (int i = 1, u, v, w; i <= m; ++i)
+		cin >> u >> v >> w, add(u, v, w), add(v, u, 0);
+	int ans = 0;
+	while (bfs()) ans += dfs(s, n + 1);
+	cout << ans << endl;
+	return 0;
+}

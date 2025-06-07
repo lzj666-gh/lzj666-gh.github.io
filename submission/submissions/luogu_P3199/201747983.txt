@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 201747983
+//  题目ID: P3199
+#include<bits/stdc++.h>
+using namespace std;
+constexpr double eps = 1e-9;
+int vis[10000 + 10], n, m;
+double dis[10000 + 10];
+struct {
+	int v, nxt;
+	double w;
+}edge[10000 + 10];
+int head[10000 + 10], idx;
+void add(int u, int v, double w) {
+	edge[++idx] = { v,head[u],w };
+	head[u] = idx;
+}
+bool spfa(double mid) {
+	memset(vis, 0, sizeof vis);
+	memset(dis, 127, sizeof dis);
+	queue<int>q;
+	q.push(1);
+	dis[1] = 0;
+	while (!q.empty()) {
+		int now = q.front();
+		q.pop();
+		++vis[now];
+		if (vis[now] > n)
+			return 1;
+		for (int i = head[now]; i; i = edge[i].nxt)
+			if (dis[edge[i].v] > dis[now] + edge[i].w - mid) {
+				q.push(edge[i].v);
+				dis[edge[i].v] = dis[now] + edge[i].w - mid;
+			}
+	}
+	return 0;
+}
+bool comp(double l, double r) {
+	if (fabs(l - r) <= eps) return false;
+	return l < r;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m; 
+	int u, v; double  w;
+	for (int i = 1; i <= m; ++i) 
+		cin >> u >> v >> w, add(u, v, w);
+	double l = -1e7, r = 1e7, mid;
+	while (comp(l, r)) {
+		mid = (l + r) / 2;
+		if (spfa(mid)) r = mid;
+		else l = mid;
+	}
+	cout << fixed << setprecision(8) << l << endl;
+	return 0;
+}

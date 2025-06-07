@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 163044831
+//  题目ID: SP25784
+#include<bits/stdc++.h>
+#define add(x, k) \
+	for (int lzjlzjlzj = x; lzjlzjlzj <= n; lzjlzjlzj += lb(lzjlzjlzj)) {\
+		s[lzjlzjlzj] += k;\
+	}
+#define lb(x) (x & ~x + 1)
+typedef long long ll;
+using namespace std;
+ll a[500000 + 10], s[500000 + 10], n, ans;
+vector<int>b;
+ll query(ll x) {
+	ll ans = 0;
+	for (; x; x -= lb(x)) {
+		ans += s[x];
+	}
+	return ans;
+}
+int mian() {
+	if (cin >> n) {
+	b.clear();
+	memset(a, 0, sizeof a);
+	memset(s, 0, sizeof s);
+	for (int i = 1; i <= n; ++i) {
+		cin >> a[i];
+		b.emplace_back(a[i]);
+	}
+	sort(b.begin(), b.end());
+	for (int i = 1; i <= n; ++i) a[i] = lower_bound(b.begin(), b.end(), a[i]) - b.begin() + 1;
+	for (int i = n; i >= 1; --i) {
+		int x = 1, y = a[i] - 1;
+		ans += query(a[i] - 1);
+		add(a[i], 1);
+	}
+	cout << ans << endl; 
+	return 0;
+	}
+	else exit(0);
+}
+int cbcyc;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>cbcyc;
+    while(cbcyc--) mian();
+}

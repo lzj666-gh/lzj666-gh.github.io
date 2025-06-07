@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 179180644
+//  题目ID: P1265
+#include<bits/stdc++.h>
+using namespace std;
+int n, x[5000 + 10], y[5000 + 10];
+long long Dis[5000 + 10][5000 + 10], d[5000 + 10];
+bool vis[5000 + 10];
+inline long long DIS(int i, int j) {
+	return 1ll * (x[i] - x[j]) * (x[i] - x[j]) + 1ll * (y[i] - y[j]) * (y[i] - y[j]);
+}
+inline double dis(int i, int j) {
+	return sqrt(Dis[i][j]);
+}
+inline bool cmp(int i, int j, int k) {
+	return Dis[i][k] > Dis[j][k];
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> x[i] >> y[i];
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= n; ++j)
+			Dis[i][j] = DIS(i, j);
+	d[1] = 0;
+	vis[1] = 1;
+	for (int i = 2; i <= n; ++i) d[i] = Dis[1][i];
+	double ans = 0;
+	for (int k = 2; k <= n; ++k) {
+		int cur = -1;
+		for (int i = 1; i <= n; ++i) {
+			if (vis[i]) continue;
+			if (cur == -1 || d[i] < d[cur]) cur = i;
+		}
+		ans += sqrt(d[cur]);
+		vis[cur]=1;
+		for (int i = 1; i <= n; ++i) d[i] = min(d[i], DIS(cur, i));
+	}
+	cout << fixed << setprecision(2) << ans << endl;
+	return 0;
+}

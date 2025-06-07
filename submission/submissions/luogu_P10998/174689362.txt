@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 174689362
+//  题目ID: P10998
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+int n, m;
+unordered_map<int, map<int,bool>> head, ht;
+int main() {
+	ios::sync_with_stdio(false);
+	cin >> n >> m;
+	vector<tuple<int, int, int>> a(m);
+	for (int i = 0, u, v, w; i < m; ++i) {
+		cin >> u >> v >> w;
+		a[i] = { u, v, w };
+		head[u * n + v][w] = 1;
+		ht[u * n + w][v] = 1;
+	}
+	int ans = 0;
+	for (const auto& [u, v, w] : a) 
+		for (int x : head[v * n + w]) 
+			if (x > u && x > v) 
+				ans += ht[u * n + x][v] && ht[u * n + x][w]);
+	cout << ans << endl;
+	return 0;
+}

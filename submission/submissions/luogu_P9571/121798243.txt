@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 121798243
+//  题目ID: P9571
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+vector <int> ked,bed;
+int top;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=int k,b;
+		cin>>c>>k>>b;
+		if(c=='1'){
+			ked.push_back(k);
+			bed.push_back(b);
+		}
+		else if(c=='2'){
+			int ans=0;
+			for(int i=1;i<=ked.size();++i){
+				if(ked[i]!=k){
+					++ans;
+				}
+			}
+			cout<<ans<<endl;
+		}
+		else if(c=='3'){
+			for(int i=1;i<=ked.size();++i){
+				if(ked[i]!=k){
+					++ans;
+				}
+			}
+		}
+	}
+	
+	return 0;
+}

@@ -1,0 +1,149 @@
+//  OJ: 洛谷
+//  提交ID: 218905161
+//  题目ID: T614062
+import heapq
+import sys
+
+def main():
+    data = sys.stdin.read().split()
+    if not data:
+        return
+    
+    it = iter(data)
+    m = int(next(it)); n1 = int(next(it)); n2 = int(next(it)); t = int(next(it)); o_val = int(next(it))
+    
+    books = [0] * (m+1)  # 1-indexed, books[i]=1表示节点i有宝典
+    for i in range(t):
+        node = int(next(it))
+        books[node] = 1
+        
+    orbs_list = []  # 存储每个宝珠的(位置, 控制节点)
+    node_orb = [[] for _ in range(m+1)]  # 每个节点上的宝珠列表（存储宝珠索引）
+    control = [[] for _ in range(m+1)]   # 控制每个节点的宝珠列表（存储宝珠索引）
+    
+    for i in range(o_val):
+        a = int(next(it)); k = int(next(it))
+        orbs_list.append((a, k))
+        node_orb[a].append(i)  # 宝珠索引i位于节点a
+        control[k].append(i)    # 宝珠索引i控制节点k
+
+    # 预处理每个节点的mask: 控制该节点的所有宝珠的二进制掩码
+    mask = [0] * (m+1)
+    for i in range(1, m+1):
+        for orb_id in control[i]:
+            mask[i] |= (1 << orb_id)
+            
+    # 预处理G_set: 对于每个节点，位于该节点且控制该节点的宝珠集合
+    G_set = [set() for _ in range(m+1)]
+    G_nonempty = [False] * (m+1)
+    orb_example = [-1] * (m+1)  # 存储每个节点G_set中任意一个宝珠索引（用于翻转）
+    for i in range(1, m+1):
+        # 位于i的宝珠索引与控制i的宝珠索引的交集
+        orb_at_i = set(node_orb[i])
+        control_i = set(control[i])
+        inter = orb_at_i & control_i
+        if inter:
+            G_nonempty[i] = True
+            orb_example[i] = next(iter(inter))  # 取任意一个
+        else:
+            G_nonempty[i] = False
+            
+    # 建图: 存储从u出发的边列表，每个元素为(v, weight, type) type=0:永昼, 1:永夜
+    graph = [[] for _ in range(m+1)]
+    for i in range(n1):
+        w = int(next(it)); u = int(next(it)); v = int(next(it))
+        graph[u].append((v, w, 0))
+    for i in range(n2):
+        w = int(next(it)); u = int(next(it)); v = int(next(it))
+        graph[u].append((v, w, 1))
+        
+    # 状态: (u, s, b) 当前节点u，昼夜状态s（0:永昼,1:永夜），宝珠状态b（二进制位表示）
+    # 使用字典存储最短距离
+    dist = {}
+    # 优先队列: (distance, u, s, b)
+    heap = []
+    start = (1, 0, 0)
+    dist[start] = 0
+    heapq.heappush(heap, (0, 1, 0, 0))
+    
+    while heap:
+        d, u, s, b = heapq.heappop(heap)
+        state = (u, s, b)
+        if dist.get(state, float('inf')) < d:
+            continue
+            
+        # 到达终点: 节点m且为永夜状态
+        if u == m and s == 1:
+            print(d)
+            return
+            
+        # 计算当前节点u的控制效果c0: 宝珠状态b下，控制节点u的开启宝珠数模2
+        c0 = bin(b & mask[u]).count('1') % 2
+        
+        if G_nonempty[u]:
+            # 处理非空G_set: 使用高效转移（至多2种操作）
+            # 分支1: 不切换昼夜
+            for edge in graph[u]:
+                v, w, type_edge = edge
+                x = s ^ type_edge ^ c0
+                F_mask = 0
+                if x != 0:
+                    F_mask = 1 << orb_example[u]
+                new_b = b ^ F_mask
+                new_state = (v, s, new_b)
+                new_d = d + w
+                # 更新距离
+                if new_state not in dist or new_d < dist[new_state]:
+                    dist[new_state] = new_d
+                    heapq.heappush(heap, (new_d, v, s, new_b))
+                    
+            # 分支2: 切换昼夜（如果有宝典）
+            if books[u]:
+                for edge in graph[u]:
+                    v, w, type_edge = edge
+                    x = (1-s) ^ type_edge ^ c0
+                    F_mask = 0
+                    if x != 0:
+                        F_mask = 1 << orb_example[u]
+                    new_b = b ^ F_mask
+                    new_state = (v, 1-s, new_b)
+                    new_d = d + w
+                    if new_state not in dist or new_d < dist[new_state]:
+                        dist[new_state] = new_d
+                        heapq.heappush(heap, (new_d, v, 1-s, new_b))
+        else:
+            # 处理空G_set: 枚举操作组合（切换昼夜和宝珠翻转）
+            orb_set = node_orb[u]  # 节点u上的宝珠索引列表
+            k = len(orb_set)
+            # 枚举切换昼夜: 0-不切换, 1-切换（如果有宝典）
+            switch_options = [0]
+            if books[u]:
+                switch_options.append(1)
+                
+            for switch in switch_options:
+                s_new = 1-s if switch else s
+                # 枚举宝珠子集: 2^k 种可能
+                for bitmask in range(1<<k):
+                    F_mask = 0
+                    for j in range(k):
+                        if bitmask & (1 << j):
+                            orb_id = orb_set[j]
+                            F_mask |= (1 << orb_id)
+                    new_b = b ^ F_mask
+                    # 计算操作后节点u的控制效果c0_new
+                    c0_new = bin(new_b & mask[u]).count('1') % 2
+                    # 检查所有出边
+                    for edge in graph[u]:
+                        v, w, type_edge = edge
+                        if type_edge == (s_new ^ c0_new):
+                            new_state = (v, s_new, new_b)
+                            new_d = d + w
+                            if new_state not in dist or new_d < dist[new_state]:
+                                dist[new_state] = new_d
+                                heapq.heappush(heap, (new_d, v, s_new, new_b))
+    
+    # 无法到达终点
+    print(-1)
+
+if __name__ == '__main__':
+    main()

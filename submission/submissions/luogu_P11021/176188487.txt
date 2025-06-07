@@ -1,0 +1,62 @@
+//  OJ: 洛谷
+//  提交ID: 176188487
+//  题目ID: P11021
+#include<bits/stdc++.h>
+#include<unordered_map>
+#define int long long
+using namespace std;
+using sit = set<pair<int, int>>::iterator;
+int n, m;
+pair<int, int>a[100010];
+set<pair<int, int>>s, t;
+sit IT[100010];
+priority_queue<long long>q;
+unordered_map<long long, int>mp;
+void slv(int x, int y) {
+	sit it = IT[x];
+	int YX = it->second, YT = it->first;
+	if (it != s.begin()) {
+		sit it2 = prev(it);
+		mp[(fabs(it2->second - it->second) / abs(it2->first - it->first))]--;
+	}
+	if (next(it) != s.end()) {
+		sit it2 = next(it);
+		mp[(fabs(it2->second - it->second) / abs(it2->first - it->first))]--;
+	}
+	s.erase(it);
+	IT[x] = it = s.insert({ y,YX }).first;
+	if (it != s.begin()) {
+		sit it2 = prev(it);
+		mp[(abs(it2->second - it->second) / abs(it2->first - it->first))]++;
+		q.push((fabs(it2->second - it->second) / abs(it2->first - it->first)));
+	}
+	if (next(it) != s.end()) {
+		sit it2 = next(it);
+		mp[(abs(it2->second - it->second) / abs(it2->first - it->first))]++;
+		q.push((fabs(it2->second - it->second) / abs(it2->first - it->first)));
+	}
+	y = YT;
+}
+signed main() {
+    ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) {
+		pair<int, int>a;
+		cin >> a.second >> a.first;
+		IT[i] = s.insert(a).first;
+	}
+	for (sit it = s.begin(); next(it) != s.end(); it++) {
+		sit it2 = next(it);
+		mp[(abs(it2->second - it->second) / abs(it2->first - it->first))]++;
+		q.push((abs(it2->second - it->second) / abs(it2->first - it->first)));
+	}
+	while (m--) {
+		int x, y;
+		cin >> x >> y;
+		slv(x, y);
+		while (!mp[q.top()]) q.pop();
+		cout << q.top() << "\n";
+		slv(x, y);
+	}
+	return 0;
+}

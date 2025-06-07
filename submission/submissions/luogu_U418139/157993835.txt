@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 157993835
+//  题目ID: U418139
+#include<bits/stdc++.h>
+using namespace std;
+int n,cnt,tot;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i){
+		for(int j=i+1;j<=n;++j){
+			tot++;
+			cnt+=__gcd(i,j);
+		}
+	}
+	cout<<cnt/tot;
+	return 0;
+}

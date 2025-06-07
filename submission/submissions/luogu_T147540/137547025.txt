@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 137547025
+//  题目ID: T147540
+#include<bits/stdc++.h>
+using namespace std;
+vector<pair<int,int>>v;
+int n=114514,tmp;
+int main(){
+	ios_base::sync_with_stdio(false);
+	while(n){
+		long long ans=0;
+		v.clear();
+		cin>>n;
+//		cout<<"n: "<<n<<' '<<(bool)n<<endl;
+		if(n) for(int i=1;i<=n+1;++i){
+			if(i!=n+1) cin>>tmp;
+			else tmp=0;
+//			cout<<i<<':'<<endl;for(auto a:v) cout<<a.first<<' '<<a.second<<endl;
+			if(v.empty()||tmp>v.back().first) v.emplace_back(make_pair(tmp,1));
+			else{
+				int now=0;
+				while(v.size()&&v.back().first>tmp)
+					now+=v.back().second,
+					ans=max(ans,(long long)now*v.back().first),
+					v.pop_back();
+				v.emplace_back(make_pair(tmp,now+1));
+			}
+		}
+		if(n) cout<<ans<<endl;
+	}
+	return 0;
+}

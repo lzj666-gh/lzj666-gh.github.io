@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 101212700
+//  题目ID: P1327
+#include<bits/stdc++.h>
+using namespace std;
+int a[100000+10],b[100000+10];
+int cnt=0;int n;
+void niganma(int i){
+	while(a[i]!=b[i]){
+		for(int j=0;j<n;j++){
+			if(a[j]==b[i]){
+				swap(b[i],b[j]);
+				cnt++;
+			}
+		}
+	}
+}
+int main(){
+	cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>a[i];
+		b[i]=a[i];
+	}
+	sort(&a[0],&a[n]);
+	for(int i=0;i<n;i++){
+		niganma(i);
+	}
+	
+	cout<<cnt;
+	return 0;
+}

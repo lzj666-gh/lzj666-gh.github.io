@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 150206289
+//  题目ID: P10245
+#include<bits/stdc++.h>
+using namespace std;
+int T,a[4];
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>T;
+	while(T--){
+		cin>>a[0]>>a[1]>>a[2]>>a[3];
+		sort(a,a+4);
+		if(a+b+c<=d) cout<<"no"<<endl;
+		else 
+		cout<<"yes"<<endl;
+	}
+	return 0;
+}

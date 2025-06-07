@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 202875004
+//  题目ID: AT_agc038_c
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+const int mod = 998244353;
+bool isp[1000000 + 10];
+vector<int>prm;
+ll n, cnt[1000000 + 5], ans, mu[1000000 + 10], f[1000000 + 10], g[1000000 + 10];
+void getprm(int lim) {
+	memset(isp, 1, sizeof isp);
+	isp[0] = isp[1] = 0;
+	mu[1] = 1;
+	for (int i = 2; i <= lim; ++i) {
+		if (isp[i])
+			prm.push_back(i),
+			mu[i] = -1;
+		for (int j = 0; j < prm.size(); ++j) {
+			if (i * prm[j] > lim) break;
+			isp[i * prm[j]] = 0;
+			if (i % prm[j] == 0) break;
+			mu[i * prm[j]] = -mu[i];
+		}
+	}
+	for (ll i = 1; i <= 1000000; i++)
+		for (ll j = i; j <= 1000000; j += i)
+			f[j] += mu[i] * i;
+	for (ll i = 1; i <= 1000000; i++) {
+		for (ll j = 1; j <= 1000000 / i; j++) 
+			(g[i] += j * cnt[j * i]) %= mod;
+	}
+}
+ll poww(ll x, ll k) {
+	if (k == 0) return 1;
+	if (k == 1) return x;
+	ll tmp = poww(x, k / 2);
+	tmp = (tmp * tmp) % mod;
+	if (k % 2 == 1) return tmp * x % mod;
+	else return tmp;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (ll i = 1, x; i <= n; i++)
+		cin >> x, ++cnt[x];
+	getprm(1000000);
+	for (ll i = 1; i <= 1000000; i++) 
+		(ans += i * g[i] % mod * g[i] % mod * f[i]) %= mod;
+	for (ll i = 1; i <= 1000000; i++) 
+		if (cnt[i]) 
+			(ans -= i * cnt[i]) %= mod;
+	((ans %= mod) += mod) %= mod;
+	(ans *= poww(2, mod - 2)) %= mod;
+	cout << ans << endl;
+}

@@ -1,0 +1,118 @@
+//  OJ: 洛谷
+//  提交ID: 179648808
+//  题目ID: T520096
+#include<bits/stdc++.h>
+#define ONLINE
+using namespace std;
+#ifndef ONLINE
+#include"G:\Test\20241002\down\sample\convolution.cpp"
+#include"G:\Test\20241002\down\sample\convolution2.cpp"
+using namespace atcoder;
+#else
+using ll = long long;
+constexpr ll mod = 998244353;
+map<int, ll> omegasz;
+
+ll power(ll a, ll b, ll mod) {
+    ll res = 1LL;
+    while (b) {
+        if (b & 1LL) res = (res * a) % mod;
+        a = (a * a) % mod;
+        b >>= 1LL;
+    }
+    return res;
+}
+
+void fft(vector<ll>& v) {
+    if (v.size() == 1) return;
+    vector<ll> e, o;
+    e.reserve(v.size() / 2);
+    o.reserve(v.size() / 2);
+    for (int i = 0; i < v.size(); i += 2) {
+        e.push_back(v[i]);
+        o.push_back(v[i + 1]);
+    }
+    fft(e); fft(o);
+    ll omega = omegasz[v.size()];
+    ll powomi = 1;
+    for (int i = 0; i < v.size() / 2; i++) {
+        v[i] = (e[i] + powomi * o[i]) % mod;
+        v[i + v.size() / 2] = ((e[i] - powomi * o[i]) % mod + mod) % mod;
+        powomi = powomi * omega % mod;
+    }
+}
+
+int pow2ceil(int n) {
+    n--;
+    n |= n >> 1;
+    n |= n >> 2;
+    n |= n >> 4;
+    n |= n >> 8;
+    n |= n >> 16;
+    return n + 1;
+}
+
+void convolve_setup() {
+    omegasz[1 << 23] = power(3, (mod - 1) >> 23, mod);
+    for (int i = 22; i >= 0; i--) {
+        omegasz[1 << i] = omegasz[1 << (i + 1)] * omegasz[1 << (i + 1)] % mod;
+    }
+}
+
+vector<ll> convolve(vector<ll> a, vector<ll> b) {
+    convolve_setup();
+    int n = a.size();
+    int m = b.size();
+    int sz = pow2ceil(n + m);
+    a.resize(sz);
+    b.resize(sz);
+    fft(a);
+    fft(b);
+    for (int i = 0; i < sz; i++) {
+        a[i] = a[i] * b[i] % mod;
+    }
+    fft(a);
+    ll mult = power(sz, mod - 2LL, mod);
+    reverse(a.begin() + 1, a.end());
+    a.resize(n + m - 1);
+    for (int i = 0; i < n + m - 1; i++) {
+        a[i] = a[i] * mult % mod;
+    }
+    return a;
+}
+#endif
+ll power(ll a, ll b) {
+	if (a == 1) return 1;
+	ll res = 1LL;
+	while (b) {
+		if (b & 1LL) res = (res * a) % mod;
+		a = (a * a) % mod;
+		b >>= 1LL;
+	}
+	return res;
+}
+vector<ll>pri, n, m, pub;
+int k;
+
+int main() {
+#ifdef ONLINE
+	freopen("set.in", "r", stdin);
+	freopen("set.out", "w", stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	cin >> k;
+	for (int i = 1, p, a, b; i <= k; ++i) cin >> p >> a >> b,
+		pri.emplace_back(p),
+		n.emplace_back(a),
+		m.emplace_back(b),
+		((a && b) ? pub.emplace_back(p) : void());
+	vector<ll>c = convolve(m, pub);
+	for (int i = 0; i < k; ++i) c[i] = power(m[i], power(c[i], n[i])) % mod;
+	vector<ll>ans = convolve(pri, c);
+	cout << ans[0] << endl;
+	return 0;
+}
+//4458=2*3*743
+//743=2*(3^5+2^7)+1
+//36-1=35=5*7
+//?

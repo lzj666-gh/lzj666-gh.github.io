@@ -1,0 +1,72 @@
+//  OJ: 洛谷
+//  提交ID: 110890419
+//  题目ID: P1649
+#include <bits/stdc++.h>
+#define maxn 100+10
+using namespace std;
+int a[maxn][maxn];
+int d[4][2]={{0,-1},{-1,0},{0,1},{1,0}};
+bool vis[maxn][maxn];
+struct node{
+	int x,y;
+	int fx,cnt;
+	node(int xx,int yy,int fxx,int cntt){
+		x=xx;y=yy;fx=fxx;cnt=cntt;
+	}
+};
+char ch;
+int sx,sy,ex,ey,n;
+int dx,dy;
+queue<node>q;
+int bfs(int sx,int sy,int ex,int ey,int fx){
+	vis[sx][sy]=true;
+	q.push(node(sx,sy,fx,0));
+	while(!q.empty()){
+		node no=q.front();
+		q.pop();
+		dx=no.x+d[no.fx][0];
+		dy=no.y+d[no.fx][1];
+		while((dx!=ex||dy!=ey)&&a[dx][dy]==1&&!vis[dx][dy]){
+			q.push(node(dx,dy,no.fx,no.cnt));
+			vis[dx][dy]=true;
+			dx=dx+d[no.fx][0];dy=dy+d[no.fx][1];
+		}
+		if(dx==ex&&dy==ey) return no.cnt;
+		for(int i=0;i<4;i++){
+			if(i==no.fx) continue;
+			dx=no.x+d[i][0];dy=no.y+d[i][1];
+			if(dx==ex&&dy==ey) return no.cnt+1;
+			else if(a[dx][dy]==1&&!vis[dx][dy]){
+				q.push(node(dx,dy,i,no.cnt+1));
+				vis[dx][dy]=true;
+			}
+		}
+	}
+	return -1;
+}
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			cin>>ch;
+			if(ch=='.') a[i][j]=1;
+			else if(ch=='x') a[i][j]=0;
+			else if(ch=='A') sx=i,sy=j;
+			else if(ch=='B') ex=i,ey=j;
+		}
+	}
+	if(sx==ex&&sy==ey){
+		cout<<0<<endl;
+		return 0;
+	}
+	int ans=maxn*maxn;
+	for(int i=0;i<4;i++){
+		memset(vis,0,sizeof(vis));
+		ans=min(ans,bfs(sx,sy,ex,ey,i));
+	}
+	cout<<ans<<endl;
+	return 0;
+}

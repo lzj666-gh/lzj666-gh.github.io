@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 103431956
+//  题目ID: P7074
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn=1000+10;
+int n,m,a[1000+10][1000+10],r[maxn][maxn],up[maxn][maxn],d[maxn][maxn];
+int main(){
+	scanf("%d%d",&n,&m);
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			scanf("%d",&a[i][j]);
+//			cout<<1<<" ";
+		}
+//		cout<<1<<endl;
+	}
+//	cout<<1<<endl;
+	for(int i=2;i<=n;i++){
+		d[i][1]=r[i][1]=r[i-1][1]+a[i][1];
+	}
+	for(int j=2;j<=m;j++){
+		d[1][j]=r[1][j-1]+a[1][j];
+		for(int i=2;i<=n;i++) d[i][j]=max(d[i-1][j],r[i][j-1])+a[i][j];
+		up[n][j]=r[n][j-1]+a[n][j];
+		for(int i=2;i<=n;i++) up[i][j]=max(up[i+1][j],r[i][j-1])+a[i][j];
+		r[1][j]=max(r[1][j-1],up[2][j])+a[1][j];
+		r[n][j]=max(r[n][j-1],d[n-1][j])+a[n][j];
+		for(int i=2;i<n;i++){
+			r[i][j]=max(r[i][j-1],max(up[i+1][j],d[i-1][j]))+a[i][j];
+		}
+	}
+/*	cout<<endl;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			cout<<d[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+	cout<<endl;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			cout<<up[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+	cout<<endl;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			cout<<r[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+	cout<<endl;
+*/	cout<<max(d[n][m],max(up[n][m],r[n][m]));
+	return 0;
+}

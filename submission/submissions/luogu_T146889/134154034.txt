@@ -1,0 +1,64 @@
+//  OJ: 洛谷
+//  提交ID: 134154034
+//  题目ID: T146889
+#include<bits/stdc++.h>
+using namespace std;
+inline void set0(int&num,int k){
+	num = num&(~(1<<k)); 
+}
+inline void set1(int&num,int k){
+	num = num|(1<<k); 
+}
+inline bool get2(int b,int k){
+	return b>>k&1;
+}
+inline bool gett(int b,int i,int j){
+	return get2(b,i*5+j);
+}
+inline void change(int&b,int i,int j){
+	if(i>4||j>4||i<0||j<0) return;
+	if(gett(b,i,j)) set0(b,i*5+j);
+	else set1(b,i*5+j);
+}
+inline void do_(int&k,int x,int y){
+	change(k,x,y);
+	change(k,x+1,y);
+	change(k,x-1,y);
+	change(k,x,y+1);
+	change(k,x,y-1);
+}
+auto ch=[&](int k)->string{string ans;for(int i=24;i>=0;--i){ans+=to_string(get2(k,i));if((i+1)%5==0) ans+='\n';}return ans;};
+int n,anss=7;
+int can(int k){
+//	cout<<ch(k)<<endl;
+	int step=0;
+	for(int i=1;i<=4;++i){
+		for(int j=0;j<=4;++j){
+			if(!gett(k,i-1,j)) change(k,i,j),++step;
+		}
+	}
+	return k!=(1<<26)-1?7:step;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	while(n--){
+		int now=0;
+		for(int i=1;i<=25;++i){
+			char c;
+			cin>>c;
+			now=(now<<1)+(c^48);
+		}
+		for(bool a:{true,false}) for(bool b:{true,false}) for(bool c:{true,false}) for(bool d:{true,false}) for(bool e:{true,false}){
+			int tmp=now,ans=0;
+			if(a) do_(tmp,0,0),++ans;
+			if(b) do_(tmp,0,1),++ans;
+			if(c) do_(tmp,0,2),++ans;
+			if(d) do_(tmp,0,3),++ans;
+			if(e) do_(tmp,0,4),++ans;
+			anss=min(anss,ans+can(tmp));
+		} 
+		if(anss>6||anss<0) cout<<-1<<endl;
+		else cout<<anss<<endl;
+	}
+} 

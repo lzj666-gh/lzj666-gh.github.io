@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 135948169
+//  题目ID: T400700
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cout<<"1 5 \n1 2 3 4 5 \n2 5 \n9 8 7 6 5 \n3 12 \n23 23 22 22 13 3 5 5 3 -3 \n-7 -3"<<endl
+	<<"4 284\n567 56aaaaaaaaaa";
+	return 0;
+}

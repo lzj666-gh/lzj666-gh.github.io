@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 101330867
+//  题目ID: T209129
+#include<bits/stdc++.h>
+using namespace std;
+int a[110][110],b[110][110],m,n;
+char s[110];
+int main(){
+	cin>>m>>n;
+	for(int i=1;i<=m;i++){
+		for(int j=1;i<=n;j++){
+			scanf("%d",&a[i][j]);
+		}
+	}
+//	scanf("%s",&s);
+	cin>>s;
+//	fgets(s,110,stdin);
+//	cout<<"eue"<<endl;
+	for(int k=0;k<strlen(s);k++){
+		for(int i=1;i<=m;i++){
+			for(int j=1;j<=n;j++){
+				if(s[k]=='A') a[j][m-i+1]=b[i][j];
+				if(s[k]=='B') a[n-j+1][i]=b[i][j];
+				if(s[k]=='C') a[i][n-j+1]=b[i][j];
+				if(s[k]=='D') a[m-i+1][j]=b[i][j];
+			}
+		}
+		memcpy(a,b,sizeof(a));
+		memcpy(b,0,sizeof(b));
+		if(s[k]=='A'||s[k]=='B') swap(m,n);
+	}
+//	cout<<"sudg"<<endl;
+	for(int i=1;i<=m;i++){
+		for(int j=1;i<=n;j++){
+			printf("%d ",a[i][j]);
+		}
+		printf("\n");
+	}
+}

@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 100978993
+//  题目ID: T76601
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	long long b,p,k,z=1;cin>>b>>p>>k;
+	for(int i=1;i<=p;i++){
+		z*=b;
+		z%=k;
+	} 
+	cout<<b<<"^"<<p<<" mod "<<k<<"="<<z;
+	return 0;
+}

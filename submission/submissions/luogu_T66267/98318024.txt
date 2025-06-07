@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 98318024
+//  题目ID: T66267
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n=21;
+	const int N=n;
+	bool a[N]={false,true};
+	int b1,b2,c1,c2,d1,d2;cin>>b1>>b2>>c1>>c2>>d1>>d2;
+	for(int i=b1;i<=b2;i++){
+		a[i]=false;
+	}
+	for(int i=c1;i<=c2;i++){
+		a[i]=false;
+	}
+	for(int i=d1;i<=d2;i++){
+		a[i]=false;
+	}
+	int c=0;
+	for(int i=1;i<=n;i++){
+		if(a[i]==true) c++;
+	}
+	cout<<c;
+	return 0;
+}
+

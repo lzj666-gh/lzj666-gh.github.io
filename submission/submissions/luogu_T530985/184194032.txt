@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 184194032
+//  题目ID: T530985
+#include<bits/stdc++.h>
+#define int long long
+#pragma warning(disable:4996)
+#pragma warning(disable:6031)
+//#define ONLINE
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int M, n, a[2000 + 10], totn, totok;
+int main() {
+#ifdef ONLINE
+	freopen("triangle.in", "r", stdin);
+	freopen("triangle.out", "w", stdout);
+#endif
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> M;
+	while (M--) {
+		cin >> n;
+		totn += n;
+		for (int i = 1; i <= n; ++i) cin >> a[i];
+		sort(a + 1, a + n + 1); a[n + 1] = 0x3f3f3f3f;
+		for (int i = 1; i <= n; ++i)
+			for (int j = i + 1, pt1 = 1, pt2 = 1; j <= n; ++j) {
+				while (pt1 <= n && a[pt1] < a[j] + a[i]) pt1++;
+				while (pt2 <= n && a[pt2] <= a[j] - a[i]) pt2++;
+				int tmp = pt1 - pt2; tmp--;
+				if (a[j] - a[i] < a[i]) tmp--;
+				if (tmp > 0)
+					totok += tmp;
+			}
+	}
+	cerr << totok << endl;
+	long long cur = 0;
+	for (int i = 3; i <= totn; ++i) {
+		cur += (i - 1) * (i - 2) / 2;
+		cur %= mod;
+		//cerr << cur << endl;
+	}
+	cout << (cur - totok / 3 + mod) % mod << endl;
+	return 0;
+}
+/*
+1.in
+1
+3 1 1 1
+1.out
+3
+0
+
+2.in
+
+2.out
+
+*/

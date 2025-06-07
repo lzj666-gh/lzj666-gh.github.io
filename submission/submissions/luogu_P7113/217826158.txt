@@ -1,0 +1,93 @@
+//  OJ: 洛谷
+//  提交ID: 217826158
+//  题目ID: P7113
+#include<bits/stdc++.h>
+//#define gcd __gcd
+using namespace std;
+using ll = long long;
+class fraction {//分数 
+	// Private section
+	ll z, m;
+	void upd() { ll tmp = gcd(abs(z), abs(m)); z /= tmp; m /= tmp; if (z < 0 && m < 0)z = ~z + 1, m = ~m + 1; if (m < 0 && z >= 0)z = ~z + 1, m = ~m + 1; }
+	double to_d() { return 1.0 * z / m; }
+public:
+	// Public Declarations
+	fraction() { z = 0; m = 1; }
+	template<typename T = ll>
+	fraction(T k) { z = k, m = 1; }
+	template<typename T1 = ll, typename T2 = ll>
+	fraction(T1 l, T2 r) { z = l, m = r; };
+	fraction sqrt() {
+		return fraction(::sqrt(z * m), m);
+	}
+	friend fraction operator+(const fraction& a, const fraction& b) {
+		fraction c = fraction(a.z * b.m + a.m * b.z, a.m * b.m);
+		c.upd();
+		return c;
+	}
+	friend fraction operator-(const fraction& a, const fraction& b) { fraction c = fraction(a.z * b.m + a.m * (-b.z), a.m * b.m); c.upd(); return c; }
+	friend fraction operator*(const fraction& a, const fraction& b) { fraction c = fraction(a.z * b.z, a.m * b.m); c.upd(); return c; }
+	friend fraction operator/(const fraction& a, const fraction& b) { fraction c = fraction(a.z * b.m, a.m * b.z); c.upd(); return c; }
+	friend fraction operator+=(fraction& a, const fraction& b) { a = a + b; return a; }
+	friend fraction operator-=(fraction& a, const fraction& b) { a = a - b; return a; }
+	friend fraction operator*=(fraction& a, const fraction& b) { a = a * b; return a; }
+	friend fraction operator/=(fraction& a, const fraction& b) { a = a / b; return a; }
+	friend bool operator<(const fraction& a, const fraction& b) { return((a - b).to_d() < (0)); }
+	friend bool operator>(const fraction& a, const fraction& b) { return((a - b).to_d() > (0)); }
+	friend bool operator<=(const fraction& a, const fraction& b) { return((a - b).to_d() <= (0)); }
+	friend bool operator>=(const fraction& a, const fraction& b) { return((a - b).to_d() >= (0)); }
+	friend bool operator==(const fraction& a, const fraction& b) { return((a - b).to_d() == (0)); }
+	friend bool operator!=(const fraction& a, const fraction& b) { return((a - b).to_d() != (0)); }
+	friend istream& operator>>(istream& in, fraction& a) {
+		string tmp;
+		in >> tmp;
+		if (tmp.find('/') != -1) {
+			sscanf(tmp.c_str(), "%lld/%lld", &a.z, &a.m);
+			a.upd();
+		}
+		else if (tmp.find('\\') != -1) {
+			sscanf(tmp.c_str(), "%lld\\%lld", &a.m, &a.z);
+			a.upd();
+		}
+		else {
+			throw EINVAL;
+		}
+		return in;
+	}
+	friend ostream& operator<<(ostream& out, const fraction& a) {
+		if (a.z) out << a.z << ' ' << a.m << endl;
+		return out;
+	}
+	//友元函数
+protected:
+	// Protected Declarations
+}ans[100000 + 10];
+int n, m, r[100000 + 10];
+vector<int>son[100000 + 10];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) {
+		int d; cin >> d;
+		for (int j = 1, v; j <= d; ++j)
+			cin >> v, son[i].push_back(v), r[v]++;
+	}
+	queue<int>q;
+	for (int i = 1; i <= m; ++i) ans[i] = 1;
+	for (int i = 1; i <= n; ++i) if (!r[i]) q.push(i);
+	while (!q.empty()) {
+		int now = q.front();
+		q.pop();
+		if (son[now].empty()) continue;
+		ans[now] /= son[now].size();
+		for (const int& s : son[now]) {
+			ans[s] += ans[now];
+			r[s]--;
+			if (!r[s]) q.push(s);
+		}
+		ans[now] = 0;
+	}
+	for (int i = 1; i <= n; ++i)
+		cout << ans[i];
+	return 0;
+}

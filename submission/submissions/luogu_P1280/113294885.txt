@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 113294885
+//  题目ID: P1280
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 10010;
+int n, k, f[N];
+struct node {
+    int st, en;
+    bool operator < (const node &W) const {
+        return st < W.st;
+    }
+} a[N];
+int main() {
+    cin >> n >> k;
+    for (int i = 1; i <= k; i++) {
+        cin >> a[i].st >> a[i].en;
+        a[i].en += a[i].st - 1;
+    }
+    sort(a + 1, a + k + 1);
+    for (int i = 1; i <= k; i++) {
+        f[i] = f[i - 1];
+        for (int j = i - 1; j >= 1; j--) {
+            if (a[j].en < a[i].st) {
+                f[i] = max(f[i], f[j] + a[i].st - a[j].en - 1);
+                break;
+            }
+        }
+    }
+    cout << n - f[k] - (a[k].en < n ? n - a[k].en - 1 : 0) << endl;
+    return 0;
+}

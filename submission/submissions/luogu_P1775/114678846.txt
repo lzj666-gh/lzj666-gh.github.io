@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 114678846
+//  题目ID: P1775
+#include<bits/stdc++.h>
+using namespace std;
+int n,dp[100+10][100+10],a[100+10],s[100+10]; 
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;i++) cin>>a[i],s[i]=s[i-1]+a[i];
+	memset(dp,0x3f,sizeof(dp));
+	for(int i=1;i<=n;i++) dp[i][i]=0;
+	for(int cd=2;cd<=n;cd++){
+		for(int l=1;l<=n-cd+1;l++){
+			int r=l+cd-1;
+			for(int i=l;i<=r;i++) dp[l][r]=min(dp[l][r],dp[l][i]+dp[i+1][r]);
+			dp[l][r]+=s[l]-s[r];
+		}
+	}
+	cout<<abs(dp[1][n])<<endl;
+	return 0;
+}

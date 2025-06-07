@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 127787579
+//  题目ID: T385409
+#include<bits/stdc++.h>
+#define f(i,a,b) for(register int i=a;i<=b;++i)
+using namespace std;
+int t,m,n,k;
+int main(){					  
+	cin>>t;
+	while(t--){
+		int minn=-2e9,id=0;
+		cin>>m>>n>>k;
+		for(int a=0;a<=5;a++)
+			for(int b=0;b<=9;b++)
+				for(int c=0;c<=9;c++)
+					for(int d=0;d<=9;d++)
+						for(int e=0;e<=9;e++)
+							for(int f=0;f<=9;f++){
+								int g=k-a-b-c-d-e-f;
+								if(g>9||g<0) continue; 
+								int t=a*1e6+b*1e5+c*1e4+d*1e3+e*1e2+f*10+g;
+								if(t<m||t>n) continue;
+								int mul=0;
+							   	if(a==0&&b==0&&c==0&&d==0&&e==0&&f==0&&g==0) mul=0;
+								else if(a==0&&b==0&&c==0&&d==0&&e==0&&f==0) mul=g;
+								else if(a==0&&b==0&&c==0&&d==0&&e==0) mul=f*g;
+								else if(a==0&&b==0&&c==0&&d==0) mul=e*f*g;
+								else if(a==0&&b==0&&c==0) mul=d*e*f*g;
+								else if(a==0&&b==0) mul=c*d*e*f*g;
+								else if(a==0) mul=b*c*d*e*f*g;
+								else mul=a*b*c*d*e*f*g;
+								if(mul>minn) minn=mul,id=t;
+							}
+		cout<<id<<' '<<minn<<endl;
+	}
+	return 0;
+}

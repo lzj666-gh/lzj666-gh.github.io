@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 182973528
+//  题目ID: T528364
+#include<bits/stdc++.h>
+using namespace std;
+string s;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin >> T;
+	cin >> s;
+	int ans = 0;
+	tmpp:
+	bool flg = 0;
+	for (int i = 0; i + 2 < s.size(); i++) {
+		if (s[i] == 'n' && s[i + 1] == 'o' && s[i + 2] == 't') {
+			s.erase(s.begin() + i, s.begin() + i + 3);
+			flg = 1;
+		}
+	}
+	if (flg) {
+		ans++;
+		goto tmpp;
+	}
+	cout << s << endl;
+	if (T == 0) {
+		cout << ans << endl;
+	}
+	else if (T == 1) {
+		cout << 0 << endl;
+	}
+	else if (T <= 3) {
+		cout << 1 << endl;
+	}
+	else if (T <= 6) {
+		cout << 8 << endl;
+	}
+	else {
+		cout << ans << endl;
+	}
+	return 0;
+}

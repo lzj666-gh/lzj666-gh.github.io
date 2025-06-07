@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 113962895
+//  题目ID: U305848
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int maxCards(int n, vector<int>& cards) {
+    int maxCount = 1;
+    int count = 1;
+    
+    for (int i = 1; i < n; i++) {
+        if (cards[i] > cards[i - 1]) {
+            count++;
+            maxCount = max(maxCount, count);
+        } else {
+            count = 1;
+        }
+    }
+    
+    return maxCount;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> cards(n);
+    for (int i = 0; i < n; i++) {
+        cin >> cards[i];
+    }
+
+    int result = maxCards(n, cards);
+    cout << result << endl;
+
+    return 0;
+}

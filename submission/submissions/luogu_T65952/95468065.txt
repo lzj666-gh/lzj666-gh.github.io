@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 95468065
+//  题目ID: T65952
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	double shu,sy,sc,a;cin>>shu;
+	sy=shu*12*0.75;
+	a=shu/7;
+	sc=shu*12-a*12;
+	if(sy>sc) cout<<"chengshi";
+	else if(sc>sy) cout<<"yangyang";
+	else cout<<"same";
+	return 0;
+}

@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 151657455
+//  题目ID: P4316
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int to, next, w;
+}edge[200000 + 10];
+int head[100000 + 10], n, m, idx, rd[10000 + 10];
+double dp[100000 + 10];
+inline void add(int u, int v, int w) {
+	++idx;
+	edge[idx].to = v;
+	edge[idx].next = head[u];
+	head[u] = idx;
+	edge[idx].w = w;
+}
+void Top() {
+	
+}
+int main() {
+	ios::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v, w; i <= m; ++i) {
+		cin >> u >> v >> w;
+		add(v, u, w);
+	}
+	return 0;
+}

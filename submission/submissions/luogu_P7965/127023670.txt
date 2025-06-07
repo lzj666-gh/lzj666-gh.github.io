@@ -1,0 +1,63 @@
+//  OJ: 洛谷
+//  提交ID: 127023670
+//  题目ID: P7965
+#include<bits/stdc++.h>
+using namespace std;
+inline int read(){
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c<'0'||c>'9'){
+		if(c=='-') s=-1;c=getchar();
+	}
+	while(c>='0'&&c<='9'){
+		x=(x<<1)+(x<<3)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+}
+inline void write(int x){
+	if(x<0){
+		x=~x+1;
+		putchar('-'); 
+	}else if(!x) return ;
+	write(x/10);
+	putchar(x%10+48);
+}
+vector<int> to[1000+10];
+int n,m,q;
+bool vis[1000+10][1000+10];
+bool ed[1000+10]; 
+void bfs(int beg){
+	if(ed[beg]) return;
+	ed[beg]=true;
+	queue<int>q;
+	q.push(beg);
+	while(!q.empty()){
+		int now=q.front();
+		q.pop();
+		if(vis[beg][now]) continue;
+		vis[beg][now]=true;
+		for(int nowto:to[now]){
+			q.push(nowto);
+		}
+	}
+}
+int main(){
+//	freopen("kutije3.in","r",stdin);
+//	freopen("kutije.out","w",stdout);
+//	ios_base::sync_with_stdio(false);
+	n=read(),m=read(),q=read();
+	for(int i=1;i<=m;++i){
+		for(int j=1;j<=n;++j){
+			int tmp;
+			tmp=read();
+			to[j].push_back(tmp);
+		}
+	}
+	for(int i=1;i<=q;++i){
+		int a=read(),b=read();
+		bfs(a);
+		printf(vis[a][b]?"DA\n":"NE\n");
+	}
+	return 0;
+}

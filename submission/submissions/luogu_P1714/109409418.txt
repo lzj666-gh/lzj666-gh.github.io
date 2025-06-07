@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 109409418
+//  题目ID: P1714
+#include<bits/stdc++.h>
+using namespace std;
+long long n,m,maxa,a[500000+10];
+long long h(int l,int r){
+//	if(r-l>m) return -0x7f7f7f7f;
+	long long re=0;
+	for(int i=l;i<=r;++i){
+		re+=a[i];
+	}
+	return re;
+}
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>n>>m;
+	for(int i=1;i<=n;++i){
+		cin>>a[i];
+	}
+	for(int i=1;i<=n;++i){
+		for(int j=i;j<=n&&j-i+1<=m;++j){
+			maxa=max(maxa,h(i,j));
+//			cout<<i<<" "<<j<<" "<<h(i,j)<<endl;
+		}
+	}
+	cout<<maxa<<endl;
+	return 0;
+}

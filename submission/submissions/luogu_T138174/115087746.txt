@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 115087746
+//  题目ID: T138174
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int n, m;
+vector<int> parent(101, 0);
+vector<vector<int> > children(101);
+
+void findRootAndMaxChild() {
+    for (int i = 0; i < m; i++) {
+        int x, y;
+        cin >> x >> y;
+        parent[y] = x;
+        children[x].push_back(y);
+    }
+
+    int root = -1;
+    for (int i = 1; i <= n; i++) {
+        if (parent[i] == 0) {
+            root = i;
+            break;
+        }
+    }
+
+    int maxChildCount = -1;
+    int maxChild = -1;
+    for (int i = 1; i <= n; i++) {
+        int childCount = children[i].size();
+        if (childCount > maxChildCount) {
+            maxChildCount = childCount;
+            maxChild = i;
+        }
+    }
+
+    cout << root << endl;
+    cout << maxChild << endl;
+    sort(children[maxChild].begin(), children[maxChild].end());
+    for (int i = 0; i < maxChildCount; i++) {
+        cout << children[maxChild][i] << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    cin >> n >> m;
+    findRootAndMaxChild();
+    return 0;
+}

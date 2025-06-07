@@ -1,0 +1,82 @@
+//  OJ: 洛谷
+//  提交ID: 147322865
+//  题目ID: P5656
+#include <bits/stdc++.h>
+#ifdef ONLINE_JUDGE
+#define gcd __gcd
+#endif
+using namespace std;
+long long exgcd(long long a, long long b, long long& x, long long& y) {
+	if (b == 0) { x = 1; y = 0; return a; }
+	long long d = exgcd(b, a % b, x, y);
+	long long z = x; x = y, y = z - y * (a / b);
+	return d;
+}
+long long a, b, c, x, y;
+int main() {
+	ios::sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		cin >> a >> b >> c;
+//		cerr << "ans: ";
+		long long d = gcd(a, b);
+		if (c % d) {
+			cout << -1 << endl;
+			continue;
+		}
+		exgcd(a, b, x, y);
+		x *= c / d, y *= c / d;
+//		cerr << "ansx: " << x << " ansy:" << y << ' ';
+		long long kx = b / d, ky = a / d;
+		if (x <= 0 && y <= 0) {
+			while (x <= 0)x += kx;
+			cout << x;
+			while (y <= 0) y += ky;
+			cout << ' ' << y << endl;
+			continue;
+		}
+		else if (x <= 0) {
+			while (x <= 0)x += kx, y -= ky;
+			if (y <= 0) {
+				cout << x;
+				while (y <= 0) y += ky;
+				cout << ' ' << y << endl;
+			}
+			else goto good;
+		}
+		else if (y <= 0) {
+			while (y <= 0)x -= kx, y += ky;
+			if (x <= 0) {
+				while (x <= 0)x += kx;
+				cout << x << ' ' << y << endl;
+			}
+			else goto good;
+		}
+		else {
+			int cnt = 0;
+			while (x > 0 && y > 0) x += kx, y -= ky, ++cnt;
+			x -= kx, y += ky;
+			pair<int, int>l = { x,y };
+			while (x > 0 && y > 0) x -= kx, y += ky, ++cnt;
+			x += kx, y -= ky;
+			pair<int, int>r = { x,y };
+			if (cnt == 1) cout << l.first << ' ' << l.second << endl;
+			else cout << cnt << ' ' << l.first << ' ' << l.second << ' ' << r.first << ' ' << r.second << endl;
+			continue;
+		}
+	good:
+		int xx = x, yy = y;
+		int cnt = 1;
+		while (x > 0 && y > 0) x += kx, y -= ky, cnt += x > 0 && y > 0;
+		x -= kx, y += ky;
+		pair<int, int>l = { x,y };
+		x = xx, y = yy;
+		while (x > 0 && y > 0) x -= kx, y += ky, cnt += x > 0 && y > 0;
+		x += kx, y -= ky;
+		pair<int, int>r = { x,y };
+		if (cnt == 1) cout << l.first << ' ' << l.second << endl;
+		else cout << cnt << ' ' << r.first << ' ' << l.second << ' ' << l.first << ' ' << r.second << endl;
+	}
+	return 0;
+}

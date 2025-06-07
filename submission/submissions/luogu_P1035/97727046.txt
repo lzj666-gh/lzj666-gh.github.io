@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 97727046
+//  题目ID: P1035
+#include <bits/stdc++.h>
+using namespace std;
+double sum=0,k;
+int n=0;
+int main()
+{
+    cin>>k;
+    while(sum<=k)
+    {
+        n++;
+        sum+=(1.0/n);
+    }
+    cout<<n<<endl;
+    return 0;
+}

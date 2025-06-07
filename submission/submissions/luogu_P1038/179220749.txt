@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 179220749
+//  题目ID: P1038
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[100000 + 10];
+int head[100 + 10], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+vector<int>now, nxt;
+int n, p, a[100 + 10], u[100 + 10];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> p;
+	for (int i = 1; i <= n; ++i) {
+		cin >> a[i] >> u[i];
+		if (a[i]) nxt.push_back(i),a[i] += u[i];
+	}
+	for (int i = 1, u, v, w; i <= p; ++i) cin >> u >> v >> w, add(u, v, w);
+	bool doing = 1;
+	while (doing) {
+		now = nxt;
+		nxt.clear();
+		doing = 0;
+		sort(now.begin(), now.end());
+		now.erase(unique(now.begin(), now.end()), now.end());
+		for (int k : now) {
+			a[k] -= u[k];
+			if (a[k] <= 0) continue; bool res=1;
+			for (int i = head[k]; i; i = edge[i].nxt) {
+				nxt.push_back(edge[i].v);
+				a[edge[i].v] += a[k] * edge[i].w;
+		    	doing = 1; res=0;
+			}
+            a[k]*=res;
+		}
+	}
+	for (int i : now) if (a[i] > 0) cout << i << ' ' << a[i] << endl;
+	return 0;
+}

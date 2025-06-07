@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 174262651
+//  题目ID: T390010
+#include<bits/stdc++.h>
+using namespace std;
+int n,s;
+int main(){
+    cin>>n>>s;
+    cout<<n*n-s*2<<endl;
+}

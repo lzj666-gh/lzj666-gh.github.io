@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 94538288
+//  题目ID: T66187
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int m,n;cin>>m>>n;
+	int q[n],p[n];
+	p[1]=1;
+	q[1]=2;
+	for(int i=1;i<=n;i++){
+		q[i+1]=p[i]+q[i];
+		p[i+1]=q[i];
+	}
+	double s[n-m];
+	for(int i=m;i<=n;i++){
+		s[i-m+1]=1.0*q[i]/p[i];
+	}
+	
+	double f;
+	for(int i=1;i<=n-m;i++){
+		f+=s[i];
+	}
+	printf("%.3lf",f);
+	return 0;
+}
+

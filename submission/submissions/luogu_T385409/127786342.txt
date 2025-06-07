@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 127786342
+//  题目ID: T385409
+#include<bits/stdc++.h>
+#define f(i,a,b) for(register int i=a;i<=b;++i)
+using namespace std;
+int t,m,n,k;
+int main(){					  
+	cin>>t;
+	for(int I=1;I<=t;++I){
+		int minn=-2e9,ans=0;
+		cin>>m>>n>>k;
+		for(int a:{0,1,2,3,4,5})
+			for(int b:{0,1,2,3,4,5,6,7,8,9})
+				for(int c:{0,1,2,3,4,5,6,7,8,9})
+					for(int d:{0,1,2,3,4,5,6,7,8,9})
+						for(int e:{0,1,2,3,4,5,6,7,8,9})
+							for(int f:{0,1,2,3,4,5,6,7,8,9}){
+								int g=k-a-b-c-d-e-f;
+								if(g>9||g<0) continue; 
+								int now=a*1e6+b*1e5+c*1e4+d*1e3+e*1e2+f*10+g;
+								if(now<m||now>n) continue;
+								int kk=0;
+							   	if(a==0&&b==0&&c==0&&d==0&&e==0&&f==0&&g==0) kk=0;
+								else if(a==0&&b==0&&c==0&&d==0&&e==0&&f==0) kk=g;
+								else if(a==0&&b==0&&c==0&&d==0&&e==0) kk=f*g;
+								else if(a==0&&b==0&&c==0&&d==0) kk=e*f*g;
+								else if(a==0&&b==0&&c==0) kk=d*e*f*g;
+								else if(a==0&&b==0) kk=c*d*e*f*g;
+								else if(a==0) kk=b*c*d*e*f*g;
+								else kk=a*b*c*d*e*f*g;
+								if(kk>minn) minn=kk,ans=t;
+							}
+		cout<<ans<<' '<<minn<<endl;
+	}
+	return 0;
+}

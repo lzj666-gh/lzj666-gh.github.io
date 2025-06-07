@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 211803350
+//  题目ID: T573673
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    cout<<"http://localhost:4080/register/%0C%C5%D1%F1%43%6B%06%0E%C3%8A%6D%0A%57%5C%B7%75"<<endl;
+}

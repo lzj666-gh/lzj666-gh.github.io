@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 136994725
+//  题目ID: T216665
+#include<bits/stdc++.h>
+using namespace std;
+int n,idx;
+vector<pair<int,int>>c;
+priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>p;
+signed main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1,x,y;i<=n;++i) cin>>x>>y,c.emplace_back(make_pair(x,y));
+	sort(c.begin(),c.end());
+	for(pair<int,int>q:c){
+		if(p.empty()||p.top().first>q.first){
+			p.push(make_pair(q.second,++idx));
+			cout<<idx<<endl;
+		}
+		else{
+			int tmp=p.top().second<<endl;
+			cout<<p.top().second;
+			p.pop();
+			p.push(make_pair(q.second,p.top().second));
+		}
+	}
+}

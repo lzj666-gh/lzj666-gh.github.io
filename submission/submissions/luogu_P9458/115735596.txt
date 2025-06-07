@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 115735596
+//  题目ID: P9458
+#include<bits/stdc++.h>
+using namespace std;
+string s,ans('\127',100);
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>s;
+	for(int l=0;l<s.size();l++){
+		for(int r=l;r<s.size();r++){
+			for(int i=l,j=r;i<j;i++,j--){
+				swap(s[i],s[j]);
+			}
+			ans=min(ans,s);
+			for(int i=l,j=r;i<j;i++,j--){
+				swap(s[i],s[j]);
+			}
+		}
+	}
+	cout<<ans<<endl;
+    return 0;
+}

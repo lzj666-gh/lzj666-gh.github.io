@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 96901264
+//  题目ID: T66239
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n,max=-1,s=0,j=1;cin>>n;
+	while(n){
+		s=s*10+n%10;
+		n=n/10;
+	}
+	while(s){
+		cout<<j<<": ";
+		int c=s%10;
+		if(c>max) max=c;
+		cout<<c;
+		cout<<endl;
+		j++;
+		s/=10;
+	}
+	cout<<"max: "<<max;
+
+	return 0;
+}

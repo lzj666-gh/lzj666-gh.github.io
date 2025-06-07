@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 191258404
+//  题目ID: P8866
+#include<bits/stdc++.h>
+// #define ONLINE
+using namespace std;
+using ll = long long;
+int n, m, k, pos[1000], a;
+vector<string>opt;
+set<int> s;
+int main() {
+#ifdef ONLINE
+	freopen("meow.in", "r", stdin);
+	freopen("meow.out", "w", stdout);
+#endif
+	cin.tie(0)->sync_with_stdio(false);
+	srand(time(0));
+	int T;
+	cin >> T;
+	while (T--) {
+		cin >> n >> m >> k;
+		for (int i = 1; i <= n; ++i) s.insert(i);
+		opt.clear();
+		memset(pos, -1, sizeof pos);
+		for (int i = 1; i <= m; ++i) {
+			cin >> a;
+			if (pos[a] != -1) {
+				opt.push_back(string() + "1 " + to_string(pos[a]));
+				pos[a] = -1;
+				s.insert(pos[a]);
+			}
+			else {
+				if (s.empty()) {
+					int now = rand() % n + 1;
+					opt.push_back(string() + "1 " + to_string(now));
+					opt.push_back(string() + "2 " + to_string(now) + ' ' + to_string(rand() % n + 1));
+				}
+				else {
+					set<int>::iterator it = s.begin();
+					opt.push_back(string() + "1 " + to_string(*it)); 
+					pos[a] = *it;
+					s.erase(it);
+				}
+			}
+		}
+		cout << opt.size() << endl;
+		for (const string& ss : opt) cout << ss << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,4 @@
+//  OJ: 洛谷
+//  提交ID: 127144899
+//  题目ID: U360166
+print(int(input())+int(input()))

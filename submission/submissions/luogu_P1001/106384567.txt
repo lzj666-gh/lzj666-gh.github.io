@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 106384567
+//  题目ID: P1001
+#include<bits/stdc++.h>
+#include<windows.h>
+using namespace std;
+int main(){
+    int a,b;
+    scanf("%d%d",&a,&b);
+    Sleep(989);
+    printf("%d",a+b);
+}

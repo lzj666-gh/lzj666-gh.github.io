@@ -1,0 +1,107 @@
+//  OJ: 洛谷
+//  提交ID: 126166809
+//  题目ID: P8267
+#include<bits/stdc++.h>
+#define online
+using namespace std;
+inline int read(){
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c>'9'||c<'0'){
+		if(c=='-'){
+			s=-1;
+		}
+		c=getchar();
+	}
+	while(c<='9'&&c>='0'){
+		x=(x<<3)+(x<<1)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+}
+inline void write(int x){
+	if(x<0){
+		putchar('-');
+		x=~x+1;
+	}
+	else if(x==0){
+		return;
+	}
+	write(x/10);
+	putchar(x%10+'0');
+}
+inline int min(const int &a,const int &b){
+	return a<b?a:b;
+}
+int n,topl,topg,ans=0x3f3f3f3f;
+array<int,1000+10>l,g;
+int main(){
+	#ifdef online
+//	freopen("liars.in","r",stdin);
+//	freopen("liars.out","w",stdout);
+	#endif
+	n=read();
+	for(int i=1;i<=n;++i){
+		if(getchar()=='G'){
+			g.at(++topg)=read();
+		}
+		else{
+			l.at(++topl)=read();
+		}
+	}
+	sort(g.begin(),g.begin()+topg+1);
+	sort(l.begin(),l.begin()+topl+1);
+	array<int,2000+10>a;//the array merge l and g
+	a[0]=0;
+	//merge begin
+	int top=0;
+	int i=1,j=1;
+	for(;i<=topl&&j<=topg;){
+		if(l[i]<g[j]){
+			a[++top]=l[i];
+			++i;
+		}
+		else{
+			a[++top]=g[j];
+			++j;
+		}
+	}
+	while(i<=topl) a[++top]=l[i++];
+	while(j<=topg) a[++top]=g[j++];
+	a[n+1]=0x3f3f3f3f;
+	//merge end
+	#ifndef online
+	for(int i=1;i<=n;++i) write(a[i]),putchar(' ');
+	cout<<endl;
+	#endif
+	for(int i=1;i<=n+1;++i){
+		int now=a[i]+a[i-1]>>1;
+		int tmp=0;
+		for(int j=1;j<=topl;++j){
+			#ifndef online
+			cout<<"l"<<j<<":"<<l[j]<<" now:"<<now<<endl;
+			#endif
+			if(l[j]<now){
+				tmp+=topl-j+1;
+				break;
+			}
+		}
+		for(int j=1;j<=topg;++j){
+			#ifndef online
+			cout<<"g"<<j<<":"<<g[j]<<" now:"<<now<<endl;
+			#endif
+			if(g[j]>now){
+				tmp+=topg-j+1;
+				break;
+			}
+		}
+		ans=min(ans,tmp);
+		#ifndef online
+		cout<<"now:"<<now<<" tmp:"<<tmp<<" ans:"<<ans<<endl;
+		#endif
+	}
+	if(ans) write(ans);
+	else putchar('0');
+	putchar('\n');
+	return 0;
+}

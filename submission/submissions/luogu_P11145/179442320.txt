@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 179442320
+//  题目ID: P11145
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+signed main() {
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		ll ans = 0;
+		cout << "? 1000000000000000000" << endl;
+		cin >> ans;
+		cout << "! " << ans << endl;
+	}
+	return 0;
+}

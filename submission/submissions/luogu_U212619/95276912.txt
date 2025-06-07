@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 95276912
+//  题目ID: U212619
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a,b,c,d;cin>>a>>b>>c>>d;
+	double ans;
+	ans=a+b*c/d;
+	printf("%.3lf",ans);
+}

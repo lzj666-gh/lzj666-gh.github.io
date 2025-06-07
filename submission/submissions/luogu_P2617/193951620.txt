@@ -1,0 +1,148 @@
+//  OJ: 洛谷
+//  提交ID: 193951620
+//  题目ID: P2617
+#include<bits/stdc++.h>
+#define mid(l, r) ((l + r) >> 1)
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+using namespace std;
+int n, m;
+struct Node {
+	int ls, rs, val;
+	Node() :ls(0), rs(0), val(0) {}
+	Node(int v) :ls(0), rs(0), val(v) {}
+	Node(int lc, int rc, int v) :ls(lc), rs(rc), val(v) {}
+}tree[3500'00000];
+int idx;
+struct Seg_Tree {
+	int root;
+	Seg_Tree() :root(/*++idx*/0) {}
+	void add(int x, int k, int l, int r, int& now) {
+		if (!(l <= x && x <= r)) return;
+		if (!now) now = ++idx;
+		if (l == r && l == x) {
+			tree[now].val += k;
+			return;
+		}
+		add(x, k, l, mid(l, r), tree[now].ls);
+		add(x, k, mid(l, r) + 1, r, tree[now].rs);
+		tree[now].val = tree[tree[now].ls].val + tree[tree[now].rs].val;
+	}
+	int query(int L, int R, int l, int r, int now) {
+		if (!now) return 0;
+		if (L <= l && r <= R) return tree[now].val;
+		if (r < L || R < l) return 0;
+		return query(L, R, l, mid(l, r), tree[now].ls) + query(L, R, mid(l, r) + 1, r, tree[now].rs);
+	}
+	int ask(int k, int l, int r, int now) {
+		if (l == r) return l;
+		if (k > tree[tree[now].ls].val)
+			return ask(k - tree[tree[now].ls].val, mid(l, r) + 1, r, tree[now].rs);
+		else
+			return ask(k, l, mid(l, r), tree[now].ls);
+	}
+}tr[2000005];
+int a[500000 + 10];
+void build(int p, int l, int r) {
+	for (int i = l; i <= r; ++i) tr[p].add(a[i], 1, 0, 1e9, tr[p].root);
+	if (l == r) return;
+	build(lc(p), l, mid(l, r));
+	build(rc(p), mid(l, r) + 1, r);
+}
+vector<int>seg;
+void find_seg(int p, int L, int R, int l, int r) {
+	if (L <= l && r <= R) {
+		seg.push_back(p);
+		return;
+	}
+	if (R < l || r < L) return;
+	find_seg(lc(p), L, R, l, mid(l, r));
+	find_seg(rc(p), L, R, mid(l, r) + 1, r); 
+}
+int get_rank(int l, int r, int v) {
+	seg.clear();
+	find_seg(1, l, r, 1, n);
+	int ans = 0;
+	for (int i : seg) ans += tr[i].query(0, v - 1, 0, 1e9, tr[i].root);
+	return ans + 1;
+}
+int change(int u, int v, int x = 1, int y = n, int p = 1) {
+	if (x == y && x == u) {
+		int val = tr[p].ask(1, 0, 1e9, tr[p].root);
+		tr[p].add(val, -1, 0, 1e9, tr[p].root);
+		tr[p].add(v, 1, 0, 1e9, tr[p].root);
+		return val;
+	}
+	int val = 0;
+	if (u <= mid(x, y)) val = change(u, v, x, mid(x, y), lc(p));
+	else val = change(u, v, mid(x, y) + 1, y, rc(p)); 
+	tr[p].add(val, -1, 0, 1e8, tr[p].root);
+	tr[p].add(v, 1, 0, 1e8, tr[p].root);
+	return val;
+}
+int kth(int l, int r, int k) {
+	if (k == 0) return -2147483647;
+	if (r - l + 1 < k) return 2147483647;
+	seg.clear();
+	find_seg(1, l, r, 1, n);
+	int x = 0, y = 1e9;
+	vector<int>cur;
+	for (int i = 0; i < seg.size(); i++) cur.push_back(tr[seg[i]].root);
+	while (x != y) {
+		int sum = 0;
+		for (int i = 0; i < seg.size(); i++) sum += tree[tree[cur[i]].ls].val;
+		int mid = x + y >> 1;
+		if (k > sum) {
+			k -= sum, x = mid + 1;
+			for (int i = 0; i < seg.size(); i++) cur[i] = tree[cur[i]].rs;
+		}
+		else {
+			y = mid;
+			for (int i = 0; i < seg.size(); i++) cur[i] = tree[cur[i]].ls;
+		}
+	}
+	return x;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	build(1, 1, n);
+	while (m--) {
+		char opt;
+		int l, r, k;
+		cin >> opt;
+		switch (opt) {
+		case 1: {
+			cin >> l >> r >> k;
+			cout << get_rank(l, r, k) << endl;
+			break;
+		}
+		case 'Q': {
+			cin >> l >> r >> k;
+			cout << kth(l, r, k) << endl;
+			break;
+		}
+		case 'C': {
+			cin >> l >> k;
+			change(l, k);
+			break;
+		}
+		case 4: {
+			cin >> l >> r >> k;
+			cout << kth(l, r, get_rank(l, r, k) - 1) << endl;
+			break;
+		}
+		case 5: {
+			cin >> l >> r >> k;
+			//cerr << "__debug__ " << get_rank(l, r, k) << endl;
+			cout << kth(l, r, get_rank(l, r, k + 1)) << endl;
+			break;
+		}
+		default: {
+			cout << "nanananananananananananananana!" << endl;
+		}
+		}
+	}
+	return 0;
+}

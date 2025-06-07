@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 112727418
+//  题目ID: U305982
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	char a[5000000]; 
+	friend char* operator+(node a,node b){
+		char c[max(a.a[0],b.a[0])+1];
+		c[0]=max(a.a[0],b.a[0])+1;
+		memset(c,0,sizeof(c));
+		for(int i=1;i<=max(a.a[0],b.a[0]);++i){
+			c[i]=c[i]-'0'+(a.a[i]-'0'+b.a[i]-'0')%10+'0';
+			c[i+1]=(a.a[i]-'0'+b.a[i]-'0')/10+'0';
+		}
+		if(c[c[0]]==0) --c[0];
+		return c;
+	}
+	friend bool operator>(node a,node b){
+		if(a.a[0]!=b.a[0]) return a.a[0]>b.a[0];
+		for(int i=a.a[0];i>0;--i){
+			if(a.a[i]!=b.a[i]) return a.a[i]>b.a[i];
+		}
+		return true;
+	}
+};
+int main(){
+	node a={{1,'1'}},b={{2,'1','0'}};
+	char c[10];
+	c=a+b;
+	for(int i=c[0];i>0;i--){
+		cout<<c[i];
+	}
+	return 0;
+}

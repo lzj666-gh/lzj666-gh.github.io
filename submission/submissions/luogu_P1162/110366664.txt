@@ -1,0 +1,55 @@
+//  OJ: 洛谷
+//  提交ID: 110366664
+//  题目ID: P1162
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+int a[50][50];//0£ºÎ´À©Õ¹£¬1£ºÇ½£¬2£ºÀ©Õ¹¹ý£¬1ÄÚ£¬3£ºÇ½£¬4£ºÀ©Õ¹¹ý£¬Íâ²¿ 
+void dfs(int x,int y,int s);
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			cin>>a[i][j];
+		}
+		a[i][0]=3;
+		a[0][i]=3;
+		a[i][n+1]=3;
+		a[n+1][i]=3;
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			if(a[i][j]==0) dfs(i,j,2);
+		}
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			cout<<a[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+	return 0;
+}
+void dfs(int x,int y,int s){
+	//À©Õ¹x£¬y£¬ÅÔ±ßÓÐÒ»¸ös
+	if(s==4&&a[x][y]==2){
+		a[x][y]=4;
+		dfs(x+1,y,4);
+		dfs(x-1,y,4);
+		dfs(x,y+1,4);
+		dfs(x,y-1,4);
+		return;
+	} 
+	if(a[x][y]==3){
+		if(x!=0) dfs(x-1,y,4);
+		if(y!=0) dfs(x,y-1,4);
+		if(x==n+1) dfs(n,y,4);
+		if(y==n+1) dfs(x,n,4);
+	} 
+	if(s==a[x][y]){
+		return;
+	}
+	if(a[x][y]==1) return;
+	if(a[x][y]==0&&(s==1||s==4)) a[x][y]=s; 
+}

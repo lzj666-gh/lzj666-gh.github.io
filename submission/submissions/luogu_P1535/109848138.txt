@@ -1,0 +1,58 @@
+//  OJ: 洛谷
+//  提交ID: 109848138
+//  题目ID: P1535
+#include<bits/stdc++.h>
+#define r1 sx
+#define r2 fx
+#define c1 sy
+#define c2 fy
+using namespace std;
+int n,xx,yy,m,t,sx,sy,fx,fy,cnt;
+bool a[120][120];
+int b[120][120][20],dx[4]={1,-1,0,0},dy[4]={0,0,1,-1};
+int dfs(int x,int y,int time)
+{
+	if(b[x][y][time]!=0)return b[x][y][time];
+	if(time>t) return b[x][y][time]=0;
+	if(time==t)
+	{
+		if(x==r2&&y==c2)return b[x][y][time]=1;
+		else return b[x][y][time]=0;
+	}
+	int ans=0;
+	for(int i=0;i<4;i++)
+	{
+		if(x+dx[i]<1 || x+dx[i]>n || y+dy[i]<1 || y+dy[i]>m)continue;
+		ans+=dfs(x+dx[i],y+dy[i],time+1);
+	}
+	return b[x][y][time]=ans;
+}
+int main(){
+	cin>>n>>m>>t;
+	getchar();
+	for(int i=1;i<=n;i++){
+		char ch;
+		for(int j=1;j<=m;j++){
+			ch=getchar();
+			a[i][j]=ch=='.';
+		}
+		getchar();
+	}
+	cin>>sx>>sy>>fx>>fy;
+//	cout<<n<<" "<<m<<" "<<t<<endl;
+//	cout<<sx<<" "<<sy<<" "<<fx<<" "<<fy<<endl;
+//	for(int i=1;i<=n;i++){
+//		for(int j=1;j<=m;j++){
+//			cout<<a[i][j]<<" ";
+//		}
+//		cout<<endl;
+//	}
+	if(a[fx][fy]==false){
+		putchar('0');
+		return 0;
+	}
+	
+	cout<<dfs(sx,sy,0)<<endl;
+	return 0;
+}
+

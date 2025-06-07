@@ -1,0 +1,79 @@
+//  OJ: 洛谷
+//  提交ID: 185592361
+//  题目ID: T533386
+#include<bits/stdc++.h>
+using namespace std;
+int n, m;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+	struct point {
+		int l, r,  mn;
+		point() :l(0), r(0), mn(INT_MAX) {}
+	}tree[4 * 100000 + 10];
+	void pushup(int p) {
+		tree[p].mn = min(tree[lc(p)].mn, tree[rc(p)].mn);
+	}
+	void add(int p, int l, int k) {
+		if (tree[p].l > l || tree[p].r < l) return;
+		if (tree[p].l == tree[p].r) {
+			tree[p].mn = min(tree[p].mn, k);
+			return;
+		}
+		add(lc(p), l, k);
+		add(rc(p), l, k);
+		pushup(p);
+	}
+	int query(int p, int l, int r) {
+		if (tree[p].l > r || tree[p].r < l) return INT_MAX;
+		if (tree[p].l == tree[p].r) {
+			return tree[p].mn;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) return tree[p].mn;
+		return min(query(lc(p), l, r), query(rc(p), l, r));
+	}
+	void build(int p, int l, int r) {
+		tree[p].l = l, tree[p].r = r, tree[p].mn = INT_MAX;
+		if (l == r)
+			return;
+		build(lc(p), l, l + r >> 1);
+		build(rc(p), (l + r >> 1) + 1, r);
+	}
+}t;
+struct Line {
+	int l, r;
+	friend bool operator<(const Line& l, const Line& r) {
+		return l.l == r.l ? l.r < r.r : l.l < r.l;
+	}
+}a[1000000 + 10], b[1000000 + 10];
+int p[1000000 + 10];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i].l >> a[i].r;
+	for (int i = 1; i <= m; ++i) cin >> p[i];
+	int idx = 0;
+	for (int i = 1; i <= n; ++i) {
+		int idx1 = lower_bound(p + 1, p + m + 1, a[i].l) - p;
+		int idx2 = upper_bound(p + 1, p + m + 1, a[i].r) - p - 1;
+		if (idx1 <= idx2) a[++idx].l = idx1, a[idx].r = idx2;
+		//cerr << idx1 << ' ' << idx2 << endl;
+	}
+	sort(a + 1, a + idx + 1);
+	//cout << "bef a: \n"; for (int i = 1; i <= idx; ++i) cout << a[i].l << ' ' << a[i].r << endl; cout << endl;
+	t.build(1, 1, m);
+	int top = 0;
+	for (int i = idx; i >= 1; --i) {
+		if (t.query(1, a[i].l, a[i].r) > a[i].r) b[++top] = a[i];
+		t.add(1, a[i].l, a[i].r);
+	}
+	reverse(b + 1, b + top + 1);
+	//for (int i = 1; i <= top; ++i) cout << b[i].l << ' ' << b[i].r << endl;
+	int ans = 0;
+	for (int i = 1; i <= top;) {
+		ans++; int tmp = b[i].r;
+		while (b[i].l <= tmp) i++;
+	}
+	cout << ans << endl;
+	return 0;
+}

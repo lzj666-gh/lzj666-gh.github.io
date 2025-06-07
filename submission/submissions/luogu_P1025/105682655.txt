@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 105682655
+//  题目ID: P1025
+#include<bits/stdc++.h> 
+using namespace std;
+int n,k,cnt;
+void dfs(int x,int b,int s){
+	if(x==n){
+		cnt++;
+		return;
+	}
+	for(int i=b;i<=s;i++){
+		dfs(x+1,i,n-i);
+	}
+}
+int main(){
+	scanf("%d%d",&n,&k);
+	dfs(1,1,n);
+	printf("%d",cnt);
+	return 0;
+}

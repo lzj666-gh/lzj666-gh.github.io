@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 120696691
+//  题目ID: U302519
+#include<bits/stdc++.h>
+using namespace std;
+map<string,int>a;
+int n,m,cnt;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;i++){
+		string s,ans;
+		cin>>s;
+		int last=a[s],now=last+1;
+		for(int j=1000000;j>=1;j/=10){
+			if(now/j%10!=last/j%10) cnt++;
+			ans+=to_string(now/j%10);
+			ans+=' ';
+		}
+		a[s]++;
+		if(cnt>m){
+			cout<<"banging"<<endl;
+			return 0;
+		}
+		cout<<ans<<endl;
+	}
+	return 0;
+}

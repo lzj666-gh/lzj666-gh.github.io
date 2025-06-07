@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 101695234
+//  题目ID: P1102
+#include<bits/stdc++.h>
+using namespace std;
+int a[200001];
+int N,C,ans;
+int main()
+{
+    cin>>N>>C;
+    for(int i=1;i<=N;i++)
+    {
+        scanf("%d",&a[i]);
+    }
+    sort(a+1,a+N+1);
+    for(int i=1;i<=N;i++)
+    {
+    	int p=upper_bound(a+1,a+N+1,a[i]+C)-a;
+		int q=lower_bound(a+1,a+N+1,a[i]+C)-a;
+        ans+=p-q;
+    }
+    cout<<ans;
+    return 0;
+}

@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 182963932
+//  题目ID: T528358
+#include<bits/stdc++.h>
+using namespace std;
+int w = INT_MAX, d = INT_MAX;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n;
+	cin >> n;
+	while (n--) {
+		int W, D;
+		cin >> W >> D;
+		if (D < d) {
+			d = D;
+			w = W;
+		}
+		else if (D == d && W < w) {
+			w = W;
+		}
+	}
+	cout << (d - 1) * 7 + w + 1 << endl;
+	return 0;
+}

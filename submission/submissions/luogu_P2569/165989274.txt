@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 165989274
+//  题目ID: P2569
+#include<bits/stdc++.h>
+using namespace std;
+long t, ap[4000 + 11], bp[4000 + 11], as[4000 + 11], bs[4000 + 11], mxp, w, ans, dp[4000 + 11][4000 + 11];
+int main() {
+	ios_base::sync_with_stdio(false);
+	memset(dp, 0xcf, sizeof dp);
+	cin >> t >> mxp >> w;
+	for (int i = 1; i <= t; ++i) cin >> ap[i] >> bp[i] >> as[i] >> bs[i];
+	dp[1][0] = 0;
+	for (int ii = 1; ii <= t; ++ii) {
+		for (int jj = 0; jj <= mxp; ++jj) {
+			ans = max(ans, dp[ii][jj]);
+		for (int i = 1; i + jj <= mxp && i <= as[ii]; ++i)
+			if (dp[ii + w + 1][jj + i] < dp[ii][jj] - ap[ii] * i) {
+				dp[ii + w + 1][jj + i] = dp[ii][jj] - ap[ii] * i;
+			}
+
+		for (int i = 1; i <= jj && i <= bs[ii]; ++i)
+			if (dp[ii + w + 1][jj - i] < dp[ii][jj] + bp[ii] * i) {
+				dp[ii + w + 1][jj - i] = dp[ii][jj] + bp[ii] * i;
+				ans = max(dp[ii + w + 1][jj - i], ans);
+			}
+
+		if (dp[ii + 1][jj] < dp[ii][jj]) {
+			dp[ii + 1][jj] = dp[ii][jj];
+		}
+		}
+	}
+	cout << ans << endl;
+	return 0;
+}
+/*
+5 2 3
+2 1 1 1
+2 1 1 1
+3 2 1 1
+4 3 1 1
+5 4 1 1
+*/
+//almost 50 pts
+//it's O(WTMaxP) (0<W<T<2000,MaxP<50(50%))

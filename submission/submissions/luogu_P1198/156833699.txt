@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 156833699
+//  题目ID: P1198
+#include<bits/stdc++.h>
+using namespace std;
+vector<int>idx, val;
+char opt; int n, lst, m, d, L;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> m >> d;
+	while (m--) {
+		cin >> opt >> n;
+		if (opt == 'Q') {
+			cout << (lst = val[lower_bound(idx.begin(), idx.end(), L - n + 1) - idx.begin()]) << endl;
+//			cerr << "idx:"; for (int i : idx)cout << ' ' << i; cerr << '\n';
+//			cerr << "val:"; for (int i : val)cout << ' ' << i; cerr << '\n';
+		}
+		else {
+			L++;
+			int t = (n + lst) % d;
+			while (val.size() && val.back() <= (n + lst) % d) val.pop_back(), idx.pop_back();
+			val.push_back((n + lst) % d), idx.push_back(L);
+//			cerr << "idx:"; for (int i : idx)cout << ' ' << i; cerr << '\n';
+//			cerr << "val:"; for (int i : val)cout << ' ' << i; cerr << '\n';
+		}
+	}
+	return 0;
+}

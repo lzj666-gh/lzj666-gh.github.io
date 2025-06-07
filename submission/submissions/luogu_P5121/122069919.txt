@@ -1,0 +1,62 @@
+//  OJ: 洛谷
+//  提交ID: 122069919
+//  题目ID: P5121
+#include<bits/stdc++.h>
+using namespace std;
+char c[10001][1001];
+int n,k,a[10001][1001],flag=1,vis[10001][1001],sum;
+struct node{
+	int jc,cj;
+};
+queue<node> q;
+void dfs(int x,int y,int ys){
+	if(a[x][y]!=ys) return ;
+	if(vis[x][y]) return ;
+	sum++;vis[x][y]=1;q.push({x,y});
+	if(x+1<=n) dfs(x+1,y,ys);
+	if(x-1>0) dfs(x-1,y,ys);
+	if(y+1<=10) dfs(x,y+1,ys);
+	if(y-1>0) dfs(x,y-1,ys);
+}
+int main(){
+	cin>>n>>k;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=10;j++){
+			cin>>c[i][j];
+			a[i][j]=c[i][j]-'0';
+		}
+	}
+	do{
+		for(int i=1;i<=10;i++){
+			vector<int> v;
+			for(int j=n;j>=1;j--) if(a[j][i]) v.push_back(a[j][i]);
+			int ccc=n,kkk=0;
+			while(!v[kkk]){
+				int cnt=v[kkk++];
+				a[ccc--][i]=cnt;
+			}			
+		}
+		flag=0;memset(vis,0,sizeof(vis));
+		for(int i=1;i<=n;i++){
+			for(int j=1;j<=10;j++){
+				if(a[i][j]==0||vis[i][j]) continue;
+				else{
+					sum=0;while(!q.empty()) q.pop();
+					dfs(i,j,a[i][j]);
+					if(sum>=k){
+						flag=1;
+						while(!q.empty()){
+							a[q.front().jc][q.front().cj]=0;
+							q.pop();
+						}
+					}
+				}
+			}
+		}
+	}while(flag);
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=10;j++) cout<<a[i][j];
+		cout<<endl;
+	}
+	return 0;
+}

@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 100929748
+//  题目ID: T209109
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a,c;char b;
+	cin>>a>>b>>c;
+	if(b=='+') cout<<a+c<<endl;
+	else if(b=='-') cout<<a-c<<endl;
+	else if(b=='*') cout<<a*c<<endl;
+	else if(b=='/') cout<<a/c<<endl;
+	return 0;
+}

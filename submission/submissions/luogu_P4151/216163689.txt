@@ -1,0 +1,91 @@
+//  OJ: 洛谷
+//  提交ID: 216163689
+//  题目ID: P4151
+#include<bits/stdc++.h>
+using namespace std;
+template<const int N = 63>
+struct xxj {
+	bitset<N> d[N];
+	xxj(long long n_ = 0) {
+		if (n_ > N - 1) n_ = N - 1;
+		for (int i = 0; i < N; ++i) d[i] = 0;
+	}
+	xxj operator^=(bitset<N> b) {
+		for (int j = N - 1; j >= 0; --j) {
+			if (b[j]) {
+				if (d[j].none()) {
+					d[j] = b.to_ullong();
+					break;
+				}
+				b ^= d[j];
+			}
+		}
+		return *this;
+	}
+	xxj updata() {
+		for (int i = N - 1; i >= 0; --i)
+			for (int j = N - 1; j > i; --j)
+				if (d[j][i])
+					d[j] ^= d[i];
+		return *this;
+	}
+	bitset<N> get_kth(int k) {
+		bitset<N> ans;
+		for (int i = N - 1; i >= 0; --i) {
+			if (d[i].none()) continue;
+			if (k & (1ll << i)) ans ^= d[i];
+		}
+		return ans;
+	}
+	bool compare(const bitset<N>& a, const bitset<N>& b) {
+		for (int i = N - 1; i >= 0; --i) {
+			if (a[i] && !b[i]) return true;
+			if (!a[i] && b[i]) return false;
+		}
+		return true;
+	}
+	bitset<N> get_max(bitset<N> val) {
+		for (int i = 0; i < N; ++i) if (compare(val ^ d[i], val)) val ^= d[i];
+		return val;
+	}
+};
+xxj<63> s;
+int n, m;
+struct Edge {
+	long long v, w, nxt;
+	Edge(long long v = 0, long long w = 0, long long nxt = 0) : v(v), w(w), nxt(nxt) {}
+}edge[100000 + 10];
+int head[50000 + 10], idx;
+void add(int u, int v, long long w) {
+	edge[++idx] = Edge(v, w, head[u]);
+	head[u] = idx;
+}
+bool vis[50000 + 10];
+long long beg, del[50000 + 10];
+void dfs(int x, long long lst) {
+	del[x] = lst;
+	vis[x] = 1;
+	if (x == n)
+		beg = lst;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		const long long& v = edge[i].v;
+		if (vis[v]) {
+			s ^= lst ^ edge[i].w ^ del[v];
+			continue;
+		}
+		dfs(v, lst^edge[i].w);
+	}
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (long long i = 1, s, t, d; i <= m; i++) {
+		cin >> s >> t >> d;
+		add(s, t, d);
+		add(t, s, d);
+	}
+	dfs(1, 0);
+	s.updata();
+	cout << s.get_max(beg).to_ullong() << endl;
+	return 0;
+}

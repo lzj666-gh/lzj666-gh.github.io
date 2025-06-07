@@ -1,0 +1,82 @@
+//  OJ: 洛谷
+//  提交ID: 211329409
+//  题目ID: P2000
+#define _USE_MATH_DEFINES
+#include <bits/stdc++.h>
+using namespace std;
+typedef complex<double> w;
+template<int rev>
+void FFT(w* f, int n) {
+    if (n == 1) return;
+    int len = n / 2;
+    static w cur[1 << 21];
+    for (int i = 0; i < n; ++i) cur[i] = f[i];
+    for (int i = 0; i < n; ++i)
+        if (i & 1)
+            f[len + i / 2] = cur[i];
+        else
+            f[i / 2] = cur[i];
+    w* g1 = f, * g2 = f + len;
+    FFT<rev>(g1, len); FFT<rev>(g2, len);
+    w I(1, 0), stp(cos(2 * M_PI / n), sin(2 * M_PI * rev / n));
+    for (int k = 0; k < len; ++k) {
+        w t = I * g2[k];
+        cur[k] = g1[k] + t;
+        cur[k + len] = g1[k] - t;
+        I *= stp;
+    }
+    for (int i = 0; i < n; ++i) f[i] = cur[i];
+}
+string multiply(const string& a, const string& b) {
+    int n = a.size(), m = b.size();
+    int t = 1 << (int)ceil(log2(n + m));
+    vector<w> f(t), g(t);
+    for (int i = 0; i < n; ++i) f[i] = w(a[n - 1 - i] - '0', 0);
+    for (int i = 0; i < m; ++i) g[i] = w(b[m - 1 - i] - '0', 0);
+    FFT<1>(f.data(), t);
+    FFT<1>(g.data(), t);
+    for (int i = 0; i < t; ++i) f[i] *= g[i];
+    FFT<-1>(f.data(), t);
+    for (int i = 0; i < t; ++i) f[i] /= t;
+    vector<int> res(t);
+    for (int i = 0; i < t; ++i) res[i] = int(f[i].real() + 0.5);
+    for (int i = 0; i < t - 1; ++i) {
+        res[i + 1] += res[i] / 10;
+        res[i] %= 10;
+    }
+    while (res.size() > 1 && res.back() == 0) res.pop_back();
+    string ans;
+    for (auto it = res.rbegin(); it != res.rend(); ++it) ans += '0' + *it;
+    return ans;
+}
+string add(const string& a, const string& b) {
+    string result;
+    int carry = 0, i = a.size() - 1, j = b.size() - 1;
+    while (i >= 0 || j >= 0 || carry) {
+        int sum = carry;
+        if (i >= 0) sum += a[i--] - '0';
+        if (j >= 0) sum += b[j--] - '0';
+        result += (sum % 10) + '0';
+        carry = sum / 10;
+    }
+    reverse(result.begin(), result.end());
+    return result;
+}
+string divide_by_24(const string& num) {
+    string result;
+    int carry = 0;
+    for (char digit : num) {
+        int current = carry * 10 + (digit - '0');
+        result += (current / 24) + '0';
+        carry = current % 24;
+    }
+    while (result.size() > 1 && result[0] == '0') result.erase(result.begin());
+    return result;
+}
+int main() {
+    cin.tie(0)->sync_with_stdio(false);
+    string n;
+    cin >> n;
+    cout << divide_by_24(multiply(add(n, "4"), multiply(add(n, "1"), multiply(add(n, "2"), add(n, "3"))))) << endl;
+    return 0;
+}

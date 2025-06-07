@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 114284471
+//  题目ID: P1832
+#include <iostream>
+#include <vector>
+using namespace std;
+
+bool isPrime(int num) {
+    if (num < 2) {
+        return false;
+    }
+    for (int i = 2; i * i <= num; i++) {
+        if (num % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int countPrimeSum(int n) {
+    vector<int> dp(n + 1, 0);
+    dp[0] = 1;
+    for (int i = 2; i <= n; i++) {
+        if (isPrime(i)) {
+            for (int j = i; j <= n; j++) {
+                dp[j] += dp[j - i];
+            }
+        }
+    }
+    return dp[n];
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << countPrimeSum(n) << endl;
+    return 0;
+}

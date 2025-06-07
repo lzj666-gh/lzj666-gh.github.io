@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 174190167
+//  题目ID: P3386
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,e,u,v,belong[500+10];
+vector<int>may[500+10];
+bool now[500+10];
+bool chg(int x){
+	for(int i:may[x]){
+		if(now[i]) continue;
+		if(!belong[i]){
+			belong[i]=x;
+			return 1;
+		}
+		now[i]=1;
+		if(chg(belong[i])){
+			belong[i]=x;
+			return 1;
+		}
+		now[i]=0;
+	}
+	return 0;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m>>e;
+	for(int i=1;i<=e;++i){
+		cin>>u>>v;
+		may[u].push_back(v);
+	}
+	int ans=0;
+	for(int i=1;i<=n;++i){
+		memset(now,0,sizeof now);
+		if(chg(i)) ans++;
+	}
+	cout<<ans<<endl;
+	return 0;
+}

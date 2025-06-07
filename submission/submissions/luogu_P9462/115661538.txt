@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 115661538
+//  题目ID: P9462
+#include <iostream>
+#include <vector>
+using namespace std;
+int query(int u,int v){
+    cout<<"? "<<u<<" "<<v<<endl;
+    int result;
+    cin>>result;
+    return result;
+}
+void outputTree(const vector<pair<int,int> >& edges){
+    cout<<"!"<<endl;
+    for(int i=0;i<edges.size();i++){
+    	pair<int,int> edge= edges[i];
+        cout<<edge.first<<" "<<edge.second<<endl;
+    }
+}
+void constructTree(int n){
+    vector<pair<int,int>>edges;
+    vector<int> leaves;
+    for(int i=1;i<=n;i++){
+        if(query(1,i)== 1){
+            edges.push_back(make_pair(1,i));
+        } else {
+            leaves.push_back(i);
+        }
+    }
+    for(int i=0;i<leaves.size();i++){
+        for(int j=i+1;j<leaves.size();j++){
+            int result=query(leaves[i],leaves[j]);
+            if(result>0){
+                edges.push_back(make_pair(leaves[i],result));
+            }
+        }
+    }
+    outputTree(edges);
+}
+int main(){
+    int id,n;
+    cin>>id>>n;
+    constructTree(n);
+    return 0;
+}

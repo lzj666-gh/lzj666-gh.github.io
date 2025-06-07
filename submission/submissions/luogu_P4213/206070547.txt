@@ -1,0 +1,4 @@
+//  OJ: 洛谷
+//  提交ID: 206070547
+//  题目ID: P4213
+consle.log("jbjbjbjbjb")

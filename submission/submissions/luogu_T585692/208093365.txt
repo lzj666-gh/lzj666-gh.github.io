@@ -1,0 +1,75 @@
+//  OJ: 洛谷
+//  提交ID: 208093365
+//  题目ID: T585692
+#include <iostream>
+#include <vector>
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+typedef pair<ll, ll> Hash;
+constexpr ll mod = 998244353, P1 = 131, P2 = 13331, MAXN = 505;
+struct HASH {
+    size_t operator()(const Hash& h) const {
+        return hash<ll>()(h.first) ^ (hash<ll>()(h.second) << 1);
+    }
+};
+ll poww(ll x, ll k) {
+    if (k == 0) return 1;
+    if (k == 1) return x;
+    ll tmp = poww(x, k / 2);
+    tmp = tmp * tmp % mod;
+    if (k % 2 == 1) return tmp * x % mod;
+    else return tmp;
+}
+ll C(ll n, ll k) {
+    if (k > n || k < 0) return 0;
+    ll res = 1;
+    for (ll i = 1; i <= k; ++i)
+        res = res * (n - i + 1) % mod * poww(i, mod - 2) % mod;
+    return res;
+}
+vector<int> adj[MAXN];
+unordered_map<Hash, int, HASH> cnt;
+Hash tree_hash(int u, int fa) {
+    vector<Hash> hashes;
+    for (int v : adj[u]) {
+        if (v == fa) continue;
+        hashes.push_back(tree_hash(v, u));
+    }
+    sort(hashes.begin(), hashes.end());
+    ll h1 = 1, h2 = 1;
+    for (auto& h : hashes) {
+        h1 = (h1 * P1 + h.first) % mod;
+        h2 = (h2 * P2 + h.second) % mod;
+    }
+    return { h1, h2 };
+}
+ll solve(int u, int fa, int m) {
+    cnt.clear();
+    for (int v : adj[u]) {
+        if (v == fa) continue;
+        cnt[tree_hash(v, u)]++;
+    }
+    ll res = 1;
+    for (auto& p : cnt) {
+        int a = p.second;
+        ll f = 0;
+        for (int k = 1; k <= a; ++k) {
+            f = (f + C(a - 1, k - 1) * C(m, k)) % mod;
+        }
+        res = res * f % mod;
+    }
+    return res * m % mod;
+}
+int main() {
+    int n, m;
+    cin >> n >> m;
+    for (int i = 0; i < n - 1; ++i) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    cout << solve(1, 0, m) << endl;
+    return 0;
+}

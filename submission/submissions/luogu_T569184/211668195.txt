@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 211668195
+//  题目ID: T569184
+#include<bits/stdc++.h>
+using namespace std;
+string s;
+int a,sum,f;
+signed main(){
+	getline(cin,s);
+	while(cin>>a){
+		if(f){
+			if(f==1)sum--;
+			else sum-=(1<<(f-2));
+			if(sum<0){sum=0;f=0;}
+		}
+		if(a){
+			sum++;f=0;
+		}
+		else f++;
+	}
+	cout<<sum;
+	return 0;
+}

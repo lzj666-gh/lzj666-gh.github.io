@@ -1,0 +1,63 @@
+//  OJ: 洛谷
+//  提交ID: 194901882
+//  题目ID: P4688
+#include<bits/stdc++.h>
+//#pragma GCC optimize(3,"Ofast","inline")
+using namespace std;
+const int SizeLen = 100000 + 3, SizeBlock = 319;
+int n, m, a[SizeLen], bel[SizeLen], cnt[SizeLen], Ans[SizeLen];
+bitset<SizeLen>ans[SizeLen], now, vis;
+struct Query {
+	int l, r, id, QWQ;
+	friend bool operator<(const Query& a, const Query& b) {
+		return a.QWQ == b.QWQ ? bel[a.l] == bel[b.l] ? bel[a.l] & 1 ? a.r<b.r : a.r>a.r : a.l < b.l : a.QWQ < b.QWQ;
+	}
+};
+vector<Query>q;
+vector<int>lsh;
+void add(const int& x) {
+	now[a[x] + cnt[a[x]]] = 1;
+	cnt[a[x]]++;
+}
+void del(const int& x) {
+	cnt[a[x]]--;
+	now[a[x] + cnt[a[x]]] = 0;
+}
+void solve(vector<Query>::iterator q) {
+	int l = 1, r = 0;
+	for (int j = 0; j < m; ++j) {
+		while (r < q[j].r) add(r + 1), r++;
+		while (l > q[j].l) add(l - 1), l--;
+		while (r > q[j].r) del(r), r--;
+		while (l < q[j].l) del(l), l++;
+		if (vis[q[j].id]) ans[q[j].id] &= now;
+		else vis[q[j].id] = 1, ans[q[j].id] = now;
+	}
+	while (l <= r) del(l), l++;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i], lsh.push_back(a[i]);
+	sort(lsh.begin(), lsh.end());
+	for (int i = 1; i <= n; ++i) a[i] = lower_bound(lsh.begin(), lsh.end(), a[i]) - lsh.begin();
+	int Block = sqrt(n);
+	for (int i = 1; i <= n; ++i)
+		bel[i] = (i - 1) / n;
+	for (int i = 0; i < m; ++i) {
+		int l, r;
+		cin >> l >> r;
+		q.push_back({ l,r,i,i % 3 });
+		Ans[i] += r - l + 1;
+		cin >> l >> r;
+		q.push_back({ l,r,i,i % 3 });
+		Ans[i] += r - l + 1;
+		cin >> l >> r;
+		q.push_back({ l,r,i,i % 3 });
+		Ans[i] += r - l + 1;
+	}
+	sort(q.begin(), q.end());
+	solve(q.begin()); solve(q.begin() + m); solve(q.begin() + m + m);
+	for (int i = 0; i < m; ++i) cout << Ans[i] - ans[i].count() * 3 << endl;
+	return 0;
+}

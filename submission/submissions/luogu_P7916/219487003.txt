@@ -1,0 +1,122 @@
+//  OJ: 洛谷
+//  提交ID: 219487003
+//  题目ID: P7916
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int inf = 0x3f3f3f3f;
+struct Edge {
+	int v, w, nxt;
+}edge[25000000 + 10];
+int head[1000000 + 10], hb[1000000 + 10], idx = 1;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+void addedge(int u, int v, int w) {
+	//cerr << "              " << w << endl;
+	//cerr << "add edge: " << u << " ------> " << v << endl;
+	add(u, v, w); add(v, u, 0);
+}
+int h[1000000 + 10], more[1000000 + 10], g[1000000 + 10];
+struct _ { bool operator()(int a, int b) { return h[a] < h[b]; } };
+priority_queue<int, vector<int>, _> pq;
+bool vis[1000000 + 10];
+void bfs(int t) {
+	memset(h, 0x3f, sizeof h);
+	queue<int>q; h[t] = 0; q.push(t);
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		for (int i = head[now]; i; i = edge[i].nxt)
+			if (edge[i ^ 1].w && h[edge[i].v] > h[now] + 1)
+				h[edge[i].v] = h[now] + 1, q.push(edge[i].v);
+	}
+}
+void push(int now, int s, int t) {
+	for (int i = head[now]; i; i = edge[i].nxt) {
+		if (edge[i].w && h[edge[i].v] + 1 == h[now]) {
+			int flow = min(more[now], edge[i].w);
+			more[edge[i].v] += flow; more[now] -= flow;
+			edge[i].w -= flow; edge[i ^ 1].w += flow;
+			if (edge[i].v != s && edge[i].v != t && !vis[edge[i].v])
+				vis[edge[i].v] = 1, pq.push(edge[i].v);
+			if (more[now] == 0) return;
+		}
+	}
+}
+void relabel(int now) {
+	h[now] = inf;
+	for (int i = head[now]; i; i = edge[i].nxt)
+		if (edge[i].w && h[edge[i].v] + 1 < h[now])
+			h[now] = h[edge[i].v] + 1;
+}
+int hlpp(int n, int s, int t) {
+	memset(g, 0, sizeof g);
+	memset(more, 0, sizeof more);
+	bfs(t);
+	if (h[s] == inf) return 0;
+	h[s] = n;
+	for (int i = 1; i <= n; ++i) if (h[i] ^ inf) g[h[i]]++;
+	for (int i = head[s]; i; i = edge[i].nxt)
+		if (int w = edge[i].w; w)
+			edge[i].w -= w, edge[i ^ 1].w += w, more[s] -= w, more[edge[i].v] += w,
+			edge[i].v != s && edge[i].v != t && !vis[edge[i].v] ? vis[edge[i].v] = 1, pq.push(edge[i].v) : void();
+	while (!pq.empty()) {
+		int now = pq.top(); pq.pop(); vis[now] = 0; push(now, s, t);
+		if (more[now])
+			if ((h[now] ^ inf)) {
+				if (!--g[h[now]])
+					for (int i = 1; i <= n; i++)
+						if (i != s && i != t && h[i] > h[now] && h[i] < n + 1)
+							h[i] = n + 1;
+				relabel(now); ++g[h[now]], pq.push(now), vis[now] = 1;
+			}
+	}
+	return more[t];
+}
+int n, m, T;
+int ind[505][505], ix;
+int pos(int x) {
+	if (x <= m) return ind[1][x];
+	x -= m;
+	if (x <= n) return ind[x][m];
+	x -= n;
+	if (x <= m) return ind[n][m - x + 1];
+	x -= m;
+	if (x <= n) return ind[n - x + 1][1];
+	return -1;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> T;
+	ix = n + m + n + m;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j)
+			ind[i][j] = ++ix;
+	for (int i = 1, w; i < n; ++i)
+		for (int j = 1; j <= m; ++j)
+			cin >> w,
+			addedge(ind[i][j], ind[i + 1][j], w),
+			addedge(ind[i + 1][j], ind[i][j], w);
+	for (int i = 1, w; i <= n; ++i)
+		for (int j = 1; j < m; ++j)
+			cin >> w,
+			addedge(ind[i][j], ind[i][j + 1], w),
+			addedge(ind[i][j + 1], ind[i][j], w);
+	int bk = idx;
+	memcpy(hb, head, sizeof head);
+	while (T--) {
+		int k; cin >> k;
+		for (int i = 1; i <= k; ++i) {
+			int x, p, t;
+			cin >> x >> p >> t;
+			if (t == 1) addedge(ix + 1, p, inf), addedge(p, pos(p), x);
+			if (t == 0) addedge(p, ix + 2, inf), addedge(pos(p), p, x);
+		}
+		cout << hlpp(ix + 2, ix + 1, ix + 2) << endl;
+		idx = bk;
+		for (int i = 2; i <= idx; i += 2)
+			edge[i].w += edge[i + 1].w, edge[i + 1].w = 0;
+		memcpy(head, hb, sizeof head);
+	}
+	return 0;
+}

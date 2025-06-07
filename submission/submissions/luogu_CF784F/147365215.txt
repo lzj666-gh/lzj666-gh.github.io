@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 147365215
+//  题目ID: CF784F
+#include<bits/stdc++.h>
+using namespace std;
+int a[100000+10];
+int main(){
+	int n;cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>a[i];
+	}
+	sort(&a[0],&a[n]);
+	for(int i=0;i<n;i++){
+		cout<<a[i]<<" ";
+	}
+} 

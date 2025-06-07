@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 188123165
+//  题目ID: T537315
+#include<bits/stdc++.h>
+using namespace std;
+int n,q,opt;
+int main(){
+	cin>>n>>q;
+	while(q--){
+		cout<<1<<endl;
+	}
+	return 0;
+}

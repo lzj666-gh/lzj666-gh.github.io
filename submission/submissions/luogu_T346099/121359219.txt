@@ -1,0 +1,60 @@
+//  OJ: 洛谷
+//  提交ID: 121359219
+//  题目ID: T346099
+#include "bits/stdc++.h"
+using namespace std;
+struct Edge{
+	int to,next,w;
+}edge[300000+10];
+int head[200000+10],n,m,s,idx;
+int vis[200000+10],dis[200000+10];
+void spfa(){
+	memset(vis,0,sizeof vis);
+	memset(dis,0x3f,sizeof dis);
+	queue<int>q;
+	q.push(1);
+	dis[1]=0;
+	while(!q.empty()){
+		int now=q.front();
+		q.pop();
+		++vis[now];
+		if(vis[now]>=n){
+			cout<<"YES"<<endl;
+			return;
+		}
+		for(int i=head[now];i;i=edge[i].next){
+			int to=edge[i].to;
+			if(dis[to]>dis[now]+edge[i].w){
+				dis[to]=dis[now]+edge[i].w;
+				q.push(to);
+			}
+		}
+	}
+	cout<<"NO"<<endl;
+}
+inline void add(int u,int v,int w){
+	++idx;
+	edge[idx].to=v;
+	edge[idx].next=head[u];
+	head[u]=idx;
+	edge[idx].w=w;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	for(int qqq=1;qqq<=T;qqq++){
+		memset(head,0,sizeof head);
+		memset(edge,0,sizeof edge);
+		cin>>n>>m;
+		for(int i=1;i<=m;i++){
+			int u,v,w;
+			cin>>u>>v>>w;
+			add(u,v,w);
+			if(w>=0) add(v,u,w);
+		}
+		spfa();
+	}
+	
+	
+}

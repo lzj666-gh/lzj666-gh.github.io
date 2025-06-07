@@ -1,0 +1,54 @@
+//  OJ: 洛谷
+//  提交ID: 182941896
+//  题目ID: T528479
+#include<bits/stdc++.h>
+#define int long long
+// #define ONLINE
+#pragma warning(disable:4996)
+#pragma warning(disable:6031)
+using namespace std;
+int n, p[60], l[60];
+bool mv[60];
+int ans;
+int db[29] = { 1ll,1ll,2ll,5ll,14ll,42ll,132ll,429ll,1430ll,4862ll,16796ll,58786ll,208012ll,742900ll,2674440ll,9694845ll,35357670ll,129644790ll,477638700ll,1767263190ll,6564120420ll,24466267020ll,91482563640ll,343059613650ll,1289904147324ll,4861946401452ll,18367353072152ll,69533550916004ll,263747951750360ll };
+unsigned short chk;
+clock_t beg;
+void dfs(int x, int y, int lx, int ly) {
+	if (y > x || x > n || y > n || lx > n || ly > n) return;
+	chk++;
+	if (!(chk & 15)) {
+		if ((clock() - beg) * 1.0 / CLOCKS_PER_SEC >= 0.92) {
+			cout << db[n] << endl;
+			exit(0);
+		}
+	}
+	if (x == n && y == n) {
+		ans++;
+		return;
+	}
+	if (p[x + y + 1] == x + y + 1) {
+		mv[x + y + 1] = 0;
+		dfs(x + 1, y, lx + l[x + y + 1], ly);
+		mv[x + y + 1] = 1;
+		dfs(x, y + 1, lx, ly + l[x + y + 1]);
+	}
+	else {
+		mv[x + y + 1] = mv[p[x + y + 1]];
+		if (mv[p[x + y + 1]]) dfs(x, y + 1, lx, ly);
+		else dfs(x + 1, y, lx, ly);
+	}
+}
+signed main() {
+#ifdef ONLINE
+	freopen("c.in", "r", stdin);
+	freopen("c.out", "w", stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	beg = clock();
+	cin >> n;
+	for (int i = 1; i <= n + n; ++i) cin >> p[i], l[i] = 1;
+	for (int i = n + n; i >= 1; --i) if (p[i] ^ i) l[p[i]] += l[i];
+	dfs(0, 0, 0, 0);
+	cout << ans << endl;
+	return 0;
+}

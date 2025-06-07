@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 158003520
+//  题目ID: U418137
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n,m,k,T;
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin>>T;
+	while(T--){
+		cin>>n>>m>>k;k++;
+		if(n%k==1&&m%k==1) cout<<"NSL"<<endl;
+		else{
+			cout<<(n%k+k-1)%k<<' '<<(m%k+k-1)%k<<endl;
+		}
+	}
+	return 0;
+}

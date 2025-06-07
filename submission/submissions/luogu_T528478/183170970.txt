@@ -1,0 +1,68 @@
+//  OJ: 洛谷
+//  提交ID: 183170970
+//  题目ID: T528478
+#include<bits/stdc++.h>
+#define int long long
+// #define ONLINE
+#pragma warning(disable:4996)
+#pragma warning(disable:6031)
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[30000];
+int head[60], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int n, m, k, S, T;
+time_t beg;
+unsigned short cur;
+signed main(){
+#ifdef ONLINE
+	freopen("b.in","r",stdin);
+	freopen("b.out","w",stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	beg = clock();
+	cin >> n >> m >> k >> S >> T;
+	for (int i = 1, u, v, w; i <= m; ++i) cin >> u >> v >> w, add(u, v, w);
+	//if (n <= 5 && k <= 10) {
+		struct Node {
+			int len, idx;
+			Node() :len(0), idx(0) {}
+			Node(int l, int i) :len(l), idx(i) {}
+		};
+		struct Cmp {
+			bool operator()(const Node& a, const Node& b) {
+				return a.len > b.len;
+			}
+		};
+		priority_queue<Node, vector<Node>, Cmp>q;
+		q.emplace(0, S);
+		int cnt = 0, lst = -1;
+		while (!q.empty()) {
+			Node now = q.top(); q.pop();
+			cur++;
+			if (!(cur & 15)) {
+				if ((clock() - beg) * 1.0 / CLOCKS_PER_SEC >= 0.92) {
+					cout << lst << endl;
+					return 0;
+				}
+			}
+			if (now.idx == T) {
+				cnt++;
+				lst = now.len;
+				if (cnt == k) {
+					cout << now.len << endl;
+					return 0;
+				}
+			}
+			for (int i = head[now.idx]; i; i = edge[i].nxt)
+				q.emplace(now.len + edge[i].w, edge[i].v);
+		}
+		cout << -1 << endl;
+		return 0;
+	//}
+	return 0;
+}

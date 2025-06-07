@@ -1,0 +1,60 @@
+//  OJ: 洛谷
+//  提交ID: 179221876
+//  题目ID: P7771
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, rd[1000000 + 10], cd[1000000 + 10];
+vector<int>son[1000000 + 10];
+stack<int>s;
+void dfs(int x) {
+	while (son[x].size()) {
+		int tmp = son[x].back();
+		son[x].pop_back();
+		dfs(tmp);
+	}
+	s.push(x);
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v; i <= m; ++i) {
+		cin >> u >> v;
+		rd[v]++;
+		cd[u]++;
+		son[u].push_back(v);
+	}
+	int s = -1, t = -1;
+	for (int i = 1; i <= n; ++i) {
+		if (cd[i] == rd[i] + 1) {
+			if (s != -1) {
+				cout << "No" << endl;
+				return 0;
+			}
+			s = i;
+		}
+		else if (rd[i] == cd[i] + 1) {
+			if (t != -1) {
+				cout << "No" << endl;
+				return 0;
+			}
+			t = i;
+		}
+		else if (rd[i] != cd[i]) {
+			cout << "No" << endl;
+			return 0;
+		}
+	}
+	for (int i = 1; i <= n; ++i) {
+		sort(son[i].rbegin(), son[i].rend());
+		//for (int j : son[i]) cout << j << ' '; cout << endl;
+	}
+	dfs(s);
+	while (::s.size()) cout << ::s.top() << ' ', ::s.pop();
+	return 0;
+}
+/*
+3 3
+1 3
+3 1
+1 2
+*/

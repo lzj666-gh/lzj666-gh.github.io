@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 147653731
+//  题目ID: P5091
+#include<bits/stdc++.h>
+using namespace std;
+long long phi = 1;
+inline void read(long long& x) {
+	bool f = 1; char ch = getchar();
+	while (ch < '0' || ch>'9') { if (ch == '-') f = !f; ch = getchar(); }
+	while (ch >= '0' && ch <= '9') { x = (x << 1) + (x << 3) + (ch ^ 48); x %= phi; ch = getchar(); }
+	x = (f ? x : -x); return;
+}
+void exgcd(long long a, long long b, long long& x, long long& y) {
+	if (b == 0) { x = 1; y = 0; return; }
+	exgcd(b, a % b, x, y);
+	int z = x; x = y, y = z - y * (a / b);
+}
+inline long long inv(long long a, long long p) {
+	long long x, y;
+	exgcd(a, p, x, y);
+	return (x % p + p) % p;
+}
+#define int long long
+int poww(int a, int x, int p) {
+	if (x == 0) return 1;
+	long long t = poww(a, x / 2, p) % p;
+	t = (t * t) % p;
+	if (x % 2 == 1) t = (t * a) % p;
+	return t;
+}
+#undef int
+long long a, b, m;
+int main() {
+	ios::sync_with_stdio(false);
+	cin >> a >> m;
+	a %= m;
+	long long tmp = m;
+	for (int i = 2; i * i <= tmp; ++i) {
+		if (tmp % i) continue;
+		phi *= i - 1;
+		tmp /= i;
+		while (tmp % i == 0) phi *= i, tmp /= i;
+	}
+	if (tmp > 1) phi *= tmp - 1;
+	read(b);
+	cout << poww(a, b, m) << endl;
+	return 0;
+}

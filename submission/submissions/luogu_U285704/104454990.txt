@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 104454990
+//  题目ID: U285704
+//老师我是李梓加
+//我在玩游戏
+//我在玩洛谷和C++
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a,b;
+	scanf("%d%d",&a,&b);
+	printf("%d",a+b);
+	return 0;
+}

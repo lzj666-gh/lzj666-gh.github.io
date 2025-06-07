@@ -1,0 +1,15 @@
+//  OJ: 洛谷
+//  提交ID: 94774628
+//  题目ID: T66253
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n,m,j;cin>>m>>n;
+	for(int i=1;i<=n;i++){
+		int d;cin>>d;
+		if(d>m) j+=1;
+	}
+	cout<<j;
+	return 0;
+}

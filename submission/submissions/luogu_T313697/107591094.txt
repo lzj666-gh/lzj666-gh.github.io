@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 107591094
+//  题目ID: T313697
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    cout<<"BAKACIRNO"<<endl;
+}

@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 124802092
+//  题目ID: T377546
+#include<bits/stdc++.h>
+using namespace std;
+long long  a,b,c;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>a>>b>>c;
+	if(a+b==c){
+		cout<<"plus"<<endl;
+	}
+	else if(a-b==c){
+		cout<<"minus"<<endl;
+	}
+	else{
+		cout<<"illegal"<<endl;
+	}
+	return 0;
+}
+

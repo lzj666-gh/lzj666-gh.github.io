@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 142834669
+//  题目ID: T416129
+#include<bits/stdc++.h>
+using namespace std;
+int n,m;
+multiset<int>a,ys;
+long long ans=1;
+vector<int> b;
+void fj(int k){
+	for(int i=2;i<=k;++i){
+		while(k%i==0&&k) k/=i,ys.insert(i);
+	}
+}
+void del(int k){
+	for(int i=2;i<=k;++i){
+		while(k%i==0&&k){
+			k/=i;
+			auto it=ys.lower_bound(i);
+			if(it==ys.end()||*it!=i) continue;
+			ys.erase(it);
+			ans*=i;
+			ans+=ans>=1000000000ull?-1000000000ull:0;
+		}
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=0,tmp;i<n;++i) cin>>tmp,a.insert(tmp);
+	cin>>m;
+	for(int i=1,tmp;i<=m;++i){
+		cin>>tmp;
+		auto k=a.lower_bound(tmp);
+		if(*k==tmp) ans*=*k,ans+=ans>=1000000000ull?-1000000000ull:0,a.erase(k);
+		else b.push_back(tmp);
+	}
+	while(!a.empty()) fj(*a.begin()),a.erase(a.begin());
+	for(int&k:b)del(k);
+	if(ans<1000000000ull)cout<<ans<<endl;
+	else{
+		string s=to_string(ans);
+		int j=s.size()-9;
+		for(int i=j;i<s.size();i++) cout<<s[i];
+		cout<<endl;
+	}
+	return 0;
+}

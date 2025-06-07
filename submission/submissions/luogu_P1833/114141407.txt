@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 114141407
+//  题目ID: P1833
+#include<bits/stdc++.h>
+using namespace std;
+int m,n,w[1000+10],c[1000+10],p[1000+10],f[1000000+10];
+int main(){
+//	ios::sync_with_stdio(false);
+	int h1,h2,m1,m2;
+	scanf("%d:%d%d:%d",&h1,&m1,&h2,&m2);
+	m=h2*60+m2-h1*60-m1;
+	cin>>n;
+	for(int i=1;i<=n;i++) scanf("%d%d%d",&w[i],&c[i],&p[i]);
+	for(int i=1;i<=n;i++){
+		if(p[i]==0){
+			for(int j=w[i];j<=m;j++){
+				f[j]=max(f[j],f[j-w[i]]+c[i]);
+			}
+		}
+		else{
+			p[i]=abs(p[i]);
+			for(int k=1;k<=p[i];k++){
+				for(int j=m;j>=w[i];j--){
+					f[j]=max(f[j],f[j-w[i]]+c[i]);
+				} 
+			}
+		}
+	}
+	cout<<f[m]<<endl;
+	return 0;
+} 

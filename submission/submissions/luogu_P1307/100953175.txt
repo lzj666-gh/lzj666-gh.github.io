@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 100953175
+//  题目ID: P1307
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	char a;long long b=0;
+	while(cin>>a){
+		b=b*10+a-'0';
+	}
+	cout<<b;
+}

@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 113952601
+//  题目ID: U295963
+#include <iostream>
+#include <vector>
+using namespace std;
+
+const int MAX = 20005;
+const int MOD = 1e9 + 7;
+
+int dp[MAX];
+
+int main() {
+    int n, m, p;
+    cin >> n >> m >> p;
+    
+    vector<int> values(n), counts(n);
+    for (int i = 0; i < n; i++) {
+        cin >> values[i] >> counts[i];
+    }
+    
+    dp[0] = 1;
+    for (int i = 0; i < n; i++) {
+        for (int j = p; j >= 0; j--) {
+            for (int k = 1; k <= counts[i]; k++) {
+                if (j >= k * values[i]) {
+                    dp[j] = (dp[j] + dp[j - k * values[i]]) % MOD;
+                }
+            }
+        }
+    }
+    
+    cout << dp[p] << endl;
+    
+    return 0;
+}

@@ -1,0 +1,68 @@
+//  OJ: 洛谷
+//  提交ID: 125430171
+//  题目ID: B3644
+#include<bits/stdc++.h>
+using namespace std;
+inline int read(){
+	register int s=1,x=0;
+	register char c=getchar();
+	if(c=='-'){
+		s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0'){
+		x=(x<<3)+(x<<1)+(c^48);
+		c=getchar();
+	}
+	return s*x;
+}
+inline void write(int x){
+	if(x==0) return;
+	if(x<0){
+		putchar('-');
+		x=~x-1;
+	}
+	write(x/10);
+	putchar(x%10+'0');
+}
+struct Node{
+	array<int,1000+10>child;
+	array<int,1000+10>fa;
+	int _top_=0,ru=0;
+};
+array<Node,1000+10>a;
+int n;
+void top_(){
+	queue<int> q;
+	array<bool,1000+10> vis;
+	vis.fill(false); 
+	for(int i=1;i<=n;++i){
+		if(a[i].ru==0) q.push(i);
+	}
+	while(!q.empty()){
+		auto now=q.front();
+		write(now);
+		putchar(' ');
+		q.pop();
+		if(vis.at(now)) continue;
+		vis.at(now)=true;
+		for(int i=1;i<=a[now]._top_;++i){
+			--a[a[now].child[i]].ru;
+			if(a[a[now].child[i]].ru==0){
+				q.push(a[now].child[i]);
+			}
+		}
+	}
+}
+int main(){
+	n=read();
+	for(int i=1;i<=n;++i){
+		int tmp=read();
+		while(tmp){
+			a[i].child[++a[i]._top_]=tmp;
+			a[tmp].fa[++a[tmp].ru]=i;
+			tmp=read();
+		}
+	}
+	top_();
+}

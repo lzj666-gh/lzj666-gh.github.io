@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 108331563
+//  题目ID: T214853
+#include <iostream>
+#include <deque>
+
+using namespace std;
+
+int main()
+{
+int n;
+cin >> n;
+
+deque<int> q;
+
+while (n--)
+{
+    int op;
+    cin >> op;
+    if (op == 1)
+    {
+        int x;
+        cin >> x;
+        q.push_back(x);
+    }
+    else if (op == 2)
+    {
+        if (!q.empty()) q.pop_front();
+    }
+    else
+    {
+        if (!q.empty())
+        {
+            int max_val = q.front();
+            for (auto x : q)
+            {
+                max_val = max(max_val, x);
+            }
+            cout << max_val << endl;
+        }
+    }
+}
+
+return 0;
+}

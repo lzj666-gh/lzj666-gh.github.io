@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 150799544
+//  题目ID: T403382
+#include<bits/stdc++.h>
+using namespace std;
+int cnt, prime[10000000 + 10];
+bool vis[10000000 + 10];
+short um[10000000 + 10];
+void get_prime() {
+	for (int i = 1; i <= 10000000; ++i) um[i] = 1;
+	for (int i = 2; i <= 10000000; i++) {
+		if (vis[i]) continue;
+		prime[++cnt] = i;
+		um[i] = -1;
+		for (int j = i + i; j <= 10000000; j += i) {
+			vis[j] = 1;
+			if (j % (i * i)==0) um[j] = 0;
+			else um[j] *= -1;
+		}
+	}
+}
+int n, m;
+int main() {
+	ios_base::sync_with_stdio(false);
+	get_prime();
+	cin >> n >> m;
+	for (int i = n; i <= m; ++i) cout << um[i] << endl;
+	return 0;
+}

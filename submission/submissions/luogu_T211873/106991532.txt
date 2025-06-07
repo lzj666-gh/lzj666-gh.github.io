@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 106991532
+//  题目ID: T211873
+#include<bits/stdc++.h>
+using namespace std;
+int a[2000000+10],m,d,x,top;
+char ch;
+int main(){
+	scanf("%d%d",&m,&d);
+	for(int i=1;i<=m;i++){
+		cin>>ch;
+		if(ch=='A'){
+			scanf("%d",&x);
+			a[++top]=x%d;
+		}
+		else if(ch=='Q'){
+			scanf("%d",&x);
+			int ma=0;
+			for(int i=top;i>top-x;--i){
+				ma=max(ma,a[i]);
+			}
+			printf("%d\n",ma);
+		}
+	}
+}

@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 96883390
+//  题目ID: T66245
+#include<bits/stdc++.h>
+using namespace std;
+int weishu(int d);
+int weishu2(int d);
+int main()
+{
+	int n,j1,j2,q=1;cin>>n;
+	int w1=weishu(n),w2=weishu2(n),w3=1;
+	while(w2!=1||w2!=0){
+		j2=n%(w3*10)/w3;
+		j1=(n/w1)%w3;
+		if(j1!=j2){
+			cout<<"NO";
+			return 0;
+		}
+		q++;
+		w2-=2;
+		w1*=10;
+		w3*=10;
+		
+	}
+	cout<<"YES";
+	return 0;
+}
+int weishu(int d){
+	int j=1;
+	while(d){
+		d/=10;
+		j*=10; 
+	}
+	return j;
+}
+int weishu2(int d){
+	int j=0;
+	while(d){
+		d/=10;
+		j++; 
+	}
+	return j;
+}
+

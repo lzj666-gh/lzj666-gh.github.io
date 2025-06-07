@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 166211932
+//  题目ID: P1177
+#include <iostream>
+#include <algorithm>
+#define 整型 int
+#define 使用 using
+#define 命名空间 namespace 
+#define 标准空间 std
+#define 输出 cout 
+#define 这个 <<
+#define 到 >>
+#define 循环 for
+#define 输入 cin
+#define 排序 sort
+#define 返回 return
+#define 主函数 main 
+使用 命名空间 标准空间;
+整型 A[100000];
+整型 主函数()
+{
+	整型 n, i;
+	输入 到 n;
+	循环(i = 1; i <= n; i++)
+	{
+		输入 到 A[i];
+	}
+	排序(A + 1, A + n + 1);
+	循环(i = 1; i <= n; i++)
+	{
+		输出 这个 A[i] 这个 " ";
+	}
+	返回 0;
+}

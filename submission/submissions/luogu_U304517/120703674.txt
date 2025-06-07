@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 120703674
+//  题目ID: U304517
+#include<bits/stdc++.h>
+#define maxn 1114514
+using namespace std;
+int n,l[maxn],r[maxn],m,k;
+bool b[maxn];
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m>>k;
+	for(int i=1;i<=m;i++)cin>>r[i]>>l[i];
+	for(int i=1;i<=k;i++){
+		int num;
+		cin>>num;
+		b[num]=true;
+	}
+	for(int i=1;i<=m;i++){
+		if(!(b[r[i]]|b[l[i]])){
+			cout<<"yes"<<endl;
+			return 0;
+		}
+	}
+	cout<<"no"<<endl;
+	return 0;
+}

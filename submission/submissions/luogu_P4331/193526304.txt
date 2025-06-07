@@ -1,0 +1,61 @@
+//  OJ: 洛谷
+//  提交ID: 193526304
+//  题目ID: P4331
+#include<bits/stdc++.h>
+//using namespace std;
+#define Fast_IO
+#ifdef Fast_IO
+namespace nanan {
+#define getchar() (p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 1 << 20, stdin), p1 == p2) ? 0 : *p1++)
+#define endl '\n'
+	char buf[1 << 20], * p1, * p2;
+	class IN {
+	public:
+		template<typename T>
+		friend IN& operator>>(IN& i, T& x) {
+			bool f = 1; x = 0; char ch = getchar();
+			while (ch < '0' || ch>'9') { if (ch == '-') f = !f; ch = getchar(); }
+			while (ch >= '0' && ch <= '9') { x = (x << 1) + (x << 3) + (ch ^ 48); ch = getchar(); }
+			x = (f ? x : -x);
+			return i;
+		}
+	}cin;
+	class OUT {
+	public:
+		template<typename T>
+		friend OUT& operator<<(OUT& i, T x) {
+			if (x < 0) putchar('-'), x = -x;
+			if (x > 9) i << (x / 10);
+			putchar(x % 10 + '0');
+			return i;
+		}
+		friend OUT& operator<<(OUT& i, const char& x) {
+			putchar(x);
+			return i;
+		}
+	}cout;
+}
+using namespace nanan;
+#endif
+std::priority_queue<int> q;
+int n, a[500000 + 10], b[500000 + 10];
+long long res;
+int main() {
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i], a[i] -= i;
+	for (int i = 1; i <= n; ++i) {
+		q.push(a[i]); b[i] = a[i];
+		if (i == 1) q.push(a[1]);
+		else if (a[i] < q.top()) {
+			q.pop(); q.push(a[i]);
+			a[i] = q.top();
+		}
+		else
+			a[i] = q.top();
+	}
+	for (int i = n - 1; i >= 1; i--) a[i] = std::min(a[i], a[i + 1]);
+	for (int i = 1; i <= n; ++i) res += abs(a[i] - b[i]);
+	cout << res << endl;
+	for (int i = 1; i <= n; ++i) cout << a[i] + i << ' ';
+	return 0;
+}

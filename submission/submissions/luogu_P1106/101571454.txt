@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 101571454
+//  题目ID: P1106
+#include<bits/stdc++.h>
+using namespace std;
+char a[250+10];
+int L,k;
+int main(){
+	cin>>a>>k;
+	L=strlen(a);
+	if(k==L){
+		cout<<0<<endl;
+		return 0;
+	}
+	for(int i=0;i<k;i++){
+		bool ikun=true;
+		for(int j=0;j<L-1;j++){
+			if(a[j]>a[j+1]){
+				ikun=false;
+				for(int l=j;l<L-1;l++){
+					a[l]=a[l+1];
+					L--;
+				}
+			}
+		}
+		if(ikun){
+			L--;
+		}
+	}
+	int x=-114514;
+	for(int i=0;i<L;i++){
+		if(a[i]!='0'){
+			x=i;
+			break;
+		}
+	}
+	if(x==-114514) cout<<0<<endl;
+	else{
+		for(int i=x;i<L;i++) cout<<a[i];
+	}
+	return 0;
+}

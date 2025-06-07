@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 140507362
+//  题目ID: P1914
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+string s;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>s;
+	for(char&c:s) c=(c-'a'+n)%26+'a';
+	cout<<s<<endl;
+	return 0;
+}

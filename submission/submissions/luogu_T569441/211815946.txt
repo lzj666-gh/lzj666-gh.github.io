@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 211815946
+//  题目ID: T569441
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int n,m,t,ans;
+int main()
+{
+    cin>>t;
+    int i;
+    for(i=1;i<=t;i=i+1)
+    {
+        cin>>n;
+        cin>>m;
+        ans=(n+1)/2;
+		ans=ans+(m+1)/2;
+        if(n%2==1)
+        {
+            if(m%2==1)
+            {
+                ans=ans-1;
+            }
+        }
+        cout<<ans;
+		putchar(10);
+    }
+    return 0;
+}

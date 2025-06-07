@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 91172403
+//  题目ID: T65945
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int t,m;cin>>t>>m;double yuan;yuan=6.000;
+	if(t>100){
+		yuan+=(t-100)*0.15+8.000;
+	}
+	else{
+		yuan+=8.000;
+	}
+	if(m>100){
+		m=(m+99)/100*100;
+		yuan+=(m-100)*0.1+8.000;
+	}
+	else{
+		yuan+=8.000;
+	}
+	if(yuan<=30.000){
+		printf("30.000");
+	}
+	else{
+		printf("%.3lf",yuan);
+	}
+	return 0;
+}
+

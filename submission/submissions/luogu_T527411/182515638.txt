@@ -1,0 +1,62 @@
+//  OJ: 洛谷
+//  提交ID: 182515638
+//  题目ID: T527411
+#include<bits/stdc++.h>
+//#define ONLINE
+#pragma warning(disable:4996)
+#pragma warning(disable:6031)
+using namespace std;
+using ll = long long;
+using ull = unsigned long long;
+using ui = unsigned int;
+ui t, k, r;
+ui md[10];
+ui hsh(string s) {
+	ui ans = 0;
+	for (int i = 1; i <= s.size(); ++i) {
+		ans += md[s.size() - i] * (ui)s[i - 1];
+	}
+	return ans;
+}
+int main() {
+#ifdef ONLINE
+	freopen("hash.in", "r", stdin);
+	freopen("hash.out", "w", stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	cin >> t >> k >> r;
+	md[0] = 1;
+	for (int i = 1; i <= r; ++i) md[i] = md[i - 1] * k;
+	string tmp;
+	while (t--) {
+		cin >> tmp;
+		ui h = hsh(tmp);
+		bool fnd = 0;
+		string ans;
+		for (int l = 1; l <= r; ++l) {
+			string cur(l, 'A');
+			bool flg = 1;
+			while (flg) {
+				if (hsh(cur) == h && cur != tmp) {
+					if (fnd) ans = min(ans, cur);
+					else ans = cur;
+					fnd = 1;
+					break;
+				}
+				int pos = l - 1;
+				while (cur[pos] == 'Z') {
+					cur[pos] = 'A';
+					pos--;
+					if (pos == -1) {
+						flg = 0;
+						break;
+					}
+				}
+				if (pos != -1) cur[pos]++;
+			}
+		}
+		if (!fnd) cout << -1 << endl;
+		else cout << ans << endl;
+	}
+	return 0;
+}

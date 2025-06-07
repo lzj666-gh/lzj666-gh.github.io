@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 115730019
+//  题目ID: P9460
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	cout<<"NOI2022"<<endl;
+	return 0;
+}

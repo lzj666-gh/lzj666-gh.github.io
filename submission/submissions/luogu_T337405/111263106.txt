@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 111263106
+//  题目ID: T337405
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	std::ios::sync_with_stdio(false);
+	cout<<"无限猖狂"<<endl;
+	return 0;
+}

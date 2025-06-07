@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 110360287
+//  题目ID: P9343
+#include<bits/stdc++.h>
+using namespace std;
+bool b[200000];
+int a;
+int n,m;
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	int T;
+	cin>>T;
+	for(int k=1;k<T;k++){
+		memset(b,false,sizeof(b));
+		bool e=false;
+		int ans=0x7f7f7f7f;
+		cin>>n>>m;
+		for(int i=1;i<=m;i++){
+			int opt,x;
+			cin>>opt>>x;
+			if(opt==1){
+				a=x;
+				e=true;
+				if(b[a]==true) ans=min(ans,i);
+			}
+			if(opt==2){
+				b[x]=true;
+			}
+		}
+		if(e==true&&b[a]==false){
+			cout<<-1<<endl;
+		}
+		else{
+			cout<<ans<<endl;
+		}
+	}
+}

@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 101086557
+//  题目ID: T209119
+#include<bits/stdc++.h>
+using namespace std;
+char a[110][60]={'\0'},b;
+int main() {
+	int i=0,j=0;
+	while(cin>>b) {
+		if(b==' ') {
+			if(a[i][0]!='\0'){
+				i++;
+				j=0;
+			}
+			continue;
+		}
+		cin>>a[i][j];
+		j++;
+	}
+	for(int k=0;k<i;k++){
+		for(int j=0;j<i;j++){
+			if(strcmp(a[j],a[j+1])<0) swap(a[j],a[j+1]);
+		}
+	}
+	for(int k=0;i<=i;k++){
+		cout<<a[k];
+	}
+	return 0;
+}

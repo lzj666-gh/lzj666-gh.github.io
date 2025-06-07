@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 100888653
+//  题目ID: T66278
+#include<bits/stdc++.h>
+using namespace std;
+int a[1001];
+int main(){
+	int q=1;int w=0;
+	while(q>0){
+		cin>>q;
+		a[w]=q;w++;
+	}
+	w--;
+	const int W=w+1;
+	int b[W];
+	for(int i=0;i<=w;i++) b[i]=a[i];
+	for(int i=w;i>=0;i--){
+		int max=-1;
+		for(int j=0;j<i;j++){
+			if(a[j]>a[j+1]){
+				int e=a[j];a[j]=a[j+1];a[j+1]=e;
+			}
+		}
+	}
+	int e=a[0],r=a[1],t=a[1]-a[0];
+	for(int i=1;i<w;i++){
+		if(a[i+1]-a[i]<t){
+			e=a[i];r=a[i+1];t=e-r;
+		}
+	}
+	for(int i=0;i<=w;i++){
+		if(b[i]==e){
+			cout<<e<<" "<<r;
+			return 0;
+		}
+		if(b[i]==r){
+			cout<<r<<" "<<e;
+			return 0;
+		}
+	}
+	return 0;
+}

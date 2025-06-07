@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 93868685
+//  题目ID: P2200
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	cout<<"Fail";
+
+	return 0;
+}

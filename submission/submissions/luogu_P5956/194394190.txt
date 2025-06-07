@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 194394190
+//  题目ID: P5956
+#include<bits/stdc++.h>
+using namespace std;
+int B, Q;
+long long a[1000000 + 10];
+int main() {
+// 	freopen("Podzielno.in", "r", stdin);
+// 	freopen("Podzielno.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> B >> Q; B--;
+	long long sum = 0;
+	for (int i = 0; i <= B; ++i) cin >> a[i], sum += a[i] * i;
+	a[sum % B]--;
+	sum -= sum % B;
+//	for (int i = 0; i <= B; ++i) cout << a[i] << ' '; cout << endl;
+	for (int i = 1; i <= B; ++i) a[i] += a[i - 1];
+	while (Q--) {
+		long long k;
+		cin >> k; k++;
+		if (k > a[B] || k < 0) {
+			cout << -1 << endl;
+			continue;
+		}
+		cout << (upper_bound(a, a + B + 1, k) - a) << endl;
+	}
+	return 0;
+}

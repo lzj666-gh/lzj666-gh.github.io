@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 199879123
+//  题目ID: AT_agc016_f
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int mod = 1e9 + 7;
+typedef long long ll;
+int n, m;
+bool edge[15][15];
+int pow2[105];
+int dis[1 << 15][15], f[15];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	pow2[0] = 1;
+	for (int i = 1; i <= m; ++i) 
+		pow2[i] = pow2[i - 1] * 2ll % mod;
+	for (int i = 1, x, y; i <= m; ++i)
+		cin >> x >> y,
+		edge[x - 1][y - 1] = 1;
+	int Top = 1 << n;
+	for (int S = 1; S < Top; ++S)
+		for (int i = 0; i < n; ++i)
+			dis[S][i] = dis[S & (S - 1)][i] + edge[i][(int)log2(S & ~S + 1)];
+	for (int S = 0; S < Top; ++S)
+		if ((S & 0b11) == 0b11) {
+			f[S] = 1;
+			for (int T = S & (S - 1); T; --T &= S)
+				if ((T & 1) == (T >> 1 & 1))
+					if (T & 1) {
+						int ans = 1;
+						for (int i = 0; i < Top; ++i) 
+							if (S >> i & 1) {
+								if (T >> i & 1)
+									ans = 1ll * ans * (pow2[dis[S ^ T][i]] - 1) % mod;
+								else
+									ans = 1ll * ans * pow2[dis[T][i]] % mod;
+							}
+						f[S] = (f[S] + 1ll * ans * f[T]) % mod;
+					}
+					else {
+						int ans = 1;
+						for (int i = 0; i < n; ++i) 
+							if (S >> i & 1) {
+								if (T >> i & 1)
+									ans = 1ll * ans * (pow2[dis[S ^ T][i]] - 1) % mod * pow2[dis[T][i]] % mod;
+								else
+									ans = 1ll *	ans * pow2[dis[T][i]] % mod;
+							}
+						f[S] = (f[S] + ans) % mod;
+					}
+		}
+	assert(Top >= 1);
+	cout << (pow2[m] - f[Top - 1] + mod) % mod << endl;
+	return 0;
+}

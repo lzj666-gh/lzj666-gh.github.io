@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 120786231
+//  题目ID: U327030
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	srand(time(0));
+	if(rand()%3==0) cout<<"volleketball"<<endl;
+	else srand(rand()),cout<<rand()<<endl;
+	return 0;
+}

@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 182281408
+//  题目ID: T526587
+#include<bits/stdc++.h>
+//#define ONLINE
+#pragma warning(disable:4996)
+#pragma warning(disable:6031)
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[550000 * 2 + 10];
+int head[500000 + 10], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, m, u, v, a[500000 + 10];
+int num[500000 + 10];
+long long ans[2];
+void dfs(int x) {
+	ans[num[x] - 1] += a[x];
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (num[edge[i].v] == 0) num[edge[i].v] = 3 - num[x], dfs(edge[i].v);
+		else if (num[edge[i].v] == num[x]) {
+			if (a[x] < a[edge[i].v])
+				ans[num[x]] -= a[x],
+				a[x] = 0;
+			else
+				ans[num[x]] -= a[edge[i].v],
+				a[edge[i].v] = 0;
+		}
+	}
+}
+int main() {
+#ifdef ONLINE
+	freopen("NP-hard.in", "r", stdin);
+	freopen("NP-hard.out", "w", stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = 1; i <= m; ++i) cin >> u >> v, add(u, v), add(v, u);
+	num[1] = 1;
+	dfs(1);
+	cout << max(ans[0], ans[1]) << endl;
+	return 0;
+}

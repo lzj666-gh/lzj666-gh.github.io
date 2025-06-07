@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 96885353
+//  题目ID: T66249
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n,s=0;cin>>n;
+	while(s>=10){
+		if(s==n) s=0;
+		else{
+			n=s;
+		}
+		while(n){
+			s+=n%10;
+			n=n/10;
+		}	
+	}
+	cout<<s;
+}
+

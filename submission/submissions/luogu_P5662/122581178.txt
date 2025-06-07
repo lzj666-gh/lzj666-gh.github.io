@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 122581178
+//  题目ID: P5662
+#include<bits/stdc++.h>
+using namespace std;
+inline int read(){register char c=getchar();register int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=(x<<3)+(x<<1)+(c^48);c=getchar();}return x*s;}
+inline void wrote(int x){if(x<0)putchar('-'),x=-x;if(x>9)wrote(x/10);putchar(x%10+'0');}
+inline void write(int x,char ch='\0'){
+	wrote(x);putchar(ch);
+}
+int t,n,m;
+int a[100+10][100+10],dp[10000+10];
+int main(){
+//	freopen("souvenir.in","r",stdin);freopen("souvenir.out","w",stdout);
+	t=read(),n=read(),m=read();
+	for(int i=1;i<=t;++i){
+		for(int j=1;j<=n;++j){
+			a[i][j]=read();
+		}
+	}
+	for(int i=1;i<=t;i++){
+		memset(dp,0,sizeof dp);
+		for(int j=1;j<=n;j++){
+			for(int k=a[i][j];k<=m;++k){
+				dp[k]=max(dp[k],dp[k-a[i][j]]+a[i+1][j]-a[i][j]);
+			}
+		} 
+		m+=dp[m];
+	}
+	write(m,'\n');
+	return 0;
+}

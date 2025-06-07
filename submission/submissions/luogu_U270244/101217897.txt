@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 101217897
+//  题目ID: U270244
+#include<bits/stdc++.h>
+using namespace std;
+char s[100000+10][5];int v[100000+10];
+void dy();
+int n,tmp=0;
+int main(){
+	cin>>n;
+	for(int i=0;i<n;i++){
+		int k;cin>>k;
+//		cout<<i<<k<<endl;
+		for(int j=0;j<k;j++){
+			cin>>s[tmp];
+			cin>>v[tmp];
+			tmp++;
+//			cout<<" "<<tmp<<endl;
+		}
+	}
+	for(int i=0;i<tmp;i++){
+		for(int j=0;j<tmp-i-1;j++){
+			if(strcmp(s[j],s[j+1])>0){
+				swap(s[j],s[j+1]);
+				swap(v[j],v[j+1]);
+			}
+			if(strcmp(s[j],s[j+1])==0){
+				v[j]+=v[j+1];
+				for(int l=j+2;l<tmp;l++){
+					v[l-1]=v[l];
+					strcpy(s[l-1],s[l]);
+				}
+				tmp--;
+				j--;
+			}
+//			cout<<endl;
+//			dy();
+		}
+	}
+//	cout<<endl;
+	dy();
+}
+void dy(){
+	for(int i=0;i<tmp;i++){
+		cout<<s[i]<<" "<<v[i]<<endl;
+	}
+}

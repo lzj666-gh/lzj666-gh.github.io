@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 153062753
+//  题目ID: CF1176C
+#include<bits/stdc++.h>
+using namespace std;
+int beg[50],n,num,k;
+map<int,int>lst;
+int main(){
+	ios_base::sync_with_stdio(false);
+	lst[42]=23;
+	lst[23]=16;
+	lst[16]=15;
+	lst[15]=8;
+	lst[8]=4;
+	beg[0]=0x3f3f3f3f;
+	cin>>n;
+	for(int i=1;i<=n;++i){
+		cin>>num;
+		if(beg[num]+1<=beg[lst[num]]) ++beg[num],++k;
+	}
+	cout<<n-beg[42]*6<<endl;
+	return 0;
+}

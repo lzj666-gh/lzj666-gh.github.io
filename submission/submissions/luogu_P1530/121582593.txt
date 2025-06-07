@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 121582593
+//  题目ID: P1530
+#include<bits/stdc++.h>
+using namespace std;
+int n,d;
+int t;
+map<int,int>mp;
+string s;
+string to_str(int x){
+	string s="";
+	if(x==0){
+		s+='0';return s;
+	}
+	while(x){
+		s=(char)(x%10+'0')+s;
+		x/=10;
+	}
+	return s;
+}
+int main(){
+	cin>>n>>d;
+	int r=n%d;
+	ans=to_str(n/d)+'.';
+	if(n%d==0){
+		cout<<ans<<0;
+		return 0;
+	}
+	int k=1;
+	while(true){
+		r*=10;
+		if(mp[r]!=0){
+			ans.insert(to_str(n/d).size()+mp[r],"(");
+			ans+=')';
+			break;
+		}
+		mp[r]=k;
+		ans+=(char)(r/d+'0');
+		r%=d;
+		if(r==0) break;
+		++k;
+	}
+	for(int i=1;i<=ans.size();i++){
+		cout<<ans[i-1];
+		if(i%76==0) cout<<endl;
+	}
+	return 0;
+}

@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 142486522
+//  题目ID: T132498
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+ll w,ans,g[5000000],f[20000000],tot,n;
+ll EF(ll x){
+	ll l=1,r=tot,mid,ans=1;
+	while(l<=r){
+		mid=(l+r)>>1;
+		if(f[mid]+x<=w)l=mid+1,ans=mid;
+		else r=mid-1;
+	}
+	return ans;
+}
+void dfs(ll x,ll h,bool flg){
+	if(flg){
+		f[++tot]=h;
+		while(x<=((n<<2)+2)&&h+g[x]>w)x++;
+		for(;x<=((n<<2)+2);++x)dfs(x+1,h+g[x],1);
+	}
+	else{
+		ans=max(ans,h+f[EF(h)]); 
+		while(x<=n&&h+g[x]>w)x++;
+		for(;x<=n;++x)dfs(x+1,h+g[x],0);
+	}
+}
+int main(){
+	cin>>w>>n;
+	for(int i=1;i<=n;++i)cin>>g[i];
+	sort(g+1,g+n+1,[](ll x,ll y)->bool{return x>y;});
+	dfs(1,0,1);
+	sort(f+1,f+tot+1);
+	tot=unique(f+1,f+tot+1)-f-1;
+	dfs(((n>>2)+2)+1,0,0);
+	string s=to_string(ans);
+	cout<<s<<endl;
+	return 0;
+}

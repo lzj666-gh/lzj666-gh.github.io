@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 118465270
+//  题目ID: P6974
+#include<bits/stdc++.h>
+#define maxn 1000000+10
+using namespace std;
+bool hang[maxn],lie[maxn];
+int n,q;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>q;
+	for(int jia=1,m;jia<=q;jia++){
+		char ch;
+		cin>>ch>>m;
+		if(ch=='R'){
+			long long ans=0;
+			if(!hang[m])
+				for(int i=1;i<=n;i++)
+					if(lie[i]==false)
+						ans+=i+m;
+			cout<<ans<<endl;
+			hang[m]=true;
+		}
+		if(ch=='C'){
+			long long ans=0;
+			if(!lie[m])
+				for(int i=1;i<=n;i++)
+					if(hang[i]==false)
+						ans+=i+m;
+			cout<<ans<<endl;
+			lie[m]=true;
+		}
+	}
+	return 0;
+}
+

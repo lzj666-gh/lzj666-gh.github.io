@@ -1,0 +1,103 @@
+//  OJ: 洛谷
+//  提交ID: 176120055
+//  题目ID: T508935
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[100000 + 10];
+int head[50000 + 10], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n;
+vector<int>c[50000 + 10];
+int lft[100000 + 10];
+bool ok[50000 + 10];
+int rd[100000 + 10];
+void einit() {
+	for (int i = 1; i <= n; ++i) head[i] = lft[i * 2] = lft[i * 2 + 1] = 0, rd[i] = 0, c[i].clear();
+	idx = 1;
+}
+bool fnd(int x, int fa, int wnt, vector<int>& pth) {
+	if (x == wnt) return 1;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (edge[i].v == fa) continue;
+		if (fnd(edge[i].v, x, wnt, pth)) {
+			if (i & 1) i ^= 1;
+			pth.push_back(i);
+			return 1;
+		}
+	}
+	return 0;
+}
+bool eft(int x) {
+	if (ok[x]) return 0;
+	ok[x] = 1;
+	for (int k : c[x]) {
+		if (!lft[k]) {
+			lft[k] = x;
+			return 1;
+		}
+		if (eft(lft[k])) {
+			lft[k] = x;
+			return 1;
+		}
+	}
+	return 0;
+}
+int main() {
+// 	freopen("wowaka.in", "r", stdin);
+// 	freopen("wowaka.out", "w", stdout);
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		cin >> n;
+		einit();
+		for (int i = 1, u, v; i < n; ++i) cin >> u >> v, /*cout << "this edge's idx is ", */add(u, v)/*, cout << idx << " and "*/, add(v, u)/*, cout << idx << endl*/;
+		for (int i = 1, u, v; i < n; ++i) cin >> u >> v, fnd(u, -1, v, c[i]);
+		for (int i = 1; i < n; ++i)
+			for (int k : c[i]) 
+				rd[k]++;
+		bool done = 1;
+		for (int i = 1; i < n; ++i) {
+			memset(ok, 0, sizeof ok);
+			bool flg = 1;
+			for (int k : c[i]) {
+				if (!lft[k]) {
+					lft[k] = i;
+					flg = 0;
+					break;
+				}
+				if (eft(lft[k])) {
+					lft[k] = i;
+					flg = 0;
+					break;
+				}
+			}
+			if (flg) {
+				done = 0;
+				break;
+			}
+		}
+		if (done) {
+			queue<int>q;
+			for (int i = 2; i <= idx; ++i) if (rd[i] == 1) q.push(i);
+			int cnt = 0;
+			while (!q.empty()) {
+				int now = q.front(); q.pop();
+				cnt++;
+				for (int k : c[lft[now]]) {
+					rd[k]--;
+					if (rd[k] == 1) q.push(k);
+				}
+			}
+			if (cnt == n - 1) cout << "YES" << endl;
+			else cout << "NO" << endl;
+		}
+		else cout << "NO" << endl;
+	}
+	return 0;
+}

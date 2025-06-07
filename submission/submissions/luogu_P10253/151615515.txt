@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 151615515
+//  题目ID: P10253
+#include<bits/stdc++.h>
+using namespace std;
+int T,b;
+int sol(int t){
+	int ret=0;
+	while(t){
+		ret+=t;
+		t/=10;
+	}
+	return ret;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>T;
+	while(T--){
+		cin>>b;
+		int i=0;
+		while(sol(i)<b) ++i;
+		if(sol(i)!=b) cout<<-1<<endl;
+		else cout<<i<<endl;
+	}
+	return 0;
+}

@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 116903415
+//  题目ID: P9472
+//T3 A
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int rank,num;
+	friend bool operator < (const node &a,const node &b){
+		return a.num!=b.num?a.num<b.num:a.rank<b.rank;
+	}
+}a[100000+10];
+int n,m;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;i++){
+		cin>>a[i].num;
+		a[i].rank=i;
+	}
+	sort(&a[1],&a[n+1]);
+	for(int i=1;i<=n;i++)cout<<a[i].rank<<' ';
+	cout<<endl;
+	return 0;
+}

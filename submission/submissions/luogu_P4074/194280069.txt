@@ -1,0 +1,207 @@
+//  OJ: 洛谷
+//  提交ID: 194280069
+//  题目ID: P4074
+#include<bits/stdc++.h>
+#ifndef ONLINE_JUDGE
+
+#endif
+using namespace std;
+namespace IO {
+	const int SIZE = (1 << 20) + 1;
+	char ibuf[SIZE], *iS, *iT, obuf[SIZE],*oS = obuf, *oT = obuf + SIZE - 1;
+	char _st[55];
+	int _qr = 0;
+	inline char gc() {
+// 		return getchar();
+		return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++);
+	}
+	inline void qread() {}
+	template<class T1, class ...T2>
+	inline void qread(T1 &IEE, T2&... ls) {
+		T1 __ = 0, ___ = 1;
+		char ch;
+		while(!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___;
+		do {
+			__ = (__ << 1) + (__ << 3) + (ch ^ 48);
+		}while(isdigit(ch = gc()));
+		__ *= ___;
+		IEE = __;
+		qread(ls...);
+		return ;
+	}
+	inline void flush() {
+		fwrite(obuf, 1, oS - obuf, stdout);
+		oS = obuf;
+		return ;
+	}
+	inline void putc_(char _x) {
+// 		return void(putchar(_x));
+		*oS++ = _x;
+		if(oS == oT) flush();
+	}
+	inline void qwrite() {}
+	template<class T1, class ...T2>
+	inline void qwrite(T1 IEE, T2... ls) {
+		if(!IEE) putc_('0');
+		if(IEE < 0) putc_('-'), IEE = -IEE;
+		while(IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10;
+		while(_qr) putc_(_st[_qr--]);
+		qwrite(ls...);
+		return ;
+	}
+	struct Flusher_{~Flusher_(){flush();}}io_flusher;
+}
+using namespace IO;
+constexpr int Size = (100000 << 1) + 10;
+
+// 当前的颜色（仅预处理）
+int last[Size];
+
+// 当前的颜色（莫队使用）
+int Color[Size];
+
+int n, m, q, w[Size], v[Size];
+vector<int>son[Size];
+
+// 第一次，最后一次出现位置，时间戳，这个位置是什么
+int st[Size], ed[Size], Index, eul[Size];
+
+// LCA 使用
+int f[Size][25], dep[Size];
+void dfs(int now, int fa) {
+	//cout << "In DFS " << now << ' ' << fa << endl;
+	eul[st[now] = ++Index] = now;
+	f[now][0] = fa; dep[now] = dep[fa] + 1;
+	for (int i = 1; i <= 20; ++i) f[now][i] = f[f[now][i - 1]][i - 1];
+	for (const int& v : son[now]) {
+		//cout << "begin to upd " << v << endl;
+		if (v == fa) continue;
+		//cout << "in dfs" << endl;
+		dfs(v, now);
+	}
+	eul[ed[now] = ++Index] = now;
+}
+int LCA(int a, int b) {
+	if (dep[a] < dep[b]) swap(a, b);
+	int cur = dep[a] - dep[b];
+	for (int i = 20; i >= 0; --i) if (cur & (1 << i)) a = f[a][i];
+	if (a == b) {
+		return a;
+	}
+	for (int i = 20; i >= 0; --i) if (f[a][i] ^ f[b][i]) a = f[a][i], b = f[b][i];
+	return f[a][0];
+}
+
+int bel[Size], Block;
+struct Query {
+	int l, r, t, id;
+	friend bool operator<(const Query& a, const Query& b) {
+		return bel[a.l] == bel[b.l] ? bel[a.r] == bel[b.r] ? a.t < b.t : bel[a.l] % 2 == 1 ? bel[a.r] < bel[b.r] : bel[a.r] > bel[b.r] : bel[a.l] < bel[b.l];
+	}
+};
+// a 为查询操作，b 为修改操作
+vector<Query>a, b;
+
+// 是否在莫队区间出现
+bool vis[Size];
+
+// 出现次数
+int viss[Size];
+
+// 莫队答案
+long long ans;
+
+// 插入/删除（莫队）
+void change(int x) {
+	if (vis[x])
+		ans -= 1ll * v[Color[x]] * w[viss[Color[x]]--];
+	else
+		ans += 1ll * v[Color[x]] * w[++viss[Color[x]]];
+	vis[x] ^= 1;
+}
+
+// 时间轴改变
+void timechange(int x, int t) {
+	if (vis[x]) {
+		change(x);
+		Color[x] = t;
+		change(x);
+	}
+	else
+		Color[x] = t;
+}
+
+// 莫队区间，时间戳
+int L, R, T;
+
+// 答案
+long long Ans[Size];
+
+int main() {
+	// 读入
+	qread(n, m, q);
+	for (int i = 1; i <= m; ++i) qread(v[i]);
+	for (int i = 1; i <= n; ++i) qread(w[i]);
+	for (int i = 1, u, v; i < n; ++i) qread(u, v), son[u].push_back(v), son[v].push_back(u);
+	for (int i = 1; i <= n; ++i) qread(last[i]), Color[i] = last[i];
+	// 化树为链
+	dfs(1, 1);
+	1;
+	Block = pow(Index, 2.0 / 3);
+	for (int i = 1; i <= Index; ++i) bel[i] = (i - 1) / Index;
+	b.emplace_back();
+	for (int i = 1, ty, x, y; i <= q; ++i) {
+		qread(ty, x, y);
+		if (ty) {
+			if (st[x] > st[y]) swap(x, y);
+			a.emplace_back((LCA(x, y) == x ? st[x] : ed[x]), st[y], b.size(), a.size());
+		}
+		else {
+			b.emplace_back(x, last[x], y);
+			last[x] = y;
+		}
+	}
+	b.emplace_back();
+	// 莫队
+	T = 1;
+	for (int i = 0; i < a.size(); i++) {
+		while (T < a[i].t) {
+			timechange(b[T].l, b[T].t);
+			T++;
+		}
+		while (T > a[i].t) {
+			timechange(b[T].l, b[T].r);
+			T--;
+		}
+		while (L > a[i].l) {
+			L--;
+			change(eul[L]);
+		}
+		while (L < a[i].l) {
+			change(eul[L]);
+			L++;
+		}
+		while (R > a[i].r) {
+			change(eul[R]);
+			R--;
+		}
+		while (R < a[i].r) {
+			R++;
+			change(eul[R]);
+		}
+		int x = eul[L], y = eul[R];
+		int llca = LCA(x, y);
+		if (x != llca && y != llca) {
+			change(llca);
+			Ans[a[i].id] = ans;
+			change(llca);
+		}
+		else
+			Ans[a[i].id] = ans;
+	}
+	for (int i = 0; i < a.size(); i++) {
+		qwrite(Ans[i]);
+		putc_('\n');
+	}
+	return 0;
+}

@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 101158476
+//  题目ID: P5143
+#include<bits/stdc++.h>
+using namespace std;
+struct d{
+	int x,y,z;
+}a[50000+10];
+int main(){
+	int n;cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>a[i].x>>a[i].y>>a[i].z;
+	}
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n-i-1;j++){
+			if(a[j].z>a[j+1].z) swap(a[j],a[j+1]);
+		}
+	}
+	double q=0;
+	for(int i=0;i<n-1;i++){
+		q+=sqrt((a[i].x-a[i+1].x)*(a[i].x-a[i+1].x)+(a[i].y-a[i+1].y)*(a[i].y-a[i+1].y)+(a[i].z-a[i+1].z)*(a[i].z-a[i+1].z));
+	}
+	printf("%.3lf",q);
+}

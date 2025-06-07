@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 97485370
+//  题目ID: P1035
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int k;cin>>k;
+	long double s=0;
+	long long n=1;
+	while(s<=k){
+		s+=1.0/n;
+		n+=1;
+	}
+	cout<<n-1;
+	return 0;
+}

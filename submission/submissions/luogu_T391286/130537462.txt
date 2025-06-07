@@ -1,0 +1,97 @@
+//  OJ: 洛谷
+//  提交ID: 130537462
+//  题目ID: T391286
+#include<bits/stdc++.h>
+namespace std{
+	struct big_num{
+		short a[114514];
+		short int& operator [] (int i){
+			if(i>this->a[0]){
+				throw 114514;
+			}
+			return this->a[i];
+		}
+		short int& operator () (int i){
+			if(i>this->a[0]){
+				throw 114514;
+			}
+			return this->a[this->a[0]-i+1];
+		}
+		friend istream& operator >> (istream& in,big_num &a){
+			string s;
+			in>>s;
+			reverse(s.begin(),s.end());
+			a.a[0]=s.size();
+			for(int i=1;i<=a.a[0];++i) a.a[i]=s[i-1]^48;
+			return in;
+		}
+		friend ostream& operator << (ostream& out,const big_num &a){
+			if(a.a[0]==0){
+				out<<'0';
+			}
+			else{
+				for(int i=a.a[0];i>=1;--i){
+					out<<a.a[i];
+				}
+			} 
+			return out;
+		}
+		void operator = (long long b){
+			int top=0;
+			while(b){
+				this->a[++top]=b%10;
+				b/=10;
+			}
+			this->a[0]=top;
+		}
+		void string_to(string s){
+			a[0]=s.size();
+			for(int i=1,j=a[0]-1;i<=a[0];++i,--j) a[i]=s[j]-'0';
+            while(a[a[0]]==0) --a[0];
+		}
+		friend bool operator > (big_num &a,big_num &b){
+			if(a.a[0]!=b.a[0]) return a.a[0]>b.a[0];
+			for(int i=a.a[0];i>=1;--i){
+				if(a.a[i]!=b.a[i]) return a.a[i]>b.a[i];
+			}
+            return false;
+		}
+		friend bool operator <= (big_num &a,big_num &b){
+			if(a.a[0]!=b.a[0]) return a.a[0]<=b.a[0];
+			for(int i=a.a[0];i>=1;--i){
+				if(a.a[i]!=b.a[i]) return a.a[i]<=b.a[i];
+			}
+            return true;
+		}
+        int size(){
+            return a[0];
+        }
+	};
+}
+using namespace std;
+int ans;
+big_num l,r;
+string s;
+inline int max(const size_t &a,const int &b){return a<b?b:a;}
+inline int min(const size_t &a,const int &b){return a<b?b:a;}
+int main(){
+    // freopen("number1.in","r",stdin);
+    // freopen("number.out","w",stdout);
+    ios_base::sync_with_stdio(false);
+    cin>>l>>r>>s;
+    for(int i=0;i<s.size();++i){
+		cerr<<i<<':'<<s.size()<<endl;
+        if(s[i]=='0') continue;
+        int k=i-1,kk=1;
+        while(s[k]=='0') --k,++kk;
+        int ttmp=min(r.size()-l.size()+i,s.size()+1);
+        for(int j=l.size();j+i<ttmp;++j){
+            big_num tmp;
+            tmp.string_to(s.substr(i,j));
+            // cerr<<"try: "<<tmp<<' '<<i<<' '<<j<<endl;
+            if(tmp<=r&&l<=tmp) ans+=kk/* ,cerr<<tmp<<' '<<i<<' '<<j<<endl */;
+        }
+    }
+    cout<<ans<<endl;
+    return 0;
+}

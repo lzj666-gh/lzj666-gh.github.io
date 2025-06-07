@@ -1,0 +1,79 @@
+//  OJ: 洛谷
+//  提交ID: 105604259
+//  题目ID: P1219
+#include<bits/stdc++.h>
+using namespace std;
+int n,cnt,b[15];
+//b表示第i行第b[i]列放了皇后 
+bool a[15][15];
+//在a[i][j]的位置是否能放
+void print(){
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			cout<<a[i][j]<<" ";
+		}
+		cout<<b[i]<<endl;
+	}
+	cout<<'\n';
+}
+void f(int x,int y,bool z){
+//	cout<<x<<" "<<y<<" "<<z<<'\n';
+	for(int i=1;i<=n;i++){
+		a[i][y]=a[x][i]=z;
+	}
+//	print();
+	int i=x,j=y;
+	while(i!=0&&j!=0){
+		a[i][j]=z;
+		i--,j--;
+	}
+//	print();
+	i=x;
+	j=y;
+	while(i!=n+1&&j!=n+1){
+		a[i][j]=z;
+		i++,j++;
+	}
+	i=x,j=y;
+	while(i!=0&&j!=0){
+		a[i][j]=z;
+		i--,j++;
+	}
+//	print();
+	i=x;
+	j=y;
+	while(i!=n+1&&j!=n+1){
+		a[i][j]=z;
+		i++,j--;
+	}
+//	print();
+	return;
+} 
+void dfs(int x) { 
+	//x行放皇后 
+//	cout<<x<<" ";
+	if(x==n+1){
+		cnt++;
+		if(cnt<=3){
+			for(int i=1;i<=n;i++){
+				printf("%d ",b[i]);
+			}
+			printf("\n");
+		}
+	}
+	for(int i=1;i<=n;i++){//枚举第x个皇后放的所在列 
+//		cout<<i<<" ";
+		if(a[x][i]==false){
+			b[x]=i;
+			f(x,i,true);
+			dfs(x+1);
+			f(x,i,false);
+		}
+	}
+}
+int main(){
+	scanf("%d",&n);
+	dfs(1);
+	printf("%d",cnt);
+	return 0;
+}

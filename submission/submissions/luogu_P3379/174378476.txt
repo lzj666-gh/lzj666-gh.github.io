@@ -1,0 +1,51 @@
+//  OJ: 洛谷
+//  提交ID: 174378476
+//  题目ID: P3379
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[500000 + 10];
+int head[500000 + 10], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, m, s, a, b, hson[500000 + 10], siz[500000 + 10], fa[500000 + 10], belong[500000 + 10], dep[500000 + 10];
+void dfs1(int x, int f) {
+	fa[x] = f; dep[x] = dep[f] + 1;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (edge[i].v == f) continue;
+		dfs1(edge[i].v, x);
+		siz[x] += siz[edge[i].v];
+		if (siz[edge[i].v] > siz[hson[x]]) hson[x] = edge[i].v;
+	}
+	siz[x]++;
+}
+void dfs2(int x, int idk) {
+	belong[x] = idk;
+	if (!edge[head[x]].nxt) return;
+	dfs2(hson[x], idk);
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (edge[i].v == fa[x] || edge[i].v == hson[x]) continue;
+		dfs2(edge[i].v, edge[i].v);
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> s;
+	for (int i = 1; i < n; ++i) cin >> a >> b, add(a, b), add(b, a);
+	dfs1(s, 0);
+	dfs2(s, s);
+	for (int i = 1; i <= n; ++i) cout << belong[i] << ' '; cout << endl;
+	while (m--) {
+		cin >> a >> b;
+		while (belong[a] ^ belong[b]) {
+			if (dep[belong[a]] < dep[belong[b]]) swap(a, b);
+			a = fa[belong[a]];
+		}
+		if (dep[a] < dep[b]) cout << a << endl;
+		else cout << b << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 133812704
+//  题目ID: T146882
+#include<bits/stdc++.h>
+using namespace std;
+int T,a,b;
+void change(string&s){
+	for(char&c:s){
+		if(c>='1'&&c<='9') c-='0';
+		else if(c>='A'&&c<='Z') c-='A',c+=10;
+		else if(c>='a'&&c<='z') c-='a',c+=36;
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false); 
+    return 0;
+}

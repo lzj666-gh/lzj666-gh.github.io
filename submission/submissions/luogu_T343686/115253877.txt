@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 115253877
+//  题目ID: T343686
+#include <bits/stdc++.h>
+using namespace std;
+int n,ans=0;
+struct node{
+    int top=0;
+    int children[100];
+    int v[100];
+} a[100000+10];
+bool j[100000+10];
+int dfs(int k,int last){
+	if(j[k]!=0) return j[k];
+	int re=0;
+    for(int i=0;i<a[k].top;i++){
+        if(a[k].children[i]==last) continue;
+        re=max(re,dfs(a[k].children[i],k)+a[k].v[i]);
+    }
+    j[k]=re;
+    return re;
+}
+int main(){
+    ios::sync_with_stdio(false);
+    cin>>n;
+    for(int i=1;i <= n - 1;i++){
+        int x,y,z;
+        cin>>x>>y>>z;
+        a[x].children[a[x].top]=y;
+        a[x].v[a[x].top]=z;
+        a[y].children[a[y].top]=x;
+        a[y].v[a[y].top]=z;
+        a[x].top++;
+        a[y].top++;
+    }
+    for(int i=1;i<=n;i++){
+    	ans=max(dfs(i,0),ans);
+	}
+    cout<<ans<<endl;
+    return 0;
+}

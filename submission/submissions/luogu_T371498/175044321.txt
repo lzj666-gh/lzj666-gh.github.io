@@ -1,0 +1,98 @@
+//  OJ: 洛谷
+//  提交ID: 175044321
+//  题目ID: T371498
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+struct Node {
+	int ls, rs, l, r;
+	ll s;
+}tree[4000000 + 5];
+int isr[400000 + 5];
+void build(int x) {
+	if (tree[x].l && tree[x].l == tree[x].r) return;
+	build(tree[x].ls);
+	build(tree[x].rs);
+	if (tree[tree[x].ls].l > tree[tree[x].rs].l) swap(tree[x].rs, tree[x].ls);
+	tree[x].l = tree[tree[x].ls].l;
+	tree[x].r = tree[tree[x].rs].r;
+}
+void chg(int x, int l, int r, int val) {
+	if (tree[x].l > r || tree[x].r < l) return;
+	if (l <= tree[x].l && tree[x].r <= r) {
+		tree[x].s += 1ll * val * (1ll * tree[x].r - tree[x].l + 1);
+		return;
+	}
+	chg(tree[x].ls, l, r, val);
+	chg(tree[x].rs, l, r, val);
+}
+ll qry(int x, int l, int r) {
+	if (tree[x].l > r || tree[x].r < l) return 0;
+	if (l <= tree[x].l && tree[x].r <= r) return tree[x].s;
+	return qry(tree[x].ls, l, r) + qry(tree[x].rs, l, r);
+}
+unordered_map<int, unordered_map<int, ll>>P;
+int main() {
+// 	freopen("pigeons.in", "r", stdin); 
+// 	freopen("pigeons.out", "w", stdout); 
+	ios_base::sync_with_stdio(false);
+	int n, m;
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) tree[i].l = tree[i].r = i;
+	for (int i = 1; i < n; ++i)
+		cin >> tree[n + i].ls >> tree[n + i].rs, isr[tree[n + i].ls] = n + i, isr[tree[n + i].rs] = n + i;
+	int root2 = n + n / 2;
+	n = n + n - 1;
+	int root = 0;
+	for (int i = 1; i <= n; ++i) if (!isr[i]) root = i;
+	build(root);
+//	for (int i = 1; i <= n; ++i) cout << tree[i].l << ' ' << tree[i].r << ' ' << tree[i].ls << ' ' << tree[i].rs << ' ' << tree[i].s << endl;
+	while (m--) {
+		int opt, l, r, d;
+		cin >> opt;
+		if (opt == 1) {
+			cin >> l >> r >> d;
+			if (l == r) {
+				tree[l].s += d * (tree[l].r - tree[l].l + 1);
+			}
+			else if (l == r - 1) {
+				if (isr[l] == isr[r])
+					tree[isr[l]].s += d * (tree[isr[l]].r - tree[isr[l]].l + 1);
+				else 
+					tree[l].s += d * (tree[l].r - tree[l].l + 1),
+					tree[r].s += d * (tree[r].r - tree[r].l + 1);
+			}
+			else if (tree[root2].l <= l && r <= tree[root2].r) {
+				chg(root2, l, r, d);
+			}
+			else {
+				chg(root, l, r, d);
+			}
+		}
+		else {
+			cin >> l >> r;
+			if (P[l][r]) {
+				cout << P[l][r] << endl;
+				continue;
+			}
+			ll ans = 0;
+			if (l == r) {
+				ans = tree[l].s;
+			}
+			else if (l == r - 1) {
+				if (isr[l] == isr[r])
+					ans = tree[isr[l]].s;
+				else
+					ans = tree[r].s + tree[l].s;
+			}
+			else if (tree[root2].l <= l && r <= tree[root2].r) {
+				ans = qry(root2, l, r);
+			}
+			else {
+				ans = qry(root, l, r);
+			}
+			P[l][r] = ans;
+			cout << ans << endl;
+		}
+	}
+}

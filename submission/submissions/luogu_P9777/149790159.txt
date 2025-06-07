@@ -1,0 +1,98 @@
+//  OJ: 洛谷
+//  提交ID: 149790159
+//  题目ID: P9777
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+#pragma warning(disable:4244)
+#pragma warning(disable:6262)
+template<typename T1, typename T2>
+ostream& operator << (ostream& out, pair<T1, T2>& p) {
+	out << '{' << p.first << ',' << p.second << '}';
+	return out;
+}
+template<typename T>
+ostream& operator << (ostream& out, vector<T>p) {
+	for (T t : p) out << t << ';';
+	return out;
+}
+struct LZJ {
+	short n, m;
+	int num[4][4];
+	LZJ() {
+		memset(num, 0, sizeof num);
+		n = m = 0;
+	}
+	LZJ(int nn) {
+		memset(num, 0, sizeof num);
+		n = m = nn;
+		for (int i = 1; i <= n; ++i)
+			num[i][i] = 1;
+	}
+	LZJ(int nn, int mm) {
+		n = nn, m = mm;
+		memset(num, 0, sizeof num);
+	}
+	friend LZJ operator * (const LZJ& a, const LZJ& b) {
+		LZJ c = LZJ(a.n, b.m);
+		if (a.m != b.n) cerr << "the first " << a << "want to mul the second " << b << endl << "ERR", exit(0);
+		for (int i = 1; i <= a.n; ++i)
+			for (int j = 1; j <= b.m; ++j)
+				for (int k = 1; k <= a.m; ++k)
+					c.num[i][j] += (a.num[i][k] * b.num[k][j]);
+		return c;
+	}
+	friend LZJ operator %(const LZJ& a, const int& m) {
+		LZJ c = a;
+		for (int i = 1; i <= a.n; ++i)
+			for (int j = 1; j <= a.m; ++j)
+				c.num[i][j] %= m;
+		return c;
+	}
+	friend ostream& operator<<(ostream& out, const LZJ& a) {
+		out << "is {" << a.n << " with " << a.m << "}\n";
+		for (int i = 1; i <= a.n; ++i, out << endl)
+			for (int j = 1; j <= a.m; ++j)
+				out << a.num[i][j] << ' ';
+		return out;
+	}
+}lzJ=LZJ(2);
+int m,k,n;
+LZJ poww(LZJ a, long long x) {
+	if (x == 0) return lzJ;
+	LZJ t = poww(a, x / 2);
+	t = (t * t);
+	t=t%m;
+	if (x & 1) t = (t * a);
+	return t%m;
+}
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin>>m>>k>>n;
+	if(n==0) cout<<2<<endl;
+	if(n==1) cout<<k<<endl;
+	else{
+		LZJ tmp=LZJ(2),base;
+		tmp.num[1][1]=k;
+		tmp.num[1][2]=1;
+		tmp.num[2][1]=-1;
+		tmp.num[2][2]=0;
+		base.n=1;base.m=2;
+		base.num[1][1]=k;
+		base.num[1][2]=2;
+		LZJ ans=base*poww(tmp,n-1);
+		cout<<(ans.num[1][1]+m)%m<<endl;
+	}
+	
+	return 0;
+}
+/*
+f(n)=x^n+x^-n
+f(0)=2
+f(1)=k
+
+f(n)=f(n-1)*k-f(n-2)
+
+|k 2| * | k 1 |=|k*k-2 k|
+		|-1 0 |
+*/

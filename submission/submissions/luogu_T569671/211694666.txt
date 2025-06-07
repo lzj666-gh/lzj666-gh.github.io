@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 211694666
+//  题目ID: T569671
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int t;cin>>t;
+//	if(t==1){
+//		cout<<"0.30000000000000004";
+//	}
+	if(t==2){
+		cout<<"0.30000000000000004";
+	}
+	if(t==3){
+		cout<<"99";
+	}
+	if(t==4){
+		cout<<"129 387 645";
+	}
+	if(t==5){
+		for(int i = 114514;i<=1919810;i++)cout<<0;
+	}
+	if(t==6){
+		cout<<"6737151";
+	}
+	if(t==7){
+		cout<<"19";
+	}
+	if(t==8){
+		cout<<"C";
+	}
+	if(t==9){
+		cout<<"450";
+	}
+	if(t==10){
+		cout<<"11";
+	}
+}

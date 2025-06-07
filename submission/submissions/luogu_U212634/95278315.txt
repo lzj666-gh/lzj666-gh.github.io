@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 95278315
+//  题目ID: U212634
+#include<bits/stdc++.h>
+#include<cmath>
+using namespace std;
+int main(){
+	int a,b,c;cin>>a>>b>>c;
+	int ans;
+	ans=a%b+a-a*c*c;
+	printf("%d",ans);
+}

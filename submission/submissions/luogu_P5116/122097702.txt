@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 122097702
+//  题目ID: P5116
+#include<bits/stdc++.h>
+using namespace std;
+int x,y,z,a,b,c;
+inline in(int &a,int &b,int top_b){
+	b+=a;
+	if(b>=top_b) a=b-top_b,b=top_b;
+	else a=0;
+}
+int main(){
+//	freopen("mixmilk.in","r",stdin);
+//	freopen("mixmilk.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>x>>a>>y>>b>>z>>c;
+	for(register int i=1;i<=33;++i){
+		in(a,b,y);
+//		cout<<a<<' '<<b<<' '<<c<<' '<<endl;
+		in(b,c,z);
+//		cout<<a<<' '<<b<<' '<<c<<' '<<endl;
+		in(c,a,x);
+//		cout<<a<<' '<<b<<' '<<c<<' '<<endl;
+	}
+	in(a,b,y);
+	cout<<a<<endl<<b<<endl<<c<<endl;
+	return 0;
+}

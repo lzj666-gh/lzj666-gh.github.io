@@ -1,0 +1,58 @@
+//  OJ: 洛谷
+//  提交ID: 188125447
+//  题目ID: T537315
+#include<bits/stdc++.h>
+// #define ONLINE
+using namespace std;
+int n, q;
+multiset<int>a;
+set<int>ans;
+bool vis[500000 + 10];
+void dfs(int x, int mx, int nw, int tot) {
+	if (x == n + 1) {
+		//cerr << mx << ' ' << nw << ' ' << tot << endl;
+		ans.insert(tot);
+		return;
+	}
+	int i = 1;
+	for (int now : a) {
+		if (vis[i]) {
+			i++;
+			continue;
+		}
+		vis[i] = 1; nw += now;
+		dfs(x + 1, max(nw, mx), nw, tot + (nw > mx));
+		vis[i] = 0; nw -= now;
+	}
+}
+int main() {
+#ifdef ONLINE
+	freopen("solo.in", "r", stdin);
+	freopen("solo.out", "w", stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	cin >> n >> q;
+	for (int i = 1, tmp; i <= n; ++i) cin >> tmp, a.insert(tmp);
+	while (q--) {
+		int opt, num;
+		cin >> opt >> num;
+		if (opt == 1) a.insert(num);
+		else a.erase(a.lower_bound(num));
+		ans.clear();
+		dfs(1, 0, 0, 0);
+		cout << ans.size() << endl;
+	}
+	return 0;
+}
+/*
+寄，想不出来咋写。
+看着其他人好像都觉得这题挺简单的，我已经想了2.5h了。
+
+思路：
+最后区间一定是前面一堆负的，中间一堆正的，最后再一堆负的。
+中间产生影响最终答案的个数就等于中间正的的前缀和减去前面负的的总和第一个为正数的地址到正的结束。
+不会写。
+感觉是个背包，还得可持久化，外面再加个莫队。
+但是时间复杂度还是超了。
+不干了，只剩半个小时了，先打暴力。
+*/

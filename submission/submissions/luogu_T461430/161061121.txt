@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 161061121
+//  题目ID: T461430
+#include<bits/stdc++.h>
+#define ull unsigned long long
+using namespace std;
+int n, m, a[100000 + 10];
+pair<int, int>s[100000 + 10];
+vector<int>p[100];
+bool operator<(const vector<int>& a, const vector<int>& b) {
+	size_t tmp = min(a.size(), b.size());
+	for (size_t i = 0; i < tmp; ++i)
+		if (a[i] != b[i])
+			return a[i] < b[i];
+	return a.size() < b.size();
+}
+map<vector<int>, bool>mp;
+void dfs(vector<int> v1, vector<int> v2) {
+	if (v2.empty()&&v1.size()) mp[v1] = 1;
+	while (v2.size()) {
+		int tmp = v2.back();
+		v2.pop_back();
+		dfs(v1, v2);
+		if (v1.size()) v1.insert(lower_bound(v1.begin(), v1.end(), tmp), tmp);
+		else v1.push_back(tmp);
+		dfs(v1, v2);
+		v1.erase(lower_bound(v1.begin(), v1.end(), tmp));
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, l, r; i <= n; ++i) {
+		cin >> l >> r;
+		for (int j = l; j <= r; ++j) {
+			p[j].push_back(i);
+		}
+	}
+	for (int i = 1; i <= m; ++i) {
+		cin >> a[i];
+		dfs(vector<int>(), p[a[i]]);
+	}
+	cout << mp.size() << endl;
+	return 0;
+}

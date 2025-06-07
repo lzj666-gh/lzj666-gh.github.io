@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 133470225
+//  题目ID: T146872
+#include<bits/stdc++.h>
+using namespace std;
+long long a,b,p,ans,tmp;
+signed main(){
+	ios_base::sync_with_stdio(false);
+	cin>>a>>b>>p;if(p==1){cout<<0<<endl;
+	}
+	a%=p;
+	ans=0;tmp=a;
+	while(b){
+		ans=((b&1)?(ans+tmp)%p:ans);
+		tmp=tmp*2%p;
+		b>>=1;
+	}
+	cout<<ans<<endl;
+} 

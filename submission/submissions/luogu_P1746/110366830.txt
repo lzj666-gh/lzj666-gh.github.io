@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 110366830
+//  题目ID: P1746
+#include<bits/stdc++.h>
+using namespace std;
+int n,xx,yy,m,t,sx,sy,fx,fy,cnt;
+bool a[50][50];
+void dfs(int x,int y,int z){
+	if(x<1||x>n||y<1||y>m) return ;
+	if(x==fx&&y==fy){
+		cnt=min(cnt,z);
+		return;
+	}
+	if(a[x+1][y]==true) a[x+1][y]=false,dfs(x+1,y,z+1),a[x+1][y]=true;
+	if(a[x-1][y]==true) a[x-1][y]=false,dfs(x-1,y,z+1),a[x-1][y]=true;
+	if(a[x][y+1]==true) a[x][y+1]=false,dfs(x,y+1,z+1),a[x][y+1]=true;
+	if(a[x][y-1]==true) a[x][y-1]=false,dfs(x,y-1,z+1),a[x][y-1]=true;
+}
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		char l[50];
+		cin>>l;
+		for(int j=1;j<=n;j++){
+			if(l[j]-'0'==1) a[i][j]=false;
+			else a[i][j]=true;
+		}
+		getchar();
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			cout<<a[i][j];
+		}
+		cout<<endl;
+	}
+	cin>>sx>>sy>>fx>>fy;
+	if(a[fx][fy]==false){
+		cout<<0<<endl;
+		return 0;
+	}
+	a[sx][sy]=false;
+	dfs(sx,sy,0);
+	cout<<cnt<<endl;
+	return 0;
+}
+

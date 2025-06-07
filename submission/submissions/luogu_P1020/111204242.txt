@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 111204242
+//  题目ID: P1020
+#include<bits/stdc++.h>
+using namespace std;
+int n,h[100000],a[100000],b[100000],maxx;
+int main(){
+	std::ios::sync_with_stdio(false);
+	int hh;
+	while(cin>>a[++a[0]]){
+		maxx=0;
+		for(int j=1;j<=a[0]-1;j++){
+			if(a[j]>=a[a[0]]){
+				if(b[j]>maxx) maxx=b[j];
+			}
+		}
+		b[a[0]]=maxx+1;
+		if(b[a[0]]>hh) hh=b[a[0]];
+		int mina=0x7f7f7f7f,wz;
+		for(int i=1;i<=h[0];++i){
+			if(h[i]>=a[a[0]]){
+				if(h[i]>=a[a[0]]){
+					mina=h[i];
+					wz=i;
+				}
+			}
+		}
+		if(mina==0x7f7f7f7f){
+			h[++h[0]]=a[a[0]];
+		}
+		else{
+			h[wz]=a[a[0]];
+		}
+	}
+	cout<<hh<<endl<<h[0];
+	return 0;
+}

@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 148019348
+//  题目ID: P2822
+#include<bits/stdc++.h>
+#define cbc 2000 + 1
+#define ll long long
+using namespace std;
+ll C[2000 + 10][2000 + 10], dcl[2000 + 10][2000 + 10];
+int n, m;
+int t, k;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> t >> k;
+	for (int i = 0; i <= cbc; ++i)C[i][0] = 1;
+	C[1][1] = 1;
+	for (int i = 2; i <= cbc; ++i)
+		for (int j = 1; j <= i; ++j)
+			C[i][j] = (C[i - 1][j] + C[i - 1][j - 1]) % k;
+	for (int i = 2; i <= cbc; ++i) {
+		for (int j = 1; j <= i; ++j) {
+			dcl[i][j] = dcl[i - 1][j] + dcl[i][j - 1] - dcl[i - 1][j - 1] + (C[i][j] == 0);
+		}
+		dcl[i][i + 1] = dcl[i][i];
+	}
+	while (t--) {
+		cin >> n >> m;
+		if (m > n) m = n;
+		cout << dcl[n][m] << endl;
+	}
+	return 0;
+}

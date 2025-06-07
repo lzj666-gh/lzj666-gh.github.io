@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 127259834
+//  题目ID: P6368
+#include<bits/stdc++.h>
+using namespace std;
+int read(){
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c<'0'||c>'9'){
+		if(c=='-') s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0'){
+		x=(x<<1)+(x<<3)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+}
+inline void write(int x){
+	if(x<0){
+		x=~x+1;
+		putchar('-');
+	}else if(!x) return;
+	write(x/10);
+	putchar(x%10+48);
+}
+int r,c,x,y;
+string ans[1000+10];
+int main(){
+//	freoaen("magija.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>r>>c;
+	for(int i=1;i<=r;++i){
+		cin>>ans[i];
+		string tmp=ans[i];
+		reverse(tmp.begin(),tmp.end());
+		ans[i]+=tmp;
+	}
+	for(int i=r,j=r+1;i>=1;--i,++j){
+		ans[j]=ans[i];
+	}
+	cin>>x>>y;
+	ans[x][y-1]=ans[x][y-1]=='.'?'#':'.';
+	for(int i=1;i<=2*c;++i){
+		cout<<ans[i]<<endl;
+	}
+	return 0;
+}

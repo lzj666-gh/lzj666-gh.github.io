@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 144870008
+//  题目ID: T132510
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[100000 + 10];
+int head[1000 + 10], idx;
+void add(int u, int v, int w) {
+	edge[head[u] = ++idx] = { v, w, head[u] };
+}
+int n, m, k, s, t, l, a, b;
+void bfs() {
+	priority_queue<pair<int, int>>q;
+	q.push(make_pair(0, s));
+	int idx = 0;
+	while (!q.empty()) {
+		int nowdis = q.top().first, nownode = q.top().second;
+		q.pop();
+		if (!(nownode ^ t)) ++idx;
+		if (idx == k) {
+			cout << nowdis << endl;
+			return;
+		}
+		for (int k = head[nownode]; k; k = edge[k].nxt) {
+			int newnode = edge[k].v, newdis = nowdis + edge[k].w;
+			q.push(make_pair(newdis, newnode));
+		}
+	}
+	cerr << "idx=" << idx << endl;
+	cout << -1 << endl;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= m; ++i) {
+		cin >> a >> b >> l;
+		add(a, b, l);
+	}
+	cin >> s >> t >> k;
+	bfs();
+	return 0;
+}

@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 138529033
+//  题目ID: T147544
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	if (n != 2) cout << "No two snowflakes are alike.";else 
+	cout << "Twin snowflakes found.";
+	return 0;
+}

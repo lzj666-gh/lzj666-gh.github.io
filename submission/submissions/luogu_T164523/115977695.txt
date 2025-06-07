@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 115977695
+//  题目ID: T164523
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int l,r;
+}a[1000+10];
+string s;
+int n;
+char dfs(int l,int r){
+	if(l==r&&s[l]=='1'){
+		cout<<'I';
+		return 'I';
+	}
+	else if(l==r&&s[l]=='0'){
+		cout<<'B';
+		return 'B';
+	}
+	char c1=dfs(l,(l+r)/2),c2=dfs((l+r)/2+1,r);
+	if(c1==c2&&c1!='F'){
+		if(c1=='I'){
+			cout<<'I';
+			return 'I';
+		}
+		cout<<'B';
+		return 'B';
+	}
+	cout<<'F';
+	return 'F';
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>s;
+	dfs(0,s.size()-1);
+	return 0;
+}

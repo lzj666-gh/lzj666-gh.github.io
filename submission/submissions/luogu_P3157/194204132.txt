@@ -1,0 +1,106 @@
+//  OJ: 洛谷
+//  提交ID: 194204132
+//  题目ID: P3157
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+typedef long long ll;
+namespace IO {
+#ifdef ONLINE_JUDGE
+#define getchar() (p1 == p2 && (p2 = (p1 = buf) + fread(buf,1,1<<20,stdin), p1 == p2) ? 0 : *p1++)
+#endif
+	char buf[1 << 20], * p1, * p2;
+	inline void read(int& x) {
+		bool f = 1; x = 0; char ch = getchar();
+		while (ch < '0' || ch>'9') { if (ch == '-') f = !f; ch = getchar(); }
+		while (ch >= '0' && ch <= '9') { x = (x << 1) + (x << 3) + (ch ^ 48); ch = getchar(); }
+		x = (f ? x : -x); return;
+	}
+	inline void write(int x) {
+		if (x < 0) putchar('-'), x = -x;
+		if (x > 9) write(x / 10);
+		putchar(x % 10 + '0'); return;
+	}
+}
+using namespace IO;
+struct Node {
+	int a, b, c, ans;
+	Node() :a(0), b(0), c(0), ans(0) {}
+	friend bool operator<(const Node& a, const Node& b) {
+		return a.a == b.a ? a.b == b.b ? a.c < b.c : a.b < b.b : a.a < b.a;
+	}
+}t[100000 + 10];
+int n, cbcycycbc[100000 + 10];
+constexpr int K = 1e5;
+class Tree_array {
+public:
+#define lb(x) (x & ~x + 1)
+	ll query(ll x) {
+		ll ans = 0;
+		for (; x; x -= lb(x)) {
+			ans += s[x];
+		}
+		return ans;
+	}
+	void add(int x, ll k) {
+		for (; x <= K; x += lb(x)) {
+			s[x] += k;
+		}
+	}
+	void clear() {
+		unordered_map<int, ll>().swap(s);
+	}
+	Tree_array() :s(unordered_map<int, ll>()) {}
+protected:
+	unordered_map<int, ll>s;
+}tr;
+void CDQ(int l, int r) {
+	//cerr << "CDQing " << l << ' ' << r << endl;
+	if (l == r) return;
+	int mid = l + r >> 1;
+	CDQ(l, mid);
+	CDQ(mid + 1, r);
+	sort(&t[l], &t[mid + 1], [](const Node& a, const Node& b)->bool {return a.b == b.b ? a.c < b.c : a.b < b.b; });
+	sort(&t[mid + 1], &t[r + 1], [](const Node& a, const Node& b)->bool {return a.b == b.b ? a.c < b.c : a.b < b.b; });
+	//cerr << "merging in CDQ " << l << ' ' << r << endl;
+	int i = l, j = mid + 1;
+	while (j <= r) {
+		while (i <= mid && t[i].b <= t[j].b) {
+			tr.add(t[i].c, 1);
+			++i;
+		}
+		t[j].ans += tr.query(t[j].c);
+		++j;
+	}
+	tr.clear();
+	//cerr << "merge end" << endl;
+}
+int deltime[100000 + 10], m;
+signed main() {
+	read(n); read(m);
+	for (int i = 1; i <= n; ++i) t[i].a = i;
+	for (int i = 1; i <= n; ++i) read(t[i].b);
+	for (int i = 1; i <= n; ++i) deltime[i] = 1;
+	for (int i = 1; i <= m; ++i) {
+		static int tmp;
+		cin >> tmp;
+		deltime[tmp] = m - i + 2;
+	}
+	//cerr << "end input" << endl;
+	for (int i = 1; i <= n; ++i) t[i].c = deltime[t[i].b], t[i].b = n - t[i].b + 1;
+	sort(&t[1], &t[n + 1]);
+	//cerr << "end change CDQ1" << endl;
+	CDQ(1, n);
+	//cerr << "CDQ1end" << endl;
+	for (int i = 1; i <= n; ++i) t[i].a = n - t[i].a + 1, t[i].b = n - t[i].b + 1;
+	sort(&t[1], &t[n + 1]);
+	CDQ(1, n);
+
+	for (int i = 1; i <= n; ++i) t[i].a = n - t[i].a + 1/*, t[i].c = m - t[i].c + 2*/;
+	sort(&t[1], &t[n + 1], [](const Node& a, const Node& b)->bool {return a.c < b.c; });
+
+	for (int i = 1; i <= n; ++i) t[i].ans += t[i - 1].ans;
+	for (int i = n; i >= 2; --i) cout << t[i].ans << endl;
+	return 0;
+	return 0;
+}

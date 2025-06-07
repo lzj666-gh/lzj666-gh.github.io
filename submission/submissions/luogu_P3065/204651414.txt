@@ -1,0 +1,69 @@
+//  OJ: 洛谷
+//  提交ID: 204651414
+//  题目ID: P3065
+#include<bits/stdc++.h>
+using namespace std;
+int idx, son[300'000 + 10][26], n;
+vector<int>v[300'000 + 10], ans;
+string s[30'000 + 10];
+void insert(int i) {
+	int p = 0;
+	for (const char& c : s[i]) {
+		if (v[p].size()) return;
+		if (son[p][c - 'a']) p = p[son][c - 'a'];
+		else p = p[son][c - 'a'] = ++idx;
+	}
+	v[p].push_back(i);
+}
+bool mp[26][26];
+bool cur[300'000 + 10][26];
+void query(int k) {
+	/*cerr << k << endl;
+	cerr << ' ' << ' ';	for (int i = 0; i < 26; ++i) cerr << char(i + 'a') << ' '; cerr << endl;
+	for (int i = 0; i < 26; ++i) {
+	cerr << char(i + 'a') << ' ';
+	for (int j = 0; j < 26; ++j)
+	cerr << mp[i][j] << ' ';
+	cerr << endl;
+	}*/
+	
+	if (v[k].empty()) {
+		vector<int>tmp;
+		for (int i = 0; i < 26; ++i)
+			if (son[k][i])
+				tmp.push_back(i);
+		for (auto& i : tmp) {
+			memset(cur[k], 1, sizeof cur[k]);
+			bool flg = 0;
+			for (auto& j : tmp)
+				if (i != j)
+					swap(mp[i][j], cur[k][j]),
+					flg |= mp[j][i];
+			if (!flg) query(son[k][i]);
+			for (auto& j : tmp)
+				if (i != j)
+					swap(mp[i][j], cur[k][j]);
+		}
+		return;
+	}
+	for (auto& q : v[k])
+		ans.emplace_back(q);
+}
+int main() {
+//	freopen("tmp.txt","r",stdin);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> s[i], insert(i);
+	query(0);
+	sort(ans.begin(), ans.end());
+	cout << ans.size() << endl;
+	for (auto& q : ans) cout << s[q] << endl;
+	return 0;
+}
+/*
+4
+omm
+moo
+mom
+ommnom
+*/

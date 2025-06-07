@@ -1,0 +1,271 @@
+//  OJ: 洛谷
+//  提交ID: 214030009
+//  题目ID: P4148
+#include<bits/stdc++.h>
+#define MAXKN 20
+using namespace std;
+template<int K = 2>
+class Point {
+private:
+	int x[K];
+public:
+	Point() { memset(x, 0, sizeof(x)); }
+	Point(initializer_list<int> pos) {
+		auto it = pos.begin();
+		for (int i = 0; i < K; i++, it++) x[i] = *it;
+	}
+	Point(const Point& other) {
+		for (int i = 0; i < K; i++) x[i] = other.x[i];
+	}
+	Point(const vector<int>& other) {
+		for (int i = 0; i < K; i++) x[i] = other[i];
+	}
+	int& operator[](int index) {
+		return x[index];
+	}
+	const int& operator[](int index) const {
+		return x[index];
+	}
+	void operator=(const Point& other) {
+		for (int i = 0; i < K; i++) x[i] = other.x[i];
+	}
+	bool operator==(const Point& other) const {
+		for (int i = 0; i < K; i++)
+			if (x[i] != other.x[i])
+				return false;
+		return true;
+	}
+	bool operator!=(const Point& other) const {
+		for (int i = 0; i < K; i++)
+			if (x[i] != other.x[i])
+				return true;
+		return false;
+	}
+	bool operator<(const Point& other) const {
+		for (int i = 0; i < K; i++)
+			if (x[i] != other.x[i])
+				return x[i] < other.x[i];
+		return false;
+	}
+	bool operator>(const Point& other) const {
+		for (int i = 0; i < K; i++)
+			if (x[i] != other.x[i])
+				return x[i] > other.x[i];
+		return false;
+	}
+	bool operator()(const Point& L, const Point& R)const {
+		for (int i = 0; i < K; i++)
+			if (!(L[i] <= x[i] && x[i] <= R[i]))
+				return false;
+		return true;
+	}
+	friend ostream& operator<<(ostream& os, const Point<K>& x) {
+		os << "(";
+		for (int i = 0; i < K; i++) os << x[i] << (i == K - 1 ? "" : ", ");
+		os << ")";
+		return os;
+	}
+};
+//(Lson,Rson) isin (lson,rson)
+template<int K = 2>
+bool inside(const Point<K>& Lson, const Point<K>& Rson, const Point<K>& lson, const Point<K>& rson) {
+	for (int i = 0; i < K; i++)
+		if (!(lson[i] <= Lson[i] && Rson[i] <= rson[i]))
+			return false;
+	return true;
+}
+//(Lson,Rson) intersect (lson,rson)
+template<int K = 2>
+bool intersect(const Point<K>& Lson, const Point<K>& Rson, const Point<K>& lson, const Point<K>& rson) {
+	for (int i = 0; i < K; i++)
+		if (Rson[i] < lson[i] || rson[i] < Lson[i])
+			return false;
+	return true;
+}
+template<int K = 2>
+struct KDTree {
+	struct Node {
+		int cnt, sum, lson, rson;
+		Point<K> pos, lpos, rpos;
+		Node() : cnt(0), sum(0), lson(0), rson(0) {}
+	}tree[500000 + 5];
+	int pushup(int p) {
+		tree[p].sum = tree[tree[p].lson].sum + tree[tree[p].rson].sum + tree[p].cnt;
+		tree[p].lpos = tree[p].pos, tree[p].rpos = tree[p].pos;
+		for (int i = 0; i < K; i++) {
+			if (tree[p].lson) {
+				tree[p].lpos[i] = min(tree[p].lpos[i], tree[tree[p].lson].lpos[i]);
+				tree[p].rpos[i] = max(tree[p].rpos[i], tree[tree[p].lson].rpos[i]);
+			}
+			if (tree[p].rson) {
+				tree[p].lpos[i] = min(tree[p].lpos[i], tree[tree[p].rson].lpos[i]);
+				tree[p].rpos[i] = max(tree[p].rpos[i], tree[tree[p].rson].rpos[i]);
+			}
+		}
+		return p;
+	}
+	struct Stack_ {
+		struct Node {
+			int val;
+			Node* nxt;
+			Node(int val, Node* nxt) : val(val), nxt(nxt) {}
+		};
+		Node* head;
+		void push(int val) {
+			head = new Node(val, head);
+		}
+		int top() {
+			static int idx;
+			if (head == nullptr) return ++idx;
+			return head->val;
+		}
+		void pop() {
+			if (head == nullptr) return;
+			Node* tmp = head;
+			head = head->nxt;
+			delete tmp;
+		}
+		void clear() {
+			while (head != nullptr) {
+				Node* tmp = head;
+				head = head->nxt;
+				delete tmp;
+			}
+		}
+	};
+	struct Stack {
+		vector<pair<Point<K>, int>> st;
+		void push(pair<Point<K>, int> val) {
+			st.push_back(val);
+		}
+		pair<Point<K>, int> top() {
+			return st.back();
+		}
+		void pop() {
+			st.pop_back();
+		}
+		void clear() {
+			st.clear();
+		}
+		int size() {
+			return st.size();
+		}
+		pair<Point<K>, int> operator[](int index) {
+			return st[index];
+		}
+		void unique() {
+			sort(st.begin(), st.end());
+			vector<pair<Point<K>, int>> new_st;
+			for (size_t i = 0; i < st.size(); ++i) {
+				if (!new_st.empty() && new_st.back().first == st[i].first) {
+					new_st.back().second += st[i].second;
+				}
+				else {
+					new_st.push_back(st[i]);
+				}
+			}
+			st.swap(new_st);
+		}
+	};
+	Stack_ st;
+	Stack Merge;
+	void dfs(int x) {
+		if (!x) return;
+		st.push(x);
+		Merge.push(make_pair(tree[x].pos, tree[x].cnt));
+		dfs(tree[x].lson);
+		dfs(tree[x].rson);
+	}
+	int build(int l, int r, int k) {
+		if (l > r) return 0;
+		int x = st.top(); st.pop(); 
+		memset(tree + x, 0, sizeof(Node));
+		if (l == r) {
+			tree[x].pos = Merge.st[l].first;
+			tree[x].cnt = Merge.st[l].second;
+			tree[x].lson = tree[x].rson = 0;
+			return pushup(x);
+		}
+		int mid = l + r >> 1;
+		nth_element(Merge.st.begin() + l, Merge.st.begin() + mid, Merge.st.begin() + r + 1,
+			[&](const pair<Point<K>, int>& a, const pair<Point<K>, int>& b) {
+				if (a.first[k] != b.first[k])
+					return a.first[k] < b.first[k];
+				return a.first < b.first;
+			});
+		tree[x].pos = Merge.st[mid].first;
+		tree[x].cnt = Merge.st[mid].second;
+		tree[x].lson = build(l, mid - 1, (k + 1) % K);
+		tree[x].rson = build(mid + 1, r, (k + 1) % K);
+		return pushup(x);
+	}
+	int merge(int ra, int rb) {
+		st.clear();
+		dfs(ra); dfs(rb);
+		Merge.unique();
+		return build(0, Merge.st.size() - 1, 0);
+	}
+	int root[MAXKN];
+	void insert(Point<K> pos, int val) {
+		Merge.push(make_pair(pos, val));
+		int r = build(0, 0, 0);
+		Merge.clear();
+		int i = 0;
+		for (; i < MAXKN; ++i) {
+			if (root[i] == 0) break;
+			r = merge(root[i], r);
+			root[i] = 0;
+			Merge.clear();
+		}
+		root[i] = r;
+	}
+	int query(int x, const Point<K>& Lson, const Point<K>& Rson) {
+		if (x == 0) return 0;
+		if (inside(tree[x].lpos, tree[x].rpos, Lson, Rson)) return tree[x].sum;
+		int ans = 0;
+		if (intersect(tree[x].lpos, tree[x].rpos, Lson, Rson)) {
+			if (inside(tree[x].pos, tree[x].pos, Lson, Rson))
+				ans += tree[x].cnt;
+			ans += query(tree[x].lson, Lson, Rson);
+			ans += query(tree[x].rson, Lson, Rson);
+		}
+		return ans;
+	}
+	int query(const Point<K>& Lson, const Point<K>& Rson) {
+		int ans = 0;
+		for (int i = 0; i < MAXKN; i++)
+			ans += query(root[i], Lson, Rson);
+		return ans;
+	}
+	KDTree() {
+		memset(root, 0, sizeof(root));
+		memset(tree, 0, sizeof(tree));
+		st.clear();
+	}
+};
+KDTree<2> tree;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, lst = 0;
+	cin >> n;
+	while(1) {
+		int opt, x, y, l, r;
+		cin >> opt;
+		if (opt == 3) return 0;
+		cin >> x >> y;
+		x ^= lst; y ^= lst;
+		if (opt == 1) {
+			cin >> l;
+			l ^= lst;
+			tree.insert(Point<2>({ x, y }), l);
+		}
+		else if (opt == 2) {
+			cin >> l >> r;
+			l ^= lst; r ^= lst;
+			lst = tree.query(Point<2>({ x, y }), Point<2>({ l, r }));
+			cout << lst << "\n";
+		}
+		//tree.debug();
+	}
+	return 0;
+}

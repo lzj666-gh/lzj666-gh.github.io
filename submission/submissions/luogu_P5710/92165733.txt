@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 92165733
+//  题目ID: P5710
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int a,b,c;
+	cin>>a;
+	b=(a+1)%2;
+	if(a>4 and a<=12){
+		c=1;
+	}
+	if(b==1 and c==1){
+		cout<<"1 ";
+	}
+	else{
+		cout<<"0 ";
+	}
+	if(b==1 or c==1){
+		cout<<"1 ";
+	}
+	else{
+		cout<<"0 ";
+	}
+	if(b==1 or c==1){
+		if(b==c){
+			cout<<"0 ";
+		}
+		else{
+			cout<<"1 ";
+		}
+	}
+	else{
+		cout<<"0 ";
+	}
+	if(b!=1 and c!=1){
+		cout<<"1";
+	}
+	else{
+		cout<<"0";
+	}
+	return 0;
+}
+

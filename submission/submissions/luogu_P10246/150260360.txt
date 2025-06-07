@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 150260360
+//  题目ID: P10246
+#include<bits/stdc++.h>
+using namespace std;
+int T,n,k,a[300000+10];
+pair<int,int> anss[300000+10];
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>T;
+	while(T--){
+		cin>>n>>k;
+		for(int i=1;i<=n;++i) cin>>a[i];
+		if(k==1){
+			cout<<0<<endl;
+			continue;
+		}
+		int ans=0;
+		for(long long s=k;s<=1e14;s*=k){
+			if(s<=10) continue;
+			string t=to_string(s);
+			string x,y;
+			x.push_back(t[0]);
+			y=t;
+			y.erase(y.begin());
+			for(int i=1;i<t.size();++i,x.push_back(y.front()),y.erase(y.begin())){
+///				cout<<"try:"<<x<<' '<<y<<endl;
+				if(y.front()=='0') continue;
+				if(stoll(x)>n) break;
+				if(a[stoll(x)]>=stoll(y)&&stoll(y)!=0){
+					++ans;
+					anss[ans]={stoll(x),stoll(y)};
+				}
+			}
+		}
+		cout<<ans<<endl;
+		sort(anss+1,anss+ans+1);
+		for(int i=1;i<=ans;++i) cout<<anss[i].first<<' '<<anss[i].second<<endl;
+	}
+	return 0;
+}

@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 114425248
+//  题目ID: P9451
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);cout.tie(NULL);
+	int T;
+	cin>>T;
+	for(int i=1;i<=T;i++){
+		long long a;
+		cin>>a;
+		if(__builtin_popcount(a)>=3){
+			cout<<"No,Commander"<<endl;
+		}
+		else{
+			while(__builtin_popcount(++a)>=3);
+			cout<<a<<endl;
+		}
+	}
+	return 0;
+}
+

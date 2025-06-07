@@ -1,0 +1,53 @@
+//  OJ: 洛谷
+//  提交ID: 164664678
+//  题目ID: P2015
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[100 + 10];
+int head[100 + 10], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int n, k, dp[100 + 10][100 + 10], lc[100 + 10], rc[100 + 10], lv[100 + 10], rv[100 + 10];
+void getlrc(int k, int fa) {
+	for (int i = head[k]; i; i = edge[i].nxt) {
+		if (edge[i].v ^ fa) {
+			if (!lc[k]) lc[k] = edge[i].v, lv[k] = edge[i].w;
+			else rc[k] = edge[i].v, rv[k] = edge[i].w;
+			getlrc(edge[i].v, k);
+		}
+	}
+}
+void dfs(int k, int q) {
+	if (!head[k]) return;
+	if (!q) return;
+	if (dp[k][q]) return;
+	for (int i = 0; i <= q; ++i) {
+		if(!i) {
+			dfs(rc[k], q - 1);
+			dp[k][q] = max(dp[k][q], dp[rc[k]][q - 1] + rv[k]);
+		}
+		else if (i == q) {
+			dfs(lc[k], q - 1);
+			dp[k][q] = max(dp[k][q], dp[lc[k]][q - 1] + lv[k]);
+		}
+		else {
+			dfs(lc[k], k - 1);
+			dfs(rc[k], q - k - 1);
+			dp[k][q] = max(dp[k][q], dp[lc[k]][k - 1] + dp[rc[k]][q - k - 1] + lv[k] + rv[k]);
+		}
+	}
+	return;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> k;
+	for (int i = 1, u, v, w; i < n; ++i) cin >> u >> v >> w, add(u, v, w), add(v, u, w);
+	getlrc(1, -1);
+	dfs(1, k);
+	cout << dp[1][k] << endl;
+	return 0;
+}

@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 107619037
+//  题目ID: P3156
+#include<bits/stdc++.h>
+using namespace std;
+long long a[2000001];
+long long n,m;
+int main() {
+	cin>>n>>m;
+	for(int i=1;i<=n;++i) cin>>a[i];
+	for(int i=1;i<=m;++i) {
+		cin>>n;
+		cout<<a[n]<<endl;
+	}
+	return 0;
+}

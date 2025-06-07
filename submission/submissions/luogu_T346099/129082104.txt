@@ -1,0 +1,55 @@
+//  OJ: 洛谷
+//  提交ID: 129082104
+//  题目ID: T346099
+#include "bits/stdc++.h"
+using namespace std;
+struct Edge{
+	int to,next,w;
+};
+array<Edge,300000+10>edges;
+array<int,200000+10> head,vis,dis;
+int n,m,s,idx;
+inline void add(int u,int v,int val){
+	edges[++idx]={v,head[u],val};
+	head[u]=idx;
+}
+void spfa(){
+	queue<int>q;
+	q.push(1);
+	dis[1]=0;
+	while(!q.empty()){
+		int now=q.front();
+		q.pop();
+		++vis[now];
+		if(vis[now]>n){
+			cout<<"YES"<<endl;
+			return;
+		}
+		for(int i=head[now];i;i=edges[i].next){
+			if(dis[edges[i].to]>dis[now]+edges[i].w){
+				q.push(edges[i].to);
+				dis[edges[i].to]=dis[now]+edges[i].w;
+			}
+		}
+	}
+	cout<<"NO"<<endl;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--){
+		head.fill(0);
+		edges.fill({0,0,0});
+		vis.fill(0);
+		dis.fill(0x3f3f3f3f);
+		cin>>n>>m;
+		for(int i=1;i<=m;i++){
+			int u,v,w;
+			cin>>u>>v>>w;
+			add(u,v,w);
+			if(w>=0) add(v,u,w);
+		}
+		spfa();
+	}
+}

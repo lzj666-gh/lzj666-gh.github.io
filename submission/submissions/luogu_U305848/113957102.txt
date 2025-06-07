@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 113957102
+//  题目ID: U305848
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn=100000+10;
+int st1[maxn],st2[maxn];
+//st1表示不上升子序列的最优序列
+//st2表示上升子序列的最优序列 
+int n,top1,top2,a[maxn],k,x; 
+int erfen(int val){//在不上升序列中，查找第一个比val小的数的位置
+	 int L=1,R=top2,mid;
+	 while(L<=R){
+	 	mid=(L+R)/2;
+	 	if(val>st2[mid]) R=mid-1;
+	 	else L=mid+1;
+	 }
+	 return R+1;
+}
+int main(){
+    cin>>n;
+	for(int i=1;i<=n;i++) cin>>a[i];
+	st2[++top2]=a[1];//维护不上升子序列的最优序列
+	for(int i=2;i<=n;i++){
+		if(a[i]<=st2[top2]) st2[++top2]=a[i];//插入栈顶 
+		else {
+			k=erfen(a[i]);
+			st2[k]=a[i];
+		}
+	} 
+	cout<<top2<<endl;
+	st1[++top1]=a[1];//维护上升子序列的最优序列 
+	for(int i=2;i<=n;i++){
+		if(a[i]>st1[top1]) st1[++top1]=a[i];//插入栈顶 
+		else {
+			k=lower_bound(st1+1,st1+top1+1,a[i])-st1;
+			st1[k]=a[i];
+		}
+	}
+//	cout<<top1<<endl;
+	return 0;
+}

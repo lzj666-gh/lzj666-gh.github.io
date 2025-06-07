@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 167248071
+//  题目ID: T480717
+#include<bits/stdc++.h>
+using namespace std;
+long long x,y,z,w;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>x>>y>>z>>w;
+	if(x==0&&y==0){
+		cout<<0<<endl;
+		return 0;
+	}
+	if(z==0){
+		if(x==0){
+			if(w==0) cout<<-1<<endl;
+			else cout<<y/w<<endl;
+		}
+		else{
+			cout<<-1<<endl;
+		}
+		return 0;
+	}
+	int c=x/z;
+	if(x==z*c&&y==w*c) cout<<c<<endl;
+	else cout<<-1<<endl;
+	return 0;
+}

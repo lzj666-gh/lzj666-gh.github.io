@@ -1,0 +1,90 @@
+//  OJ: 洛谷
+//  提交ID: 156577254
+//  题目ID: T237220
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, opt, x, y, a, b;
+struct Tree {
+#define lc(p) (p << 1)
+#define rc(p) ((p << 1) + 1)
+	struct point {
+		int l, r;
+		long long sum, lazy;
+		point() :l(0), r(0), sum(0), lazy(0) {}
+		point(int ll, int rr, long long ssum, long long lzy) :l(ll), r(rr), sum(ssum), lazy(lzy) {}
+	}tree[4 * 513];
+	void pushdown(int p) {
+		if (tree[p].lazy) {
+			tree[lc(p)].sum += (tree[lc(p)].r - tree[lc(p)].l) * tree[p].lazy;
+			tree[rc(p)].sum += (tree[rc(p)].r - tree[rc(p)].l) * tree[p].lazy;
+			tree[lc(p)].lazy += tree[p].lazy;
+			tree[rc(p)].lazy += tree[p].lazy;
+			tree[p].lazy = 0;
+		}
+	}
+	void pushup(int p) {
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+	}
+	void add(int p, int l, int r, int k) {
+		if (tree[p].l >= r || tree[p].r <= l) return;
+		if (tree[p].l == tree[p].r - 1) {
+			if (tree[p].lazy) tree[p].lazy = 0;
+			tree[p].sum += k;
+			return;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) {
+			tree[p].lazy += k;
+			pushdown(p);
+			pushup(p);
+			return;
+		}
+		pushdown(p);
+		add(lc(p), l, r, k);
+		add(rc(p), l, r, k);
+		pushup(p);
+	}
+	long long query(int p, int l, int r) {
+		if (tree[p].l >= r || tree[p].r <= l) return 0;
+		if (tree[p].l == tree[p].r - 1) {
+			if (tree[p].lazy) tree[p].lazy = 0;
+			return tree[p].sum;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) return tree[p].sum;
+		pushdown(p);
+		long long ans = 1ll * query(lc(p), l, r) + query(rc(p), l, r);
+		pushup(p);
+		return ans;
+	}
+	void build(int p, int l, int r, const vector<int>& v) {
+		tree[p].l = l, tree[p].r = r, tree[p].lazy = 0;
+		if (l == r - 1) {
+			tree[p] = { l,r,v[l],0 };
+			return;
+		}
+		build(lc(p), l, l + r >> 1, v);
+		build(rc(p), l + r >> 1, r, v);
+		pushup(p);
+	}
+}t[513];
+vector<int>v;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	v.push_back(0);
+	for (int i = 1; i <= m; ++i) v.push_back(0);
+	for (int i = 1; i <= n; ++i) t[i].build(1, 1, m + 1, v);
+	while (cin >> opt) {
+		if (opt == 2) {
+			cin >> x >> y >> a >> b;
+			int sum = 0;
+			for (int i = x; i <= a; ++i) sum += t[i].query(1, y, b + 1);
+			cout << sum << endl;
+		}
+		else {
+			int k;
+			cin >> x >> y >> a >> b >> k;
+			for (int i = x; i <= a; ++i) t[i].add(1, y, b + 1, k);
+		}
+	}
+	return 0;
+}

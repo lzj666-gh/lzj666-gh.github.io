@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 97774415
+//  题目ID: T66264
+#include<iostream>
+using namespace std;
+int main()
+{
+	int m;cin>>m;
+	int a[m];
+	for(int n=1;n<=m;n++){
+		int a=1,b=1,c;
+		for(int i=3;i<=n;i++){
+ 	       c=a+b;
+ 	       a=b;
+ 	       b=c;
+		}
+		a[n-1]=b;
+	}
+	for(int i=0;i<m;i+=2){
+		cout<<a[i]<<" ";
+	}
+	cout<<endl;
+	for(int i=1;i<m;i+=2){
+		cout<<a[i]<<" ";
+	}
+    return 0;
+}

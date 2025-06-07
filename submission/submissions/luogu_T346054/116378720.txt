@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 116378720
+//  题目ID: T346054
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int to,val;
+};
+vector<vector<Edge> > a(300000+1);
+int n,m,s;
+vector<int> dis(300000+1);
+struct node{
+	int first,second;
+	friend bool operator > (const node &a,const node &b){
+		return a.first==b.first?a.second<b.second:a.first<b.first;
+	}
+};
+priority_queue<node,vector<node>,greater<node>> pq;
+int dijkstra(){
+	for(int i=0;i<=n;i++){
+		dis[i]=INT_MAX/2-1;
+	}
+	dis[s]=0;
+	pq.push({0,s});
+	while(!pq.empty()){
+		int val=pq.top().first,num=pq.top().second;
+		pq.pop();
+		if(val>dis[num]) continue;
+		for(const Edge &edge:a[num]){
+			int newval=dis[num]+edge.val;
+			if(newval<dis[edge.to]){
+				dis[edge.to]=newval;
+				pq.push({newval,edge.to});
+			}
+		}
+	}
+	for(int i=1;i<=n;i++) cout<<(dis[i]!=INT_MAX/2-1?dis[i]:INT_MAX)<<' ';
+	cout<<endl;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m>>s;
+	for(int i=0;i<m;++i){
+		int x,y,z;
+		cin>>x>>y>>z;
+		a[x].push_back({y,z});
+	}
+	dijkstra();
+	return 0;
+}

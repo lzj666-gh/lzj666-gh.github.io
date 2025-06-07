@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 211815008
+//  题目ID: T587901
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	cout<<"medal";
+	return 0;
+} 

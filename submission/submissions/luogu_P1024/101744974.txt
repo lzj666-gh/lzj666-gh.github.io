@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 101744974
+//  题目ID: P1024
+#include<bits/stdc++.h>
+using namespace std;
+double a,b,c,d,j[4];
+int cnt=1;
+double f(int x){
+	return a*x*x*x+b*x*x+c*x+d;
+}
+int main(){
+	scanf("%lf%lf%lf%lf",&a,&b,&c,&d);
+	for(double i=-100;i<=100;i+=0.001){
+		if(f(i)==0&&abs(i-j[cnt-1])>=1){
+			j[cnt]=i;
+			cnt++;
+		}
+	}
+	for(int i=1;i<=3;i++){
+		printf("%.2lf ",j[i]);
+	}
+}

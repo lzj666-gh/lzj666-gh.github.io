@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 203824082
+//  题目ID: P9982
+#include<bits/stdc++.h>
+#define dis(i) a * f[i] + b * g[i]
+using namespace std;
+int n, q;
+long long x[200000 + 10], a[200000 + 10], f[200000 + 10], g[200000 + 10];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	sort(a + 1, a + n + 1);
+	for (int i = 1; i <= n; ++i) x[i] = x[i - 1] + a[i];
+	for (int i = 1; i <= n; ++i)
+		f[i] = a[i] * (i - 1) - x[i - 1],
+		g[i] = x[n] - x[i] - a[i] * (n - i);
+	cin >> q;
+	while (q--) {
+		static int a, b;
+		cin >> a >> b;
+		int k = 1;
+		for (int i = 2; i <= n; ++i)
+			if (dis(i) < dis(k))
+				k = i;
+		cout << dis(k) << endl;
+	}
+	return 0;
+}
+/*
+(a*f[i]+b*g[i])_min
+
+思考发现可以
+不可以
+不，可以
+它可能具有单调性
+它大概具有单谷性
+不，很明显它不具有
+*/

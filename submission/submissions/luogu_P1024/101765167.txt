@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 101765167
+//  题目ID: P1024
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+   double a,b,c,d;
+   scanf("%lf%lf%lf%lf",&a,&b,&c,&d);
+   for(double i=-100;i<=100;i+=0.001)
+   {
+      double j=i+0.001;
+      double q=a*i*i*i+b*i*i+c*i+d;
+      double p=a*j*j*j+b*j*j+c*j+d;
+      if(q>=0&&p<=0||q<=0&&p>=0)
+      {
+         double jie=(i+j)/2;
+         printf("%.2lf ",jie);
+      }
+   }
+}

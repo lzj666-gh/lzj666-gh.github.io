@@ -1,0 +1,57 @@
+//  OJ: 洛谷
+//  提交ID: 218797678
+//  题目ID: P2914
+#include<bits/stdc++.h>
+#include<array>
+#define int long long
+using namespace std;
+template<int N = 100000 + 10, int M = 1000000 + 10, int inf = INT_MAX>
+class Graph {
+	struct Edge {
+		int v, nxt;
+		double w;
+		Edge(int v = 0, double w = 0, int nxt = 0) :v(v), w(w), nxt(nxt) {}
+	}edge[M];
+	int head[N], idx;
+public:
+	void add(int u, int v, double w = 1) {
+		edge[++idx] = { v,w,head[u] };
+		head[u] = idx;
+	}
+	Graph() :head(), idx(), edge() {}
+	array<double, N> dijkstra(int s) {
+		static array<double, N> dis;
+		static bitset<N> vis;
+		dis.fill(inf);
+		vis.reset();
+		dis[s] = 0;
+		priority_queue<pair<double, int>, vector<pair<double, int>>, greater<pair<double, int>>>q;
+		q.emplace(0, s);
+		while (!q.empty()) {
+			int now = q.top().second;
+			q.pop();
+			if (vis[now]) continue;
+			vis[now] = 1;
+			for (int i = head[now]; i; i = edge[i].nxt)
+				if (dis[edge[i].v] > dis[now] + edge[i].w)
+					dis[edge[i].v] = dis[now] + edge[i].w,
+					q.emplace(dis[edge[i].v], edge[i].v);
+		}
+		return dis;
+	}
+};
+Graph<1000 + 10, 1020000 + 10>g;
+int n, m, x[1000 + 10], y[1000 + 10];
+double c;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> c;
+	for (int i = 1; i <= n; ++i) cin >> x[i] >> y[i];
+	for (int i = 1; i <= n; ++i)
+		for (int j = i + 1; j <= n; ++j)
+			if (double cost = sqrt(pow(x[i] - x[j], 2) + pow(y[i] - y[j], 2)); cost <= c)
+				g.add(i, j, cost), g.add(j, i, cost);
+	for (int i = 1, u, v; i <= m; ++i) cin >> u >> v, g.add(u, v, 0), g.add(v, u, 0);
+	cout << (int)(1000 * g.dijkstra(1)[n]) << endl;
+	return 0;
+}

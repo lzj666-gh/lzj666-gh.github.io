@@ -1,0 +1,89 @@
+//  OJ: 洛谷
+//  提交ID: 213201215
+//  题目ID: P3377
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+struct LIT {
+	struct Node {
+		int val, dist, id;
+		Node* lc, * rc, * fa;
+		Node(int val = 0, int id = 0) : val(val), id(id), lc(nullptr), rc(nullptr), fa(nullptr), dist(-1) {}
+	};
+	Node* root;
+	Node* merge(Node* a, Node* b) {
+		if (a == b) return a;
+		if (a == nullptr) return b;
+		if (b == nullptr) return a;
+		if (a->val > b->val) swap(a, b);
+		if (a->val == b->val && a->id > b->id) swap(a, b);
+		a->rc = merge(a->rc, b);
+		a->rc->fa = a;
+		if (a->lc == nullptr) a->lc = a->rc, a->rc = nullptr;
+		else if (a -> lc->dist < a->rc->dist) swap(a->lc, a->rc);
+        a->dist = (a->rc != nullptr) ? a->rc->dist + 1 : 0;
+		return a;
+	}
+	void ins(int val, int id) {
+		if (root == nullptr) {
+			root = new Node(val, id);
+			return;
+		}
+		Node* a = new Node(val, id);
+		root = merge(root, a);
+		return;
+	}
+	Node* del(Node* x) {
+		Node* fx = x->fa;
+		Node* k = merge(x->lc, x->rc);
+		if (fx == nullptr) {
+			root = k;
+			if (k) k->fa = nullptr;
+			return k;
+		}
+		if (k) k->fa = fx;
+		Node* L = fx->lc, * R = fx->rc;
+		if (L == x) fx->lc = k;
+		else fx->rc = k;
+		while (fx) {
+			if (L->dist < R->dist) swap(fx->lc, fx->rc);
+			if (fx->dist == R->dist + 1)
+				return root;
+			fx->dist = R->dist + 1;
+			k = fx; fx = fx->fa;
+			L = fx->lc; R = fx->rc;
+		}
+		return k;
+	}
+	Node* find(int id) {
+		Node* x = root;
+		while (x) {
+			if (x->id == id) return x;
+			if (x->id > id) x = x->lc;
+			else x = x->rc;
+		}
+		return nullptr;
+	}
+	LIT() : root(nullptr) {}
+}t;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m;
+	cin >> n >> m;
+	for (int i = 1, a; i <= n; ++i) cin >> a, t.ins(a, i);
+	while (m--) {
+		int opt, x, y;
+		cin >> opt;
+		if (opt == 1) cin >> x >> y, t.merge(t.find(x), t.find(y));
+		else {
+			cin >> x;
+			LIT::Node* k = t.find(x);
+			if (k == nullptr) cout << "-1\n";
+			else {
+				cout << k->val << '\n';
+				t.del(k);
+			}
+		}
+	}
+	return 0;
+}

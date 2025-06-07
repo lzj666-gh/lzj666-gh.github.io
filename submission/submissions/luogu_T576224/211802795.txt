@@ -1,0 +1,69 @@
+//  OJ: 洛谷
+//  提交ID: 211802795
+//  题目ID: T576224
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+string s;
+const int mod=1e9+7;
+int ans=1;
+int dp[510][510][510],n,m;
+signed main() {
+	cin>>n>>m;
+	cin>>s;
+	s=" "+s;
+	for(int i=1;i<=n;i++) if(s[i]=='?') ans=ans*3%mod;
+	if(n&1){
+		if(s[(n>>1)+1]=='(' || s[(n>>1)+1]==')'){
+			cout<<ans;
+			return 0;
+		}
+		for(int i=1;i<=(n>>1);i++) if(s[n-i+1]!='?') s[i]=s[n-i+1];
+		dp[0][0][0]=1;
+		for(int i=1;i<=(n>>1);i++){
+			if(s[i]=='(' || s[i]=='?'){
+				for(int j=0;j<i;j++)
+					for(int k=0;k<=m;k++)
+						dp[i][j+1][0]=(dp[i][j+1][0]+dp[i-1][j][k])%mod;
+			}
+			if(s[i]==')' || s[i]=='?'){
+				for(int j=1;j<i;j++){
+					for(int k=0;k<=m;k++)
+						dp[i][j-1][0]=(dp[i][j-1][k]+dp[i-1][j][k])%mod;
+				}
+			}
+			if((s[i]=='*' || s[i]=='?') && i!=1){
+				for(int j=0;j<i;j++)
+					for(int k=0;k<m;k++)
+						dp[i][j][k+1]=(dp[i][j][k+1]+dp[i-1][j][k])%mod;
+			}
+		}
+		for(int i=0;i<=(n>>1);i++) for(int j=0;j<=m;j++) ans=(ans-dp[n>>1][i][j]+mod)%mod;
+		cout<<ans;
+	}
+	else{
+		for(int i=1;i<=(n>>1);i++) if(s[n-i+1]!='?') s[i]=s[n-i+1];
+		dp[0][0][0]=1;
+		for(int i=1;i<=(n>>1);i++){
+			if(s[i]=='(' || s[i]=='?'){
+				for(int j=0;j<i;j++)
+					for(int k=0;k<=m;k++)
+						dp[i][j+1][0]=(dp[i][j+1][0]+dp[i-1][j][k])%mod;
+			}
+			if(s[i]==')' || s[i]=='?'){
+				for(int j=1;j<i;j++){
+					for(int k=0;k<=m;k++)
+						dp[i][j-1][0]=(dp[i][j-1][k]+dp[i-1][j][k])%mod;
+				}
+			}
+			if((s[i]=='*' || s[i]=='?') && i!=1){
+				for(int j=0;j<i;j++)
+					for(int k=0;k<m;k++)
+						dp[i][j][k+1]=(dp[i][j][k+1]+dp[i-1][j][k])%mod;
+			}
+		}
+		for(int i=0;i<=(n>>1);i++) for(int j=0;j<=m;j++) ans=(ans-dp[n>>1][i][j]+mod)%mod;
+		cout<<ans;
+	}
+	return 0;
+} 

@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 164931460
+//  题目ID: CF24D
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, x, y, i, j, t;
+double dp[1000 + 10][1000 + 10];
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> x >> y;
+	for (int qwq = 1; qwq < 114514; ++qwq)
+		for (i = n - 1; i >= x; --i) {
+			if (m == 1) {
+				dp[i][1] = (dp[i][1] + dp[i + 1][1]) / 2.0 + 1;
+				continue;
+			}
+			dp[i][1] = (dp[i][2] + dp[i + 1][1] + dp[i][1]) / 3.0 + 1;
+			dp[i][m] = (dp[i + 1][m] + dp[i][m] + dp[i][m - 1]) / 3.0 + 1;
+			for (j = 2; j < m; ++j)
+				dp[i][j] = (dp[i + 1][j] + dp[i][j] + dp[i][j + 1] + dp[i][j - 1]) / 4.0 + 1;
+		}
+	cout << fixed << setprecision(10) << dp[x][y];
+	return 0;
+}

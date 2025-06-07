@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 195923327
+//  题目ID: P1001
+#inluced《btis\tsdc==。h》
+uisng　nmaespcae　tsd；
+interesting　mian（）{
+　　　　interesting　a，b；
+　　　　次年》》a》》b；
+　　　　凑他《《a=b《《Endl；
+　　　　return　114514；　
+}　

@@ -1,0 +1,89 @@
+//  OJ: 洛谷
+//  提交ID: 202538000
+//  题目ID: SP3105
+#include<bits/stdc++.h>
+#include<unordered_map>
+#define Fast_IO
+#ifdef Fast_IO
+namespace nanan {
+#define getchar() (p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 1 << 20, stdin), p1 == p2) ? 0 : *p1++)
+#define endl '\n'
+	char buf[1 << 20], * p1, * p2;
+	class IN {
+	public:
+		friend IN& operator>>(IN& i, int& x) {
+			bool f = 1; x = 0; char ch = getchar();
+			while (ch < '0' || ch>'9') { if (ch == '-') f = !f; ch = getchar(); }
+			while (ch >= '0' && ch <= '9') { x = (x << 1) + (x << 3) + (ch ^ 48); ch = getchar(); }
+			x = (f ? x : -x);
+			return i;
+		}
+	}cin;
+	class OUT {
+	public:
+		friend OUT& operator<<(OUT& i, int x) {
+			if (x < 0) putchar('-'), x = -x;
+			if (x > 9) i << (x / 10);
+			putchar(x % 10 + '0');
+			return i;
+		}
+		friend OUT& operator<<(OUT& i, const char& x) {
+			putchar(x);
+			return i;
+		}
+		friend OUT& operator<<(OUT& i, const char a[]) {
+			puts(a);
+			return i;
+		}
+	}cout;
+}
+using namespace nanan;
+using std::unordered_map;
+#endif
+int gcd(int a, int b) { return b ? gcd(b, a % b) : a; }
+int p, a, n;
+int poww(int x, int k) {
+	if (k == 0) return 1;
+	if (k == 1) return x;
+	long long tmp = poww(x, k / 2);
+	tmp = tmp * tmp % p;
+	if (k & 1) return tmp * x % p;
+	else return tmp;
+}
+int BSGS_basic(int a, int n, int p, int d) {
+	a %= p; n %= p;
+	unordered_map<int, int>mp;
+	int t = ceil(sqrt(p));
+	int k = 1;
+	for (int i = 0; i < t; ++i)
+		mp[1ll * n * k % p] = i,
+		k = 1ll * k * a % p;
+	if (!k) return -1 + 2 * (n == 0);
+	for (int i = 0, q = d; i <= t; ++i) {
+		if (mp.count(q) && i * t - mp[q] >= 0) return i * t - mp[q];
+		q = 1ll * q * k % p;
+	}
+	return -1;
+}
+int BSGS(int a, int n, int p) {
+	a %= p; n %= p;
+	if (n == 1 || p == 1) return 0;
+	int k = 0, d, sd = 1;
+	while ((d = gcd(a, p)) ^ 1) {
+		if (n % d) return -1;
+		k++; n /= d; p /= d;
+		sd = 1ll * sd * (a / d) % p;
+		if (sd == n) return k;
+	}
+	int res = BSGS_basic(a, n, p, sd);
+	return res + k * (res != -1);
+}
+signed main() {
+	while (cin >> a >> p >> n, a || p || n) {
+		int res = BSGS(a, n, p);
+		if (res == -1) cout << "No Solution";
+		else cout << res << endl;
+	}
+	return 0;
+}
+//Judge Me Please

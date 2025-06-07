@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 218004958
+//  题目ID: P1194
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 500 + 10;
+int n, t, a[N][N], dis[N];
+bool vis[N];
+signed main() {
+	memset(dis, 0x3f, sizeof dis);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> t;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= n; ++j)
+			cin >> a[i][j], a[i][j] = a[i][j] == 0 || a[i][j] > t ? t : a[i][j];
+	int ans = t;
+	vis[1] = 1;
+	for (int i = 1; i <= n; ++i)
+		dis[i] = a[1][i];
+	for (int t = 1; t < n; ++t) {
+		int k = -1;
+		for (int i = 1; i <= n; ++i) if (!vis[i] && (k == -1 || dis[i] < dis[k])) k = i;
+		vis[k] = 1;
+		ans += dis[k];
+		for (int i = 1; i <= n; ++i)
+			if (!vis[i])
+				dis[i] = min(dis[i], a[i][k]);
+	}
+	cout << ans << endl;
+	return 0;
+}

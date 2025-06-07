@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 92157952
+//  题目ID: T65928
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	double a,b;
+	cin>>a;
+	a-=3;
+	b+=10;
+	if(a>=0){
+		b+=a*4;
+	}
+	if(b>50){
+		cout<<"50";
+	}
+	else{
+		printf("%.1lf",b);
+	}
+	return 0;
+}
+

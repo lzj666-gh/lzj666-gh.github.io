@@ -1,0 +1,55 @@
+//  OJ: 洛谷
+//  提交ID: 191452640
+//  题目ID: P7114
+#include<bits/stdc++.h>
+// #define ONLINE
+using namespace std;
+using ll = long long;
+int T;
+string s;
+bool mp[128];
+int main() {
+#ifdef ONLINE
+	freopen("string.in", "r", stdin);
+	freopen("string.out", "w", stdout);
+#endif
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> T;
+	while (T--) {
+		cin >> s;
+		int n = s.size();
+		ll ans = 0;
+		string A; int FA, FC;
+		for (int i = 0; i < n; ++i) {
+			A += s[i];
+			memset(mp, 0, sizeof mp);
+			for (const char& c : A) mp[c] ^= 1;
+			FA = 0;
+			for (int i = 0; i < 128; ++i) FA += mp[i];
+			string B;
+			for (int j = i + 1; j < n - 1; ++j) {
+				B += s[j];
+				string AB = A + B;
+				int l = AB.size();
+				for (int k = 0; (k + 1) * l <= s.size(); ++k) {
+					bool flg = 0; int tv = k * l;
+					for (int f = tv; f < tv + l; ++f)
+						if (s[f] != AB[f - tv]) {
+							flg = 1;
+							break;
+						}
+					if (flg) break;
+					string C = s.substr(tv + l);
+					if (C.empty()) break;
+					memset(mp, 0, sizeof mp);
+					for (const char& c : C) mp[c] ^= 1;
+					FC = 0;
+					for (int i = 0; i < 128; ++i) FC += mp[i];
+					if (FA <= FC) ans++;
+				}
+			}
+		}
+		cout << ans << endl;
+	}
+	return 0;
+}

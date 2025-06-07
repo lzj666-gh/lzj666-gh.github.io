@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 108331642
+//  题目ID: T214853
+#include <iostream>
+#include <deque>
+
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    deque<int> q;
+
+    while (n--)
+    {
+        int op;
+        cin >> op;
+        if (op == 1)
+        {
+            int x;
+            cin >> x;
+            while (!q.empty() && q.back() < x)
+            {
+                q.pop_back();
+            }
+            q.push_back(x);
+        }
+        else if (op == 2)
+        {
+            if (!q.empty()) q.pop_front();
+        }
+        else
+        {
+            if (!q.empty())
+            {
+                cout << q.back() << endl;
+            }
+        }
+    }
+
+    return 0;
+}

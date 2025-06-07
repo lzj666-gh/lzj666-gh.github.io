@@ -1,0 +1,178 @@
+//  OJ: 洛谷
+//  提交ID: 211906397
+//  题目ID: T571828
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+vector<string> task1() {  // 4080x = (x << 12) - (x << 4)
+    return {
+        "+ a x",     // a = x
+        "< x 8",     // x << 8
+        "- x a",     // x = 255x
+        "< x 4",     // x = 4080x
+        "! x"
+    };
+}
+
+vector<string> task2() {  // x/4080 = (x >> 12) - (x >> 24)...
+    return {
+        "> a 12",     // a = x/4096
+        "> b 24",     // b = x/16777216
+        "- a b",      // a -= b
+        "> b 36",     // 继续修正误差
+        "- a b",
+        "! a"
+    };
+}
+
+vector<string> task3() {  // 生成4080 (0xFF0)
+    return {
+        "- a a",      // a=0
+        "- a 1",      // a=全1
+        "> a 52",     // 保留高4位 (0xF)
+        "< a 8",     // 0xF00
+        "< a 4",     // 0xF000
+        "> a 4",     // 0xF00 (3840)
+        "+ a a",     // 3840*2=7680
+        "> a 1",     // 7680/2=3840
+        "! a"
+    };
+}
+
+vector<string> task4() {  // 乘法
+    vector<string> ins = {
+        "+ a a",      // a=0
+        "+ b x",      // b = x
+        "+ c y"       // c = y
+    };
+    for (int i = 0; i < 64; ++i) {
+        ins.push_back("^ d c");  // 检查最低位
+        ins.push_back("> d 63"); // 获取符号位
+        ins.push_back("- d 1");  // 转换为掩码
+        ins.push_back("^ e d");  // e = d & b
+        ins.push_back("+ a e");  // 累加
+        ins.push_back("< b 1");  // x <<= 1
+        ins.push_back("> c 1");  // y >>= 1
+    }
+    ins.push_back("! a");
+    return ins;
+}
+
+vector<string> task5() {  // 除法
+    vector<string> ins = {
+        "+ a a",     // 商清零
+        "+ b x",     // 余数
+        "+ c y",     // 除数
+        "< c 31"     // 对齐到最高位
+    };
+    for (int i = 31; i >= 0; --i) {
+        ins.push_back("+ d b");   // 试减
+        ins.push_back("- d c");
+        ins.push_back("> d 63");  // 符号位
+        ins.push_back("< d 0");   // 转换为1/0
+        ins.push_back("< d " + to_string(i));
+        ins.push_back("+ a d");   // 设置商位
+        ins.push_back("^ e e");   // e=0
+        ins.push_back("- e d");   // 掩码取反
+        ins.push_back("+ e c");
+        ins.push_back("< e " + to_string(i));
+        ins.push_back("- b e");   // 有条件减法
+        ins.push_back("> c 1");  // 除数右移
+    }
+    ins.push_back("! a");
+    return ins;
+}
+
+vector<string> task6() {  // 平方根（生成32次二分迭代）
+    vector<string> ins = {
+        "+ a a",     // low=0
+        "+ b x",     // high=x
+        "+ c a"      // ans=0
+    };
+    for (int i = 0; i < 32; ++i) {
+        // mid = (low + high) / 2
+        ins.push_back("+ d a");
+        ins.push_back("+ d b");
+        ins.push_back("> d 1");
+        
+        // 计算mid^2
+        ins.push_back("+ e d");
+        ins.push_back("< e " + to_string(i));
+        ins.push_back("- e x");   // mid^2 - x
+        
+        // 判断条件 mid^2 <= x
+        ins.push_back("> e 63"); // 符号位
+        ins.push_back("< e 0");  // 转换为1/0
+        ins.push_back("^ f e");   // 条件掩码
+        ins.push_back("- f 1");
+        
+        // 更新ans
+        ins.push_back("+ g d");
+        ins.push_back("^ g f");
+        ins.push_back("+ c g");
+        
+        // 更新high/low
+        ins.push_back("+ h e");
+        ins.push_back("- h 1");
+        ins.push_back("^ h h");
+        ins.push_back("+ a h");  // low = mid+1 if cond
+        ins.push_back("^ h d");
+        ins.push_back("^ h f");
+        ins.push_back("+ b h");  // high = mid if cond
+    }
+    ins.push_back("! c");
+    return ins;
+}
+
+vector<string> task7() {  // 位填充（使用异或模拟或操作）
+    return {
+        "- a x",        // a = x-1
+        "- a 1",
+        "+ b a",        // b = x-1
+        "> c 1",        // 填充bit
+        "+ d b",
+        "+ d c",
+        "- d b",
+        "+ b d",        // b |= b>>1
+        "> c 2",
+        "+ d b",
+        "+ d c",
+        "- d b",
+        "+ b d",        // b |= b>>2
+        "> c 4",
+        "+ d b",
+        "+ d c",
+        "- d b",
+        "+ b d",        // b |= b>>4
+        "> c 8",
+        "+ d b",
+        "+ d c",
+        "- d b",
+        "+ b d",        // b |= b>>8
+        "> c 16",
+        "+ d b",
+        "+ d c",
+        "- d b",
+        "+ b d",        // b |= b>>16
+        "> c 32",
+        "+ d b",
+        "+ d c",
+        "- d b",
+        "+ b d",        // b |= b>>32
+        "+ b 1",        // 最终结果
+        "! b"
+    };
+}
+
+int main() {
+    int task;
+    cin >> task;
+    vector<string> (*funcs[])() = {
+        task1, task2, task3, task4, task5, task6, task7
+    };
+    
+    auto res = funcs[task-1]();
+    for (auto& s : res) cout << s << endl;
+}

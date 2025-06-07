@@ -1,0 +1,55 @@
+//  OJ: 洛谷
+//  提交ID: 201785234
+//  题目ID: P5357
+#include<bits/stdc++.h>
+using namespace std;
+int n, trie[200000 + 5][26], idx, ret[200000 + 5];
+vector<int>v[200000 + 5];
+void insert(string s, int id) {
+	int k = 0;
+	for (const char& c : s) {
+		if (!trie[k][c - 'a'])
+			trie[k][c - 'a'] = ++idx;
+		k = trie[k][c - 'a'];
+	}
+	v[k].push_back(id);
+}
+void build() {
+	queue<int>q;
+	for (int i = 0; i < 26; ++i)
+		if (trie[0][i])
+			q.push(trie[0][i]);
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		for (int i = 0; i < 26; ++i)
+			if (trie[now][i])
+				q.push(trie[now][i]),
+				ret[trie[now][i]] = trie[ret[now]][i];
+			else
+				trie[now][i] = trie[ret[now]][i];
+	}
+}
+int ans[200000 + 5];
+void query(string s) {
+	for (int k = 0, i = 0; k < s.size(); ++k) {
+		i = trie[i][s[k] - 'a'];
+		for (int j = i; j; j = ret[j])
+			for (const int& x : v[j])
+				ans[x]++;
+	}
+	for (int i = 1; i <= n; ++i)
+		cout << ans[i] << endl;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	string s;
+	for (int i = 1; i <= n; ++i)
+		cin >> s, insert(s, i);
+	build();
+	cin >> s;
+	query(s);
+	return 0;
+}
+[[I_will_never_go_that_is_why_I_did_them_all]]
+int for_a_chance_at_least_to_live_in_your_ways;

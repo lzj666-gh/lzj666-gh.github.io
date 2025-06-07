@@ -1,0 +1,55 @@
+//  OJ: 洛谷
+//  提交ID: 180160236
+//  题目ID: T521598
+#include<bits/stdc++.h>
+// #define ONLINE
+//#pragma warning(disable:4996)
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[2000000 + 10];
+int head[100000 + 10], idx;
+int dis[100000 + 10], a[100000 + 10], n, m;
+bool vis[100000 + 10];
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+long long ans;
+void dij(int s) {
+	memset(dis, 0xcf, sizeof dis);
+	memset(vis, 0, sizeof vis);
+	priority_queue<pair<int,int>>p;
+	dis[s] = a[s];
+	p.emplace(a[s], s);
+	while (!p.empty()) {
+		int now = p.top().second;
+		p.pop();
+		if (vis[now]) continue;
+		vis[now] = 1;
+		//cout << s << ':' << now << endl;
+		for (int i = head[now]; i; i = edge[i].nxt) {
+			//cout << "beg " << edge[i].v << endl;
+			if (min(dis[now], a[edge[i].v]) > dis[edge[i].v]) {
+				//cout << "ok " << min(dis[now], a[edge[i].v]) << endl;
+				dis[edge[i].v] = min(dis[now], a[edge[i].v]);
+				p.emplace(dis[edge[i].v], edge[i].v);
+			}
+		}
+	}
+	for (int i = 1; i <= n; ++i) if (i ^ s) ans += dis[i];
+	//for (int i = 1; i <= n; ++i) cout << dis[i] << ' '; cout << endl;
+}
+int main() {
+#ifdef ONLINE
+	freopen("run.in", "r", stdin);
+	freopen("run.out", "w", stdout);
+#endif
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = 1, u, v; i <= m; ++i) cin >> u >> v, add(u, v), add(v, u);
+	for (int i = 1; i <= n; ++i) dij(i);
+	cout << ans << endl;
+	return 0;
+}

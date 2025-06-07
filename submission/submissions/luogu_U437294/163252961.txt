@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 163252961
+//  题目ID: U437294
+#include<bits/stdc++.h>
+using namespace std;
+namespace IO{
+	inline void read(int&x){
+	    x=0;char ch=getchar();
+	    while(ch<'0'||ch>'9'){ch=getchar();}
+	    while(ch>='0'&&ch<='9'){x=(x<<1)+(x<<3)+(ch^48);ch=getchar();}
+	}
+	inline void write(int x){
+	    if(x>9) write(x/10);
+	    putchar(x%10+'0');
+	}
+}
+using namespace IO;
+int n,tmp;
+char s[7];
+struct pli{
+	struct ls{
+		char data[7];
+		ls(char*ans){
+			for(int i=0;i<6;++i) data[i]=ans[i];
+		}
+	};
+	list<ls>first;
+	int second;
+};
+stack<pli>v;
+int main(){
+	read(n);
+	while(n--){
+		scanf("%s",s);
+		if(s[1]=='u'){
+			scanf("%s",s);
+			read(tmp);
+			if(v.empty()) v.push(pli{{pli::ls(s)},tmp});
+			else if(tmp==v.top().second) v.top().first.push_back(s);
+			else v.push(pli{{pli::ls(s)},tmp});
+		}
+		else{
+			puts(v.top().first.front().data);
+			v.top().first.pop_front();
+			if(v.top().first.empty()) v.pop();
+		}
+		
+	}
+	return 0;
+}

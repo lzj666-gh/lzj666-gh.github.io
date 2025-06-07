@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 121126153
+//  题目ID: T76601
+#include<bits/stdc++.h>
+using namespace std;
+long long b,p,k;
+long long quick_mi(int p){
+	long long ans=1;
+	while(p){
+		if(p&1) ans=ans*b%k;
+		b=b*b%k;
+		p=p>>1;
+	}
+	return ans;
+}
+int main(){
+	cin>>b>>p>>k;
+/*	if(b==1){
+		printf("%lld^%lld mod %lld=",b,p,k);
+		cout<<(k==1?0:1)<<endl;
+		return 0;
+	}*/
+	
+	printf("%lld^%lld mod %lld=",b,p,k);
+	b%=k;
+	printf("%lld\n",quick_mi(p));
+	return 0;
+}

@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 113961342
+//  题目ID: U305997
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,z,x,y;
+int main(){
+	ios::sync_with_stdio(false); 
+	cin>>n>>m>>z;
+//	已知 
+//	5x+3y+z=m
+//	x+y+z=n
+//	求用m,n,z表达x,y的式子 
+	//3x+3y+3z=3n
+	//2x-2z=m-3n
+	x=(m-3*n)/2+z;
+	y=(m-2*n)/2-2*x-z;
+	cout<<x<<' '<<y<<endl;
+}

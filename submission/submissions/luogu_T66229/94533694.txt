@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 94533694
+//  题目ID: T66229
+#include<bits/stdc++.h>
+using namespace std;
+int main () {
+	int a,b,c;cin>>a>>b>>c;
+	int max;
+	max=a;
+	if(max<c) max=c;
+	if(max<b) max=b;
+	for(int i=1;i<=max;i++){
+		if(i<=a) cout<<i<<" ";
+		else cout<<"  ";
+		if(i<=b) cout<<i<<" ";
+		else cout<<"  ";
+		if(i<=c) cout<<i<<" "<<endl;
+		else cout<<"  "<<endl;
+	}
+	return 0;
+}

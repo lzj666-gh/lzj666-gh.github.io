@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 166144693
+//  题目ID: T138228
+#include<bits/stdc++.h>
+using namespace std;
+constexpr long long inf=1e13;
+long long dis[100+10][100+10],n,m,k,ans=inf,w[100+10][100+10];
+void florr_id(){
+	for(int k=1;k<=n;k++){
+		for(int i=1;i<k;i++) 
+			for(int j=i+1;j<k;j++) 
+				ans=min(ans,dis[i][j]+w[i][k]+w[k][j]);
+		for(int i=1;i<=n;i++) 
+			for(int j=1;j<=n;j++){
+				dis[i][j]=min(dis[i][j],dis[i][k]+dis[k][j]);
+				dis[j][i]=dis[i][j];
+			}
+	}
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;++i)
+		for(int j=1;j<=n;++j)
+			if(i^j)
+				w[i][j]=dis[i][j]=inf;
+	for(int i=1;i<=m;i++){
+		long long x,y,z;
+		cin>>x>>y>>z;
+		w[x][y]=min(w[x][y],z);
+		w[y][x]=min(w[y][x],z);
+		dis[y][x]=min(dis[y][x],z);
+		dis[x][y]=min(dis[x][y],z);
+	}
+	florr_id();
+	if(ans==inf) cout<<"No solution."<<endl; 
+	else cout<<ans<<endl;
+	return 0;
+}

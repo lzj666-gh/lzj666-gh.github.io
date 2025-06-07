@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 185776119
+//  题目ID: AT_abc376_a
+#include<bits/stdc++.h>
+using namespace std;
+int n, c, t[1000];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> c;
+	int lst = -c, ans = 0;
+	for (int i = 1; i <= n; ++i) {
+		cin >> t[i];
+		if (lst + c <= t[i]) lst = t[i], ans++;
+	}
+	cout << ans << endl;
+	return 0;
+}

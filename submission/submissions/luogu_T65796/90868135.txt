@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 90868135
+//  题目ID: T65796
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	double a,b,c,d,x;
+	cin>>a>>b>>c>>d>>x;
+	printf("%.7lf",a*x*x*x+b*x*x+c*x+d);
+	
+	return 0;
+}

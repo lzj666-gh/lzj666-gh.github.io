@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 161065415
+//  题目ID: P10569
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int dfs(vector<int>v) {
+	if (v.empty()) return 0;
+	vector<int>t = v;
+	int p = t.front(), use = t.front(), ans = 0;
+	int debug;
+	t[0] = 0;
+	for (int i = 1; i < t.size(); ++i) {
+		if (p >= t[i]) {
+			p = t[i]; t[i] = 0;
+		}
+		else {
+			t[i] = t[i] - p;
+			break;
+		}
+	}
+	while (t.size() && t.front() == 0) t.erase(t.begin());
+	debug = t.size();
+	ans = dfs(t) + use;
+	t = v;
+	p = t.back(); use = t.back(); t.pop_back();
+	for (int i = t.size() - 1; i >= 0; --i) {
+		if (p >= t[i]) {
+			p = t[i]; t[i] = 0;
+		}
+		else {
+			t[i] = t[i] - p;
+			break;
+		}
+	}
+	while (t.size() && t.back() == 0) t.pop_back();
+	if (debug > t.size() || t.size() <=100) ans = min(ans, dfs(t) + use);
+	return ans;
+}
+int T, n;
+vector<int>tmp;
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> T;
+	while (T--) {
+		cin >> n;
+		tmp.clear();
+		for (int i = 1, tt; i <= n; ++i) cin >> tt, tmp.push_back(tt);
+		cout << dfs(tmp) << endl;
+	}
+	return 0;
+}

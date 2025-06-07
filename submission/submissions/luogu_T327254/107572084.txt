@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 107572084
+//  题目ID: T327254
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    cout<<42<<endl;
+    return 0; 
+}

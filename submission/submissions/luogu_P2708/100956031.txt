@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 100956031
+//  题目ID: P2708
+#include<bits/stdc++.h>
+using namespace std;
+bool a[1000010]={false};char b;int w=0;
+void qian(int i){
+	for(int q=0;q<=i;q++){
+		if(a[q]==false) a[q]=true;
+		else a[q]=false;
+	}
+	w++;
+	return;
+}
+int main(){
+	int i=0;
+	while(cin>>b){
+		if(b=='1') a[i]=true;
+		i++;
+	}
+	a[i]=true;
+	for(;i>=0;i--){
+		if(!a[i]) qian(i);
+	}
+	cout<<w;
+	return 0;
+}

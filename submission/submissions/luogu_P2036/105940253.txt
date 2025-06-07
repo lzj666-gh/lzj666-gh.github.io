@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 105940253
+//  题目ID: P2036
+#include<bits/stdc++.h>
+using namespace std;
+int s[15],b[15],n,mi=0x7f7f7f7f;
+//s:酸度,b:苦度
+bool a[15],o;
+//a[i]第i种食材选不选 true:选,false:不选 
+void dfs(int k) {
+	if(k==n+1) {
+//		cout<<1<<endl;
+		int ss=1,sb=0;
+		o=false;
+		//o:加没加食材 
+		//ss:总酸度,sb:总苦度
+		for(int i=1; i<=n; i++) {
+			if(a[i]) {
+				ss*=s[i];
+				sb+=b[i];
+				o=true;
+				//加了 
+			}
+		}
+		if(!o) return;
+		//没加食材直接返回 
+		mi=min(abs(ss-sb),mi);
+		return;
+	}
+	a[k]=true;
+	dfs(k+1);
+	//加这种食材 
+	a[k]=false;
+	dfs(k+1);
+	//不加 
+}
+int main() {
+	scanf("%d",&n);
+	for(int i=1; i<=n; i++) {
+		scanf("%d%d",&s[i],&b[i]);
+	}
+	dfs(1);
+	printf("%d",mi);
+}

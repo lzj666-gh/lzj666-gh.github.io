@@ -1,0 +1,63 @@
+//  OJ: 洛谷
+//  提交ID: 165302324
+//  题目ID: T475114
+#include<bits/stdc++.h>
+using namespace std;
+int dp[2000000 + 20];
+bool f[1000000 + 10];
+int q[1000000 + 10], hh, tt;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) ((p << 1) + 1)
+	struct point {
+		int l, r, ans;
+		point() :l(0), r(0), ans(0x3f3f3f3f) {}
+		point(int ll, int rr, int sans) :l(ll), r(rr), ans(sans) {}
+	}tree[4 * 100000 + 10];
+	void pushup(int p) {
+		tree[p].ans = min(tree[lc(p)].ans, tree[rc(p)].ans);
+	}
+	int query(int p, int l, int r) {
+		if (tree[p].l > r || tree[p].r < l) {
+			return 0x3f3f3f3f;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) {
+			return tree[p].ans;
+		}
+		return min(query(lc(p), l, r), query(rc(p), l, r));
+	}
+	void build(int p, int l, int r) {
+		tree[p].l = l, tree[p].r = r;
+		if (l == r) {
+			tree[p] = { l,r,dp[l] };
+			return;
+		}
+		build(lc(p), l, l + r >> 1);
+		build(rc(p), (l + r >> 1) + 1, r);
+		pushup(p); 
+	}
+}t;
+int n, p[1000000 + 10], d[1000000 + 10], sump[1000000 + 10], sumd[1000000 + 10];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> p[i] >> d[i];
+	for (int i = 1; i <= n; ++i) sump[i] = sump[i - 1] + p[i], sumd[i] = sumd[i - 1] + d[i], dp[i] = dp[i + n] = sump[i] - sumd[i];
+	t.build(1, 1, n + n);
+	for (int i = 1; i <= n; ++i) f[i] = t.query(1, i, i + n - 1) >= dp[i - 1];
+	d[0] = d[n];
+	for (int i = 1; i <= n; ++i) dp[i] = dp[i + n] = p[i] - d[i - 1];
+	for (int i = n << 1; i; --i) dp[i] += dp[i + 1];
+	hh = 0, tt = -1;
+	for (int i = 1; i <= n << 1; i++)
+	{
+		if (hh <= tt && q[hh] < i - n + 1) hh++;
+		while (hh <= tt && dp[q[tt]] >= dp[i]) tt--;
+		q[++tt] = i;
+		if (i > n && dp[q[hh]] >= dp[i + 1]) f[i - n] = true;
+	}
+	for (int i = 1; i <= n; ++i) {
+		cout << (f[i] ? "TAK\n" : "NIE\n");
+	}
+	return 0;
+}

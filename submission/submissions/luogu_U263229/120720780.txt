@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 120720780
+//  题目ID: U263229
+#include<bits/stdc++.h>
+using namespace std;
+int n,m;
+map<long long,string> s;
+int main(){
+	ios::sync_with_stdio(false);
+    cin>>n>>m;
+    register long long tmp; register int l;
+    for(register int i=1;i<=n;++i){
+    	cin>>tmp;
+		cin>>s[tmp];
+    	l=s[tmp].size();
+		for(register int j=0;j<l;++j) s[tmp][j]=(s[tmp][j]=='1'?'#':' ');
+	}
+	for(register int i=1;i<=m;++i){
+		cin>>tmp;
+		cout<<s[tmp]<<'\n';
+	}
+    return 0;
+}

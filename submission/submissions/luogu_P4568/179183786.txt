@@ -1,0 +1,60 @@
+//  OJ: 洛谷
+//  提交ID: 179183786
+//  题目ID: P4568
+#include<bits/stdc++.h>
+using namespace std;
+int head[100000 + 10], idx;
+struct Edge {
+	int v, w, nxt;
+}edge[200000 + 10];
+struct Node {
+	int num, cost;
+	Node(int n, int c) :num(n), cost(c) {}
+	friend bool operator<(const Node& a, const Node& b) {
+		return a.cost > b.cost;
+	}
+};
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int n, m, k, s, t;
+bool vis[100000 + 10];
+int dis[100000 + 10];
+int dij() {
+	memset(vis, 0, sizeof vis);
+	memset(dis, 0x3f, sizeof dis);
+	priority_queue<Node>q;
+	q.push(Node(s, 0));
+	int anss = INT_MAX;
+	while (!q.empty()) {
+		Node now = q.top(); q.pop();
+		if (now.num % n == t) {
+			anss = min(anss, now.cost);
+		}
+		if (vis[now.num]) continue;
+		vis[now.num] = 1;
+		for (int i = head[now.num]; i; i = edge[i].nxt)
+			if (edge[i].w + now.cost < dis[edge[i].v]) {
+				dis[edge[i].v] = edge[i].w + now.cost;
+				q.push(Node(edge[i].v, dis[edge[i].v]));
+			}
+	}
+	return anss;
+}
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> k >> s >> t;
+	for (int i = 1, a, b, c; i <= m; ++i) {
+		cin >> a >> b >> c, add(a, b, c), add(b, a, c);
+		for (int j = 1; j <= k; ++j) {
+			add(a + (j - 1) * n, b + j * n, 0);
+			add(b + (j - 1) * n, a + j * n, 0);
+			add(a + j * n, b + j * n, c);
+			add(b + j * n, a + j * n, c);
+		}
+	}
+	
+	cout << dij() << endl;
+	return 0;
+}

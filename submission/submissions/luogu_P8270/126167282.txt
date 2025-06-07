@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 126167282
+//  题目ID: P8270
+#include<bits/stdc++.h>
+#define online
+using namespace std;
+string s,t;
+bool st(string now){
+	array<bool,20>b;
+	b.fill(false);
+	for(char c:now){
+		b[c-'a']=true;
+	}
+	string s1,t1;
+	for(char c:s) if(b.operator[](c-'a')) s1+=c;
+	for(char c:t) if(b.operator[](c-'a')) t1+=c;
+	return s1==t1;
+}
+map<string,bool> ma;
+int main(){
+	#ifdef online
+// 	freopen("subset.in","r",stdin);
+// 	freopen("subset.out","w",stdout);
+	#endif
+	ios_base::sync_with_stdio(false);
+	cin>>s>>t;
+	int q;
+	cin>>q;
+	for(int i=1;i<=q;++i){
+		string tmp;
+		cin>>tmp;
+		try{
+			cout<<(ma.at(tmp)?'Y':'N');
+		}
+		catch(...){
+			ma[tmp]=st(tmp);
+			cout<<(ma[tmp]?'Y':'N');
+		}
+	}
+	return 0;
+}
+

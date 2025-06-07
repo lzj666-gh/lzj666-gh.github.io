@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 94781032
+//  题目ID: T66249
+#include<bits/stdc++.h>
+using namespace std;
+
+int weishu(int d);
+int weishu2(int d);
+int main()
+{
+	int n,d,s=0;cin>>n;
+	d=weishu(n);
+	for(int i=1;i<=weishu2(n);i++){
+		s+=n/d;
+		d/=10;
+	}
+	cout<<s;
+}
+int weishu(int d){
+	int j=1;
+	while(d>=1){
+		d/=10;
+		j*=10;
+	}
+	return j;
+}
+int weishu2(int d){
+	int j=1;
+	while(d>=1){
+		d/=10;
+		j+=1;
+	}
+	return j;
+}

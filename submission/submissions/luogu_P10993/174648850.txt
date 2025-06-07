@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 174648850
+//  题目ID: P10993
+#include<bits/stdc++.h>
+using namespace std;
+long long a;
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> a;
+	a *= 37;
+	int tmp = a % 10;
+	while (a) {
+		if (tmp != a % 10) {
+			cout << "No" << endl;
+			return 0;
+		}
+		a /= 10;
+	}
+	cout << "Yes" << endl;
+	return 0;
+}

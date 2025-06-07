@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 157995367
+//  题目ID: U418139
+#include<bits/stdc++.h>
+#define ll long long
+using namespace std;
+long long n,cnt,tot;
+void exgcd(ll a, ll b, ll& x, ll& y) {
+	if (b == 0) { x = 1; y = 0; return; }
+	exgcd(b, a % b, x, y);
+	int z = x; x = y, y = z - y * (a / b);
+}
+inline ll inv(ll a,const ll&p) {
+	ll x, y;
+	exgcd(a, p, x, y);
+	return (x % p + p) % p;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	tot=inv(n*(n-1)/2,998244353ll);
+	for(int i=1;i<=n;++i){
+		for(int j=i+1;j<=n;++j){
+			cnt+=__gcd(i,j)*tot;
+			cnt%=998244353ll;
+		}
+	}
+	cout<<cnt;
+	return 0;
+}

@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 90682287
+//  题目ID: T65795
+#include<iostream>
+using namespace std;
+int main(){
+    cout<<23.0/(23+26)*100-0.0088+0.01<<"%";
+}

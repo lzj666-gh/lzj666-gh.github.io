@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 116775796
+//  题目ID: U304517
+#include<bits/stdc++.h>
+using namespace std;
+map<string,int>a;
+int n,m,cnt;
+int main(){
+	ios::sync_with_stdio(false);
+	cout<<"NO"<<endl;
+	return 0;
+}

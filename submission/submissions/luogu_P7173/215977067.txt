@@ -1,0 +1,87 @@
+//  OJ: 洛谷
+//  提交ID: 215977067
+//  题目ID: P7173
+#include<bits/stdc++.h>
+#define int long long 
+using namespace std;
+const int inf = 0x3f3f3f3f3f3f3f3f;
+struct Edge {
+	int v, w, c, nxt;
+	Edge(int v = 0, int w = 0, int c = 0, int nxt = 0) :v(v), w(w), c(c), nxt(nxt) {}
+} edge[200000 + 10];
+int head[10000 + 10], idx = 1;
+void add(int u, int v, int w, int c) {
+	edge[++idx] = { v,w,c,head[u] };
+	head[u] = idx;
+}
+int rev[10000 + 10], ans, n, m, s, t;
+int dis[10000 + 10], cur[10000 + 10];
+bool vis[10000 +10];
+bool bfs() {
+	fill(dis, dis + n + 5, inf);
+	memset(vis, 0, sizeof(vis));
+	queue<int> q;
+	q.push(s);  dis[s] = 0; vis[s] = 1;
+	while (!q.empty()) {
+		int u = q.front();  q.pop();  vis[u] = 0;
+		for (int i = head[u]; i; i = edge[i].nxt) {
+			int v = edge[i].v, c = edge[i].c;
+			if (edge[i].w && dis[v] > dis[u] + c) {
+				dis[v] = dis[u] + c;
+				if (!vis[v]) q.push(v), vis[v] = 1;
+			}
+		}
+	}
+	return dis[t] != inf;
+}
+int dfs(int u, int flow) {
+	if (u == t) return flow;
+	vis[u] = 1;
+	int res = 0;
+	for (int& i = cur[u]; i && flow; i = edge[i].nxt) {
+		int v = edge[i].v, c = edge[i].c;
+		if (!vis[v] && edge[i].w && dis[v] == dis[u] + c) {
+			int k = dfs(v, min(flow, edge[i].w));
+			edge[i].w -= k; edge[i ^ 1].w += k;
+			flow -= k; res += k;
+			ans += k * c;
+		}
+	}
+	vis[u] = 0;
+	return res;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(0);
+	cin >> n >> m >> s >> t;
+	for (int i = 1, u, v, w, c; i <= m; ++i) {
+		cin >> u >> v >> w >> c;
+		if (c < 0) {
+			add(u, v, 0, 0), add(v, u, w, -c);
+			rev[u] -= w; rev[v] += w;
+			ans += c * w;
+		}
+		else
+			add(u, v, w, c), add(v, u, 0, -c);
+	}
+	int ss = n + 1, tt = n + 2;
+	for (int i = 1; i <= n; ++i)
+		if (rev[i] > 0)
+			add(ss, i, rev[i], 0), add(i, ss, 0, 0);
+		else if (rev[i] < 0) 
+			add(i, tt, -rev[i], 0), add(tt, i, 0, 0);
+	add(t, s, inf, 0); add(s, t, 0, 0);
+	int tmp = 0, anss = 0; swap(anss, ans);
+	swap(s, ss); swap(t, tt);
+	while (bfs()) {
+		memcpy(cur, head, sizeof(head));
+		dfs(s, inf);
+	}
+	swap(s, ss); swap(t, tt);
+	swap(anss, ans);
+	while (bfs()) {
+		memcpy(cur, head, sizeof(head));
+		tmp += dfs(s, inf);
+	}
+	cout << tmp << ' ' << ans << endl;
+	return 0;
+}

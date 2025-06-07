@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 94782118
+//  题目ID: T66252
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int m,n,s;cin>>m;
+	for(n;(1+n)*((n-1)/2+1)/2<=m;n++);
+	cout<<n;
+	
+
+	return 0;
+}

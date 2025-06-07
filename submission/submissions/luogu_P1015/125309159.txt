@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 125309159
+//  题目ID: P1015
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+string m;
+inline bool ok(){
+	for(int i=0,j=m.size()-1;i<j;++i,--j){
+		if(m[i] not_eq m[j]) return false;
+	}
+	return true;
+}
+int ans;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(auto&ch:m) ch-='0';
+	while(!ok()){
+		++ans;
+		string tmp;
+		for(int i=0,j=m.size();i<m.size();++i,--j) tmp[i]=m[j];
+		for(int i=m.size()-1;i>=0;--i){
+			m[i]+=tmp[i];
+			if(m[i]>=n){
+				++m[i-1];
+				m[i]-=n;
+			}
+		}
+		if(ans>30){
+			cout<<"Impossible!"<<endl;
+			return 0;
+		}
+	}
+	cout<<"STEP="<<ans<<endl;
+}

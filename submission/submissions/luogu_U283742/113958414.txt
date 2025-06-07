@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 113958414
+//  题目ID: U283742
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+int main() {
+    int n;
+    std::cin >> n;
+    
+    std::vector<int> nums(n);
+    for (int i = 0; i < n; i++) {
+        std::cin >> nums[i];
+    }
+    
+    long long sum = 0;
+    for (int i = 0; i < n - 1; i++) {
+        sum += std::abs(nums[i] - nums[i+1]);
+    }
+    
+    std::cout << sum << std::endl;
+    
+    return 0;
+}

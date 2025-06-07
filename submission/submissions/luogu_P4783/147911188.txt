@@ -1,0 +1,107 @@
+//  OJ: 洛谷
+//  提交ID: 147911188
+//  题目ID: P4783
+#include<bits/stdc++.h>
+#define eps 0.00001
+#define ll long long
+#define ONLINE_JUDGE
+#ifdef ONLINE_JUDGE
+#define gcd __gcd
+#endif
+using namespace std;
+const ll mod = 1000000007;
+void exgcd(long long a, long long b, long long& x, long long& y) {
+	if (b == 0) { x = 1; y = 0; return; }
+	exgcd(b, a % b, x, y);
+	int z = x; x = y, y = z - y * (a / b);
+}
+inline long long inv(long long a, long long p) {
+	long long x, y;
+	exgcd(a, p, x, y);
+	return (x % p + p) % p;
+}
+class fraction {//分数 
+	// Private section
+	ll z, m;
+	void upd() { ll tmp = gcd(abs(z), abs(m)); z /= tmp; m /= tmp; if (z < 0 && m < 0)z = ~z + 1, m = ~m + 1; if (m < 0 && z >= 0)z = ~z + 1, m = ~m + 1; }
+	double to_d() { return 1.0 * z / m; }
+public:
+	// Public Declarations
+	ll ngm(){return z;}
+	fraction() { z = 0, m = 1; }
+	template<typename T = ll>
+	fraction(T k) { z = k, m = 1; }
+	template<typename T1 = ll, typename T2 = ll>
+	fraction(T1 l, T2 r) { z = l, m = r; }
+	fraction sqrt() {return fraction(std::sqrt(z * m), m);}
+	friend fraction operator+(const fraction& a, const fraction& b) {fraction c = fraction(a.z * b.m + a.m * b.z, a.m * b.m);c.upd();return c;}
+	friend fraction operator-(const fraction& a, const fraction& b) { fraction c = fraction(a.z * b.m + a.m * (-b.z), a.m * b.m); c.upd(); return c; }
+	friend fraction operator*(const fraction& a, const fraction& b) { fraction c = fraction(a.z * b.z, a.m * b.m); c.upd(); return c; }
+	friend fraction operator/(const fraction& a, const fraction& b) { fraction c = fraction(a.z * b.m, a.m * b.z); c.upd(); return c; }
+	friend fraction operator%(const fraction& a, const ll& b) { fraction c = fraction(a.z * inv(a.m, b) % b, 1); c.upd(); return c; }
+	friend fraction operator+=(fraction& a, const fraction& b) { a = a + b; return a; }
+	friend fraction operator-=(fraction& a, const fraction& b) { a = a - b; return a; }
+	friend fraction operator*=(fraction& a, const fraction& b) { a = a * b; return a; }
+	friend fraction operator/=(fraction& a, const fraction& b) { a = a / b; return a; }
+	friend fraction operator%=(fraction& a, const ll& b) { a = a % b; return a; }
+	friend bool operator<(const fraction& a, const fraction& b) { return((a - b).to_d() < (0)); }
+	friend bool operator>(const fraction& a, const fraction& b) { return((a - b).to_d() > (0)); }
+	friend bool operator<=(const fraction& a, const fraction& b) { return((a - b).to_d() <= (0)); }
+	friend bool operator>=(const fraction& a, const fraction& b) { return((a - b).to_d() >= (0)); }
+	friend bool operator==(const fraction& a, const fraction& b) { return((a - b).to_d() == (0)); }
+	friend bool operator!=(const fraction& a, const fraction& b) { return((a - b).to_d() != (0)); }
+	friend istream& operator>>(istream& in, fraction& a) {
+		ll k;
+		in >> k;
+		a.m = 1, a.z = k;
+		return in;
+	}
+	friend ostream& operator<<(ostream& out, const fraction& a) {
+		if (a.m == 1) out << a.z;
+		else out << a.z << '/' << a.m;
+		return out;
+	}
+	//友元函数
+protected:
+	// Protected Declarations
+};
+fraction a[800 + 10][800 + 10];
+int n;
+int work() {
+	for(int i=1;i<=n;++i){
+		for(int j=i;j<=n;++j)
+			if(a[j][i]!=0){
+				swap(a[i],a[j]);
+				break;
+			}
+		if(a[i][i]==0) return 1;
+		for(int j=n+n;j>=i;--j)
+			a[i][j]/=a[i][i],a[i][j]%=mod;
+		for(int j=1;j<=n;++j)
+			if(j!=i)
+				for(int k=n+n;k>=i;--k)
+					a[j][k]-=a[j][i]*a[i][k];
+	}
+	for(int i=1;i<=n;++i)
+		for(int j=1;j<=n+n;++j){
+			fraction tmp=a[i][j]%mod+mod;
+			a[i][j]=tmp.ngm()>mod?tmp-fraction(mod):tmp;
+		}
+	return 0;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= n; ++j)
+			cin >> a[i][j];
+	for (int i = n + 1; i <= n + n; ++i)
+		a[i - n][i] = 1;
+	int err = work();
+	if (err) cout << "No Solution\n";
+	else
+		for (int i = 1; i <= n; ++i, cout << endl)
+			for (int j = n + 1; j <= n * 2; ++j)
+				cout << a[i][j] % mod << ' ';
+	return 0;
+}

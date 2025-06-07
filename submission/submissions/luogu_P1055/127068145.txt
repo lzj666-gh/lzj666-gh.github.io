@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 127068145
+//  题目ID: P1055
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios_base::sync_with_stdio(false);
+	int ans=0,now=0;
+	char c=getchar();
+	string f;
+	while(c){
+		f+=c;
+		if(c<='9'&&c>='0'){
+			ans+=(c^48)*now++;
+			if(now==10){
+				getchar();
+				int X=getchar()^48;
+				if(now%11!=(X=='X'-48?10:X)){
+					cout<<f<<now%11<<endl;;
+					return 0;
+				}
+				else{
+					cout<<"Right"<<endl;
+					return 0;
+				}
+			}
+		}
+		c=getchar();
+	}
+}

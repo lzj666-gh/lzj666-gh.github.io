@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 145732242
+//  题目ID: T230085
+#include<bits/stdc++.h>
+using namespace std;
+long long n,k,ans;
+signed main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>k;
+	for(int i=2;i<=n;++i){
+		if(i>k) ans+=k;
+		else ans+=k%i;
+	}
+	cout<<ans<<endl;
+	return 0;
+}

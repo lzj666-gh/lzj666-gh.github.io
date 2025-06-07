@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 162486642
+//  题目ID: U437294
+#include<bits/stdc++.h>
+using namespace std;
+set<tuple<int,int,string>> tim,pri;
+set<tuple<int,int,string>>::iterator it;
+map<string,bool>mp;
+string opt;
+int n,tmp;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i){
+		cin>>opt;
+		if(opt=="push"){
+			cin>>opt>>tmp;
+			if(!mp[opt]){
+				cout<<"OK\n";
+				tim.insert(make_tuple(i,tmp,opt));
+				pri.insert(make_tuple(tmp,i,opt));
+				mp[opt]=1;
+			}
+			else{
+				cout<<"In\n";
+			}
+		}
+		else if(opt=="pop"){
+			cin>>opt;
+			if(opt=="st"){
+				it=tim.begin();
+				cout<<get<2>(*it)<<endl;
+				mp[get<2>(*it)]=0;
+				pri.erase(pri.lower_bound(make_tuple(get<1>(*it),get<0>(*it),get<2>(*it))));
+				tim.erase(it);
+			}
+			if(opt=="im"){
+				it=pri.end(); it--;
+				int cbc=get<0>(*it);
+				while(get<0>(*it)==cbc) it--;
+				it++;
+				cout<<get<2>(*it)<<endl;
+				mp[get<2>(*it)]=0;
+				tim.erase(tim.lower_bound(make_tuple(get<1>(*it),get<0>(*it),get<2>(*it))));
+				pri.erase(it);
+			}
+		}
+	}
+	return 0;
+}

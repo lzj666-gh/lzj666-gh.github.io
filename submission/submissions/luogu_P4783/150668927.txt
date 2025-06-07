@@ -1,0 +1,122 @@
+//  OJ: 洛谷
+//  提交ID: 150668927
+//  题目ID: P4783
+#include<bits/stdc++.h>
+#define eps 0.00001
+#define ll long long
+#ifdef ONLINE_JUDGE
+#define gcd __gcd
+#define static 
+#define getchar() (p1 == p2 && (p2 = (p1 = buf) + fread(buf,1,1<<20,stdin), p1 == p2) ? 0 : *p1++)
+#endif
+using namespace std;
+#pragma warning(disable:4996)
+constexpr ll mod = 1000000007;
+char buf[1 << 20], * p1, * p2;
+static void exgcd(long long a, long long b, long long& x, long long& y) {
+	if (b == 0) { x = 1; y = 0; return; }
+	exgcd(b, a % b, x, y);
+	ll z = x; x = y, y = z - y * (a / b);
+}
+static inline long long inv(long long a, long long p) {
+	long long x, y;
+	exgcd(a, p, x, y);
+	return (x % p + p) % p;
+}
+class fraction {//分数 
+	// Private section
+	ll z, m;
+	void upd() { ll tmp = gcd(abs(z), abs(m)); z /= tmp; m /= tmp; if (z < 0 && m < 0)z = ~z + 1, m = ~m + 1; if (m < 0 && z >= 0)z = ~z + 1, m = ~m + 1; }
+	double to_d() { return 1.0 * z / m; }
+public:
+	// Public Declarations
+	ll lzj() { return to_d(); }
+	fraction() { z = 0, m = 1; }
+	template<typename T = ll>
+	fraction(T k) { z = k, m = 1; }
+	template<typename T1 = ll, typename T2 = ll>
+	fraction(T1 l, T2 r) { z = l, m = r; }
+	fraction sqrt() { return fraction(std::sqrt(z * m), m); }
+	static friend fraction operator+(const fraction& a, const fraction& b) { fraction c = fraction(a.z * b.m + a.m * b.z, a.m * b.m); c.upd(); return c; }
+	static friend fraction operator-(const fraction& a, const fraction& b) { fraction c = fraction(a.z * b.m + a.m * (-b.z), a.m * b.m); c.upd(); return c; }
+	static friend fraction operator*(const fraction& a, const fraction& b) { fraction c = fraction(a.z * b.z, a.m * b.m); c.upd(); return c; }
+	static friend fraction operator/(const fraction& a, const fraction& b) { fraction c = fraction(a.z * b.m, a.m * b.z); c.upd(); return c; }
+	static friend fraction operator%(const fraction& a, const ll& b) { if (a.m == 1) return fraction(a.z % b, 1); fraction c = fraction(a.z * inv(a.m, b), 1); c.z %= b; return c; }
+	static friend fraction operator+=(fraction& a, const fraction& b) { a = a + b; return a; }
+	static friend fraction operator-=(fraction& a, const fraction& b) { a = a - b; return a; }
+	static friend fraction operator*=(fraction& a, const fraction& b) { a = a * b; return a; }
+	static friend fraction operator/=(fraction& a, const fraction& b) { a = a / b; return a; }
+	static friend fraction operator%=(fraction& a, const ll& b) { a = a % b; return a; }
+	void Mod() { if (m != 1) cerr << *this << " wrong mod " << mod << endl, exit(0); z %= mod; }
+	void Tmp() { if (z < 0) z += mod; }
+	static friend bool operator<(const fraction& a, const fraction& b) { return((a - b).to_d() < (0)); }
+	static friend bool operator>(const fraction& a, const fraction& b) { return((a - b).to_d() > (0)); }
+	static friend bool operator<=(const fraction& a, const fraction& b) { return((a - b).to_d() <= (0)); }
+	static friend bool operator>=(const fraction& a, const fraction& b) { return((a - b).to_d() >= (0)); }
+	static friend bool operator==(const fraction& a, const fraction& b) { return((a - b).to_d() == (0)); }
+	static friend bool operator!=(const fraction& a, const fraction& b) { return((a - b).to_d() != (0)); }
+	static friend istream& operator>>(istream& in, fraction& a) {
+		ll k;
+		in >> k;
+		a.m = 1, a.z = k;
+		return in;
+	}
+	static friend ostream& operator<<(ostream& out, const fraction& a) {
+		if (a.m == 1) out << a.z;
+		else out << a.z << '/' << a.m;
+		return out;
+	}
+	//友元函数
+protected:
+	// Protected Declarations
+};
+static inline void read(fraction& lzj) {
+	bool f = 1; ll x = 0; char ch = getchar();
+	while (ch < '0' || ch>'9') { if (ch == '-') f = !f; ch = getchar(); }
+	while (ch >= '0' && ch <= '9') { x = (x << 1) + (x << 3) + (ch ^ 48); ch = getchar(); }
+	x = (f ? x : -x);
+	lzj = fraction(x);
+	return;
+}
+static inline void write(int x) {
+	if (x < 0) putchar('-'), x = -x;
+	if (x > 9) write(x / 10);
+	putchar(x % 10 + '0'); return;
+}
+fraction a[400 + 10][800 + 10];
+int n;
+time_t t;
+static int work() {
+//	t = clock();
+	for (int i = 1; i <= n; ++i) {
+		for (int j = i; j <= n; ++j)
+			if (a[j][i] != 0) { swap(a[i], a[j]); break; }
+		if (a[i][i] == 0) return 1;
+		for (int j = n + n; j >= i; --j)
+			a[i][j] /= a[i][i], a[i][j] %= mod;
+		for (int j = 1; j <= n; ++j)
+			if (j != i)
+				for (int k = n + n; k >= i; --k)
+					a[j][k] -= a[j][i] * a[i][k], a[j][k].Mod();
+		for (int j = 1; j <= n + n; ++j)
+			a[i][j].Tmp();
+		//cout << "now spend " << 1.0 * (clock() - t) / CLOCKS_PER_SEC <<"s " << endl;
+	}
+	return 0;
+}
+int main() {
+	//freopen("lzj.txt","r",stdin);
+	cin >> n;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= n; ++j)
+			read(a[i][j]);
+	for (int i = n + 1; i <= n + n; ++i)
+		a[i - n][i] = 1;
+	int err = work();
+	if (err) puts("No Solution");
+	else
+		for (int i = 1; i <= n; ++i, putchar('\n'))
+			for (int j = n + 1; j <= n * 2; ++j)
+				a[i][j].Tmp(), write((a[i][j]).lzj()), putchar(' ');
+	return 0;
+}

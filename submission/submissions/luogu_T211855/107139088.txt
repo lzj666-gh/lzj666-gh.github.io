@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 107139088
+//  题目ID: T211855
+#include<bits/stdc++.h>
+using namespace std;
+long long a[100000+10],top,x;
+long long maxa=-0x7f7f7f7f,q;
+int main(){
+	scanf("%d",&q);
+	for(int i=1;i<=q;++i){
+		scanf("%d",&x);
+		if(x==1){
+			cin>>a[++top];
+//			cout<<top<<":"<<a[top]<<endl;
+		}
+		else if(x==2){
+			maxa=-0x7f7f7f7f;
+//			cout<<endl;
+			for(int i=1;i<=top;++i){
+				maxa=max(maxa,a[i]);
+//				cout<<a[i]<<'\n';
+			}
+//			cout<<endl;
+			printf("%d\n",maxa);
+		}
+		else if(x==3&&top>0){
+			--top;
+		}
+		else if(x==4){
+			maxa=-0x7f7f7f7f;
+			long long s=0;
+			for(int i=1;i<=top;++i){
+				s+=a[i];
+//				cout<<s<<endl;
+				maxa=max(maxa,s);
+			}
+			printf("%d\n",maxa);
+		}
+		else if(x==5){
+			maxa=-0x7f7f7f7f;
+			long long s=0;
+			for(int i=top;i>=1;--i){
+				s+=a[i];
+				maxa=max(maxa,s);
+			}
+			printf("%d\n",maxa);
+		}
+	}
+}

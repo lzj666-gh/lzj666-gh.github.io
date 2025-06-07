@@ -1,0 +1,83 @@
+//  OJ: 洛谷
+//  提交ID: 177307776
+//  题目ID: P7913
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, ans1[100000 + 10], ans2[100000 + 10], m1, m2;
+struct P {
+	int beg, end;
+	friend bool operator<(const P& a, const P& b) {
+		return a.beg == b.beg ? a.end < b.end : a.beg < b.beg;
+	}
+}a[100000 + 10];
+struct L {
+	int idx, lst, tot;
+	L(int i, int l, int t) :idx(i), lst(l), tot(t) {}
+	L(const L& oth) :idx(oth.idx), lst(oth.lst), tot(oth.tot) {}
+	friend bool operator<(const L& a, const L& b) {
+		return a.lst == b.lst ? a.idx < b.idx : a.lst < b.lst;
+	}
+};
+set<L>q;
+int idx;
+void work(int* anss) {
+	for (int i = 1; i <= m; ++i) cin >> a[i].beg >> a[i].end;
+	//sort(a + 1, a + m + 1);
+	idx = 0;
+	for (int i = 1; i <= m; ++i) {
+		if (q.empty()) {
+			idx++;
+			q.emplace(idx, a[i].end, 1);
+			continue;
+		}
+		set<L>::iterator it = q.begin(), cur = q.begin();
+		while (it->lst < a[i].beg && it != q.end()) {
+			if (it->idx < cur->idx) 
+				cur = it;
+			it++;
+			if (it == q.end()) {
+				it--;
+				break;
+			}
+		}
+		if (cur->lst < a[i].beg) {
+			q.emplace(cur->idx, a[i].end, cur->tot + 1);
+			q.erase(cur); 
+		}
+		else {
+			idx++;
+			q.emplace(idx, a[i].end, 1);
+		}
+	}
+	for (L cur : q) {
+		anss[cur.idx] = cur.tot;
+	}
+	for (int i = 1; i <= n; ++i) anss[i] += anss[i - 1];
+}
+signed main() {
+// 	freopen("airport.in", "r", stdin);
+// 	freopen("airport.out", "w", stdout);
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m1 >> m2;
+	m = m1;
+	work(ans1);
+	m = m2;
+	work(ans2);
+	int ans = 0;
+	for (int i = 0; i <= n; ++i) ans = max(ans, ans1[i] + ans2[n - i]);
+	cout << ans << endl;
+	return 0;
+}
+/*
+2 4 6
+20 30
+40 50
+21 22
+41 42
+1 19
+2 18
+3 4
+5 6
+7 8
+9 10
+*/

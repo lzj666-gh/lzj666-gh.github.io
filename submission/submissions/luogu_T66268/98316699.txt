@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 98316699
+//  题目ID: T66268
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n;cin>>n;
+	const int N=n;
+	bool a[N]={false};
+	int k;cin>>k;
+	for(int i=2;i<=k;i++){
+		for(int j=i-1;j<n;j+=i){
+			if(a[j]==false) a[j]=true;
+			else a[j]=false;
+		}
+	}
+	for(int i=0;i<n;i++){
+		if(a[i]==true) cout<<i+1<<" ";
+	}
+	return 0;
+}
+

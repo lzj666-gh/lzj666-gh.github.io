@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 137012991
+//  题目ID: T216665
+#include<bits/stdc++.h>
+using namespace std;
+struct Node{
+	int x,y,id;
+	friend bool operator<(const Node&a,const Node&b){
+		return a.x<b.x;
+	}
+}a[50000+10];
+struct No{
+	int y,id;
+	friend bool operator<(const No&a,const No&rhs){
+		return a.y>rhs.y;
+	}
+};
+priority_queue<No>q;
+int ans[5000+10],anss,cnt;
+int main(){
+	ios_base::sync_with_stdio(false);
+	int n;cin>>n;
+	for(int i=1;i<=n;i++) cin>>a[i].x>>a[i].y,a[i].id=i;
+	sort(&a[1],&a[n+1]);
+	for(int i=1;i<=n;i++){
+		if(q.empty()){
+			q.push({a[i].y,++cnt});
+			anss++;
+			ans[a[i].id]=cnt;
+		}
+		else if(a[i].x>q.top().y){
+			ans[a[i].id]=q.top().id;
+			q.pop();
+			q.push({a[i].y,ans[a[i].id]});
+		}
+		else{
+			q.push({a[i].y,++cnt});
+			anss++;
+			ans[a[i].id]=cnt;
+		}
+	}
+	cout<<anss<<endl;
+	for(int i=1;i<=n;i++)cout<<ans[i]<<endl;
+	return 0;
+}

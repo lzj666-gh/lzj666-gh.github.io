@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 135206589
+//  题目ID: T146896
+#include<bits/stdc++.h>
+#define eps 1e-6
+using namespace std;
+int n,f,a[100010];
+double s[100010];
+bool check(double avr){
+	for(int i=1;i<=n;i++) s[i]=a[i]-avr+s[i-1];
+	double minn=0;
+	for(int i=f+1,j=1;i<=n;i++,j++){
+		if(minn>s[j]) minn=s[j];
+		if(s[i]>=minn) return true;
+	}
+	return false;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>f;
+	for(int i=1;i<=n;i++) cin>>a[i];
+	double l=0,r=2000;
+	while(r-l>eps){
+		double mid=(l+r)/2;
+		if(check(mid)) l=mid;
+		else r=mid;
+	}
+	cout<<(int)(r*1000);
+	return 0;
+}

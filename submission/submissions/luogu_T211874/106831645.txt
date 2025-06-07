@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 106831645
+//  题目ID: T211874
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[100000+10],maxa,x1,y2;
+int main(){
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++){
+		scanf("%d",&a[i]);
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=a[i];j++){
+			int z=i;
+			while(a[++z]>=j&&z<=n);
+			--z;
+			if(maxa<(z-i+1)*j){
+				maxa=(z-i+1)*j;
+				x1=i,y2=z;
+			}
+		}
+	}
+	printf("%d\n%d %d",maxa,x1,y2);
+	return 0;
+}

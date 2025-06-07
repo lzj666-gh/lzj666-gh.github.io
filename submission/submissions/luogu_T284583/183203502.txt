@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 183203502
+//  题目ID: T284583
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int u, v, w;
+}edge[100000+10];
+int rd[100000 + 10], vis[100000 + 10];
+vector<int> son[100000 + 10];
+int n, m, ans;
+bool topo(int p) {
+	memset(rd, 0, sizeof rd);
+	fill(son + 1, son + n + 1, vector<int>());
+	for (int i = 1; i <= m; i++)
+		if (edge[i].w > p)
+			son[edge[i].u].push_back(edge[i].v),
+			rd[edge[i].v]++;
+	queue<int>q;
+	for (int i = 1; i <= n; i++) 
+		if (!rd[i]) 
+			q.push(i);
+	int k = 0; 
+	while (!q.empty()) {
+		int u = q.front(); q.pop();
+		++k;
+		for (const int&v : son[u]) {
+			--rd[v];
+			if (rd[v] == 0)
+				q.push(v);
+		}
+	}
+	return k == n;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int l = 0, r = 0, mid;
+	cin >> n >> m;
+	for (int i = 1; i <= m; i++)
+		cin >> edge[i].u >> edge[i].v >> edge[i].w, r = max(r, edge[i].w);
+	r++;
+	while (l < r - 1) {
+		mid = l + r >> 1;
+		if (topo(mid)) r = mid;
+		else l = mid;
+	}
+	//cerr << l << ' ' << topo(l) << endl;
+	cout << r << endl;
+	return 0;
+}

@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 101125928
+//  题目ID: P1327
+#include<bits/stdc++.h>
+using namespace std;
+int a[100000+10];
+int main(){
+	int cnt=0;
+	int n;cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>a[i];
+	}
+	for(int i=0;i<n;i++){
+		int max=0;
+		for(int j=0;j<n-i-1;j++){
+			if(a[j]>a[max]) max=j;
+		}
+		swap(a[max],a[n-i-1]);
+		if(a[max]!=a[n-i-1]) cnt++;
+	}
+	cout<<cnt;
+	return 0;
+}

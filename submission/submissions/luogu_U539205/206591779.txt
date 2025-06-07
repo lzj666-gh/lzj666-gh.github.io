@@ -1,0 +1,136 @@
+//  OJ: 洛谷
+//  提交ID: 206591779
+//  题目ID: U539205
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+const int MOD = 1e9 + 7, MAXM = 5;
+int fact_inv[MAXM + 1] = { 1, 1, 500000004, 166666668, 41666667, 808333339 };
+struct TrieNode {
+	TrieNode* children[26];
+	int depth;
+	vector<int> a, dp;
+	TrieNode(int d, int m) : depth(d), a(m + 1, 0), dp(m + 1, 0) { memset(children, 0, sizeof(children)); }
+};
+int comb(int v, int k) {
+	if (k == 0) return 1;
+	long long res = 1;
+	for (int i = 0; i < k; ++i)
+		res = res * (v - i) % MOD;
+	res = res * fact_inv[k] % MOD;
+	return res;
+}
+void insertTrie(TrieNode* root, const string& s, const vector<int>& poly) {
+	TrieNode* node = root;
+	for (char c : s) {
+		int idx = c - 'a';
+		if (!node->children[idx])
+			node->children[idx] = new TrieNode(node->depth + 1, root->dp.size() - 1);
+		node = node->children[idx];
+	}
+	for (int k = 0; k < poly.size(); ++k)
+		node->a[k] = (node->a[k] + poly[k]) % MOD;
+}
+void computeDp(TrieNode* node, int m, int& B) {
+	for (int i = 0; i < 26; ++i)
+		if (node->children[i])
+			computeDp(node->children[i], m, B);
+	fill(node->dp.begin(), node->dp.end(), 0);
+	node->dp[0] = 1;
+	for (int i = 0; i < 26; ++i) {
+		if (!node->children[i]) continue;
+		TrieNode* child = node->children[i];
+		vector<int> tmp(m + 1, 0);
+		for (int a = 0; a <= m; ++a)
+			if (node->dp[a])
+				for (int b = 0; b <= m - a; ++b)
+					tmp[a + b] = (tmp[a + b] + 1LL * node->dp[a] * child->dp[b]) % MOD;
+		node->dp = tmp;
+	}
+	vector<int> new_dp = node->dp;
+	for (int k = m; k >= 0; --k)
+		for (int a = 1; a <= min(k, (int)node->a.size() - 1); ++a)
+			new_dp[k] = (new_dp[k] + 1LL * new_dp[k - a] * node->a[a]) % MOD;
+	node->dp = new_dp;
+	int sumk = 0;
+	for (int k = 1; k <= m; ++k) 
+		sumk = (sumk + 1LL * k * node->dp[k]) % MOD;
+	int sum_child = 0;
+	for (int i = 0; i < 26; ++i) {
+		if (!node->children[i]) continue;
+		TrieNode* child = node->children[i];
+		int sk = 0;
+		for (int k = 1; k <= m; ++k)
+			sk = (sk + 1LL * k * child->dp[k]) % MOD;
+		sum_child = (sum_child + sk) % MOD;
+	}
+	B = (B + (1LL * node->depth * ((sumk - sum_child + MOD) % MOD)) % MOD) % MOD;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m;
+	cin >> n >> m;
+	vector<string> s(n);
+	for (int i = 0; i < n; ++i) cin >> s[i];
+	vector<int> v(n);
+	for (int i = 0; i < n; ++i) cin >> v[i];
+	unordered_map<string, int> sum_v_map;
+	for (int i = 0; i < n; ++i)
+		if (v[i] > 0) 
+			sum_v_map[s[i]] = (sum_v_map[s[i]] + v[i]) % MOD;
+	vector<pair<string, int>> unique_strings;
+	for (const auto& p : sum_v_map)
+		unique_strings.emplace_back(p.first, p.second);
+	vector<int> coeff_total(m + 1, 0);
+	coeff_total[0] = 1;
+	vector<vector<int>> polys;
+	for (const auto& p : unique_strings) {
+		int current_v = p.second;
+		vector<int> poly(m + 1, 0);
+		for (int k = 0; k <= m; ++k) {
+			poly[k] = comb(current_v, k);
+		}
+		polys.push_back(poly);
+		vector<int> new_coeff(m + 1, 0);
+		for (int a = 0; a <= m; ++a)
+			if (coeff_total[a])
+				for (int b = 0; b <= m - a; ++b)
+					new_coeff[a + b] = (new_coeff[a + b] + 1LL * coeff_total[a] * poly[b]) % MOD;
+		coeff_total = new_coeff;
+	}
+	int A = 0;
+	for (int idx = 0; idx < unique_strings.size(); ++idx) {
+		const auto& p = unique_strings[idx];
+		const string& str = p.first;
+		int len_s = str.size();
+		int current_v = p.second;
+		const vector<int>& poly = polys[idx];
+		vector<int> coeff_rest(m + 1, 0);
+		coeff_rest[0] = 1;
+		for (int k = 1; k <= m; ++k) {
+			long long val = coeff_total[k];
+			for (int t = 1; t <= min(k, m); ++t) {
+				val -= 1LL * coeff_rest[k - t] * poly[t] % MOD;
+				if (val < 0) val += MOD;
+			}
+			coeff_rest[k] = val % MOD;
+		}
+		vector<int> prefix(m + 2, 0);
+		for (int k = 0; k <= m; ++k)
+			prefix[k + 1] = (prefix[k] + coeff_rest[k]) % MOD;
+		long long sum = 0;
+		for (int k = 1; k <= m; ++k) {
+			int max_other = m - k;
+			if (max_other < 0) continue;
+			sum = (sum + 1LL * poly[k] * k % MOD * prefix[max_other + 1] % MOD) % MOD;
+		}
+		A = (A + 1LL * len_s * sum % MOD) % MOD;
+	}
+	TrieNode root(0, m);
+	for (int i = 0; i < unique_strings.size(); ++i)
+		insertTrie(&root, unique_strings[i].first, polys[i]);
+	int B = 0;
+	computeDp(&root, m, B);
+	cout << (A - B + MOD) % MOD << "\n";
+	return 0;
+}
