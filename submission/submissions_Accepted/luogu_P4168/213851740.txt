@@ -1,0 +1,118 @@
+//  OJ: 洛谷
+//  提交ID: 213851740
+//  题目ID: P4168
+#include<bits/stdc++.h>
+#include<unordered_set>
+using namespace std;
+vector<int>v[1500], vv[100000 + 5];
+int bel[100000 + 5], val[100000 + 5], f[1500][1500], cnt[1000000 + 5];
+unordered_map<int, int>ump;
+namespace IO {
+	const int SIZE = (1 << 20) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1;
+	char _st[55];
+	int _qr = 0;
+	inline char gc() {
+		return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++);
+	}
+	inline void qread() {}
+	template<class T1, class ...T2>
+	inline void qread(T1& IEE, T2&... ls) {
+		T1 __ = 0, ___ = 1;
+		char ch;
+		while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___;
+		do {
+			__ = (__ << 1) + (__ << 3) + (ch ^ 48);
+		} while (isdigit(ch = gc()));
+		__ *= ___;
+		IEE = __;
+		qread(ls...);
+		return;
+	}
+	inline void flush() {
+		fwrite(obuf, 1, oS - obuf, stdout);
+		oS = obuf;
+		return;
+	}
+	inline void putc_(char _x) {
+		*oS++ = _x;
+		if (oS == oT) flush();
+	}
+	inline void qwrite() {}
+	template<class T1, class ...T2>
+	inline void qwrite(T1 IEE, T2... ls) {
+		if (is_same<T1, char>::value) {
+			putc_(IEE);
+			qwrite(ls...);
+			return;
+		}
+		if (!IEE) putc_('0');
+		if (IEE < 0) putc_('-'), IEE = -IEE;
+		while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10;
+		while (_qr) putc_(_st[_qr--]);
+		qwrite(ls...);
+		return;
+	}
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m, lastans = 0;
+	qread(n, m); int s = pow(n, 1.0 / 2.7004514), k = 1, idx = 0;
+	for (int i = 1, a; i <= n; ++i) {
+		qread(a);
+		if (!ump[a]) ump[a] = ++idx, val[ump[a]] = a;
+		a = ump[a];
+		v[v[k].size() == s ? ++k : k].push_back(a);
+		bel[i] = k;
+		vv[a].push_back(i);
+	}
+	val[0] = INT_MAX;
+	for (int i = 1; i <= k; ++i) {
+		memset(cnt, 0, sizeof cnt);
+		int mx = 0, ans = 0;
+		for (int j = i; j <= k; ++j) {
+			for (const int& i : v[j]) {
+				cnt[i]++;
+				if (cnt[i] > mx || (cnt[i] == mx && val[i] < val[ans])) {
+					mx = cnt[i];
+					ans = i;
+				}
+			}
+			f[i][j] = ans;
+		}
+	}
+	while (m--) {
+		int l, r, cbcl, cbcr;
+		qread(l, r); 
+		l = (l + lastans - 1) % n + 1;
+		r = (r + lastans - 1) % n + 1;
+		if (l > r) swap(l, r);
+		cbcl = l; cbcr = r;
+		int tl = bel[l], tr = bel[r];
+		l = (l - 1) % s;
+		r = (r - 1) % s;
+		unordered_set<int>may;
+		if (tl == tr) {
+			for (int j = l; j <= r; ++j) may.insert(v[tl][j]);
+		}
+		else {
+			for (int j = l; j < v[tl].size(); ++j) may.insert(v[tl][j]);
+			may.insert(f[tl + 1][tr - 1]);
+			for (int j = 0; j <= r; ++j) may.insert(v[tr][j]);
+		}
+		int mx = 0, ans = 0;
+		for (const int& k : may) {
+			//cerr << ' ' << k << endl;
+			int now = upper_bound(vv[k].begin(), vv[k].end(), cbcr) - lower_bound(vv[k].begin(), vv[k].end(), cbcl);
+			if (now > mx || (now == mx && val[k] < val[ans])) {
+				mx = now;
+				ans = k;
+			}
+		}
+		qwrite(lastans = val[ans], '\n');
+		//cerr << endl;
+	}
+	return 0;
+}

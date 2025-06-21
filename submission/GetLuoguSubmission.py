@@ -6,7 +6,7 @@ import pyluog
 from collections import deque
 import logging 
  
-def scrape_luogu_submissions(client_id, uid, begin_page = 1, wait_time = 5, MAX_RETRIES = 3):
+def scrape_luogu_submissions_Accepted(client_id, uid, begin_page = 1, wait_time = 5, MAX_RETRIES = 3):
     """
     爬取洛谷用户提交记录并保存到本地
     :param client_id: __client_id Cookie值
@@ -15,9 +15,13 @@ def scrape_luogu_submissions(client_id, uid, begin_page = 1, wait_time = 5, MAX_
     :param wait_time: 记录与记录之间的等待时间（秒）
     :param MAX_RETRIES: 最大重试次数
     """
+    
+    # 3. 创建存储目录 
+    os.makedirs('submissions_Accepted',  exist_ok=True)
+    
     # 1. 配置日志系统 
     logging.basicConfig( 
-        filename='submissions/error.log', 
+        filename='submissions_Accepted/error.log', 
         level=logging.ERROR,
         format='%(asctime)s - %(levelname)s - %(message)s',
         encoding='utf-8'
@@ -43,9 +47,6 @@ def scrape_luogu_submissions(client_id, uid, begin_page = 1, wait_time = 5, MAX_
         '_uid': uid
     }
     
-    # 3. 创建存储目录 
-    os.makedirs('submissions',  exist_ok=True)
-    
     # 4. 初始化重试队列和失败计数器 
     retry_queue = deque()
     failure_count = {}
@@ -53,7 +54,7 @@ def scrape_luogu_submissions(client_id, uid, begin_page = 1, wait_time = 5, MAX_
     # 5. 分页爬取提交记录 
     page = begin_page 
     while True:
-        api_url = f'https://www.luogu.com.cn/record/list?_contentOnly=1&user=836542&page={page}'  
+        api_url = f'https://www.luogu.com.cn/record/list?_contentOnly=1&user=836542&status=12&page={page}'  
         try:
             print(f"正在爬取第 {page} 页...")
             response = res.sess.get(  
@@ -82,7 +83,7 @@ def scrape_luogu_submissions(client_id, uid, begin_page = 1, wait_time = 5, MAX_
                     continue
                     
                 # 创建题目目录
-                problem_dir = f"submissions/luogu_{problem_id}"
+                problem_dir = f"submissions_Accepted/luogu_{problem_id}"
                 os.makedirs(problem_dir,  exist_ok=True)
                 save_path = f"{problem_dir}/{record_id}.txt"
                 
@@ -128,7 +129,7 @@ def scrape_luogu_submissions(client_id, uid, begin_page = 1, wait_time = 5, MAX_
     print(f"\n开始处理重试队列，共 {len(retry_queue)} 条记录需要重试...")
     while retry_queue:
         record_id, problem_id = retry_queue.popleft() 
-        save_path = f"submissions/luogu_{problem_id}/{record_id}.txt"
+        save_path = f"submissions_Accepted/luogu_{problem_id}/{record_id}.txt"
         
         # 再次检查文件是否已在重试期间生成
         if os.path.exists(save_path): 
@@ -204,7 +205,7 @@ def fetch_submission_code(session, record_id, headers):
  
 if __name__ == "__main__":
     # 输入您的Cookie值（从浏览器开发者工具中获取）
-    YOUR_CLIENT_ID = ""
-    YOUR_UID = ""
+    YOUR_CLIENT_ID = "9efab62813fb8f1e1b0f8d4dd91ea34137f5bc59"
+    YOUR_UID = "836542"
     
-    scrape_luogu_submissions(YOUR_CLIENT_ID, YOUR_UID, 1, 0.5, 5)
+    scrape_luogu_submissions_Accepted(YOUR_CLIENT_ID, YOUR_UID, 1, 0.5, 5)

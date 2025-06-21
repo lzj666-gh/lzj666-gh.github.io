@@ -1,0 +1,109 @@
+//  OJ: 洛谷
+//  提交ID: 213876988
+//  题目ID: T237220
+#include<bits/stdc++.h>
+using namespace std;
+namespace IO {
+	const int SIZE = (1 << 20) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1;
+	char _st[55];
+	int _qr = 0;
+	inline char gc() {
+		return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++);
+	}
+	inline void qread() {}
+	template<class T1, class ...T2>
+	inline void qread(T1& IEE, T2&... ls) {
+		T1 __ = 0, ___ = 1;
+		char ch;
+		while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___;
+		do {
+			__ = (__ << 1) + (__ << 3) + (ch ^ 48);
+		} while (isdigit(ch = gc()));
+		__ *= ___;
+		IEE = __;
+		qread(ls...);
+		return;
+	}
+	inline void flush() {
+		fwrite(obuf, 1, oS - obuf, stdout);
+		oS = obuf;
+		return;
+	}
+	inline void putc_(char _x) {
+		*oS++ = _x;
+		if (oS == oT) flush();
+	}
+	inline void qwrite() {}
+	template<class T1, class ...T2>
+	inline void qwrite(T1 IEE, T2... ls) {
+		if (is_same<T1, char>::value) {
+			putc_(IEE);
+			qwrite(ls...);
+			return;
+		}
+		if (!IEE) putc_('0');
+		if (IEE < 0) putc_('-'), IEE = -IEE;
+		while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10;
+		while (_qr) putc_(_st[_qr--]);
+		qwrite(ls...);
+		return;
+	}
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+size_t n, m;
+class BIT {
+#define lb(x) (x & -x)
+	struct Tree_Array {
+		long long s[2049][2049];
+		long long query(int x, int y) {
+			long long ans = 0;
+			for (; x; x -= lb(x))
+				for (int i = y; i; i -= lb(i))
+					ans += s[x][i];
+			return ans;
+		}
+		void add(int x, int y, long long k) {
+			for (; x <= n; x += lb(x))
+				for (int i = y; i <= m; i += lb(i))
+					s[x][i] += k;
+		}
+	};
+	Tree_Array nor, timi, timj, timij;
+	void add(int x, int y, int k) {
+		nor.add(x, y, k);
+		timi.add(x, y, k * x);
+		timj.add(x, y, k * y);
+		timij.add(x, y, k * x * y);
+	}
+	long long query(int x,int y){
+		return(x + 1ll) * (y + 1ll) * nor.query(x, y) - (y + 1ll) * timi.query(x, y) - (x + 1ll) * timj.query(x, y) + timij.query(x, y);
+	}
+public:
+	void add(int l1, int r1, int l2, int r2, long long x) {
+		add(l1, r1, x);
+		add(l2 + 1, r1, -x);
+		add(l1, r2 + 1, -x);
+		add(l2 + 1, r2 + 1, x);
+	}
+	long long query(int l1, int r1, int l2, int r2) {
+		return query(l2, r2) - query(l1 - 1, r2) - query(l2, r1 - 1) + query(l1 - 1, r1 - 1);
+	}
+}; BIT t;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	int opt, l1, r1, l2, r2, k;
+	while (cin >> opt) {
+		if (opt == 1) {
+			cin >> l1 >> r1 >> l2 >> r2 >> k;
+			t.add(l1, r1, l2, r2, k);
+		}
+		else {
+			cin >> l1 >> r1 >> l2 >> r2;
+			cout << t.query(l1, r1, l2, r2) << endl;
+		}
+	}
+	return 0;
+}

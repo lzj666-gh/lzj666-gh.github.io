@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 116250806
+//  题目ID: B2033
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios::sync_with_stdio(false);
+	long long a,b;
+	cin>>a>>b;
+	cout<<a*b<<endl;
+	return 0;
+}

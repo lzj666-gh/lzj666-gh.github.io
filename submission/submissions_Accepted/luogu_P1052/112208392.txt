@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 112208392
+//  题目ID: P1052
+#include<bits/stdc++.h>
+using namespace std; 
+int dp[10005],f[10005],a[10005],p,s,t,n;
+bool b[10005]; 
+int main(){ 
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);cout.tie(NULL);
+    cin>>p>>s>>t>>n;
+    if(s==t){ 
+        int cnt=0,opt; 
+        for(int i=1;i<=n;i++){
+        	cin>>opt;
+        	if(opt%s==0) cnt+=1;
+		}
+        cout<<cnt;
+		return 0; 
+    } 
+    for(int i=1;i<=n;i++) cin>>a[i];
+    sort(a+1,a+n+1);
+	a[0]=dp[0]=0;
+    f[n+1]=min(p-a[n],100);
+	p=0;
+    for(int i=1;i<=n;i++){
+    	f[i]=min(a[i]-a[i-1],90);
+		p+=f[i];
+		b[p]=1;
+	}
+    p+=f[n+1]; 
+    for(int i=1;i<=p+t;i++) { 
+        dp[i]=0x7f7f7f7f; 
+        for(int j=s;j<=t;j++){
+        	if(i>=j) dp[i]=min(dp[i],dp[i-j]+b[i]); 
+		}
+    } 
+    int minn=0x7f7f7f7f; 
+    for(int i=p;i<=p+t;i++) minn=min(minn,dp[i]); 
+    cout<<minn<<endl;
+} 

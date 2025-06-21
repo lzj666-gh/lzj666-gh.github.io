@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 220232549
+//  题目ID: P4393
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e6 + 5;
+int n, a[N];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	int ans = 0;
+	for (int i = 1; i < n; ++i) ans += max(a[i], a[i + 1]);
+	cout << ans << endl;
+	return 0;
+}

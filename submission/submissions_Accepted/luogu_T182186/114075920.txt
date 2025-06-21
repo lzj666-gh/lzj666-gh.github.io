@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 114075920
+//  题目ID: T182186
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> nums(n);
+    for (int i = 0; i < n; i++) {
+        cin >> nums[i];
+    }
+    
+    vector<int> dp(n, 1); // dp[i]表示以nums[i]结尾的最长上升子序列的长度
+    vector<int> pre(n, -1); // pre[i]表示nums[i]之前的最长上升子序列中，nums[i]的前一个数的下标
+    
+    int maxLen = 1; // 最长上升子序列的长度
+    int end = 0; // 最长上升子序列的最后一个数的下标
+    
+    for (int i = 1; i < n; i++) {
+        for (int j = 0; j < i; j++) {
+            if (nums[i] > nums[j] && dp[j] + 1 > dp[i]) {
+                dp[i] = dp[j] + 1;
+                pre[i] = j;
+            }
+        }
+        if (dp[i] > maxLen) {
+            maxLen = dp[i];
+            end = i;
+        }
+    }
+    
+    vector<int> lis(maxLen);
+    int index = maxLen - 1;
+    while (end >= 0) {
+        lis[index] = nums[end];
+        end = pre[end];
+        index--;
+    }
+    
+    cout << maxLen << endl;
+    for (int i = 0; i < maxLen; i++) {
+        cout << lis[i] << " ";
+    }
+    cout << endl;
+    
+    return 0;
+}

@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 165031964
+//  题目ID: T474459
+#include<bits/stdc++.h>
+using namespace std;
+int n[200001],p,dp[200001],ans=-0x7f7f7f7f,cbc;
+int main()
+{
+    cin>>p>>cbc;
+    for(int i=1;i<=p;i++)
+    {
+        cin>>n[i];
+        dp[i]=max(dp[i-1]+n[i],n[i]);
+        ans=max(ans,dp[i]);
+    }
+    cout<<ans;
+    return 0;
+}

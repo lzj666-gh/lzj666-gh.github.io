@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 174504229
+//  题目ID: P1023
+#include<bits/stdc++.h>
+using namespace std;
+struct Point {
+	int a, b;
+	friend bool operator<(const Point& a, const Point& b) {
+		return a.a < b.a;
+	}
+}a[100000 + 10];
+int n, x, y, e, X, ey;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> e;
+	cin >> a[1].a >> a[1].b;
+	n = 1;
+	while (1) {
+		cin >> x >> y;
+		if (x == -1) break;
+		int lx = a[n].a, ly = a[n].b;
+		for (int i = lx + 1; i <= x; ++i) {
+			++n;
+			a[n].a = a[n - 1].a + 1;
+			a[n].b = a[n - 1].b + (y - ly) / (x - lx);
+		}
+	}
+	cin >> X;
+	if (e >= a[n].a) {
+		int lx = a[n].a, ly = a[n].b;
+		for (int i = lx + 1; i <= e+1; ++i) {
+			++n;
+			a[n].a = a[n - 1].a + 1;
+			a[n].b = a[n - 1].b - X;
+		}
+	}
+	for (int i = 1; i <= n; ++i) 
+		if (a[i].a == e) {
+			ey = a[i].b;
+			break;
+		}
+	double maxx = -1e12, minn = 1e12;
+	for (int i = 1; i <= n; ++i) {
+		if (ey - a[i].b > 0) {
+			maxx = max(maxx, (double)((double)(a[i].a - a[1].a) * a[i].b - (double)(e - a[1].a) * ey) / (double)(ey - a[i].b));
+		}
+		else{
+			minn = min(minn, (double)((double)(a[i].a - a[1].a) * a[i].b - (double)(e - a[1].a) * ey) / (double)(ey - a[i].b));
+		}
+	}
+	if (maxx >= minn) cout << "NO SOLUTION" << endl;
+	else if (maxx > 0) cout << ceil(maxx) << endl;
+	else if (minn < 0) cout << floor(minn) << endl;
+	else cout << 0 << endl;
+	return 0;
+}

@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 190586357
+//  题目ID: T543227
+#include<bits/stdc++.h>
+#define p(i, j, k) dp[(i) * (n + 1) * (n + 1) + (j) * (n + 1) + (k)]
+//#define ONLINE
+using namespace std;
+constexpr int MOD = 1e9 + 7;
+int n, m, a[100000 + 5], b[100000 + 5];
+struct Modint {
+	int data;
+	void operator+=(const Modint& oth) {
+		data -= (data += oth.data) >= MOD ? MOD : 0;
+	}
+}dp[50000000];
+int main() {
+#ifdef ONLINE
+	freopen("segment.in", "r", stdin);
+	freopen("segment.out", "w", stdout);
+#endif
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		cin >> n >> m;
+		for (int i = 1; i <= m; i++) cin >> a[i];
+		for (int i = 1; i <= m; i++) cin >> b[i];
+		if (n > m) {
+			cout << 0 << endl;
+			continue;
+		}
+		memset(dp, 0, sizeof dp);
+		p(0, 0, 0).data = 1;
+		for (int i = 1; i <= m; ++i)
+			for (int j = 0; j <= min(i, n); j++)
+				for (int k = 0; k <= j; k++) {
+					if (!a[i] && !b[i])
+						p(i, j, k) += p(i - 1, j, k);
+					if (!b[i] && j + 1 <= n)
+						p(i, j + 1, k) += p(i - 1, j, k);
+					if (!a[i] && k + 1 <= n && j != k)
+						p(i, j, k + 1) += p(i - 1, j, k);
+					if (j + 1 <= n && k + 1 <= n)
+						p(i, j + 1, k + 1) += p(i - 1, j, k);
+				}
+		cout << p(m, n, n).data << endl;
+	}
+}

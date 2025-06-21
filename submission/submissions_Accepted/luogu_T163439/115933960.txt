@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 115933960
+//  题目ID: T163439
+#include<bits/stdc++.h>
+using namespace std;
+vector<vector<int> > a(10000);
+int m,n;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;i++){
+		a[i].push_back(i);
+	}
+	for(int i=1;i<=m;i++){
+		int x,y;
+		cin>>x>>y;
+		if(x==y) continue;
+		for(int j=0;j<a[y].size();j++){
+			a[x].push_back(a[y][j]);
+		}
+		a[y].clear();
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=0;j<a[i].size();j++){
+			cout<<a[i][j]<<' ';
+		}
+		cout<<endl;
+	}
+	cout<<endl;
+	return 0;
+}

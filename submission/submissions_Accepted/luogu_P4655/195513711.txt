@@ -1,0 +1,68 @@
+//  OJ: 洛谷
+//  提交ID: 195513711
+//  题目ID: P4655
+#include<bits/stdc++.h>
+#define int long long
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+using namespace std;
+int n, h[100000 + 10], w[100000 + 10], f[100000 + 10];
+struct Line {
+	int k, b;
+	Line() { k = 0;b = LLONG_MAX; }
+	int operator()(int x) {
+		return k * x + b;
+	}
+	friend ostream& operator<<(ostream& out, const Line& l) {
+		return out << "f(x)=" << l.k << 'x' << '+' << l.b;
+	}
+}l[100000 + 5];
+struct Tree {
+	int l, r, ans;
+}tree[1000000 << 2 | 3];
+void build(int p, int l, int r) {
+	tree[p].l = l; tree[p].r = r;
+	if (l == r) return;
+	build(lc(p), l, l + r >> 1);
+	build(rc(p), (l + r >> 1) + 1, r);
+}
+void clac(int p, int x) {
+	//cout << "inserting! "<< '[' << tree[p].l << ',' << tree[p].r << ']' << endl;
+	int mid = tree[p].l + tree[p].r >> 1;
+	int& y = tree[p].ans;
+	if (l[x](mid) < l[y](mid)) swap(x, y);
+	if (l[x](tree[p].l) < l[y](tree[p].l)) clac(lc(p), x);
+	if (l[x](tree[p].r) < l[y](tree[p].r)) clac(rc(p), x);
+	//cout << '[' << tree[p].l << ',' << tree[p].r << "]'s final ans is " << l[tree[p].ans] << endl;
+}
+int query(int p, int k) {
+	if (k <= tree[p].l && tree[p].r <= k) return l[tree[p].ans](k);
+	if (tree[p].r < k || k < tree[p].l) return LLONG_MAX;
+	return min({ query(lc(p), k), query(rc(p), k),(int)l[tree[p].ans](k) });
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	build(1, 0, 1e6);
+	for (int i = 1; i <= n; ++i) cin >> h[i];
+	for (int i = 1; i <= n; ++i) cin >> w[i], w[i] += w[i - 1];
+	l[1].k = -2 * h[1];
+	l[1].b = h[1] * h[1] - w[1];
+	clac(1, 1);
+	//cout << "insert: " << l[1] << endl;
+	for (int i = 2; i <= n; ++i) {
+		//cout << "query: " << h[i] << " is " << query(1, h[i]) << endl;
+		f[i] = h[i] * h[i] + w[i - 1] + query(1, h[i]);
+		l[i].k = -2 * h[i];
+		l[i].b = f[i] + h[i] * h[i] - w[i];
+		//cout << "insert: " << l[i] << endl;
+		clac(1, i);
+	}
+	cout << f[n] << endl;
+	return 0;
+}
+/*
+f_i = min{ f_j + h_i^2 - 2h_ih_j + h_j^2 + s_{i - 1} - s_j }
+f_i = h_i^2 + s_{i - 1} + min{ a_jh_i + b_j }
+插入直线 y_i = a_ix + b_i ，求 x = h_i 时 y_i 的最小值
+*/

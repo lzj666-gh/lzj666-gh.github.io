@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 166588730
+//  题目ID: T336256
+#include<bits/stdc++.h>
+using namespace std;
+struct Vill{
+	int x,y,h;
+	friend double operator^(const Vill&a,const Vill&b){
+		return sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
+	}
+}a[1000+10];
+int n;
+double d[1000+10];
+bool vis[1000+10];
+bool chk(double mid){
+	memset(d,127,sizeof d);
+	memset(vis,0,sizeof vis);
+	d[1]=0;
+	double res=0;
+	for(int i=0;i<n;++i){
+		int t=-1;
+        for(int j=1;j<=n;j++)
+            if(!vis[j]&&(t==-1||d[j]<d[t]))
+                t=j;
+        vis[t]=true;
+        res+=d[t];
+        for(int j=1;j<=n;j++)
+            if(!vis[j]&&d[j]>abs(a[t].h-a[j].h)-mid*(a[t]^a[j])+(1e-6))
+                d[j]=abs(a[t].h-a[j].h)-mid*(a[t]^a[j]);
+	}
+	return res>=0;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	while(cin>>n){
+		if(!n) return 0;
+		for(int i=1;i<=n;++i) cin>>a[i].x>>a[i].y>>a[i].h;
+		double l=1e-6,r=1e7+1,mid;
+		while(r-l>1e-6){
+			mid=(l+r)/2;
+			if(chk(mid)) l=mid;
+			else r=mid;
+		}
+		cout<<fixed<<setprecision(3)<<r<<endl;
+	}
+	return 0;
+}

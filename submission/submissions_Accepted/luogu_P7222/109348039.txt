@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 109348039
+//  题目ID: P7222
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	long long a;
+	cin>>a;
+	cout<<90-a<<endl;
+}

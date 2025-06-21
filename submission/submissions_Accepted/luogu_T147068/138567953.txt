@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 138567953
+//  题目ID: T147068
+#include<bits/stdc++.h>
+#define pii pair<int,int>
+using namespace std;
+set<pii> s;
+int n, a;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> a;
+	s.insert(make_pair(a, 1));
+	for (int i = 2; i <= n; ++i) {
+		cin >> a;
+		s.insert(make_pair(a, i));
+		set<pii>::iterator t = s.find(make_pair(a, i));
+		pii ans;
+		ans.first = 1e9;
+		if (++t != s.end()) {
+			ans = make_pair(t->first - a, t->second);
+		}
+		--t;
+		if (t-- != s.begin() && ans.first >= a - t->first) {
+			ans = make_pair(a - t->first, t->second);
+		}
+		cout << ans.first << ' ' << ans.second << endl;
+	}
+	return 0;
+}

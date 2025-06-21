@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 213160441
+//  题目ID: T596587
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+long long f, m, n;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> f >> m >> n;
+	cout << (f * 2 + m) * (n / 7) << endl;
+	return 0;
+}

@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 161168055
+//  题目ID: P10567
+#include<bits/stdc++.h>
+using namespace std;
+long long n;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	cout<<(n&1?"No":"Yes")<<endl;
+	return 0;
+}

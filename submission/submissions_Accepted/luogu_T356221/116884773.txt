@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 116884773
+//  题目ID: T356221
+//T4 A 
+#include<bits/stdc++.h>
+using namespace std;
+int dp[2000+20][2000+20],n,m,a[2000+20][2000+20],ans=0x3f3f3f3f;
+//dp[i][j]在第j个工作阶段用第i个小组的最少天数 
+//a[i][j]第i个小组完成第j阶段天数 
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	//n为阶段数，m为小组数 
+	for(register int i=1;i<=m;i++)for(int j=1;j<=n;j++)cin>>a[i][j];
+	for(register int i=1;i<=m;i++) dp[i][1]=a[i][1];
+	//第i个小组完成第1个阶段 
+	for(int j=2;j<=n;j++){
+		//枚举每个阶段 
+		for(register int i=2;i<=m;i++){
+			//每个小组（m组除外 
+			dp[i][j]=min(dp[i][j-1],dp[i-1][j-1])+a[i][j];
+		}
+		dp[1][j]=min(dp[1][j-1],dp[m][j-1])+a[1][j];
+	}
+//	for(register int i=1;i<=m;i++){for(int j=1;j<=n;j++)cout<<dp[j][i]<<' ';cout<<endl;}
+	for(register int i=1;i<=m;i++){
+		ans=min(ans,dp[i][n]);
+	}
+	cout<<ans<<endl;
+	return 0;
+}

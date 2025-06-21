@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 159231270
+//  题目ID: P10452
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[100000+10];
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i) cin>>a[i];
+	sort(&a[1],&a[n+1]);
+	int idx=0;
+	idx=a[n>>1];
+	long long ans=0;
+	for(int i=1;i<=n;++i) ans+=abs(a[i]-idx);
+	cout<<ans<<endl;
+	return 0;
+}

@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 108332008
+//  题目ID: T214853
+#include <iostream>
+#include <deque>
+
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+
+    deque<int> nums, max_values;
+
+    while (n--) {
+        int op;
+        cin >> op;
+
+        if (op == 1) {
+            int x;
+            cin >> x;
+            nums.push_back(x);
+            while (!max_values.empty() && x > max_values.back()) {
+                max_values.pop_back();
+            }
+            max_values.push_back(x);
+        } else if (op == 2 && !nums.empty()) {
+            if (nums.front() == max_values.front()) {
+                max_values.pop_front();
+            }
+            nums.pop_front();
+        } else if (op == 3 && !nums.empty()) {
+            cout << max_values.front() << endl;
+        }
+    }
+
+    return 0;
+}

@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 115001319
+//  题目ID: P2946
+#include<bits/stdc++.h>
+#define mod 100000000 
+using namespace std;
+int n,f,r[2000+10],dp[2000+10][1000+10];
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>f;
+	for(int i=1;i<=n;i++){
+		cin>>r[i];
+		r[i]%=f;
+	}
+	for(int i=1;i<=n;i++) dp[i][r[i]]=1;
+	for(int i=1;i<=n;i++){
+		for(int j=0;j<f;j++){
+			dp[i][j]=((dp[i][j]+dp[i-1][j])%mod+dp[i-1][(j-r[i]+f)%f])%mod;
+		}
+	}
+	cout<<dp[n][0]<<endl;
+	return 0;
+}

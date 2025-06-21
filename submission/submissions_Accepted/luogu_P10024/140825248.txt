@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 140825248
+//  题目ID: P10024
+#include<bits/stdc++.h>
+using namespace std;
+long long l,r;
+map<char,int>mp;
+int val(long long k){
+	int ans=0;
+	while(k){
+		ans+=mp[k%10];
+		k/=10;
+	}
+	return ans;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	char idx=0;
+	for(int a:{6,2,5,5,4,5,6,3,7,6}) mp[idx++]=a;
+	cin>>l>>r;
+	if(l-r>=10) cout<<2;
+	else{
+		for(long long i=l;i<r;++i){
+			if(val(i)==val(i+1)){
+				cout<<2;
+				return 0;
+			}
+		}
+		cout<<1;
+	}
+//	if((l/10!=r/10||l%10<=2&&r%10>=3)&&r>=l) cout<<2;
+//	else cout<<1;
+	return 0;
+}

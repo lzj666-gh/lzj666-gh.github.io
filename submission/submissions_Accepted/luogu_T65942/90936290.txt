@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 90936290
+//  题目ID: T65942
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a,t1,t2;cin>>a;
+	t1=50+a/3.0;
+	t2=a/1.2;
+	if(t1>t2){
+		cout<<"Walk";
+	}
+	else if(t2>t1){
+		cout<<"Bike";
+	}
+	else{
+		cout<<"All";
+	}
+}
+

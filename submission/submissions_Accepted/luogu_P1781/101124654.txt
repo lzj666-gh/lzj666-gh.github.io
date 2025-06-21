@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 101124654
+//  题目ID: P1781
+#include<bits/stdc++.h>
+using namespace std;
+const int N=100+10;
+char a[25][N],b[25][N];
+int main(){
+	int n;cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>a[i];
+		strcpy(b[i],a[i]);
+	}
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n-i-1;j++){
+			if(strlen(a[j])>strlen(a[j+1])) swap(a[j],a[j+1]);
+			else if(strlen(a[j])==strlen(a[j+1])&&strcmp(a[j],a[j+1])>0) swap(a[j],a[j+1]);
+		}
+	}
+	for(int i=0;i<n;i++){
+		if(strcmp(a[n-1],b[i])==0) cout<<i+1<<endl;
+	}
+	cout<<a[n-1];
+}

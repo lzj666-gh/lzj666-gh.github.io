@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 105960162
+//  题目ID: P1219
+#include<bits/stdc++.h>
+using namespace std;
+int n,cnt,d[15];
+//b表示第i行第b[i]列放了皇后 
+bool a[30],b[30],c[30];
+//在a[i][j]的位置是否能放
+void dfs(int x) { 
+	//x行放皇后 
+//	cout<<x<<" ";
+	if(x==n+1){
+		cnt++;
+		if(cnt<=3){
+			for(int i=1;i<=n;i++){
+				printf("%d ",d[i]);
+			}
+			printf("\n");
+		}
+		return;
+	}
+	for(int i=1;i<=n;i++){//枚举第x个皇后放的所在列 
+//		cout<<i<<" ";
+		if(!a[i]&&!b[i+x]&&!c[i-x+n]){
+			d[x]=i;
+			c[i-x+n]=b[i+x]=a[i]=true;
+			dfs(x+1);
+			c[i-x+n]=b[i+x]=a[i]=false;
+		}
+	}
+}
+int main(){
+	scanf("%d",&n);
+	dfs(1);
+	printf("%d",cnt);
+	return 0;
+}

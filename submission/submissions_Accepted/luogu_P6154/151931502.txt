@@ -1,0 +1,51 @@
+//  OJ: 洛谷
+//  提交ID: 151931502
+//  题目ID: P6154
+#include<bits/stdc++.h>
+#define mod 998244353
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[700000 + 10];
+int head[100000 + 10], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+long long sum[100000 + 10], cnt[100000 + 10];
+void dfs(int k) {
+	if (cnt[k]) return;
+	cnt[k] = 1;
+	for (int i = head[k]; i; i = edge[i].nxt) {
+		dfs(edge[i].v);
+		cnt[k] += cnt[edge[i].v];
+		cnt[k] %= mod;
+		sum[k] += sum[edge[i].v] + cnt[edge[i].v];
+		sum[k] %= mod;
+	}
+
+}
+void exgcd(long long a, long long b, long long& x, long long& y) {
+	if (b == 0) { x = 1; y = 0; return; }
+	exgcd(b, a % b, x, y);
+	int z = x; x = y, y = z - y * (a / b);
+}
+inline long long inv(long long a, long long p) {
+	long long x, y;
+	exgcd(a, p, x, y);
+	return (x % p + p) % p;
+}
+int n, m;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v; i <= m; ++i) {
+		cin >> u >> v;
+		add(u, v);
+	}
+	for (int i = 1; i <= n; ++i) if (!cnt[i]) dfs(i);
+	long long ans1 = 0, ans2 = 0;
+	for (int i = 1; i <= n; i++)(ans1 += sum[i]) %= mod, (ans2 += cnt[i]) %= mod;
+	cout << ans1 * inv(ans2, mod) % mod << endl;
+	return 0;
+}

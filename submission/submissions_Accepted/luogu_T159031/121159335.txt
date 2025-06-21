@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 121159335
+//  题目ID: T159031
+#include<bits/stdc++.h>
+#define maxn 100000+10
+using namespace std;
+long long b[maxn],n,ans=0;
+void merge_sort(int l,int r){
+	if(l>=r) return;
+	int mid=(l+r)>>1;
+	merge_sort(l,mid);
+	merge_sort(mid+1,r);
+	int i=l,j=mid+1,k=l,tmp[maxn];
+	while(i<=mid&&j<=r)
+		if(b[i]<=b[j])tmp[k++]=b[i++];
+		else tmp[k++]=b[j++],ans+=mid-i+1;
+	while(i<=mid)tmp[k++]=b[i++];
+	while(j<=r)tmp[k++]=b[j++];
+	for(i=l;i<=r;i++)b[i]=tmp[i];
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;i++) cin>>b[i];
+	merge_sort(1,n);
+	cout<<ans<<endl;
+	return 0;
+} 

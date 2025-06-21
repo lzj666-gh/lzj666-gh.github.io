@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 199050835
+//  题目ID: B3696
+#include<bits/stdc++.h>
+using namespace std;
+int x;
+int main(){
+	cin.tie(0)->sync_with_stdio(false);
+	cin>>x;
+	cout<<(x%2023+2023)%2023<<endl;
+	return 0;
+}

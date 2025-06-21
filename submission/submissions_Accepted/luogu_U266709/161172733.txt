@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 161172733
+//  题目ID: U266709
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int a,b,s,l=100;
+	cin>>a>>b>>s;
+	cout<<l+(-a+b)*s;
+
+	return 0;
+}

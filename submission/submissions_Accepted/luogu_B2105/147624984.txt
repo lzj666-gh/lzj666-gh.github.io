@@ -1,0 +1,57 @@
+//  OJ: 洛谷
+//  提交ID: 147624984
+//  题目ID: B2105
+#include<bits/stdc++.h>
+using namespace std;
+struct LZJ {
+	int n, m;
+	int num[1000 + 10][1000 + 10];
+	LZJ() {
+		n = m = 2;
+		for (int i = 1; i <= n; ++i)
+			num[i][i] = 1;
+	}
+	LZJ(int nn) {
+		n = m = nn;
+		for (int i = 1; i <= n; ++i)
+			num[i][i] = 1;
+	}
+	LZJ(int nn, int mm) {
+		n = nn, m = mm;
+		memset(num, 0, sizeof num);
+	}
+	friend LZJ operator * (const LZJ& a, const LZJ& b) {
+		LZJ c = LZJ(a.n, b.m);
+		if (a.m != b.n) return LZJ(2);
+		for (int i = 1; i <= a.n; ++i)
+			for (int j = 1; j <= b.m; ++j)
+				for (int k = 1; k <= a.m; ++k)
+					c.num[i][j] += a.num[i][k] * b.num[k][j];
+		return c;
+	}
+	friend LZJ operator %(const LZJ& a, const int& m) {
+		LZJ c = a;
+		for (int i = 1; i <= a.n; ++i)
+			for (int j = 1; j <= a.m; ++j)
+				c.num[i][j] %= m;
+		return c;
+	}
+}a, b, c;
+int n, m, k;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> k;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j)
+			cin >> a.num[i][j];
+	a.n = n, a.m = m;
+	b.n = m, b.m = k;
+	for (int i = 1; i <= m; ++i)
+		for (int j = 1; j <= k; ++j)
+			cin >> b.num[i][j];
+	c = a * b;
+	for (int i = 1; i <= n; ++i, cout << endl)
+		for (int j = 1; j <= k; ++j)
+			cout << c.num[i][j] << ' ';
+	return 0;
+}

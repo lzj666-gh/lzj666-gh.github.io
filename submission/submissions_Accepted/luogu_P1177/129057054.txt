@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 129057054
+//  题目ID: P1177
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[100000+10];
+int rannd(int l,int r){
+	srand(rand());
+	return rand()%(r-l+1)+l;
+}
+void print(){
+	for_each(&a[1],&a[n+1],[&](int &k){cout<<k<<' ';});
+	cout<<endl;
+}
+void qsort(int l,int r){
+	int x=l,y=r,num=a[rannd(l,r)];
+	while(x<=y){
+		while(a[x]<num) ++x;
+		while(a[y]>num) --y;
+		if(x<=y) swap(a[x],a[y]),++x,--y;
+	}
+	if(x<r) qsort(x,r);
+	if(y>l) qsort(l,y);
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	srand(time(0));
+	cin>>n;
+	for_each(&a[1],&a[n+1],[&](int &k){cin>>k;});
+	qsort(1,n);
+	for_each(&a[1],&a[n+1],[&](int &k){cout<<k<<' ';});
+}

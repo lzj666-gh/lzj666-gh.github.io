@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 120721067
+//  题目ID: U263229
+#include<bits/stdc++.h>
+using namespace std;
+int n,m; string ss;
+map<long long,string> s;
+int main(){
+	ios::sync_with_stdio(false);
+    cin>>n>>m;
+    register long long tmp; register int l;
+    for(register int i=1;i<=n;++i){
+    	cin>>tmp;
+    	cin>>s[tmp];
+	}
+	for(register int i=1;i<=m;++i){
+		cin>>tmp; l=s[tmp].size(); ss=s[tmp];
+		for(register int j=0;j<l;++j) putchar(ss[j]=='1'?'#':' ');
+		putchar('\n');
+	}
+    return 0;
+}

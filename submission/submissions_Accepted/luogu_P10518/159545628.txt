@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 159545628
+//  题目ID: P10518
+#include<bits/stdc++.h>
+using namespace std;
+long long a,b,c,d; 
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>a>>b>>c>>d;
+	cout<<a+b+c+c+d+d+d<<endl;
+	return 0;
+}

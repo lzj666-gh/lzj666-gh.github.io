@@ -1,0 +1,64 @@
+//  OJ: 洛谷
+//  提交ID: 174729461
+//  题目ID: P10978
+#include<bits/stdc++.h>
+using namespace std;
+int dp[16000 + 10][16000 + 10];
+struct Worker {
+	int l, p, s;
+	friend bool operator<(const Worker& a, const Worker& b) {
+		return a.s < b.s;
+	}
+	friend istream& operator>>(istream& in, Worker& a) {
+		return in >> a.l >> a.p >> a.s;
+	}
+}a[16000 + 10];
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) ((p << 1) + 1)
+	struct point {
+		int l, r, ans;
+		point() :l(0), r(0), ans(-0x3f3f3f3f) {}
+		point(int ll, int rr, int sans) :l(ll), r(rr), ans(sans) {}
+	}tree[4 * 100000 + 10];
+	void pushup(int p) {
+		tree[p].ans = max(tree[lc(p)].ans, tree[rc(p)].ans);
+	}
+	int query(int p, int l, int r) {
+		if (tree[p].l > r || tree[p].r < l) {
+			return -0x3f3f3f3f;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) {
+			return tree[p].ans;
+		}
+		return max(query(lc(p), l, r), query(rc(p), l, r));
+	}
+	void build(int p, int l, int r, int i) {
+		tree[p].l = l, tree[p].r = r;
+		if (l == r) {
+			tree[p] = { l,r,dp[i - 1][l] - a[i].p * l };
+			return;
+		}
+		build(lc(p), l, l + r >> 1, i);
+		build(rc(p), (l + r >> 1) + 1, r, i);
+		pushup(p);
+	}
+}t;
+int n, m;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= m; ++i) cin >> a[i];
+	sort(a + 1, a + m + 1);
+	for (int i = 1; i <= m; ++i) {
+		t.build(1, max(0, a[i].s - a[i].l), a[i].s - 1, i);
+		for (int j = 1; j <= n; ++j) {
+			dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+			if (j >= a[i].s) {
+				dp[i][j] = max(t.query(1, j - a[i].l, a[i].s - 1) + j * a[i].p, dp[i][j]);
+			}
+		}
+	}
+	cout << dp[m][n] << endl;
+	return 0;
+}

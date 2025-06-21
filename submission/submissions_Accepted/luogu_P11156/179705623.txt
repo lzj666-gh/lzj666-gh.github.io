@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 179705623
+//  题目ID: P11156
+#include<bits/stdc++.h>
+using namespace std;
+int T, n, an;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> T;
+	while (T--) {
+		cin >> n >> an;
+		if (n % 2 == 1) cout << an << ' ' << 1 << endl;
+		else cout << 1 << ' ' << an << endl;
+	}
+	return 0;
+}

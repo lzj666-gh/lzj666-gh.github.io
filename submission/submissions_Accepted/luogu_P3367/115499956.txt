@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 115499956
+//  题目ID: P3367
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,pr[20000+10],q;
+int find(int x){
+	if(x==pr[x]) return x;
+	return pr[x]=find(pr[x]);
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;i++) pr[i]=i;
+	for(int i=1;i<=m;i++){
+	    int z;
+	    cin>>z;
+	    if(z==1){
+	    	int a,b;
+	    	cin>>a>>b;
+	    	if(a==b) continue;
+	    	pr[find(a)]=find(b);
+	    }
+	    else if(z==2){
+	        int c,d;
+	    	cin>>c>>d;
+	    	if(find(c)==find(d)) cout<<"Y"<<endl;
+	    	else cout<<"N"<<endl;
+	    }
+	}
+	return 0;
+}

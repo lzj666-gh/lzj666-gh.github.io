@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 101394792
+//  题目ID: P1149
+#include<bits/stdc++.h>
+using namespace std;
+int a[10]={6,2,5,5,4,5,6,3,7,6},cnt=0;
+int huo(int i){
+	int ret=0;
+	if(i==0) return a[i];
+	while(i){
+		ret+=a[i%10];
+		i/=10;
+	}
+	return ret;
+}
+int main(){
+	int n;cin>>n;
+	for(int i=0;i<1111;i++){
+		for(int j=0;j<1111;j++){
+			if(huo(i)+huo(j)+huo(i+j)+4==n){
+				cnt++;
+			}
+		}
+	}
+	cout<<cnt<<endl;
+	return 0;
+}

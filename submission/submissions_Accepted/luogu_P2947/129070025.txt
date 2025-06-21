@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 129070025
+//  题目ID: P2947
+#include<bits/stdc++.h>
+#define N 114514
+using namespace std;
+struct node{
+	int id,val;
+}s[114514];
+int n,a[114514],b[114514],top;
+signed main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i){
+		cin>>a[i];
+		while(top>0&&s[top].val<a[i]){
+			b[s[top].id]=i;
+			top--;
+		}
+		s[++top].id=i;
+		s[top].val=a[i];
+	}
+	while(top>0) b[s[top--].id]=0;
+	for(int i=1;i<=n;++i) cout<<b[i]<<endl;
+//	cout<<endl;
+	return 0;
+} 

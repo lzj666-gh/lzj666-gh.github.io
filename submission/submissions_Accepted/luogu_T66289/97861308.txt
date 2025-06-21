@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 97861308
+//  题目ID: T66289
+#include<iostream>
+using namespace std;
+int main()
+{
+	int n;cin>>n;
+    int m[25]={0};
+    for(int i=0;i<n;i++){
+    	cin>>m[i];
+	}
+	for(int i=0;i<n;i++){
+		cout<<m[i]<<" ";
+	}
+	cout<<endl;
+	int max=-1;
+	for(int i=0;i<n;i++){
+		if(max<m[i]) max=m[i];
+	}
+	for(int i=1;i<=max;i++){
+		for(int j=0;j<n;j++){
+			if(m[j]>=i) cout<<"*";
+			else cout<<" ";
+			cout<<" ";
+		}
+		cout<<endl;
+	}
+}

@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 101095949
+//  题目ID: P1093
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn=1000+50;
+struct student{
+	int bian,yu,shu,yin,quan;
+};
+student a[maxn];
+int main(){
+    int n;
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i].yu>>a[i].shu>>a[i].yin;
+        a[i].quan=a[i].yu+a[i].shu+a[i].yin;
+        a[i].bian=i;
+    }
+    for(int i=0;i<n-1;i++)
+    {
+        for(int j=0;j<n-i;j++){
+            if(a[j].quan<a[j+1].quan){
+                swap(a[j],a[j+1]);
+            }
+            if(a[j].quan==a[j+1].quan&&a[j].yu<a[j+1].yu){
+                swap(a[j],a[j+1]);
+            }
+            if(a[j].quan==a[j+1].quan&&a[j].yu<a[j+1].yu&&a[j].bian>a[j+1].bian){
+                swap(a[j],a[j+1]);
+            }
+        }
+    }
+    for(int i=0;i<5;i++) 
+        cout<<a[i].bian+1<<" "<<a[i].quan<<endl;
+    return 0;
+}

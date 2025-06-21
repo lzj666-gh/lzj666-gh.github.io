@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 174496019
+//  题目ID: P2118
+#include<bits/stdc++.h>
+using namespace std;
+int a,b,l;
+int main(){
+	//freopen("ratio.in","r",stdin);
+	//freopen("ratio.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	int ansa=-1,ansb=-1;
+	cin>>a>>b>>l;
+	double tmp=1.0*a/b;
+	for(int aa=1;aa<=l;++aa){
+		for(int bb=1;bb<=l;++bb){
+			if(__gcd(aa,bb)^1) continue;
+			if((1.0*aa/bb)>=tmp&&(((1.0*aa/bb)-tmp)<((1.0*ansa/ansb)-tmp)||(ansa==-1))){
+				ansa=aa;
+				ansb=bb;
+			}
+		}
+	}
+	cout<<ansa<<' '<<ansb<<endl;
+	return 0;
+}
+// OK. 100pts

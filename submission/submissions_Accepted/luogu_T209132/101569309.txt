@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 101569309
+//  题目ID: T209132
+#include<bits/stdc++.h>
+using namespace std;
+struct huo{
+	int s,f;
+}a[100000+10];
+int n;int b[100000+10],cnt=0;
+bool ikun(huo a1,huo a2){
+	return a1.s<a2.s;
+}
+int zhiyin(int kun){
+	int amin=1;
+	for(int i=1;i<cnt;i++){
+		if(b[amin]>b[i]){
+			amin=i;
+		}
+	}
+	if(b[amin]>kun) return 0;
+	else return amin;
+}
+int main(){
+	cin>>n;
+	for(int i=0;i<n;i++){
+		scanf("%d%d",&a[i].s,&a[i].f);
+	}
+	sort(&a[0],&a[n],ikun);
+	b[0]=a[0].f;cnt++;
+	for(int i=1;i<n;i++){
+		int k=zhiyin(a[i].s);
+		if(k==0){
+			cnt++;
+			b[cnt]=a[i].f;
+		}
+		else{
+			b[k]=a[i].f;
+		}
+	}
+/*	for(int i=0;i<=cnt;i++){
+		cout<<i<<" "<<b[i]<<endl;
+	}
+*/	cout<<cnt<<endl;
+}

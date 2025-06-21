@@ -1,0 +1,130 @@
+//  OJ: 洛谷
+//  提交ID: 220229216
+//  题目ID: P2572
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e5 + 5;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Point {
+		int sum, ansl, ansr, ans, len;
+		Point() :sum(0), ansl(0), ansr(0), ans(0), len(0) {}
+		Point(int all, int l) :sum(all), ansl(all), ansr(all), ans(all), len(l) {}
+		Point(int s, int al, int ar, int a, int l) :sum(s), ansl(al), ansr(ar), ans(a), len(l) {}
+		friend Point operator+(const Point& l, const Point& r) {
+			Point ret;
+			ret.len = l.len + r.len; ret.sum = l.sum + r.sum;
+			ret.ans = max({ l.ans, r.ans, l.ansr + r.ansl });
+			ret.ansl = l.ansl;
+			if (l.ansl == l.len) ret.ansl += r.ansl;
+			ret.ansr = r.ansr;
+			if (r.ansr == r.len) ret.ansr += l.ansr;
+			return ret;
+		}
+		friend ostream& operator<<(ostream& out, const Point& a) { return out << a.ans; }
+	};
+	struct Node {
+		Point ans[2];
+		bool rev, full, empty;
+		Node() : ans(), rev(), full(), empty() {}
+	}tree[N << 2];
+	void pushup(int p) {
+		tree[p].ans[0] = tree[lc(p)].ans[0] + tree[rc(p)].ans[0];
+		tree[p].ans[1] = tree[lc(p)].ans[1] + tree[rc(p)].ans[1];
+	}
+	void swap(Point& a, Point& b) { std::swap(a, b); }
+	void full(int p, int len) {
+		tree[p].full = 1; tree[p].empty = 0; tree[p].rev = 0;
+		tree[p].ans[0] = Point(0, len); tree[p].ans[1] = Point(len, len);
+	}
+	void empty(int p, int len) {
+		tree[p].empty = 1; tree[p].full = 0; tree[p].rev = 0;
+		tree[p].ans[0] = Point(len, len); tree[p].ans[1] = Point(0, len);
+	}
+	void reverse(int p) {
+		tree[p].rev ^= 1;
+		swap(tree[p].ans[0], tree[p].ans[1]);
+	}
+	void pushdown(int p, int l, int r) {
+		if (tree[p].full) {
+			full(lc(p), mid - l + 1); full(rc(p), r - mid);
+			tree[p].full = 0;
+		}
+		if (tree[p].empty) {
+			empty(lc(p), mid - l + 1); empty(rc(p), r - mid);
+			tree[p].empty = 0;
+		}
+		if (tree[p].rev) {
+			reverse(lc(p)); reverse(rc(p));
+			tree[p].rev = 0;
+		}
+	}
+	void set0(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return empty(p, r - l + 1);
+		pushdown(p, l, r);
+		if (L <= mid) set0(lson, L, R);
+		if (R > mid) set0(rson, L, R);
+		pushup(p);
+	}
+	void set1(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R)  return full(p, r - l + 1);
+		pushdown(p, l, r);
+		if (L <= mid) set1(lson, L, R);
+		if (R > mid) set1(rson, L, R);
+		pushup(p);
+	}
+	void rev(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return reverse(p);
+		pushdown(p, l, r);
+		if (L <= mid) rev(lson, L, R);
+		if (R > mid) rev(rson, L, R);
+		pushup(p);
+	}
+	int sum(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].ans[1].sum;
+		pushdown(p, l, r);
+		int res = 0;
+		if (L <= mid) res += sum(lson, L, R);
+		if (R > mid) res += sum(rson, L, R);
+		return res;
+	}
+	Point query(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].ans[1];
+		pushdown(p, l, r);
+		if (R <= mid) return query(lson, L, R);
+		if (L > mid) return query(rson, L, R);
+		return query(lson, L, R) + query(rson, L, R);
+	}
+	void build(int p, int l, int r, bool* a) {
+		if (l == r) {
+			tree[p].ans[a[l]] = Point(1, 1);
+			tree[p].ans[!a[l]] = Point(0, 1);
+			return;
+		}
+		build(lson, a); build(rson, a);
+		pushup(p);
+	}
+}t;
+int n, m;
+bool a[N];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	t.build(1, 1, n, a);
+	while (m--) {
+		int opt, l, r;
+		cin >> opt >> l >> r; l++; r++;
+		if (opt == 0) t.set0(1, 1, n, l, r);
+		else if (opt == 1) t.set1(1, 1, n, l, r);
+		else if (opt == 2) t.rev(1, 1, n, l, r);
+		else if (opt == 3) cout << t.sum(1, 1, n, l, r) << endl;
+		else if (opt == 4) cout << t.query(1, 1, n, l, r) << endl;
+	}
+	return 0;
+}

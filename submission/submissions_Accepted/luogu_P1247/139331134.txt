@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 139331134
+//  题目ID: P1247
+#include<bits/stdc++.h>
+using namespace std;
+int n, s, a[500000 + 10];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i], s ^= a[i];
+	if (!s) {
+		cout << "lose" << endl;
+		return 0;
+	}
+	int x = 0, y = 0;
+	for (int i = 1; i <= n; ++i) 
+		if ((a[i] ^ s) < a[i]) {
+			cout << a[i] - (s ^ a[i]) << ' ' << i << endl;
+			for (int j = 1; j <= n; ++j) 
+				if (j == i) 
+					cout << (s ^ a[j]) << ' ';
+				else 
+					cout << a[j] << ' ';
+			return 0;
+		}
+	return 0;
+}

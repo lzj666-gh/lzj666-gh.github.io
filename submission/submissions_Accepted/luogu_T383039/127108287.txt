@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 127108287
+//  题目ID: T383039
+#include<bits/stdc++.h>
+#define maxn 500000+10
+using namespace std;
+struct node{
+	int x,y,z;
+	friend bool operator <(const node &a,const node &b){
+		return a.z<b.z;
+	}
+}a[5000000];
+int n,idx;
+int fa[maxn];
+int find(int x){
+	return fa[x]==x?x:fa[x]=find(fa[x]);
+}
+void uni(int x,int y){
+	fa[find(x)]=fa[find(y)];
+	return;
+}
+int main(){
+    int time1=clock();
+	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i){
+		int tmp;
+		cin>>tmp;
+		a[++idx]={i,n+1,tmp};
+	}
+	for(int i=1;i<=n;++i){
+		for(int j=1;j<=n;++j){
+			int tmp;
+			cin>>tmp;
+			a[++idx]={i,j,tmp};
+		}
+	}
+	sort(&a[1],&a[n*n+n+1]);
+	for(int i=1;i<=n+1;i++) fa[i]=i;
+	int tot=0,cnt=0;
+	for(int i=1;i<=n*(n+1);i++){
+		int v1=a[i].x,v2=a[i].y;
+		if(find(v1)==find(v2)) continue;
+		tot+=a[i].z;
+		cnt++;
+		uni(v1,v2);
+		if(cnt==n) break;
+	}
+	while(clock()-time1<=990000) cerr<<"SB\n";
+	cout<<tot<<endl;
+	return 0;
+}

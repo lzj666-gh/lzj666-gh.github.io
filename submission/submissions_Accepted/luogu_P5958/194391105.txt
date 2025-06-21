@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 194391105
+//  题目ID: P5958
+#include<bits/stdc++.h>
+#define eps 1e-7
+using namespace std;
+int n, k, fa[500000 + 10], siz[500000 + 10];
+vector<int>son[500000 + 10];
+// if x > f[i] ,then all i become nag
+double ans, f[500000 + 10];
+void dfs(int now) {
+	for (const int& v : son[now]) {
+		dfs(v);
+		siz[now] += siz[v];
+	}
+	if (son[now].empty()) f[now] = 1;
+	for (const int& v : son[now]) {
+		f[now] = max(min(1.0 * siz[v] / siz[now], f[v]), f[now]);
+	}
+	siz[now]++;
+	if (siz[now] > k) ans = max(ans, f[now]);
+}
+int main() {
+// 	freopen("Sabota.in", "r", stdin);
+// 	freopen("Sabota.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> k;
+	for (int i = 2; i <= n; ++i) cin >> fa[i], son[fa[i]].push_back(i);
+	dfs(1);
+	//for (int i = 1; i <= n; ++i) cout << f[i] << endl; cout << endl;
+	cout << fixed << setprecision(10) << ans + eps << endl;
+	return 0;
+}

@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 109407825
+//  题目ID: P1658
+#include<bits/stdc++.h>
+using namespace std;
+long long n,x,a[2000],ans,sum;
+int main()
+{
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>x>>n;
+	for(int i=1;i<=n;++i)cin>>a[i];
+	sort(&a[1],&a[n+1]);
+	while(sum<x)
+	{
+		int cnt;
+		for(int i=n;i>=1;--i) if(a[i]<=sum+1){
+			cnt=a[i];
+			break;
+		}
+		++ans;
+		sum+=cnt;
+//		cout<<sum<<endl;
+	}
+	cout<<ans<<endl;
+}
+

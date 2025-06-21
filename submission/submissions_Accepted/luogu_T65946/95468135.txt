@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 95468135
+//  题目ID: T65946
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int x,y;cin>>x;
+	if(-10<x&&x<0) y=x+10;
+	else if(0<=x&&x<10) y=2*x;
+	else if(x>=10) y=x*x*x*x*x*x;
+	else{
+		cout<<"Wrong";
+		return 0;
+	}
+	cout<<y;
+	return 0;
+	
+}

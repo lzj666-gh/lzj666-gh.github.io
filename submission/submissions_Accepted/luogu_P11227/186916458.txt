@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 186916458
+//  题目ID: P11227
+#include<bits/stdc++.h>
+using namespace std;
+map<string, int>mp;
+int n;
+string s;
+int main() {
+// 	freopen("poker.in", "r", stdin);
+// 	freopen("poker.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> s, mp[s]++;
+	cout << 52 - mp.size() << endl;
+	return 0;
+}
+//AC

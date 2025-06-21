@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 182084796
+//  题目ID: P9868
+#include<bits/stdc++.h>
+using namespace std;
+string su[3000 + 10], sd[3000 + 10];
+int n, m;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) 
+		cin >> su[i], sd[i] = su[i], 
+		sort(su[i].begin(), su[i].end()), sort(sd[i].rbegin(), sd[i].rend());
+	for (int i = 1; i <= n; ++i) {
+		bool flg = 1;
+		for (int j = 1; j <= n; ++j) if ((i ^ j) && su[i] >= sd[j]) flg = 0;
+		cout << flg;
+	}
+	cout << endl;
+	return 0;
+}

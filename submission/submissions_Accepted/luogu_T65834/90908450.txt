@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 90908450
+//  题目ID: T65834
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    double a;int d,b;
+    cin>>a;
+    d=a;
+    cout<<"Integral Part: "<<d<<endl;
+    a=a*10000;
+    b=a;
+    b=b/10%1000;
+    cout<<"Fractional Part: "<<b;
+     
+ 
+    return 0;
+}

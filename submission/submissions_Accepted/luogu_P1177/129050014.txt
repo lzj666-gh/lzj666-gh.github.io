@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 129050014
+//  题目ID: P1177
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[100000+10];
+void msort(int l,int r){
+	if(l>=r) return;
+	msort(l,l+r>>1);
+	msort((l+r>>1)+1,r);
+	vector<int>v1,v2;
+	for(int i=l;i<=l+r>>1;++i) v1.emplace_back(a[i]);
+	for(int i=(l+r>>1)+1;i<=r;++i) v2.emplace_back(a[i]);
+	vector<int> v3;
+	int i,j;
+	for(i=0,j=0;i<v1.size()&&j<v2.size();){
+		if(v1[i]<v2[j]) v3.push_back(v1[i++]);
+		else v3.push_back(v2[j++]);
+	}
+	while(i<v1.size()) v3.push_back(v1[i++]);
+	while(j<v2.size()) v3.push_back(v2[j++]);
+	for(int i=l,k=0;i<=r;++i,++k) a[i]=v3[k];
+//	cout<<"merge{"<<l<<","<<r<<"}: ";
+//	for_each(&a[1],&a[n+1],[&](int &k){cout<<k<<' ';});
+//	cout<<endl;
+	return;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i) cin>>a[i];
+	msort(1,n);
+	for(int i=1;i<=n;++i) cout<<a[i]<<' ';
+}

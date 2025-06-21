@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 153990536
+//  题目ID: CF453A
+#include<bits/stdc++.h>
+using namespace std;
+long double m,n,ans;
+long double poww(long double a,int x){ 
+	if(x==0) return 1;
+	long double t=poww(a,x/2);
+	t=(t*t);
+	if(x%2==1) t=(t*a);
+	return t;
+}
+signed main(){
+	ios_base::sync_with_stdio(false);
+	cin>>m>>n;
+	for(int i=1;i<=m;++i) ans+=i*(poww(i/m,n)-poww((i-1)/m,n));
+	cout<<fixed<<setprecision(12)<<ans<<endl;
+}

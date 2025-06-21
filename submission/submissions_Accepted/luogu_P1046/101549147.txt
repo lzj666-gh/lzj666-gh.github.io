@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 101549147
+//  题目ID: P1046
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a[10],b,s=0;
+	for(int i=0;i<10;i++){
+		cin>>a[i];
+	}
+	cin>>b;b+=30;
+	for(int i=0;i<10;i++){
+		if(a[i]<=b) s++;
+	}
+	cout<<s;
+	return 0;
+}

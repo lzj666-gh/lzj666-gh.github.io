@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 204979116
+//  题目ID: P9978
+#include<bits/stdc++.h>
+using namespace std;
+int n, k, a[500000 + 10], b[500000 + 10];
+bool vis[500000 + 10];
+int ans, aans;
+int ok[500000 + 10];
+void solve() {
+	for (int i = 1; i <= k; ++i) ok[b[i]] = i;
+	int tmp = ans;
+	map<int, int>l;
+	for (int i = 1; i <= k; ++i) {
+		if (ok[a[i]])
+			l[(ok[a[i]] - i + k) % k]++;
+	}
+	for (auto& p : l) tmp = max(tmp, ans + p.second);
+	aans = max(aans, tmp);
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> k;
+	for (int i = 1; i <= k; ++i) cin >> a[i], vis[a[i]] = 1;
+	for (int i = 1; i <= k; ++i) cin >> b[i], vis[b[i]] = 1;
+	for (int i = 1; i <= n; ++i) ans += !vis[i];
+	solve();
+	reverse(b + 1, b + k + 1);
+	solve();
+	cout << aans << endl;
+	return 0;
+}
+/*
+11 8
+1 2 3 4 5 8 9 11
+1 2 6 7 5 8 10 11
+*/

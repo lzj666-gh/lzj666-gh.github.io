@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 108532775
+//  题目ID: B2001
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    long long a,b;
+    cin>>a>>b;
+    cout<<a+b;
+    return 0;
+}

@@ -1,0 +1,134 @@
+//  OJ: 洛谷
+//  提交ID: 218920824
+//  题目ID: T614062
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <tuple>
+#include <climits>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+
+typedef long long ll;
+typedef tuple<ll, int, int, int> State; // (distance, node, mode, state)
+
+const ll INF = 1e18;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m1, m2, t_count, o_count;
+    cin >> n >> m1 >> m2 >> t_count >> o_count;
+
+    vector<bool> is_switch(n+1, false);
+    for (int i = 0; i < t_count; i++) {
+        int u;
+        cin >> u;
+        if (u >= 1 && u <= n) is_switch[u] = true;
+    }
+
+    vector<vector<int>> op_list(n+1); // op_list[u] = list of operation indices at u
+    vector<vector<int>> affect(n+1);  // affect[k] = list of operation indices affecting k
+
+    for (int i = 0; i < o_count; i++) {
+        int u, k;
+        cin >> u >> k;
+        if (u >= 1 && u <= n) op_list[u].push_back(i);
+        if (k >= 1 && k <= n) affect[k].push_back(i);
+    }
+
+    vector<vector<pair<int, ll>>> graph_day(n+1);
+    vector<vector<pair<int, ll>>> graph_night(n+1);
+
+    for (int i = 0; i < m1; i++) {
+        int a, b;
+        ll w;
+        cin >> w >> a >> b;
+        if (a >= 1 && a <= n && b >= 1 && b <= n) {
+            graph_day[a].emplace_back(b, w);
+        }
+    }
+
+    for (int i = 0; i < m2; i++) {
+        int a, b;
+        ll w;
+        cin >> w >> a >> b;
+        if (a >= 1 && a <= n && b >= 1 && b <= n) {
+            graph_night[a].emplace_back(b, w);
+        }
+    }
+
+    vector<vector<pair<int, ll>>> graphs[2] = {graph_day, graph_night};
+    int total_states = 1 << o_count;
+
+    // 3D distance array: dist[node][mode][state]
+    vector<vector<vector<ll>>> dist(n+1, 
+        vector<vector<ll>>(2, 
+        vector<ll>(total_states, INF)));
+
+    // Priority queue for Dijkstra
+    priority_queue<State, vector<State>, greater<State>> pq;
+
+    // Initialize start state: node 1, day mode (0), state 0
+    dist[1][0][0] = 0;
+    pq.push(make_tuple(0, 1, 0, 0));
+
+    ll ans = INF;
+
+    while (!pq.empty()) {
+        auto [d, u, mode, state] = pq.top();
+        pq.pop();
+
+        // If we've found a better way to this state, skip
+        if (d != dist[u][mode][state]) continue;
+
+        // If reached target: node n in night mode
+        if (u == n && mode == 1) {
+            ans = min(ans, d);
+        }
+
+        // Calculate swap state for current node
+        int swap_u = 0;
+        for (int idx : affect[u]) {
+            swap_u ^= (state >> idx) & 1;
+        }
+        int gid = mode ^ swap_u;
+
+        // Move to adjacent nodes
+        for (auto [v, w] : graphs[gid][u]) {
+            ll nd = d + w;
+            if (nd < dist[v][mode][state]) {
+                dist[v][mode][state] = nd;
+                pq.push(make_tuple(nd, v, mode, state));
+            }
+        }
+
+        // Toggle day/night mode (if switch node)
+        if (is_switch[u]) {
+            int new_mode = 1 - mode;
+            if (d < dist[u][new_mode][state]) {
+                dist[u][new_mode][state] = d;
+                pq.push(make_tuple(d, u, new_mode, state));
+            }
+        }
+
+        // Perform swap operations (if operation node)
+        for (int idx : op_list[u]) {
+            int new_state = state ^ (1 << idx);
+            if (d < dist[u][mode][new_state]) {
+                dist[u][mode][new_state] = d;
+                pq.push(make_tuple(d, u, mode, new_state));
+            }
+        }
+    }
+
+    if (ans == INF) {
+        cout << -1 << endl;
+    } else {
+        cout << ans << endl;
+    }
+
+    return 0;
+}

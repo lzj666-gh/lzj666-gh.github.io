@@ -1,0 +1,58 @@
+//  OJ: 洛谷
+//  提交ID: 112776439
+//  题目ID: U305982
+#include<bits/stdc++.h>
+using namespace std;
+stack <int> b[1000+10];
+int n,m,l[100+10],x_0,y_0;
+struct node{
+	int l,st;
+	node(int ll,int stt){
+		l=ll;st=stt;
+	}
+};
+struct node2{
+	int x=0,y=0;
+}k[100+10];
+queue<node> q;
+int bfs(int be,int en){
+	if(be==en) return 0;
+	q.push(node(be,0));
+	l[be]=0;
+	while(!q.empty()){
+		node nn=q.front();q.pop();
+		if(b[nn.l].empty()) continue;
+		if(nn.l==en) return nn.st;
+		while(!b[nn.l].empty()){
+			int bb=b[nn.l].top();
+			b[nn.l].pop();
+			if(l[bb]!=0||bb==be) continue;
+			q.push(node(bb,nn.st+1));
+			l[bb]=nn.st+1;
+		}
+	}
+	return -1;
+}
+int main(){
+	int T;
+	cin>>T;
+	if(T==2){
+		cin>>n>>m>>x_0>>y_0;
+		for(int i=1;i<=n;i++){
+			int kk,x,y;
+			cin>>kk>>x>>y;
+			k[kk].x=x;k[kk].y=y;
+		}
+		for(int i=1;i<=m;i++){
+			int kk;
+			cin>>kk;
+			k[kk].x=0;k[kk].y=0;
+		}
+		for(int i=1;i<=100;i++){
+			b[k[i].x].push(k[i].y);
+			b[k[i].y].push(k[i].x);
+		}
+		cout<<bfs(x_0,y_0)<<endl;
+		return 0;
+	}
+}

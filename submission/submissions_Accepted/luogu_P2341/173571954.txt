@@ -1,0 +1,71 @@
+//  OJ: 洛谷
+//  提交ID: 173571954
+//  题目ID: P2341
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+	int u,v,nxt;
+}edge[50000+10];
+int head[10000+10],idx;
+void add(int u,int v){
+	edge[++idx]={u,v,head[u]};
+	head[u]=idx;
+}
+int n,m,scc[10000+10],dfn[10000+10],low[10000+10],cnt,idk;
+stack<int>stk;
+void tarjan(int x){
+	dfn[x]=low[x]=++idk;
+	stk.push(x);
+	for(int i=head[x];i;i=edge[i].nxt){
+		if(!dfn[edge[i].v])
+			tarjan(edge[i].v),
+			low[x]=min(low[x],low[edge[i].v]);
+		else if(!scc[edge[i].v])
+			low[x]=min(low[x],dfn[edge[i].v]);
+	}
+	if(low[x]==dfn[x]){
+		cnt++;
+		while(stk.size()){
+			int now=stk.top();stk.pop();
+			scc[now]=cnt;
+			if(now==x) break;
+		}
+	}
+}
+namespace SCCed{
+	struct Edge{
+		int v,nxt;
+	}edge[50000+10];
+	int head[10000+10],idx,fa[10000+10];
+	void add(int u,int v){
+		edge[++idx]={v,head[u]};
+		head[u]=idx;
+	}
+	int n;
+	bool vis[10000+10];
+	void main(){
+		n=::cnt;
+		int anss=0,ans=0;
+		for(int i=1;i<=n;++i) if(head[i]==0) anss++;
+		for(int i=1;i<=::n;++i){
+			if(head[::scc[i]]==0)
+				ans++;
+		}
+		if(anss^1) cout<<0<<endl;
+		else cout<<ans<<endl;
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1,u,v;i<=m;++i){
+		cin>>u>>v;
+		add(u,v);
+	}
+	for(int i=1;i<=n;++i) if(!dfn[i]) tarjan(i);
+	for(int i=1;i<=idx;++i)
+		if(scc[edge[i].u]^scc[edge[i].v])
+			SCCed::add(scc[edge[i].u],scc[edge[i].v]),SCCed::fa[scc[edge[i].v]]++;
+	SCCed::main();
+	return 0;
+}

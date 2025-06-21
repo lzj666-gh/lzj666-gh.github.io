@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 128127300
+//  题目ID: T386320
+#include<bits/stdc++.h>
+#define x first
+#define y second
+using namespace std;
+inline int read(){
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c>'9'||c<'0'){
+		if(c=='-') s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0'){
+		x=(x<<1)+(x<<3)+(c^48);
+		c=getchar();
+	}
+	return s*x;
+}
+inline void write(int x){
+	if(x<0){
+		x=~x+1;
+		putchar('-');
+	}
+	else if(!x) return;
+	write(x/10);
+	putchar(x%10+48);
+}
+int n,m,a[100+10],ans;
+int main(){
+	n=read();
+	m=read();
+	for(int i=1;i<=n;++i){
+		a[i]=read();
+	}
+	for(int i=1;i<=n;++i) for(int j=1;j<=n;++j){
+		if(i==j) continue;
+		for(int k=1;k<=n;++k){
+			if(k==i||k==j) continue;
+			if(ans<a[i]+a[j]+a[k]&&a[i]+a[j]+a[k]<=m) ans=a[i]+a[j]+a[k];
+		}
+	}
+	write(ans);
+	return 0;
+}

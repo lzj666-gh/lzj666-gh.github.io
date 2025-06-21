@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 217695694
+//  题目ID: U285704
+#if false
+'''
+#endif
+#include <cstdio>
+int a, b;
+int main()
+{
+    scanf("%d%d", &a, &b);
+    printf("%d\n", a + b);
+    return 0;
+}
+#if false
+'''
+c = input().split(' ')
+print(int(c[0]) + int(c[1]))
+#endif

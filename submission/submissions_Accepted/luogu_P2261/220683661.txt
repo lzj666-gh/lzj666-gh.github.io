@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 220683661
+//  题目ID: P2261
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	ll n, k;
+	cin >> n >> k;
+	ll ans = n * k;
+	for (int l = 1, r; l <= n; l = r + 1) {
+		r = k / l ? min(n, k / (k / l)) : n;
+		ans -= (k / l) * (r - l + 1) * (l + r) / 2;
+	}
+	cout << ans << endl;
+	return 0;
+}

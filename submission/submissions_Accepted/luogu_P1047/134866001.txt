@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 134866001
+//  题目ID: P1047
+#include<bits/stdc++.h>
+using namespace std;
+bool a[10000+10];int l,m,u,v;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>l>>m;
+	while(m--){
+		cin>>u>>v;
+		for(int i=u;i<=v;++i) a[i]=true;
+	}
+	int cnt=0;
+	for(int i=0;i<=l;++i) cnt+=!a[i];
+	cout<<cnt<<endl;
+	return 0;
+}

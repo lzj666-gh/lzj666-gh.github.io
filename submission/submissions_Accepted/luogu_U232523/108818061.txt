@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 108818061
+//  题目ID: U232523
+#include<bits/stdc++.h>
+using namespace std;
+int n,a;
+void zhi(int x){
+	for(int i=2;i<=sqrt(x);++i){
+		if(x%i==0){
+			printf("false\n");
+			return;
+		}
+	}
+	printf("true\n");
+	return;
+}
+int main(){
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++){
+		scanf("%d",&a);
+		zhi(a);
+	}
+}

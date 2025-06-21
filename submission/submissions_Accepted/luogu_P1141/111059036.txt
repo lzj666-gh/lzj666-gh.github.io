@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 111059036
+//  题目ID: P1141
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn=1000+10;
+int n,m,cnt,ans,a[maxn][maxn],b[maxn][maxn],sr[maxn*maxn],sc[maxn*maxn];
+char str[maxn];
+int dx[4]={1,0,0,-1};
+int dy[4]={0,1,-1,0};
+bool vis[maxn][maxn];
+void dfs(int x,int y){
+	cnt++;
+	vis[x][y]=true;
+	sr[cnt]=x;sc[cnt]=y;
+	for(int i=0;i<4;i++){
+		int xx=dx[i]+x;
+		int yy=dy[i]+y;
+		if(!vis[xx][yy]&&a[xx][yy]+a[x][y]==1) dfs(xx,yy);
+	}
+}
+int main(){
+	int sx,sy,L;
+	cin>>n>>m;
+	for(int i=1;i<=n;i++){
+		cin>>str;
+		for(int j=0;j<n;j++) a[i][j+1]=str[j]-'0';
+	}
+	for(int i=0;i<=n+1;i++) vis[i][0]=vis[i][n+1]=vis[0][i]=vis[n+1][i]=true;
+	for(int i=1;i<=m;i++){
+		cin>>sx>>sy;
+		if(b[sx][sy]>0) cout<<b[sx][sy]<<endl;
+		else{
+			cnt=0;
+			dfs(sx,sy);
+			for(int i=1;i<=cnt;i++) b[sr[i]][sc[i]]=cnt;
+			cout<<b[sx][sy]<<endl;
+		}
+	}
+	return 0;
+}

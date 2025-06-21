@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 153061674
+//  题目ID: CF1842B
+#include<bits/stdc++.h>
+using namespace std;
+int stk[3][100000+10],top[3];
+//三个栈，以及它们分别的顶 
+int main(){
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--){
+		int n,x,u=0;
+		cin>>n>>x;
+		for(int j=0;j<3;++j) for(int i=1;i<=n;++i) cin>>stk[j][i];
+		top[0]=top[1]=top[2]=1;
+		//输入以及初始化三个栈
+		for(int i=0;i<3;++i) while(top[i]<=n&&(stk[i][top[i]]|x)==x) u|=stk[i][top[i]++];
+		cout<<(u==x?"YES":"NO")<<endl;
+	}
+} 

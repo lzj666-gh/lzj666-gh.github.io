@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 199055071
+//  题目ID: B3845
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+int main(){
+	cin.tie(0)->sync_with_stdio(false);
+	cin>>n;
+	int ans=0;
+	for(long long a=1;a<=n;++a)
+		for(long long b=a;b<=n;++b){
+			double c=sqrt(a*a+b*b);
+			if(c==int(c)&&c<=n)
+				ans++;
+			
+		}
+	cout<<ans<<endl;
+	return 0;
+}

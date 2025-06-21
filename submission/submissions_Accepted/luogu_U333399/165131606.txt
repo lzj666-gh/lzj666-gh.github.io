@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 165131606
+//  题目ID: U333399
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cout << 52 << endl;
+	return 0;
+}

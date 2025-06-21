@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 174158381
+//  题目ID: T276476
+#include<bits/stdc++.h>
+#define ll long long
+using namespace std;
+int primes[25] = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97 };
+int cnt[25];
+ll dp[1 << 23];
+int main() {
+	ll a, b;
+	cin >> a >> b;
+	dp[0] = 1;
+	vector<int> p;
+	for (ll i = a; i <= b; i++) {
+		for (int j = 0; j < 25; j++)
+			if(i % primes[j] == 0)
+				cnt[j]++;
+	}
+	for (int j = 0; j < 25; j++)
+		if(cnt[j] > 1)
+			p.push_back(primes[j]);
+	for (ll i = a; i <= b; i++) {
+		int s = 0;
+		for (int j = 0; j < p.size(); j++)
+			if (i % p[j] == 0)
+				s |= (1 << j);
+		int S = ((1 << p.size()) - 1) ^ s;
+		for (int j = S; j; j = (j - 1) & S)
+			dp[j | s] += dp[j];
+		dp[s] += dp[0];
+	}
+	ll ans = 0;
+	for (int i = 0; i < (1 << p.size()); i++)
+		ans += dp[i];
+	cout << ans - 1 << endl;
+	return 0;
+}

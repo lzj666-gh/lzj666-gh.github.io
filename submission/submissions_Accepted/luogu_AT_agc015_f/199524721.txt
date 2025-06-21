@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 199524721
+//  题目ID: AT_agc015_f
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int mod = 1e9 + 7;
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+pll ans[1000][1000];
+ll f[1000];
+ll Q, X, Y;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	f[0] = f[1] = 1;
+	for (int i = 2; f[i - 2] <= 1e18; ++i) f[i] = f[i - 1] + f[i - 2];
+	ans[1][1] = { 1,2 };
+	for (int i = 2; f[i] <= 1e18; ++i) {
+		for (int j = 1; j < i; j++) 
+			ans[i][j] = { ans[i - 1][j].second, ans[i - 1][j].first + ans[i - 1][j].second };
+		ans[i][i] = { f[i + 1], f[i + 1] + f[i - 1] };
+	}
+	cin >> Q;
+	while (Q--) {
+		cin >> X >> Y;
+		if (X > Y) swap(X, Y);
+		int anss = 1;
+		while (ans[anss][1].first <= X && ans[anss][1].second <= Y) anss++;
+		anss = max(anss - 1, 1);
+		/*cerr << "ans: "; */cout << anss << ' ';
+		ll sum = (anss == 1) * X;
+		for (int i = 1; i <= anss; ++i) {
+			if (ans[anss][i].first <= X && ans[anss][i].second <= Y) 
+				sum += (Y - ans[anss][i].second) / ans[anss][i].first + 1;
+			if (ans[anss][i].second <= X) 
+				sum += (X - ans[anss][i].second) / ans[anss][i].first + 1;
+			sum %= mod;
+		}
+		cout << sum << endl;
+	}
+	return 0;
+}

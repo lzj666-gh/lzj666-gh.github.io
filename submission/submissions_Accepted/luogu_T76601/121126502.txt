@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 121126502
+//  题目ID: T76601
+#include<bits/stdc++.h>
+using namespace std;
+long long b,p,k;
+int main(){
+	cin>>b>>p>>k;
+	if(b==1){
+		printf("%lld^%lld mod %lld=",b,p,k);
+		cout<<(k==1?0:1)<<endl;
+		return 0;
+	}
+	printf("%lld^%lld mod %lld=",b,p,k);
+	b%=k;
+	long long ans=1;
+	while(p){
+		if(p&1) ans=ans*b%k;
+		b=b*b%k;
+		p=(p>>1);
+	}
+	printf("%lld\n",ans);
+	return 0;
+}

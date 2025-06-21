@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 181488969
+//  题目ID: P2661
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[200000 + 10];
+int head[200000 + 10], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, son[200000 + 10];
+bool vis[200000 + 10];
+int fnd;
+bool founded;
+int dfs(int x) {
+	if (vis[x]) {
+		fnd = x;
+		founded = 0;
+		return 1;
+	}
+	vis[x] = 1;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		int tmp = dfs(edge[i].v);
+		if (tmp) {
+			if (x == fnd) founded = 1;
+			if (!founded) return tmp + 1;
+			else return tmp;
+		}
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> son[i], add(i, son[i]);
+	int ans = INT_MAX;
+	for (int i = 1; i <= n; ++i) if (!vis[i]) {
+		int cur = dfs(i);
+		if (founded) ans = min(ans, cur);
+	}
+	cout << ans << endl;
+	return 0;
+}

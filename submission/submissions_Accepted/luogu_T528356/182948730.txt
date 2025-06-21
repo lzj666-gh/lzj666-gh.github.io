@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 182948730
+//  题目ID: T528356
+#include<bits/stdc++.h>
+using namespace std;
+int a, b;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> a;
+	b = a;
+	b += 5;
+	b *= 3;
+	cout << b << ' ';
+	b = a;
+	b *= 3; 
+		b += 5; 
+		cout << b << endl;
+	return 0;
+}

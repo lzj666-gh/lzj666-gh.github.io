@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 129044173
+//  题目ID: T388269
+#include<bits/stdc++.h>
+using namespace std;
+int t,n,m,a[200005];
+signed main(){
+	ios_base::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
+	cin>>t;
+	while(t--){
+		map<int,bool>mp;
+		cin>>n>>m;
+		string ans="NO\n";
+		for(int i=1;i<=n;++i) cin>>a[i];
+		if(n==1){
+			cout<<(m==a[1]?"YES\n":"NO\n");
+			continue;
+		}
+		for(int i=1;i<=n;++i) mp[a[i]]=true;
+		for(int i=1;i<=n;++i)
+			try{
+				mp.at(a[i]-m);
+				ans="YES\n";
+				break;
+			}
+			catch(...){
+				continue;
+			}
+		cout<<ans;
+	}
+	return 0;
+}

@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 125792942
+//  题目ID: B3898
+#include<bits/stdc++.h>
+#define maxn 1000+10
+using namespace std;
+inline int read(){
+	register int x=0,s=1;
+	register char c=getchar();
+	if(c=='-'){
+		s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0'){
+		x=(x<<3)+(x<<1)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+}
+inline void write(auto x){
+	if(!x) return;
+	if(x<0) putchar('-'),x=~x+1;
+	write(x/10);
+	putchar(x%10+48);
+}
+int main(){
+	int n=read();
+	int**a;
+	a=new int*[n+1];
+	for(int i=1;i<=n;++i){
+		a[i]=new int[i*2];
+	}
+	for(int i=1;i<=n;++i){
+		for(int j=1;j<=n-i;++j) putchar(' ');
+		for(int j=1;j<=i*2-1;++j) a[i][j]='#';
+		for(int j=1;j*j<=i*2-1;++j) a[i][j*j]='!';
+		for(int j=1;j<=i*2-1;++j) putchar(a[i][j]);
+		putchar('\n');
+	}
+	for(int i=1;i<=n;++i){
+		free(a[i]);
+	}
+	free(a);
+	return 0;
+}
+

@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 204103410
+//  题目ID: P11768
+#include <bits/stdc++.h>
+#define int long long
+using namespace std;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		int a, b, k, l;
+		cin >> a >> b >> k >> l;
+		if (l == 0) {
+			cout << a + b << endl;
+			continue;
+		}
+		int k1 = a / l, k2 = b / l;
+		if (k1 <= k) k -= k1, a -= k1 * l;
+		else a -= k * l, k = 0;
+		if (k2 <= k) k -= k2, b -= k2 * l;
+		else b -= k * l, k = 0;
+		int h1, h2;
+		h1 = abs(a - l);
+		h2 = abs(b - l);
+		if (k >= 2) cout << min(h1, a) + min(h2, b) << endl;
+		else if (k == 1) cout << min(min(h1, a) + b, a + min(h2, b)) << endl;
+		else cout << a + b << endl;
+	}
+	return 0;
+}

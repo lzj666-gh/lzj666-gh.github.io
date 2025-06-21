@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 216627479
+//  题目ID: P1001
+%:include<bits/stdc++.h>
+using namespace std;
+int main()<%
+	int a<:4:>;
+	cin>>a<:0:>>>a<:1:>;
+	while(a<:1:> not_eq 0)<%
+		a<:2:>=a<:0:> xor a<:1:>;
+		a<:3:>=(a<:0:> bitand a<:1:>)<<1;
+		a<:0:>=a<:2:>;
+		a<:1:>=a<:3:>;
+	%>
+	cout<<a<:0:><<endl;
+%>

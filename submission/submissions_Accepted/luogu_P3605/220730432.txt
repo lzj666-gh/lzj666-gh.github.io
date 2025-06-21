@@ -1,0 +1,190 @@
+//  OJ: 洛谷
+//  提交ID: 220730432
+//  题目ID: P3605
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+namespace IO {
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	inline void qread(char& IEE) { IEE = gc(); }
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	inline void qwrite(char IEE) { putc_(IEE); }
+	inline void qwrite(const char* str) { while (*str != '\0') putc_(*str++); }
+	inline void qwrite(const std::string& IEE) { qwrite(IEE.c_str()); }
+	template<class... T2> inline void qwrite(const char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class ...T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+class Seg_Tree {
+#define mid (l + r >> 1)
+protected:
+	struct Node {
+		ll sum; Node* ls, * rs;
+		Node() : sum(0), ls(nullptr), rs(nullptr) {}
+		Node(int val) : sum(val), ls(nullptr), rs(nullptr) {}
+	};
+	Node* root; int n; bool destoryed;
+	void pushup(Node* p) {
+		if (!p) return;
+		p->sum = 0;
+		if (p->ls) p->sum += p->ls->sum;
+		if (p->rs) p->sum += p->rs->sum;
+	}
+	void add(Node*& p, int l, int r, int x, int val = 1) {
+		if (p == nullptr) p = new Node();
+		if (l == r) {
+			p->sum += val;
+			return;
+		}
+		if (x <= mid) add(p->ls, l, mid, x, val);
+		else add(p->rs, mid + 1, r, x, val);
+		pushup(p);
+	}
+	ll query(Node*& p, int l, int r, int x, int y) {
+		if (p == nullptr) return 0;
+		if (x > r || y < l) return 0;
+		if (x <= l && r <= y) return p->sum;
+		return query(p->ls, l, mid, x, y) + query(p->rs, mid + 1, r, x, y);
+	}
+	int query(Node*& p, int l, int r, int k) {
+		if (p == nullptr) return 0;
+		if (l == r) return l;
+		if (p->ls && p->ls->sum >= k) return query(p->ls, l, mid, k);
+		else return query(p->rs, mid + 1, r, k - (p->ls ? p->ls->sum : 0));
+	}
+	Node* merge(Node*& p, Node*& q) {
+		if (p == nullptr && q == nullptr) { return nullptr; }
+		Node* r = new Node();
+		if (p == nullptr) { *r = *q; return r; }
+		if (q == nullptr) { *r = *p; return r; }
+		r->sum = p->sum + q->sum;
+		r->ls = merge(p->ls, q->ls);
+		r->rs = merge(p->rs, q->rs);
+		return r;
+	}
+	void merge_destory(Node*& p, Node*& q) {
+		if (p == nullptr) return void(p = q);
+		if (q == nullptr) return;
+		p->sum += q->sum;
+		merge_destory(p->ls, q->ls);
+		merge_destory(p->rs, q->rs);
+	}
+	Node* split_idx(Node*& p, int l, int r, int x, int y) {
+		if (p == nullptr) return nullptr;
+		if (x > r || y < l) return nullptr;
+		if (x <= l && r <= y) {
+			Node* q = p;
+			p = nullptr;
+			return q;
+		}
+		Node* q = new Node();
+		q->ls = split_idx(p->ls, l, mid, x, y);
+		q->rs = split_idx(p->rs, mid + 1, r, x, y);
+		q->sum = (q->ls ? q->ls->sum : 0) + (q->rs ? q->rs->sum : 0);
+		p->sum -= q->sum;
+		return q;
+	}
+	Node* split_val(Node*& p, int l, int r, int x, int y) {
+		if (p == nullptr) return nullptr;
+		if (x > r || y < l) return nullptr;
+		if (p->sum == y && x == 1) {
+			Node* q = p;
+			p = nullptr;
+			return q;
+		}
+		Node* q = new Node();
+		q->ls = split_val(p->ls, l, mid, x, y);
+		q->rs = split_val(p->rs, mid + 1, r, x, y);
+		q->sum = (q->ls ? q->ls->sum : 0) + (q->rs ? q->rs->sum : 0);
+		p->sum -= q->sum;
+		return q;
+	}
+	void debug(Node* p, int l, int r) {
+		if (p == nullptr) return;
+		if (l == r) {
+			cerr << l << " " << p->sum << endl;
+			return;
+		}
+		debug(p->ls, l, mid);
+		debug(p->rs, mid + 1, r);
+	}
+public:
+	Seg_Tree() : root(nullptr), n(0), destoryed(0) {}
+	ll size() { return root ? root->sum : -1; }
+	void build(int n_) { n = n_; }
+	void add(int x, int val = 1) {
+		if (destoryed) throw logic_error("This segment tree is destoryed!");
+		add(root, 1, n, x, val);
+	}
+	ll query(int x, int y) {
+		if (destoryed) throw logic_error("This segment tree is destoryed!");
+		return query(root, 1, n, x, y);
+	}
+	ll query(int k) {
+		if (destoryed) throw logic_error("This segment tree is destoryed!");
+		return query(root, 1, n, k);
+	}
+	Seg_Tree operator+(Seg_Tree& other) {
+		Seg_Tree ret;
+		if (destoryed || other.destoryed) throw logic_error("This segment tree is destoryed!");
+		ret.root = merge(root, other.root);
+		ret.n = n;
+		return ret;
+	}
+	void operator+=(Seg_Tree& other) {
+		if (destoryed || other.destoryed) throw logic_error("This segment tree is destoryed!");
+		merge_destory(root, other.root);
+		other.destoryed = 1;
+	}
+	Seg_Tree split_idx(int x, int y) {
+		if (destoryed) throw logic_error("This segment tree is destoryed!");
+		Seg_Tree other;
+		other.root = split_idx(root, 1, n, x, y);
+		other.n = this->n;
+		return other;
+	}
+	Seg_Tree split_val(int x, int y) {
+		if (destoryed) throw logic_error("This segment tree is destoryed!");
+		Seg_Tree other;
+		other.root = split_val(root, 1, n, x, y);
+		other.n = this->n;
+		return other;
+	}
+	void debug() {
+		if (destoryed) throw logic_error("This segment tree is destoryed!");
+		debug(root, 1, n);
+	}
+}t[100000 + 5];
+int n, f[100000 + 5], r[100000 + 5], ans[100000 + 5];
+vector<int>x, y;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	qread(n); x.resize(n);
+	for (int i = 0; i < n; ++i) qread(x[i]); 
+	y = x; sort(y.begin(), y.end());
+	y.erase(unique(y.begin(), y.end()), y.end());
+	for (int i = 0; i < n; ++i)
+		x[i] = lower_bound(y.begin(), y.end(), x[i]) - y.begin() + 1,
+		t[i].build(y.size() + 1), t[i].add(x[i], 1);
+	for (int i = 1; i < n; ++i) qread(f[i]), r[--f[i]]++;
+	queue<int>q;
+	for (int i = 0; i < n; ++i) if (!r[i]) q.push(i);
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		ans[now] = t[now].query(x[now] + 1, y.size() + 1);
+		t[f[now]] += t[now];
+		if (!--r[f[now]]) q.push(f[now]);
+	}
+	for (int i = 0; i < n; ++i) qwrite(ans[i], '\n');
+	return 0;
+}

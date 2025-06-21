@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 114305213
+//  题目ID: P1064
+#include <iostream>
+#define maxn 32000+20
+using namespace std;
+int n,m,v,p,q,w1[maxn],c1[maxn],w2[maxn][3],c2[maxn][3];
+int dp[maxn];
+int main(){
+	cin>>n>>m;
+	for(int i=1;i<=m;i++){
+		cin>>v>>p>>q;
+		if(q==0){
+			w1[i]=v;
+			c1[i]=v*p;
+		}
+		else{
+			w2[q][++w2[q][0]]=v;
+			c2[q][w2[q][0]]=v*p;
+		}
+	}
+	for(int i=1;i<=m;i++){
+		if(w1[i]==0) continue;
+		for(int j=n;j>=w1[i];j--){
+			dp[j]=max(dp[j],dp[j-w1[i]]+c1[i]);
+			if(j>=w1[i]+w2[i][1])
+				dp[j]=max(dp[j],dp[j-w1[i]-w2[i][1]]+c1[i]+c2[i][1]);
+			if(j>=w1[i]+w2[i][2])
+				dp[j]=max(dp[j],dp[j-w1[i]-w2[i][2]]+c1[i]+c2[i][2]);
+			if(j>=w1[i]+w2[i][1]+w2[i][2])
+				dp[j]=max(dp[j],dp[j-(w1[i]+w2[i][1]+w2[i][2])]+c1[i]+c2[i][1]+c2[i][2]);
+		}
+	}
+	cout<<dp[n]<<endl;
+	return 0;
+}

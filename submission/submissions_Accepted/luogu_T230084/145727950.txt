@@ -1,0 +1,51 @@
+//  OJ: 洛谷
+//  提交ID: 145727950
+//  题目ID: T230084
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+int cnt,primenum[500],n;
+bool num[1000+10];
+void prime(){
+	for(int i=2;i<=1000+10;i++){
+		if(!num[i]){
+			primenum[cnt++]=i;
+		}
+		for(int j=0;j<cnt;j++){
+			if(i*primenum[j]>1000+10) break;
+			num[i*primenum[j]]=true;
+			if(i%primenum[j]==0) break;
+		}
+	}
+}
+int poww(int a,int x){ 
+	if(x==0) return 1;
+	long long t=poww(a,x/2);
+	t=(t*t);
+	if(x%2==1) t=(t*a);
+	return t;
+}
+int ans,numm;
+void dfs(int k,long long sum1,int sum2,int lst,string debug="1*"){
+	if(sum1>n) return;
+//	cout<<"k: "<<k<<" chengji: "<<sum1<<" jiahe: "<<sum2<<" uing "<<debug<<endl;
+	if(sum2>ans){
+		ans=sum2;
+		numm=sum1;
+	}
+	if(sum2==ans){
+		numm=min(numm,sum1);
+	}
+	for(int i=1;i<=lst;++i){
+		dfs(k+1,sum1*poww(primenum[k],i),sum2*(i+1),i,debug+to_string(primenum[k])+"^"+to_string(i)+"*");
+		if(sum1*poww(primenum[k],i)>n) break;
+	}
+}
+signed main(){
+	ios_base::sync_with_stdio(false);
+	prime();
+	cin>>n;
+	dfs(0,1,1,31);
+	cout<<numm<<endl;
+	return 0;
+}

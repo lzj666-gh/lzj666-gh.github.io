@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 115899754
+//  题目ID: P1111
+#include<bits/stdc++.h>
+using namespace std;
+struct ikun{
+	int x,y,t;
+}a[200000];
+int f[200000],n,m;
+bool cmp(ikun a,ikun b){
+	return a.t<b.t;
+}
+int find(int x){
+	if(f[x]==x) return x;
+	return f[x]=find(f[x]);
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=m;i++) cin>>a[i].x>>a[i].y>>a[i].t;
+	sort(a+1,a+m+1,cmp);
+	for(int i=1;i<=n;i++) f[i]=i;
+	for(int i=1;i<=m;i++){
+		int dx=find(a[i].x),dy=find(a[i].y);
+		if(dx!=dy) f[dx]=dy,n--;
+		if(n==1){
+			cout<<a[i].t;
+			return 0;
+		}
+	}
+	cout<<-1<<endl;
+    return 0;
+}

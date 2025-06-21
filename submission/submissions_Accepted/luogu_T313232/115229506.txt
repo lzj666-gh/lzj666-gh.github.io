@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 115229506
+//  题目ID: T313232
+#include<bits/stdc++.h>
+using namespace std;
+int n,m;
+struct node{
+	int data,top=0;
+	int children[200];
+	void s(){
+		sort(&children[0],&children[top+1]);
+	}
+}a[100+10];
+int b[100+10];
+int t=1;
+bool c[100+10];
+vector<int> g;
+void dfs(int k,int last){
+	b[k]=t++;
+//	cout<<a[k].data<<' ';
+	for(int i=1;i<=a[k].top;i++){
+		if(a[k].children[i]==last) continue;
+		dfs(a[k].children[i],k);
+	}
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+//	for(int i=1;i<=n;i++){
+//		cin>>a[i].data;
+//	}
+	for(int i=1;i<=n-1;i++){
+		int x,y;
+		cin>>x>>y;
+		a[x].children[++a[x].top]=y;
+		c[y]=true;
+	}
+	for(int i=1;i<=n;i++){
+		a[i].s();
+		if(c[i]==false) g.push_back(i);
+	}
+	for(int i=0;i<g.size();i++){
+		dfs(g[i],0);
+	}
+	for(int i=1;i<=n;i++){
+		cout<<b[i]<<' ';
+	}
+	cout<<endl;
+	return 0;
+}

@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 114028030
+//  题目ID: P1926
+#include<bits/stdc++.h>
+using namespace std;
+const int N=5e6+5,M=1e9+7;
+int a[100],b[100],c[100],dp[200],tot;
+int main(){
+	ios::sync_with_stdio(false);
+	int n,m,k,r;
+	cin>>n>>m>>k>>r;
+	for(int i=1;i<=n;i++) cin>>a[i];
+	for(int i=1;i<=m;i++) cin>>b[i];
+	for(int i=1;i<=m;i++){
+		cin>>c[i];
+		tot+=c[i];
+	}
+	for(int i=1;i<=m;i++){
+		for(int j=tot;j>=c[i];j--){
+			dp[j]=max(dp[j],dp[j-c[i]]+b[i]);
+		}
+	}
+	int minn=dp[k];
+	for(int i=k;i<=tot;i++){
+		minn=min(minn,dp[i]);
+	}
+	int ti=r-minn;
+	memset(dp,0,sizeof(dp));
+	for(int i=1;i<=n;i++){
+		for(int j=a[i];j<=ti;j++){
+			dp[j]=max(dp[j],dp[j-a[i]]+1);
+		}
+	}
+	cout<<dp[ti]<<endl;
+}

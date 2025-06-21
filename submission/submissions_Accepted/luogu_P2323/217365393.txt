@@ -1,0 +1,62 @@
+//  OJ: 洛谷
+//  提交ID: 217365393
+//  题目ID: P2323
+#include<bits/stdc++.h>
+#define int long long 
+using namespace std;
+constexpr int N = 20000 + 10, M = 40000 + 10;
+int fa[N];
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+struct Edge {
+	int u, v, w, id;
+	bool t;
+	friend bool operator<(const Edge& a, const Edge& b) {
+		return a.w == b.w ? a.id < b.id : a.w < b.w;
+	}
+}edge[M];
+int n, k, m;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> k >> m;
+	for (int i = 1; i <= n + n; ++i) fa[i] = i;
+	for (int i = 1, a, b, c1, c2; i < m; ++i)
+		cin >> a >> b >> c1 >> c2, edge[i * 2 - 1] = { a,b,c1,i,1 }, edge[i << 1] = { a,b,c2,i,0 };
+	m = m + m - 1;
+	sort(edge + 1, edge + m);
+	int ch1 = 0, ch2 = 0;
+	vector<pair<int, int>>ans;
+	for (int i = 1; i < m; ++i) {
+		int x = find(edge[i].u), y = find(edge[i].v);
+		if (edge[i].t) {
+			int a = find(edge[i].u + n), b = find(edge[i].v + n);
+			if (a ^ b) {
+				fa[a] = b;
+				fa[x] = y;
+				ch2++;
+				ans.emplace_back(edge[i].id, 1);
+			}
+		}
+		if (x ^ y) {
+			fa[x] = y;
+			ch1++;
+		}
+		cerr << edge[i].u << '-' << edge[i].v << ':' << edge[i].w << '|' << edge[i].id << ',' << edge[i].t << '$' << ch1 << ' ' << ch2 << endl;
+		if (ch1 >= n - 1 && ch2 >= k) {
+			for (int j = 1; j <= i; ++j)
+				if (!edge[j].t) {
+					int a = find(edge[j].u + n), b = find(edge[j].v + n);
+					if (a ^ b) {
+						fa[a] = b;
+						ans.emplace_back(edge[j].id, 2);
+					}
+				}
+			cout << edge[i].w << endl;
+			sort(ans.begin(), ans.end());
+			for (const pair<int, int>& p : ans)
+				cout << p.first << " " << p.second << endl;
+			return 0;
+		}
+	}
+	cout << -1 << endl;
+	return 0;
+}

@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 166055922
+//  题目ID: T317715
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+    int from,to,w;
+}edge[10000+10];
+int now_dis[500+10],dis[500+10],n,m,k;
+int main(){
+	ios_base::sync_with_stdio(false);
+    cin>>n>>m>>k;
+    for(int i=1;i<=m;i++){
+        int f,t,w;
+        cin>>f>>t>>w;
+        edge[i]={f,t,w};
+    }
+    memset(now_dis,0x3f,sizeof now_dis);
+    now_dis[1]=0;
+    for(int i=1;i<=k;i++){
+        memcpy(dis,now_dis,sizeof now_dis);
+        for(int j=1;j<=m;j++){
+            now_dis[edge[j].to]=min(now_dis[edge[j].to],dis[edge[j].from]+edge[j].w);
+        }
+    }
+    if(now_dis[n]>=0x3f3f3f3f) cout<<"impossible"<<endl;
+    else cout<<now_dis[n];
+    return 0;
+}

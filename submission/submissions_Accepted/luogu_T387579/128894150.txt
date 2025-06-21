@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 128894150
+//  题目ID: T387579
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,a[100000+10],lsh[5000+10],top,cnt[500+10][100000+10];
+map<int,int> mp;
+inline int work(int l,int r) {
+	int ret=0;
+	for(int i=1; i<=top; ++i)
+		if(cnt[i][r]-cnt[i][l-1]>=lsh[i]) ++ret;
+	return ret;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1; i<=n; ++i) {
+		cin>>a[i];
+		if(a[i]<=n) ++mp[a[i]];
+	}
+	for(map<int,int>::iterator it=mp.begin(); it!=mp.end(); it++) {
+		pair<int,int> nw=*it;
+		if(nw.second>=nw.first)
+			lsh[++top]=nw.first;
+	}
+	for(int i=1; i<=top; ++i)
+		for(int j=1; j<=n; ++j)
+			if(a[j]==lsh[i]) cnt[i][j]=cnt[i][j-1]+1;
+			else cnt[i][j]=cnt[i][j-1];
+//	for(int i=1;i<=top;++i)\
+		for(int j=1;j<=n;++j)\
+			cout<<"num: "<<lsh[i]<<" cnt: {1,"<<j<<"} : "<<cnt[i][j]<<endl;
+	cin>>m;
+	while(m--) {
+		int l,r,k;
+		cin>>l>>r>>k;
+		int nn=work(l,r),ans;
+		int n[4]= {(nn>0?nn:1),(nn-1>0?nn-1:1),(nn-2>0?nn-2:1),(nn-3>0?nn-3:1)};
+		if(nn==0) ans=0;
+		else if(k==4) ans=(n[0])*(n[1])*(n[2])*(n[3])/24;
+		else if(k==3) ans=(n[0])*(n[1])*(n[2])/6;
+		else if(k==2) ans=(n[0])*(n[1])/2;
+		else if(k==1) ans=(n[0]);
+		cout<<ans<<endl;
+	}
+	return 0;
+}

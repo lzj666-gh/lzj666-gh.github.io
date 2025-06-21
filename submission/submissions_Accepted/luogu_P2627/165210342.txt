@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 165210342
+//  题目ID: P2627
+#include<bits/stdc++.h>
+using namespace std;
+long long n, m, cost[1000000 + 10], tot;
+long long q[1000000 + 10], num[1000000 + 10], head, tail = 1;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> cost[i], tot += cost[i];
+	for (int i = 1; i <= n; ++i) {
+		if (num[head] < i - m - 1) head++;
+		cost[i] += q[head];
+		while (q[tail-1] > cost[i]) tail--;
+		num[tail] = i;
+		q[tail] = cost[i];
+		tail++;
+	}
+	//	for (int i = 1; i <= n; ++i) cout << dp[i] << ' '; cout << endl;
+	if (num[head] < n - m) head++;
+	cout << tot - q[head] << endl;
+	return 0;
+}

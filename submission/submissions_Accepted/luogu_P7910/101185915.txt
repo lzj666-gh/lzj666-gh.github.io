@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 101185915
+//  题目ID: P7910
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn=8000+10;
+int pos[maxn];
+struct node{
+	int yid,val,newId;
+} b[maxn]; 
+int n,q;
+bool cmp(node n1,node n2){
+	return n1.val<n2.val;
+}
+void work(int k,int w){
+	b[k].val=w;
+	if(b[k-1].val<w && w<b[k+1].val) return; 
+	else if(w<=b[k-1].val){
+		for(int i=k;i>=2;i--){
+			if(b[i].val>b[i-1].val) break;
+			if(b[i].val==b[i-1].val && b[i].yid>b[i-1].yid) break;
+			swap(b[i],b[i-1]);
+		} 
+	} else {
+		for(int i=k;i<n;i++){
+			if(b[i].val<b[i+1].val) break;
+			if(b[i].val==b[i+1].val && b[i].yid<b[i+1].yid) break;
+			swap(b[i],b[i+1]);
+		}
+	}
+}
+int main()
+{
+	int opt,k,w;
+	cin>>n>>q;
+	for(int i=1;i<=n;i++){
+		scanf("%d",&w);
+		b[i].val=w; b[i].yid=i;
+	}
+	for (int i=1; i<=n; i++)
+		for (int j=i; j>=2; j--)
+			if (b[j].val<b[j-1].val) swap(b[j],b[j-1]);
+	for(int i=1;i<=n;i++) pos[b[i].yid]=i;
+	for(int i=1;i<=q;i++){
+		scanf("%d%d",&opt,&k);
+		if(opt==1){
+			scanf("%d",&w);
+			work(pos[k],w);
+			for(int i=1;i<=n;i++) pos[b[i].yid]=i;
+		} else {
+			printf("%d\n",pos[k]); 
+		}
+	}
+	return 0;
+}
+

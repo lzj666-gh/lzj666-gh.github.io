@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 97771703
+//  题目ID: T66291
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int a[10];
+	for(int i=0;i<10;i++){
+		cin>>a[i]; 
+	}
+	int n;cin>>n;int b[n];
+	for(int i=0;i<n;i++){
+		b[i]=a[i];
+	} 
+	int c[10];int j=0;
+	for(int i=n;i<10;i++,j++){
+		c[j]=a[i];
+	}
+	for(int i=0;i<=n;i++,j++){
+		c[j]=b[i];
+	}
+	for(int i=0;i<10;i++){
+		cout<<c[i]<<" " ;
+	}
+	return 0;
+}
+

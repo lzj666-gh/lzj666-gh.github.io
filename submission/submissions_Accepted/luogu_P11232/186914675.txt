@@ -1,0 +1,144 @@
+//  OJ: 洛谷
+//  提交ID: 186914675
+//  题目ID: P11232
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,l,V,d[1000000+10],v[1000000+10],a[1000000+10];
+double p[1000000+10];
+struct Seg_Tree{
+#define lc(p) (p<<1)
+#define rc(p) (p<<1|1)
+	struct Node{
+		int l,r,mn;
+		Node():l(0),r(0),mn(INT_MAX){}
+	}tree[(100000<<2)+10];
+	void pushup(int p){
+		tree[p].mn=min(tree[lc(p)].mn,tree[rc(p)].mn);
+	}
+	void add(int p,int l,int k){
+		if(!(tree[p].l<=l&&l<=tree[p].r)) return;
+		if(tree[p].r==tree[p].l){
+			tree[p].mn=min(tree[p].mn,k);
+			return;
+		}
+		add(lc(p),l,k);
+		add(rc(p),l,k);
+		pushup(p);
+	}
+	void build(int p,int l,int r){
+		tree[p].l=l;tree[p].r=r;tree[p].mn=INT_MAX;
+		if(l==r) return;
+		build(lc(p),l,(l+r>>1));
+		build(rc(p),(l+r>>1)+1,r);
+	}
+	int query(int p,int l,int r){
+		if(tree[p].r<l||r<tree[p].l) return INT_MAX;
+		if(l<=tree[p].l&&tree[p].r<=r) return tree[p].mn;
+		return min(query(lc(p),l,r),query(rc(p),l,r));
+	}
+}t;
+struct Pair{
+	int first,second;
+	Pair():first(0),second(0){}
+	Pair(const int&l,const int&r):first(l),second(r){}
+	Pair(const Pair&oth):first(oth.first),second(oth.second){}
+	friend bool operator<(const Pair&a,const Pair&b){
+		return a.first==b.first?a.second<b.second:a.first<b.first;
+	}
+	friend bool operator>(const Pair&a,const Pair&b){
+		return a.first==b.first?a.second>b.second:a.first>b.first;
+	}
+};
+int main(){
+// 	freopen("detect.in","r",stdin);
+// 	freopen("detect.out","w",stdout);
+	cin.tie(0)->sync_with_stdio(false);
+//	cin>>m;
+//	for(int i=1;i<=m;++i) cin>>p[i];
+//	for(int i=1,tmp;i<=m;++i) cin>>d[i],cout<<lower_bound(p+1,p+m+1,d[i])-p<<endl;
+//	return 0;
+	int T;
+	cin>>T;
+	while(T--){
+		cin>>n>>m>>l>>V;
+		t.build(1,1,m);
+		for(int i=1;i<=n;++i) cin>>d[i]>>v[i]>>a[i];
+		for(int i=1;i<=m;++i) cin>>p[i];
+		sort(p+1,p+m+1);int cnt=0;vector<Pair>vec;
+		for(int i=1;i<=n;++i){
+//			cerr<<"begin "<<i<<" : v:"<<v[i]<<" a: "<<a[i]<<" d: "<<d[i]<<endl;
+			if(v[i]>V&&a[i]>=0){
+//				cerr<<"all out of V"<<endl;
+				int idx=lower_bound(p+1,p+m+1,d[i])-p;
+				if(idx<=m) vec.emplace_back(idx,m),cnt++/*,cerr<<idx<<' '<<m<<endl*/;
+			}
+			else if(v[i]<=V&&a[i]<=0) continue;
+			else if(v[i]>V&&a[i]<0){
+//				cerr<<"some of segmnet out"<<endl;
+//				if(a[i]==0) cerr<<"div with 0"<<endl;
+				double t=(V-v[i])*1.0/a[i];
+				int idx1=lower_bound(p+1,p+m+1,d[i])-p,
+					idx2=lower_bound(p+1,p+m+1,d[i]+v[i]*t+0.5*a[i]*t*t)-1-p;
+//				cerr<<"from "<<d[i]<<" to "<<d[i]+v[i]*t+0.5*a[i]*t*t<<" (not include)"<<endl;
+				if(idx1<=idx2) vec.emplace_back(max(1,idx1),min(idx2,m)),cnt++/*,cerr<<idx1<<' '<<idx2<<endl*/;
+			}
+			else{
+//				cerr<<"keep add v to out"<<endl;
+//				if(a[i]==0) cerr<<"div with 0"<<endl;
+				double t=(V-v[i])*1.0/a[i];
+				int idx=upper_bound(p+1,p+m+1,d[i]+v[i]*t+0.5*a[i]*t*t)-p;
+//				cerr<<"from "<<d[i]+v[i]*t+0.5*a[i]*t*t<<"(not include) to "<<p[m]<<endl;
+				if(idx<=m) vec.emplace_back(idx,m),cnt++/*,cerr<<idx<<' '<<m<<endl*/;
+			}
+		}
+		cout<<cnt<<' ';
+		if(vec.empty()){
+			cout<<m<<endl;
+			continue;
+		}
+		int ans=0;
+		sort(vec.begin(),vec.end());
+//		for(int i=0;i<vec.size();++i) t.add(1,vec[i].first,vec[i].second);
+//		for(int i=0;i<vec.size();++i) cerr<<vec[i].first<<' '<<vec[i].second<<endl;
+//		for(int i=1;i<=m;++i) cerr<<t.query(1,i,i)<<' ';cerr<<endl;
+//		for(int i=0;i<vec.size();++i) cerr<<t.query(1,vec[i].first,vec[i].second)<<' ';cerr<<endl;
+		vector<Pair>v;
+//		for(int i=0;i<vec.size();++i)
+		for(int i=vec.size()-1;i>=0;--i){
+			if(t.query(1,vec[i].first,vec[i].second)>vec[i].second) 
+				v.push_back(vec[i]);
+			t.add(1,vec[i].first,vec[i].second);
+		}
+		reverse(v.begin(),v.end());
+//		for(int i=0;i<v.size();++i) cerr<<v[i].first<<' '<<v[i].second<<'\n';
+		for(int i=0;i<v.size();++i){
+			int tmp=v[i].second;
+			while(i<v.size()&&v[i].first<=tmp) i++;
+			ans++;i--;
+		}
+		cout<<m-ans<<endl;
+	}
+	return 0;
+}
+/*
+杞寲涓哄尯闂磋鐩栭棶棰橈紝鏈塶鏉＄嚎娈碉紝鍊煎煙涓簃锛屾瘡鏉＄嚎娈典笂鑷冲皯搴旀湁1鐐癸紝姹傝嚦灏戞墍鐢ㄧ偣鏁般€?
+
+浣跨敤绾挎鏍戠淮鎶ゆ瘡涓€涓綅缃笂鐩墠鏈夊灏戠嚎娈佃鐩栵紝姣忔璐績閫夋嫨瑕嗙洊绾挎鏈€澶氫竴鐐癸紙浼級
+鍙嶄緥锛?
+[1,4][2,4][3,4][1,3][4,5][4,6][4,7][5,7]
+姝ｇ‘锛?,5
+閿欒锛?,4,7 
+
+鏆村姏锛歄(2^m) 20鍒?
+
+鏂版€濊矾锛氬厛瀵规墍鏈夌嚎娈垫帓搴忥紝鍘婚噸锛岃嫢涓€绾挎瀹屽叏鍖呭惈鍏朵粬鏌愮嚎娈碉紝鍒欏繀瀹氭棤鐢ㄣ€?
+璇佹槑锛氭樉鐒?
+椤哄簭鏋氫妇绾挎锛屽浜庢煇绾挎锛岄€夊畠鐨勫彸绔偣锛屽苟涓€鐩存壘鍒颁竴绾挎浣垮緱宸︾鐐瑰ぇ浜庤繖鐐圭殑鍙崇鐐广€?
+鍗曟鏃堕棿澶嶆潅搴︼細O(m*logm) 
+
+鏈満澶ф牱渚嬬敤鏃?.5s宸﹀彸锛屾帹娴嬩负pair鏃堕棿甯告暟杩囧ぇ銆?
+
+淇敼pair涓烘墜鍐欏悗浠嶄负1.5s宸﹀彸锛屽ぇ鏍蜂緥鍏ㄨ繃锛岀粨鏉熸椂闂?7:17锛屽厛鍘诲啓鍏朵粬棰橈紝绋嶅悗鍐嶆潵鏈銆?
+
+鍏朵粬棰樹篃涓嶄細浜嗭紝鐜板湪鍙兘瀵勫笇鏈涗簬杩欓亾棰樹簡锛屾暟缁勫張寮€澶т簡10鍊嶏紝涓€瀹氳浜夌偣姘斿晩锛孴2銆?
+*/

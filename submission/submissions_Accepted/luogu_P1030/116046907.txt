@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 116046907
+//  题目ID: P1030
+#include<bits/stdc++.h>
+using namespace std;
+string zhongxu,houxu;
+void dfs(string zhong,string hou){
+	if(zhong.size()){
+		cout<<hou.back();
+		int k=zhong.find(hou.back());
+		dfs(zhong.substr(0,k),hou.substr(0,k));
+		dfs(zhong.substr(k+1),hou.substr(k,zhong.size()-1-k));
+	}
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>zhongxu>>houxu;
+	dfs(zhongxu,houxu);
+	cout<<endl;
+	return 0;
+}

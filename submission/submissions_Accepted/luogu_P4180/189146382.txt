@@ -1,0 +1,108 @@
+//  OJ: 洛谷
+//  提交ID: 189146382
+//  题目ID: P4180
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+struct Edge {
+	int u, v, w;
+	friend bool operator<(const Edge& a, const Edge& b) {
+		return a.w < b.w;
+	}
+}edge[300000 + 10];
+int n, m;
+namespace BCJ {
+	int fa[100000 + 10];
+	void iniit() {
+		for (int i = 1; i <= n; ++i) fa[i] = i;
+	}
+	int find(int x) {
+		return fa[x] == x ? x : fa[x] = find(fa[x]);
+	}
+}
+struct jcy {
+	int first, second;
+	jcy() :first(INT_MIN), second(INT_MIN) {}
+	jcy(int fst, int scd) :first(fst), second(scd) {}
+	friend jcy operator+(const jcy& a, const jcy& b) {
+		if (a.first == b.first)
+			if(a.second > b.second)
+				return a;
+			else
+				return jcy(a.first, b.second);
+		if (a.first > b.first)
+			if (a.second > b.first)
+				return a;
+			else
+				return jcy(a.first, b.first);
+		if (b.second > a.first)
+			return b;
+		else
+			return jcy(b.first, a.first);
+	}
+};
+namespace mintree {
+	vector<int>edge[100000 + 10], val[100000 + 10];
+	int fa[100000 + 10][20], dep[100000 + 10];
+	jcy up[100000 + 10][20];
+	void add(int u, int v, int w) {
+		edge[u].push_back(v);
+		edge[v].push_back(u);
+		val[u].push_back(w);
+		val[v].push_back(w);
+	}
+	void dfs(int x, int f) {
+		fa[x][0] = f; dep[x] = dep[f] + 1;
+		for (int i = 1; fa[x][i] ^ fa[fa[x][i - 1]][i - 1]; ++i)
+			fa[x][i] = fa[fa[x][i - 1]][i - 1], 
+			up[x][i] = up[x][i - 1] + up[fa[x][i - 1]][i - 1];
+		for (int k = 0; k < edge[x].size();++k) {
+			if (edge[x][k] == f) continue;
+			up[edge[x][k]][0].first = val[x][k];
+			dfs(edge[x][k], x);
+		}
+	}
+	jcy upper(int x, int y) {
+		jcy ans = jcy();
+		if (dep[x] < dep[y]) swap(x, y);
+		int cur = dep[x] - dep[y];
+		for (int i = 0; i <= 18; ++i) if (cur & (1 << i)) ans = ans + up[x][i], x = fa[x][i];
+		if (x == y) return ans;
+		for (int i = 18; i >= 0; --i)
+			if (fa[x][i] ^ fa[y][i])
+				ans = ans + up[x][i] + up[y][i],
+				x = fa[x][i], y = fa[y][i];
+		ans = ans + up[x][0] + up[y][0];
+		return ans;
+	}
+}
+bool vis[300000 + 10];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= m; ++i) cin >> edge[i].u >> edge[i].v >> edge[i].w;
+	sort(edge + 1, edge + m + 1);
+	BCJ::iniit();
+	int cnt = 0;
+	ll bef = 0;
+	for (int i = 1; i <= m; ++i) {
+		int dx = BCJ::find(edge[i].u), dy = BCJ::find(edge[i].v);
+		if (dx == dy) continue;
+		mintree::add(edge[i].u, edge[i].v, edge[i].w);
+		BCJ::fa[dx] = dy; vis[i] = 1;
+		cnt++; bef += edge[i].w;
+		if (cnt == n - 1) break;
+	}
+	mintree::fa[1][1] = 1;
+	mintree::dfs(1, 1);
+	ll ans = LLONG_MAX;
+	for (int i = 1; i <= m; ++i) {
+		if (!vis[i]) {
+			jcy cur = mintree::upper(edge[i].u, edge[i].v);
+			if (cur.first == edge[i].w) ans = min(ans, bef - cur.second + edge[i].w);
+			else ans = min(ans, bef - cur.first + edge[i].w);
+		}
+	}
+	cout << ans << endl;
+	return 0;
+}

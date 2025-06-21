@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 145120411
+//  题目ID: T412670
+#include<bits/stdc++.h>
+using namespace std;
+int a[10],dp,nd;
+bool dfs(int nw)
+{
+	if(nw>dp) return 0;
+	for(int i=nw-1;i>=1;i--)
+	{
+		if(a[nw-1]+a[i]>nd) continue;
+		a[nw]=a[nw-1]+a[i];
+		int t=a[nw-1]+a[i];
+		for(int j=nw+1;j<=dp;j++) t*=2;
+		if(t<nd) return 0;
+		if(a[nw]==nd&&nw==dp)
+		{
+			cout<<nw;
+			for(int i=1;i<=nw;i++) cout<<' '<<a[i];
+			cout<<endl;
+			return 1;
+		}
+		if(dfs(nw+1)) return 1;
+	}
+	return 0;
+}
+int main()
+{
+    cin>>nd;
+    while(nd)
+    {
+    	if(nd==1)
+		{
+			cout<<1<<' '<<1<<endl;
+			cin>>nd;
+			continue;
+		}
+    	dp=2;
+    	a[1]=1;
+    	while(!dfs(2)) dp++;
+    	cin>>nd;
+	}
+    return 0;
+}

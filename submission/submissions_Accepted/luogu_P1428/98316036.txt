@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 98316036
+//  题目ID: P1428
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n;cin>>n;
+	const int N=n;
+	int a[N];
+	for(int i=0;i<n;i++){
+		cin>>a[i];
+	}
+	for(int i=0;i<n;i++){
+		int c=0;
+		for(int j=0;j<i;j++){
+			if(a[j]<a[i]) c++;
+		}
+		cout<<c<<" ";
+	}
+
+	return 0;
+}
+

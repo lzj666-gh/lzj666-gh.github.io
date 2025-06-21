@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 141729961
+//  题目ID: T132496
+#include<bits/stdc++.h>
+using namespace std;
+int r[30], h[30], minn = 2147483647, n, m;
+void dfs(int k, int y, int s, int z){
+	if (k > m + 1 || s >= minn || y < 0 || s + z + r[1] * r[1] > minn || y - (r[k - 1]) * (r[k - 1]) * (h[k - 1]) * z > 0) return;
+	if (y == 0 && k == m + 1) return void((s += r[1] * r[1])+(minn = min(minn, s)));
+	for (int i = r[k - 1] - 1; i >= z; i--)
+		for (int j = h[k - 1] - 1; j >= z; j--)
+			if (y >= i * i * j && k <= m)
+				r[k] = i,h[k] = j,dfs(k + 1, y - i * i * j, s + (i * 2 * j), z - 1),r[k] = h[k] = 0;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	r[0] = h[0] = sqrt(n);
+	dfs(1, n, 0, m);
+	cout << minn << endl;
+	return 0;
+}

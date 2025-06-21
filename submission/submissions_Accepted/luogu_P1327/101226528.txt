@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 101226528
+//  题目ID: P1327
+#include<bits/stdc++.h>
+using namespace std;
+int cnt=0;int n;
+struct aa{
+	int xu;int nei;
+}a[100000+10];
+bool abc(aa a1,aa a2){ return a1.nei<a2.nei;}
+int main(){
+	cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>a[i].nei;
+		a[i].xu=i;
+	}
+	sort(&a[0],&a[n],abc);
+	for(int i=0;i<n;i++){
+		while(a[i].xu!=i){
+			swap(a[a[i].xu],a[i]);
+			cnt++;
+		}
+	}
+	cout<<cnt;
+	return 0;
+}

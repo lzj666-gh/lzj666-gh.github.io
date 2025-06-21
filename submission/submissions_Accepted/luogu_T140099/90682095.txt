@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 90682095
+//  题目ID: T140099
+#include<iostream>
+using namespace std;
+int main(){
+    cout<<3.14*55*55<<endl<<3.14*2*55;
+}

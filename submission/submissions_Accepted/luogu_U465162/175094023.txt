@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 175094023
+//  题目ID: U465162
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, k;
+int x[20 + 5], w[20 + 5], v[20 + 5];
+int main() {
+// 	freopen("lie.in", "r", stdin);
+// 	freopen("lie.out", "w", stdout);
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> k;
+	m *= 15;
+	for (int i = 0; i < n; ++i) cin >> x[i] >> w[i] >> v[i];
+	int lim = 1 << n;
+	int ans = 0;
+	for (int i = 0; i < lim; ++i) {
+		int cnt = 0, l = 0, r = 0, dp = 0, cost = 0;
+		for (int j = 0; j < n; ++j)
+			if ((1 << j) & i) {
+				if (x[j] < 0) l = min(l, x[j]);
+				else r = max(r, x[j]);
+				cnt += w[j];
+				dp += v[j];
+			}
+		cost = (min(-l, r) * 2) + max(-l, r);
+		if (cnt > k) dp = 0;
+		if (cost > m) dp = 0;
+		ans = max(ans, dp);
+	}
+	cout << ans << endl;
+	return 0;
+}

@@ -1,0 +1,61 @@
+//  OJ: 洛谷
+//  提交ID: 182482363
+//  题目ID: T527023
+#include<bits/stdc++.h>
+// #define ONLINE
+#pragma warning(disable:4996)
+#pragma warning(disable:6031)
+using namespace std;
+using ll = long long;
+using ull = unsigned long long;
+int n;
+struct Node {
+	int a, b, idx;
+	Node() :a(0), b(0), idx(0) {}
+	Node(int aa, int bb, int i) :a(aa), b(bb), idx(i) {}
+};
+vector<Node>a, b;
+bool vis[200000 + 10];
+int main() {
+#ifdef ONLINE
+	freopen("biall.in", "r", stdin);
+	freopen("biall.out", "w", stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while(T--) {
+		memset(vis, 0, sizeof vis);
+		cin >> n;
+		n = n * 2 - 1;
+		a.resize(n);
+		ll suma = 0, sumb = 0;
+		for (int i = 0; i < n; ++i) cin >> a[i].a >> a[i].b, a[i].idx = i + 1, suma += a[i].a, sumb += a[i].b;
+		sort(a.begin(), a.end(), [](const Node& a, const Node& b)->bool {
+			return a.a == b.a ? a.b > b.b:a.a > b.a; });
+		b = a;
+		sort(b.begin(), b.end(), [](const Node& a, const Node& b)->bool {
+			return a.b == b.b ? a.a > b.a:a.b > b.b; });
+		int ida = 0, idb = 0;
+		ll sma = 0, smb = 0;
+		for (int k = (n + 1) / 2; k >= 1; --k) {
+			if (min(sma * 1.0 / suma, 0.5) > min(smb * 1.0 / sumb, 0.5)) {
+				while (vis[b[idb].idx]) idb++;
+				vis[b[idb].idx] = 1;
+				sma += b[idb].a;
+				smb += b[idb].b;
+				cout << b[idb].idx << ' ';
+			}
+			else {
+				while (vis[a[ida].idx]) ida++;
+				vis[a[ida].idx] = 1;
+				sma += a[ida].a;
+				smb += a[ida].b;
+				cout << a[ida].idx << ' ';
+			}
+		}
+		cout << endl;
+	}
+	return 0;
+}
+// 可能错误的贪心，已经跑了几百组样例还没出错

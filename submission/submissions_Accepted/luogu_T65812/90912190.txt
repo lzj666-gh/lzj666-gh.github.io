@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 90912190
+//  题目ID: T65812
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	double m,n,d;
+	cin>>m>>n;
+	d=(m-n)/5;
+	printf("%.2lf %.2lf %.2lf %.2lf",m-d*1,m-d*2,m-d*3,m-d*4);
+	return 0;
+}
+

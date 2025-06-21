@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 202452068
+//  题目ID: T572397
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int n, k;
+vector<int>bef, bck, nw;
+string s;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		bef.clear(); bck.clear(); nw.clear();
+		cin >> n >> k >> s; s = ' ' + s;
+		for (int i = 1; i < n - k + 1; ++i) {
+			nw.push_back(i);
+			if (s[i + k] < s[i]) {
+				for (const int& i : nw)
+					bef.push_back(i);
+				nw.clear();
+			}
+			else if (s[k + i] > s[i]) {
+				reverse(nw.begin(), nw.end());
+				for (const int& i : nw)
+					bck.push_back(i);
+				nw.clear();
+			}
+			//cerr << "s[" << i << "] comp s[" << i + 1 << "] equals " << s[i + k] << " comp " << s[i] << endl;
+			//for (const int& i : bef) cerr << i << ' '; cerr << '|';
+			//for (const int& i : nw) cerr << i << ' '; cerr << '|';
+			//for (const int& i : bck) cerr << i << ' '; cerr << endl;
+		}
+		nw.push_back(n - k + 1);
+		reverse(bck.begin(), bck.end());
+
+		//for (const int& i : bef) cerr << i << ' '; cerr << '|';
+		//for (const int& i : nw) cerr << i << ' '; cerr << '|';
+		//for (const int& i : bck) cerr << i << ' '; cerr << endl;
+
+		int t = 0;
+		long long ans = 0;
+		for (const int& i : bef) ans += 1ll * i * ++t, ans %= mod;
+		for (const int& i : nw) ans += 1ll * i * ++t, ans %= mod;
+		for (const int& i : bck) ans += 1ll * i * ++t, ans %= mod;
+		cout << ans << endl;
+	}
+	return 0;
+}
+/*
+1
+12 4
+tzkahbhxiaml
+
+*/

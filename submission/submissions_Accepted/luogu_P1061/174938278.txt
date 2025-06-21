@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 174938278
+//  题目ID: P1061
+#include<bits/stdc++.h>
+using namespace std;
+char b, e;
+int s, t, w;
+string jb;
+int main() {
+// 	freopen("count.in", "r", stdin);
+// 	freopen("count.out", "w", stdout);
+	ios_base::sync_with_stdio(false);
+	cin >> s >> t >> w;
+	b = s - 1 + 'a';
+	e = t + 'a';
+	cin >> jb;
+	for (int cbc = 1; cbc <= 5; ++cbc) {
+		jb.back()++;
+		for (int i = jb.size() - 1; i >= 0; --i) {
+			if (jb[i] == e) {
+				if (i == 0) return 0;
+				else jb[i - 1]++;
+			}
+			else {
+				bool flg = 0;
+				for (int j = i + 1; j < jb.size(); ++j) {
+					jb[j] = jb[j - 1] + 1;
+					if (jb[j] == e) {
+						flg = 1;
+						break;
+					}
+				}
+				if (flg) {
+					if (i == 0) return 0;
+					else jb[i - 1]++;
+					continue;
+				}
+				break;
+			}
+		}
+		cout << jb << endl;
+	}
+	return 0;
+}

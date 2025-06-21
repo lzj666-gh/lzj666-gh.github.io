@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 164609508
+//  题目ID: P1352
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[6000 + 10];
+int idx, head[6000 + 10];
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, d1[6000 + 10], d2[6000 + 10], r[6000 + 10];
+bool vis[6000 + 10], rd[6000 + 10];
+void dfs(int k) {
+	vis[k] = 1;
+	for (int i = head[k]; i; i = edge[i].nxt) {
+		if (vis[edge[i].v]) continue;
+		dfs(edge[i].v);
+		d1[k] += d2[edge[i].v];
+		d2[k] += max(d1[edge[i].v], d2[edge[i].v]);
+	}
+//	cout << k << ' ' << d1[k] << ' ' << d2[k] << endl;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> r[i], d1[i] = r[i];
+	for (int i = 1, u, v; i < n; ++i) cin >> u >> v, add(v, u), rd[u] = 1;
+	for (int i = 1; i <= n; ++i) 
+		if (!rd[i]) {
+			dfs(i); break;
+		}
+	int ans = INT_MIN;
+	for (int i = 1; i <= n; ++i) ans = max({ ans,d1[i],d2[i] });
+	cout << ans << endl;
+	return 0;
+}

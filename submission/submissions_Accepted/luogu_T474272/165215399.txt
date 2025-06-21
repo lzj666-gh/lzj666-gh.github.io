@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 165215399
+//  题目ID: T474272
+#include<bits/stdc++.h>
+using namespace std;
+int n, t, cost[5000000 + 10], dp[5000000 + 10];
+deque<int>q;
+int chk(int m) {
+	memset(dp, 0, sizeof dp);
+	q.clear();
+	q.push_back(0);
+	for (int i = 1; i <= n; ++i) {
+		if (q.size() && i - q.front() > m) q.pop_front();
+		dp[i] = cost[i] + dp[q.front()];
+		while (q.size() && dp[q.back()] >= dp[i]) q.pop_back();
+		q.push_back(i);
+	}
+	//	for (int i = 1; i <= n; ++i) cout << dp[i] << ' '; cout << endl;
+	int mn = 0x3f3f3f3f;
+	for (int i = n - m + 1; i <= n; ++i) mn = min(mn, dp[i]);
+	return mn;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> t;
+	for (int i = 1; i <= n; ++i) cin >> cost[i];
+	int l = 1, r = n;
+	while (l < r) {
+//		cout << l << ' ' << r << ' ' << (chk(l) <= t) << ' ' << (chk(r) <= t) << ' ' << (l + r >> 1) << endl;
+		int mid = l + r >> 1;
+		if (chk(mid) <= t) r = mid;
+		else l = mid + 1;
+	}
+	cout << l - 1 << endl;
+	return 0;
+}

@@ -1,0 +1,51 @@
+//  OJ: 洛谷
+//  提交ID: 145833046
+//  题目ID: P1072
+#include<bits/stdc++.h>
+#define __lcm(a,b) ((a)*(b)/__gcd((a),(b)))
+using namespace std;
+int a1,b1,a0,b0;
+int cnt,primenum[500000],n,d[500000+10],lpr[500000+10];
+bool num[500000+10];
+void prime(){
+	d[1]=1;
+	for(int i=2;i<=500000;i++){
+		if(!num[i]){
+			primenum[cnt++]=i;
+			d[i]=2;lpr[i]=1;
+		}
+		for(int j=0;j<cnt;j++){
+			if(i*1ll*primenum[j]>500000) break;
+			num[i*primenum[j]]=true;
+			if(i%primenum[j]==0){
+				d[i*primenum[j]]=d[i]/(lpr[i]+1)*(lpr[i]+2);
+				lpr[i*primenum[j]]=lpr[i]+1;
+				break;
+			}
+			else{
+				d[i*primenum[j]]=d[i]*2;
+				lpr[i*primenum[j]]=1;
+			}
+		}
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	prime();
+	int T;
+	cin>>T;
+	while(T--){
+		int ans=0;
+		cin>>a0>>a1>>b0>>b1;
+		for(int i=1;i*i<=b1;++i){
+			if(b1%i==0){
+				int x=i,y=b1/x;
+				if(x%a1==0&&__gcd(x/a1,a0/a1)==1&&__gcd(b1/b0,b1/x)==1) ++ans;
+				if(x==y) continue;
+				if(y%a1==0&&__gcd(y/a1,a0/a1)==1&&__gcd(b1/b0,b1/y)==1) ++ans;
+			}
+		}
+		cout<<ans<<endl;
+	}
+	return 0;
+}

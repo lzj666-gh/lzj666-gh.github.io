@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 108948977
+//  题目ID: U285704
+//老师我是李梓加
+//我在玩游戏
+//我在玩洛谷和C++
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a,b;
+	cin>>a>>b;
+	cout<<a+b;
+	return 0;
+}

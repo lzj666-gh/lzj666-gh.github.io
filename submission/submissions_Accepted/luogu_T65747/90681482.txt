@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 90681482
+//  题目ID: T65747
+#include<iostream>
+using namespace std;
+int main(){
+    cout<<"109876+56=109932"<<endl<<"109876-56=109820"<<endl<<"109876*56=6153056"<<endl<<"109876/56=1962";
+}

@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 212902407
+//  题目ID: P3812
+#include<bits/stdc++.h>
+using namespace std;
+long long n, a[5000];
+template<const int N = 63>
+struct xxj {
+	bitset<N> d[N];
+	long long n;
+	xxj(long long n_ = 0) {
+		if (n_ > N) n_ = N;
+		n = n_;
+		for (int i = 0; i < N; ++i) d[i] = 0;
+	}
+	xxj operator^=(bitset<N> b) {
+		for (int j = N - 1; j >= 0; --j) {
+			if (b[j]) {
+				if (d[j].none()) {
+					d[j] = b.to_ullong();
+					break;
+				}
+				b ^= d[j];
+			}
+		}
+		return *this;
+	}
+	xxj updata() {
+		for (int i = N - 1; i >= 0; --i)
+			for (int j = N - 1; j > i; --j)
+				if (d[j][i])
+					d[j] ^= d[i];
+		return *this;
+	}
+	bitset<N> get_kth(int k) {
+		bitset<N> ans;
+		for (int i = N - 1; i >= 0; --i) {
+			if (d[i].none()) continue;
+			if (k & (1ll << i)) ans ^= d[i];
+		}
+		return ans;
+	}
+};
+xxj<63> s;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i], s ^= a[i];
+	s.updata();
+	cout << s.get_kth((1ll << 63) - 1).to_ullong() << endl;
+	return 0;
+}

@@ -1,0 +1,77 @@
+//  OJ: 洛谷
+//  提交ID: 220069168
+//  题目ID: P1967
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N =5e4 + 10, M = 5e5 + 10, inf = 0x3f3f3f3f;
+struct Edge {
+	int u, v, w;
+	Edge(int u = 0, int v = 0, int w = 0) :u(0), v(0), w(0) {}
+	friend bool operator<(const Edge& a, const Edge& b) {
+		return a.w > b.w;
+	}
+}edge[M];
+int fa[N]; int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+int n, m, x, y;
+namespace Tree {
+	struct Edge {
+		int v, w, nxt;
+	}edge[M];
+	int head[N], idx;
+	void add(int u, int v, int w) {
+		edge[++idx] = { v,w,head[u] };
+		head[u] = idx;
+	}
+	void addedge(int u, int v, int w) {
+		add(u, v, w); add(v, u, w);
+	}
+	int fa[N][20], mn[N][20], bel[N], dep[N];
+	void dfs(int x, int f) {
+		bel[x] = bel[f]; fa[x][0] = f; dep[x] = dep[f] + 1;
+		for (int i = 1; i < 20; ++i) fa[x][i] = fa[fa[x][i - 1]][i - 1];
+		for (int i = 1; i < 20; ++i)
+			mn[x][i] = min(mn[fa[x][i - 1]][i - 1], mn[x][i - 1]);
+		for (int i = head[x]; i; i = edge[i].nxt)
+			if (edge[i].v ^ f)
+				mn[edge[i].v][0] = edge[i].w,
+				dfs(edge[i].v, x);
+	}
+	void init() {
+		memset(mn, 0x3f, sizeof mn);
+		for (int i = 1; i <= n; ++i)
+			if (!bel[i])
+				bel[i] = i, dfs(i, i);
+	}
+	int query(int x, int y) {
+		if (bel[x] ^ bel[y]) return -1;
+		if (dep[x] < dep[y]) swap(x, y);
+		int cur = dep[x] - dep[y], ans = inf;
+		for (int i = 0; i < 20; ++i)
+			if (cur & (1 << i))
+				ans = min(ans, mn[x][i]), x = fa[x][i];
+		if (x == y) return ans;
+		for (int i = 19; i >= 0; --i)
+			if (fa[x][i] ^ fa[y][i])
+				ans = min(ans, mn[x][i]), x = fa[x][i],
+				ans = min(ans, mn[y][i]), y = fa[y][i];
+		return min({ ans, mn[x][0], mn[y][0] });
+	}
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= m; ++i) cin >> edge[i].u >> edge[i].v >> edge[i].w;
+	sort(edge + 1, edge + m + 1);
+	for (int i = 1; i <= n; ++i) fa[i] = i;
+	for (int i = 1; i <= m; ++i) {
+		int dx = find(edge[i].u), dy = find(edge[i].v);
+		if (dx ^ dy) {
+			fa[dx] = dy;
+			Tree::addedge(edge[i].u, edge[i].v, edge[i].w);
+		}
+	}
+	Tree::init();
+	int q; cin >> q;
+	while (q--) cin >> x >> y, cout << Tree::query(x, y) << endl;
+	return 0;
+}

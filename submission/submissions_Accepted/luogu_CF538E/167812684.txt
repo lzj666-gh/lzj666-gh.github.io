@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 167812684
+//  题目ID: CF538E
+#include<bits/stdc++.h>
+#define inf 0x3f3f3f3f
+using namespace std;
+struct Edge{
+	int v,nxt;
+}edge[400000+10];
+int head[200000+10],idx;
+void add(int u,int v){
+	edge[++idx]={v,head[u]};
+	head[u]=idx;
+}
+int n,cnt,dp[200000+10][2];
+void dfs(int x,int fa){
+	if(fa){
+		if(!edge[head[x]].nxt){
+			dp[x][0]=dp[x][1]=1;
+			++cnt;
+			return;
+		}
+	}
+	else if(!head[x]){
+		dp[x][0]=dp[x][1]=1;
+		++cnt;
+		return;
+	}
+	dp[x][0]=0,dp[x][1]=inf;
+	for(int y=head[x];y;y=edge[y].nxt){
+		if(edge[y].v==fa) continue;
+		dfs(edge[y].v,x);
+		dp[x][1]=min(dp[x][1],dp[edge[y].v][0]);
+		dp[x][0]+=dp[edge[y].v][1];
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1,x,y;i<n;++i) cin>>x>>y,add(x,y),add(y,x);
+	dfs(1,0);
+	cout<<cnt-dp[1][1]+1<<' '<<dp[1][0]<<endl;
+	return 0;
+}
+//CF538E

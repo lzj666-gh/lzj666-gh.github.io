@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 150365746
+//  题目ID: P10245
+#include<bits/stdc++.h>
+using namespace std;
+long long T,a[4];
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>T;
+	while(T--){
+		cin>>a[0]>>a[1]>>a[2]>>a[3];
+		int x=a[2]-a[0],y=a[1],z=a[3];
+		if(x+y>z&&x-y<z&&x+z>y&&x-z<y&&y+z>x&&y-z<x) cout<<"yes"<<endl;
+		else{
+			x=a[3]-a[1],y=a[0],z=a[2];
+			if(x+y>z&&x-y<z&&x+z>y&&x-z<y&&y+z>x&&y-z<x) cout<<"yes"<<endl;
+			else{
+				x=a[1]-a[3],y=a[0],z=a[2];
+				if(x+y>z&&x-y<z&&x+z>y&&x-z<y&&y+z>x&&y-z<x) cout<<"yes"<<endl;
+				else{
+					x=a[0]-a[2],y=a[1],z=a[3];
+					if(x+y>z&&x-y<z&&x+z>y&&x-z<y&&y+z>x&&y-z<x) cout<<"yes"<<endl;
+					else cout<<"no"<<endl;
+				}
+			}
+		}
+	}
+	return 0;
+}
+/*
+x+y+k=a[3]
+x^2+z^2=l^2
+y^2+z^2=r^2
+x=sqrt(l^2-z^2)
+y=sqrt(r^2-z^2)
+*/

@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 140787190
+//  题目ID: T408781
+#include<bits/stdc++.h>
+#define min(a,b) ((a)<(b)?(a):(b))
+using namespace std;
+vector<char>a, b;
+string s1, s2;
+template<typename T>
+int get_min(vector<T>&x) {
+	int i = 0, j = 1, k = 0;
+	while (i < x.size() && j < x.size()) {
+		for (k = 0; k < x.size() && x[(i + k) % x.size()] == x[(j + k) % x.size()]; ++k);
+		x[(i + k) % x.size()] > x[(j + k) % x.size()] ? i += k + 1 : j += k + 1;
+		j += i == j;
+		k = 0;
+	}
+	return min(i, j);
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> s1 >> s2;
+	for (char c : s1) {
+		a.push_back(c);
+	}
+	for (char c : s2) {
+		b.push_back(c);
+	}
+	s1.clear(), s2.clear();
+	int n = a.size();
+	for (int i = get_min(a), j = 0; j < n; ++i, ++j) s1 += a[(i) % a.size()];
+	for (int i = get_min(b), j = 0; j < n; ++i, ++j) s2 += b[(i) % b.size()];
+	if (s1 == s2) {
+		cout << "Yes" << endl;
+		cout << s1 << endl;
+	}
+	else {
+		cout << "No" << endl;
+	}
+	return 0;
+}

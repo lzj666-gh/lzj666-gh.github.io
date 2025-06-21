@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 115952432
+//  题目ID: P1827
+#include<bits/stdc++.h>
+using namespace std;
+string s,t;
+struct node{
+	int l,r;
+}a[50];
+void dfs(int x,int l,int r){
+	if(r<l){
+		return;
+	}
+	int i=s.find(t[x]);
+	dfs(x+1,l,i-1);
+	dfs(x+i-l+1,i+1,r);
+	cout<<t[x];
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>s>>t;
+	dfs(0,0,s.size()-1);
+	return 0;
+}

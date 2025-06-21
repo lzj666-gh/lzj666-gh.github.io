@@ -1,0 +1,64 @@
+//  OJ: 洛谷
+//  提交ID: 210231626
+//  题目ID: P5491
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+ll n, p;
+struct Node {
+	ll real, imag, w;
+	Node(ll r = 0, ll i = 0, ll w_ = 0) : real(r), imag(i), w(w_) {}
+	friend Node operator*(const Node& a, const Node& b) {
+		ll real = (a.real * b.real + a.imag * b.imag % p * a.w) % p;
+		ll imag = (a.real * b.imag + a.imag * b.real) % p;
+		return Node(real, imag, a.w);
+	}
+};
+Node qpow(Node a, ll n) {
+	Node b(1, 0, a.w);
+	for (; n; n >>= 1) {
+		if (n & 1) b = b * a;
+		a = a * a;
+	}
+	return b;
+}
+ll qpow(ll a, ll n) {
+	ll b(1); 
+	for (; n; n >>= 1) {
+		if (n & 1) b = b * a % p;
+		a = a * a % p;
+	}
+	return b;
+}
+ll solve() {
+	n %= p;
+	if (n == 0) return 0;
+	if (qpow(n, (p - 1) >> 1) == p - 1) return -1;
+	ll a, w;
+	do {
+		a = rand() % p;
+		w = (a * a - n + p) % p;
+	} while (qpow(w, (p - 1) >> 1) != p - 1);
+	Node x(a, 1, w);
+	return qpow(x, (p + 1) >> 1).real % p;
+}
+int main() {
+	srand(time(0));
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		cin >> n >> p;
+		if (p == 2) {
+			cout << n % 2 << endl;
+			continue;
+		}
+		ll ans = solve(), ans2 = p - ans;
+		if (ans == -1) cout << "Hola!\n";
+		else if (ans == 0) cout << "0\n";
+		else {
+			if (ans > ans2) swap(ans, ans2);
+			cout << ans << " " << ans2 << endl;
+		}
+	}
+}

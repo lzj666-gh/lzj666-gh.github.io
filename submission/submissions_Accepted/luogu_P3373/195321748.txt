@@ -1,0 +1,149 @@
+//  OJ: 洛谷
+//  提交ID: 195321748
+//  题目ID: P3373
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, opt, x, y, k;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+	struct point {
+		int l, r;
+		long long sum, add, tim;
+		// true=(sum*tim+add)
+		point() :l(0), r(0), sum(0), add(0), tim(1) {}
+	}tree[4 * 100000 + 10];
+	void pushdown(int p) {
+		//cerr << "pushdowning " << p << '[' << tree[p].l << ',' << tree[p].r << ']' << endl;
+		//cout << "before:" << endl;
+		//print(p); print(lc(p)); print(rc(p));
+		int mid = tree[p].l + tree[p].r >> 1;
+		tree[lc(p)].sum = (tree[lc(p)].sum * tree[p].tim + tree[p].add * (mid - tree[p].l + 1)) % m;
+		tree[rc(p)].sum = (tree[rc(p)].sum * tree[p].tim + tree[p].add * (tree[p].r - mid)) % m;
+		tree[lc(p)].tim = tree[lc(p)].tim * tree[p].tim % m;
+		tree[rc(p)].tim = tree[rc(p)].tim * tree[p].tim % m;
+		tree[lc(p)].add = (tree[lc(p)].add * tree[p].tim + tree[p].add) % m;
+		tree[rc(p)].add = (tree[rc(p)].add * tree[p].tim + tree[p].add) % m;
+		tree[p].add = 0;
+		tree[p].tim = 1;
+		//cout << "end:" << endl;
+		//print(p); print(lc(p)); print(rc(p));
+		return;
+	}
+	void pushup(int p) {
+		tree[p].sum = (tree[lc(p)].sum + tree[rc(p)].sum) % m;
+	}
+	void add(int p, int l, int r, int k) {
+		if (tree[p].l > r || tree[p].r < l) return;
+		//cerr << "in node " << p << '[' << tree[p].l << ',' << tree[p].r << ']' << endl;
+		if (tree[p].l == tree[p].r) {
+			tree[p].sum += k;
+			//cerr << "leaf node" << endl;
+			return;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) {
+			tree[p].add = (tree[p].add + k) % m;
+			tree[p].sum = (tree[p].sum + k * (tree[p].r - tree[p].l + 1)) % m;
+			return;
+		}
+		pushdown(p);
+		add(lc(p), l, r, k);
+		add(rc(p), l, r, k);
+		pushup(p);
+	}
+	void tim(int p, int l, int r, int k) {
+		if (tree[p].l > r || tree[p].r < l) return;
+		if (tree[p].l == tree[p].r) {
+			tree[p].sum *= k;
+			return;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) {
+			tree[p].sum = (tree[p].sum * k) % m;
+			tree[p].tim = (tree[p].tim * k) % m;
+			tree[p].add = (tree[p].add * k) % m;
+			return;
+		}
+		pushdown(p);
+		tim(lc(p), l, r, k);
+		tim(rc(p), l, r, k);
+		pushup(p);
+	}
+	long long query(int p, int l, int r) {
+		if (tree[p].l > r || tree[p].r < l) return 0;
+		if (l <= tree[p].l && tree[p].r <= r) return tree[p].sum;
+		pushdown(p);
+		long long ans = (query(lc(p), l, r) + query(rc(p), l, r)) % m;
+		pushup(p);
+		return ans;
+	}
+	void build(int p, int l, int r, const vector<int>& v) {
+		tree[p].l = l; tree[p].r = r; tree[p].tim = 1;
+		if (l == r) {
+			tree[p].sum = v[l];
+			return;
+		}
+		tree[p].sum = 0; tree[p].add = 0;
+		build(lc(p), l, l + r >> 1, v);
+		build(rc(p), (l + r >> 1) + 1, r, v);
+		pushup(p);
+	}
+	void debug() {
+		//bug(1);
+		cout << "a:";
+		get_a(1);
+		cout << endl;
+	}
+	void print(int x) {
+		cout << "node " << x << ' ' << " it's in [" << tree[x].l << ',' << tree[x].r << "] and it's lazy tag is +" << tree[x].add << "*" << tree[x].tim << " with sum " << tree[x].sum << endl;
+	}
+	void bug(int x) {
+		cout << "in node " << x << ' ' << " it's in [" << tree[x].l << ',' << tree[x].r << "] and it's lazy tag is +" << tree[x].add << "*" << tree[x].tim << " with sum " << tree[x].sum << endl;
+		if (tree[x].l == tree[x].r) {
+			cout << "it's the leaf node!" << endl;
+			return;
+		}
+		cout << "begin the node " << x << "'s left child" << endl;
+		bug(lc(x));
+		cout << "begin the node " << x << "'s right child" << endl;
+		bug(rc(x));
+		cout << "end the node " << x << endl;
+	}
+	void get_a(int x) {
+		if (tree[x].l == tree[x].r) {
+			cout << tree[x].sum << ' ';
+			return;
+		}
+		get_a(lc(x));
+		get_a(rc(x));
+	}
+}t;
+vector<int>v;
+int q;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> q >> m;
+	v.push_back(0);
+	for (int i = 1, tmp; i <= n; ++i) cin >> tmp, v.push_back(tmp);
+	t.build(1, 1, n, v);
+	//t.debug();
+	while (q--) {
+		int opt, x, y, k;
+		cin >> opt;
+		if (opt == 1) {
+			cin >> x >> y >> k;
+			t.tim(1, x, y, k);
+		}
+		else if (opt == 2) {
+			cin >> x >> y >> k;
+			t.add(1, x, y, k);
+		}
+		else {
+			cin >> x >> y;
+			cout << t.query(1, x, y) << endl;
+		}
+		//t.debug();
+		//t.get_a(1);
+		//cout << "a:"; for (int i = 1; i <= n; ++i) cout << t.query(1, i, i) << ' '; cout << endl;
+	}
+	return 0;
+}

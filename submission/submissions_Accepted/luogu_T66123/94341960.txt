@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 94341960
+//  题目ID: T66123
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int a;cin>>a;int min;int b;
+	for(int i=1;i<=a;i++){
+		cin>>b;
+		if(i==1){
+			min=b;
+		}
+		else{
+			if(min>b){
+				min=b;
+			}
+		}
+	}
+	cout<<min;
+	return 0;
+}

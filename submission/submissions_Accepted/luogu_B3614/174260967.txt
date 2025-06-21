@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 174260967
+//  题目ID: B3614
+#include<bits/stdc++.h>
+using namespace std;
+using ull=unsigned long long;
+int main(){
+    ios_base::sync_with_stdio(false);
+    int T,n;
+    cin>>T;
+    while(T--){
+        string opt;ull x;
+        stack<ull>s;
+        cin>>n;
+        while(n--){
+            cin>>opt;
+            if(opt=="push"){
+                cin>>x;
+                s.push(x);
+            }
+            if(opt=="pop") s.empty()?void(cout<<"Empty"<<endl):s.pop();
+            if(opt=="query") s.empty()?cout<<"Anguei!"<<endl:cout<<s.top()<<endl;
+            if(opt=="size") cout<<s.size()<<endl;
+        }
+    }
+}
