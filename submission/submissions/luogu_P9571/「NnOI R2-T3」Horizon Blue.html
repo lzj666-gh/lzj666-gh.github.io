@@ -1,0 +1,469 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/ico.png">
+  <link rel="icon" href="/img/ico.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="lzj">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="「NnOI R2-T3」Horizon Blue 题目描述 小 C 喜欢在画板上画画。他进行了 $ n $ 次操作，每次操作有如下三种可能：  1 k b 代表小 C 绘制了一条解析式为 $ y&#x3D;kx+b $ 的直线。 2 k b 代表小 C 询问你直线 $ y&#x3D;kx+b $ 与多少条被绘制的直线有恰好一个公共点。 3 k b 代表小 C 擦除所有与直线 $ y&#x3D;kx+b $ 有至少一个公共点的直">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page.title">
+<meta property="og:url" content="https://www.lzj-blog.top/submission/submissions/luogu_P9571/%E3%80%8CNnOI%20R2-T3%E3%80%8DHorizon%20Blue.html">
+<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:description" content="「NnOI R2-T3」Horizon Blue 题目描述 小 C 喜欢在画板上画画。他进行了 $ n $ 次操作，每次操作有如下三种可能：  1 k b 代表小 C 绘制了一条解析式为 $ y&#x3D;kx+b $ 的直线。 2 k b 代表小 C 询问你直线 $ y&#x3D;kx+b $ 与多少条被绘制的直线有恰好一个公共点。 3 k b 代表小 C 擦除所有与直线 $ y&#x3D;kx+b $ 有至少一个公共点的直">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-07-04T07:21:23.826Z">
+<meta property="article:modified_time" content="2025-07-04T07:21:23.826Z">
+<meta property="article:author" content="lzj">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>page.title - lzj&#39;blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.lzj-blog.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>lzj&#39;blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/cbcoj/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>cbcoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/e3.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="page.title"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <h1>「NnOI R2-T3」Horizon Blue</h1>
+<h2 id="题目描述">题目描述</h2>
+<p>小 C 喜欢在画板上画画。他进行了 $ n $ 次操作，每次操作有如下三种可能：</p>
+<ul>
+<li><code>1 k b</code> 代表小 C 绘制了一条解析式为 $ y=kx+b $ 的直线。</li>
+<li><code>2 k b</code> 代表小 C 询问你直线 $ y=kx+b $ 与多少条被绘制的直线有<strong>恰好</strong>一个公共点。</li>
+<li><code>3 k b</code> 代表小 C 擦除所有与直线 $ y=kx+b $ 有<strong>至少</strong>一个公共点的直线。</li>
+</ul>
+<p><strong>注意：两条重合的直线有无数个交点。</strong></p>
+<p><strong>注意：询问时重合的直线应分别计算。</strong></p>
+<h2 id="输入格式">输入格式</h2>
+<p>第一行一个整数 $ n $。</p>
+<p>接下来 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 行，每行三个整数 $ 1/2/3,k,b $，代表一次操作。</p>
+<h2 id="输出格式">输出格式</h2>
+<p>对每次 <code>2 k b</code> 操作，输出满足要求的直线数量。</p>
+<h2 id="提示">提示</h2>
+<p><strong>【样例 1 解释】</strong></p>
+<p>第 1 次操作，绘制直线 $ y=x $。</p>
+<p>第 2 次操作，绘制直线 $ y=-x $。</p>
+<p>第 3 次操作，可以发现直线 $ y=2x+1 $ 与前两条线相交。</p>
+<p>第 4 次操作，擦掉所有 $ y=x+3 $ 相交的线，直线 $ y=-x $ 被擦掉。</p>
+<p>第 5 次操作，$ y=2x+1 $ 显然与 $ y=x $ 相交。</p>
+<p>第 6 次操作，$ y=x+1 $ 与 $ y=x $ 斜率相等，是平行线，不相交。</p>
+<p><strong>【数据范围】</strong></p>
+<p>对于 $ 100% $ 的数据，$ 1 \le n \le 10^5 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>，</mtext></mrow><annotation encoding="application/x-tex">，</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">，</span></span></span></span> 1 \le |k| \le 10^5 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>，</mtext></mrow><annotation encoding="application/x-tex">，</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">，</span></span></span></span> 0 \le |b| \le 10^5 $。</p>
+<p><strong>提示：本题开启捆绑测试。</strong></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><menclose notation="right"><mtable rowspacing="0.66em" columnalign="center center center" columnlines="solid solid" columnspacing="1em" rowlines="solid solid solid solid solid"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext mathvariant="bold">Subtask</mtext></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext mathvariant="bold">Sp.</mtext><mtext> </mtext><mtext mathvariant="bold">Constraints</mtext></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext mathvariant="bold">Score</mtext></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext mathvariant="sans-serif">1</mtext></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>n</mi><mo>≤</mo><mn>5000</mn></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>27</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext mathvariant="sans-serif">2</mtext></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi mathvariant="normal">∣</mi><mi>k</mi><mi mathvariant="normal">∣</mi><mo separator="true">,</mo><mi mathvariant="normal">∣</mi><mi>b</mi><mi mathvariant="normal">∣</mi><mo>≤</mo><mn>50</mn></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>21</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext mathvariant="sans-serif">3</mtext></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>无第 </mtext><mn>3</mn><mtext> 类操作</mtext></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>13</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext mathvariant="sans-serif">4</mtext></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>第 </mtext><mi>i</mi><mtext> 次操作满足 </mtext><mi>k</mi><mo>=</mo><mi>i</mi></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>14</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext mathvariant="sans-serif">5</mtext></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext>无特殊限制</mtext></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>25</mn></mstyle></mtd></mtr></mtable></menclose></mrow><annotation encoding="application/x-tex">\def\r{\cr\hline}
+\def\None{\text{None}}
+\def\arraystretch{1.5}
+\begin{array}{c|c|c}
+\textbf{Subtask} &amp; \textbf{Sp. Constraints} &amp; \textbf{Score}\r
+\textsf1&amp; n \le 5000 &amp; 27 \r
+\textsf2&amp; \vert k\vert,\vert b\vert \le 50 &amp; 21 \r
+\textsf3&amp; 无第\ 3\ 类操作 &amp; 13 \r
+\textsf4&amp; 第\ i\ 次操作满足\ k=i &amp; 14 \r
+\textsf5&amp; 无特殊限制 &amp; 25 \r
+\end{array}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:10.8em;vertical-align:-5.15em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:5.65em;"><span style="top:-7.65em;"><span class="pstrut" style="height:7.65em;"></span><span class="mtable"><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:5.65em;"><span style="top:-7.65em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord text"><span class="mord textbf">Subtask</span></span></span></span><span style="top:-5.85em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord text"><span class="mord textsf">1</span></span></span></span><span style="top:-4.05em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord text"><span class="mord textsf">2</span></span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord text"><span class="mord textsf">3</span></span></span></span><span style="top:-0.45em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord text"><span class="mord textsf">4</span></span></span></span><span style="top:1.35em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord text"><span class="mord textsf">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:5.15em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="vertical-separator" style="height:10.8em;border-right-width:0.04em;border-right-style:solid;margin:0 -0.02em;vertical-align:-5.15em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:5.65em;"><span style="top:-7.65em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord text"><span class="mord textbf">Sp. Constraints</span></span></span></span><span style="top:-5.85em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">5000</span></span></span><span style="top:-4.05em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mord">∣</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∣</span><span class="mord mathnormal">b</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">50</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord cjk_fallback">无第</span><span class="mspace"> </span><span class="mord">3</span><span class="mspace"> </span><span class="mord cjk_fallback">类操作</span></span></span><span style="top:-0.45em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord cjk_fallback">第</span><span class="mspace"> </span><span class="mord mathnormal">i</span><span class="mspace"> </span><span class="mord cjk_fallback">次操作满足</span><span class="mspace"> </span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal">i</span></span></span><span style="top:1.35em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord cjk_fallback">无特殊限制</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:5.15em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="vertical-separator" style="height:10.8em;border-right-width:0.04em;border-right-style:solid;margin:0 -0.02em;vertical-align:-5.15em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:5.65em;"><span style="top:-7.65em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord text"><span class="mord textbf">Score</span></span></span></span><span style="top:-5.85em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord">27</span></span></span><span style="top:-4.05em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord">21</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord">13</span></span></span><span style="top:-0.45em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord">14</span></span></span><span style="top:1.35em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord">25</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:5.15em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span></span></span><span style="top:-2.5em;"><span class="pstrut" style="height:7.65em;"></span><span class="hline" style="border-bottom-width:0.04em;"></span></span><span style="top:-4.3em;"><span class="pstrut" style="height:7.65em;"></span><span class="hline" style="border-bottom-width:0.04em;"></span></span><span style="top:-6.1em;"><span class="pstrut" style="height:7.65em;"></span><span class="hline" style="border-bottom-width:0.04em;"></span></span><span style="top:-7.9em;"><span class="pstrut" style="height:7.65em;"></span><span class="hline" style="border-bottom-width:0.04em;"></span></span><span style="top:-9.7em;"><span class="pstrut" style="height:7.65em;"></span><span class="hline" style="border-bottom-width:0.04em;"></span></span><span style="top:-11.5em;"><span class="pstrut" style="height:7.65em;"></span><span class="hline" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:5.15em;"><span></span></span></span></span></span></span></span></span></span></p>
+<p>在赛后新添加的 hack 测试点将放入 subtask 6。</p>
+<h3 id="题目来源">题目来源</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">项目</th>
+<th style="text-align:center">人员</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">idea</td>
+<td style="text-align:center">船酱魔王</td>
+</tr>
+<tr>
+<td style="text-align:center">data</td>
+<td style="text-align:center">船酱魔王</td>
+</tr>
+<tr>
+<td style="text-align:center">check</td>
+<td style="text-align:center">EstasTonne</td>
+</tr>
+<tr>
+<td style="text-align:center">solution</td>
+<td style="text-align:center">船酱魔王</td>
+</tr>
+</tbody>
+</table>
+<h2 id="时空限制">时空限制</h2>
+<p>时间限制: 500 ms<br>
+内存限制: 512 MB</p>
+
+
+  
+
+</article>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <p><font face="Ink Free">May all the beauty be blessed.</font></p> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
