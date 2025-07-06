@@ -4,23 +4,36 @@ import time
 import json
 import requests
 from bs4 import BeautifulSoup
+import pyluog as pl
 
 def extract_problem_id(folder_name):
     """从文件夹名称中提取题目ID"""
     match = re.match(r'^luogu_(.*)$', folder_name)
     return match.group(1) if match else None
 
-def get_luogu_problem_content(problem_id, cookie):
+def get_luogu_problem_content(problem_id):
     """获取洛谷题目内容和翻译"""
     url = f"https://www.luogu.com.cn/problem/{problem_id}"
+    uid = '836542'
+    client_id = '34335883012ba9e4c9f032dc0cbb9a451f8edffe'
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-        "Cookie": cookie,
-        "Referer": "https://www.luogu.com.cn/"
+        'Referer': 'https://www.luogu.com.cn/auth/login',
+        'Origin': 'https://www.luogu.com.cn',
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.421.0 Safari/537.36",
+        "Accept": "*/*",
+        'Connection': 'keep-alive',
+        'x-requested-with': 'XMLHttpRequest',
+        'x-csrf-token':'',
     }
+    s = requests.session()
+    requests.utils.add_dict_to_cookiejar(s.cookies,{'__client_id':client_id,'_uid':str(uid)})
+    res = pl.User('*','*')
+    res.sess = s
+    res.client_id_ = client_id
+    res.uid = uid
     
     try:
-        response = requests.get(url, headers=headers)
+        response = res.sess.get(url, headers=headers)
         response.raise_for_status()
         
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -146,13 +159,11 @@ def has_markdown_files(folder_path):
     # 列出文件夹中的所有文件
     for file_name in os.listdir(folder_path):
         # 检查是否为Markdown文件
-        if file_name.endswith('.md'):
+        if file_name.endswith('.md') and file_name != 'solution.md':
             return True
     return False
 
 def main():
-    # 用户输入洛谷Cookie
-    cookie = input("请输入您的洛谷Cookie: ").strip()
     
     # 基础目录路径
     base_dir = "submissions"
@@ -178,7 +189,7 @@ def main():
         print(f"处理题目: {problem_id}")
         
         # 获取题目内容
-        title, content, limits, translated_content = get_luogu_problem_content(problem_id, cookie)
+        title, content, limits, translated_content = get_luogu_problem_content(problem_id)
         if not title or not content or not limits:
             print(f"获取题目内容失败: {problem_id}")
             continue

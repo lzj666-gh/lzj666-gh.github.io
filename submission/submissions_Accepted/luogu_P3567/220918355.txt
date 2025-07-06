@@ -1,0 +1,109 @@
+//  OJ: 洛谷
+//  提交ID: 220918355
+//  题目ID: P3567
+#include<bits/stdc++.h>
+using namespace std;
+namespace IO {
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	inline void qread(char& IEE) { IEE = gc(); }
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	inline void qwrite(char IEE) { putc_(IEE); }
+	inline void qwrite(const char* str) { while (*str != '\0') putc_(*str++); }
+	inline void qwrite(const std::string& IEE) { qwrite(IEE.c_str()); }
+	template<class... T2> inline void qwrite(const char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class ...T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+constexpr int N = 3e6 + 5;
+struct CNT {
+#define lc(p) (tree[p].ls)
+#define rc(p) (tree[p].rs)
+#define mid (l + r >> 1)
+	int idx;
+	struct Tree {
+		int ls, rs, sum;
+	}tree[N << 2];
+	void insert(int lp, int rp, int l, int r, int k) {
+		tree[rp] = tree[lp];
+		if (l == r) {
+			tree[rp].sum++;
+			return;
+		}
+		if (k <= mid) insert(tree[lp].ls, tree[rp].ls = ++idx, l, l + r >> 1, k);
+		else insert(tree[lp].rs, tree[rp].rs = ++idx, mid + 1, r, k);
+	}
+	int query(int lp, int rp, int l, int r, int k) {
+		if (l == r) return tree[rp].sum - tree[lp].sum;
+		if (k <= mid) return query(lc(lp), lc(rp), l, l + r >> 1, k);
+		else return query(rc(lp), rc(rp), mid + 1, r, k);
+	}
+	int root[N], n;
+	void insert(int x) {
+		n++;
+		insert(root[n - 1], root[n] = ++idx, 1, 5e5, x);
+	}
+	int query(int l, int r, int x) {
+		return query(root[l - 1], root[r], 1, 5e5, x);
+	}
+	CNT() :root(), n(), tree(), idx() {}
+}tr;
+struct MAX {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int rep, cnt;
+		operator int() { return rep; }
+		Node(int rep = 0, int cnt = 0) :rep(rep), cnt(cnt) {}
+		friend Node operator+(const Node& a, const Node& b) {
+			if (a.rep == b.rep) return Node(a.rep, a.cnt + b.cnt);
+			if (a.cnt > b.cnt) return Node(a.rep, a.cnt - b.cnt);
+			return Node(b.rep, b.cnt - a.cnt);
+		}
+	}tree[N << 2];
+	void pushup(int p) {
+		tree[p] = tree[lc(p)] + tree[rc(p)];
+	}
+	void build(int p, int l, int r, vector<int>& a) {
+		if (l == r) {
+			tree[p] = Node(a[l], 1);
+			return;
+		}
+		build(lson, a);
+		build(rson, a);
+		pushup(p);
+	}
+	Node query(int p, int l, int r, int x, int y) {
+		if (x <= l && r <= y) return tree[p];
+		Node ans;
+		if (x <= mid) ans = ans + query(lson, x, y);
+		if (y > mid) ans = ans + query(rson, x, y);
+		return ans;
+	}
+}t;
+signed main() {
+	int n, m;
+	qread(n, m);
+	vector<int>a(n + 1);
+	for (int i = 1; i <= n; ++i) qread(a[i]), tr.insert(a[i]);
+	t.build(1, 1, n, a);
+	while (m--) {
+		int l, r; qread(l, r);
+		int x = t.query(1, 1, n, l, r);
+		if (tr.query(l, r, x) * 2 > r - l + 1) qwrite(x, '\n');
+		else qwrite("0\n");
+	}
+	return 0;
+}

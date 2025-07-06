@@ -1,5 +1,2 @@
 User-Agent: *
-Disallow: /友链
-Disallow: /杂项
-Disallow: /links
 Disallow: /cbcoj

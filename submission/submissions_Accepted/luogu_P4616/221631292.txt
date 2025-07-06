@@ -1,0 +1,53 @@
+//  OJ: 洛谷
+//  提交ID: 221631292
+//  题目ID: P4616
+#include<bits/stdc++.h>
+using namespace std;
+int fa[100000 + 5];
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+struct Edge {
+	int v, w, nxt;
+}edge[200000 + 5];
+int head[100000 + 5], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int f[100000 + 5][20], dis[100000 + 5][20], dep[1000000 + 5];
+void dfs(int x, int fa, int val) {
+	f[x][0] = fa; dis[x][0] = val; dep[x] = dep[fa] + 1;
+	for (int i = 1; i < 20; ++i)
+		f[x][i] = f[f[x][i - 1]][i - 1],
+		dis[x][i] = max(dis[x][i - 1], dis[f[x][i - 1]][i - 1]);
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs(edge[i].v, x, edge[i].w);
+}
+int query(int x, int y) {
+	if (dep[x] < dep[y]) swap(x, y);
+	int gap = dep[x] - dep[y], ans = 1;
+	for (int i = 0; i < 20; ++i) if ((1 << i) & gap) ans = max(ans, dis[x][i]), x = f[x][i];
+	if (x == y) return ans;
+	for (int i = 19; i >= 0; --i)
+		if (f[x][i] ^ f[y][i])
+			ans = max(ans, dis[x][i]), x = f[x][i],
+			ans = max(ans, dis[y][i]), y = f[y][i];
+	return max(max(ans, dis[x][0]), dis[y][0]);
+}
+int n, m, q;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> q;
+	for (int i = 1; i <= n; ++i) fa[i] = i, memset(dis[i], 0x3f, sizeof dis[i]);
+	for (int i = m; i >= 1; --i)
+		for (int j = i + i; j <= n; j += i)
+			if (find(i) ^ find(j))
+				add(i, j, m - i + 1), add(j, i, m - i + 1), fa[find(i)] = find(j);
+	dfs(1, 1, 1);
+	while (q--) {
+		int a, b;
+		cin >> a >> b;
+		cout << query(a, b) << endl;
+	}
+	return 0;
+}
