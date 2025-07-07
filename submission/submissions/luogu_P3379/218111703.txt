@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 218111703
+//  题目ID: P3379
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 500000 + 10, M = 1000000 + 10, B = 25;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx, f[N][B], dep[N];
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+void dfs(int x, int fa) {
+	dep[x] = dep[fa] + 1;
+	f[x][0] = fa;
+	for (int i = 1; i < B; ++i) f[x][i] = f[f[x][i - 1]][i - 1];
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs(edge[i].v, x);
+}
+int LCA(int x, int y) {
+	if (dep[x] < dep[y]) swap(x, y);
+	int cur = dep[x] - dep[y];
+	for (int i = 0; i < B; ++i)
+		if ((1 << i) & cur)
+			x = f[x][i];
+	assert(dep[x] == dep[y]);
+	if (x == y) return x;
+	for (int i = B - 1; i >= 0; --i)
+		if (f[x][i] ^ f[y][i])
+			x = f[x][i], y = f[x][i];
+	//assert(x != y);
+	assert(f[x][0] == f[y][0]);
+	return f[x][0];
+}
+int n, m, s;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> s;
+	for (int i = 1, x, y; i < n; ++i) cin >> x >> y, add(x, y), add(y, x);
+	dfs(s, 0);
+	while (m--) {
+		int x, y;
+		cin >> x >> y;
+		cout << LCA(x, y) << endl;
+	}
+	return 0;
+}

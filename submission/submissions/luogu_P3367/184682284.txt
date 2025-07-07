@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 184682284
+//  题目ID: P3367
+#include<bits/stdc++.h>
+using namespace std;
+int read() {
+	int x = 0; char c = getchar();
+	while (c > '9' || c < '0') c = getchar();
+	while (c >= '0' && c <= '9') x = x * 10 + (c ^ 48), c = getchar();
+	return x;
+}
+void print(int x) {
+	if (x < 10) return putchar(x + '0'), void();
+	print(x / 10); putchar(x % 10 + '0');
+}
+int fa[200000], n, m, x, y, z;
+int find(int x) {
+	return fa[x] == x ? x : fa[x] = find(fa[x]);
+}
+signed main() {
+	n = read(); m = read();
+	for (int i = 1; i <= n; ++i) fa[i] = i;
+	while (m--) {
+		cin >> z >> x >> y;
+		if (z == 1) fa[x] = y;
+		else putchar("NY"[find(x) == find(y)]), putchar('\n');
+	}
+	return 0;
+}

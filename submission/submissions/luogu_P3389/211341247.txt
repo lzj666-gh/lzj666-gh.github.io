@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 211341247
+//  题目ID: P3389
+#include<bits/stdc++.h>
+using namespace std;
+double a[100 + 10][100 + 10];
+void gauss(int n) {
+	for (int i = 1; i <= n; i++) {
+		int r = i;
+		for (int j = i + 1; j <= n; j++)
+			if (fabs(a[j][i]) > fabs(a[r][i]))
+				r = j;
+		if (fabs(a[r][i]) < 1e-8) {
+			cout << "No Solution" << endl;
+			exit(0);
+		}
+		if (r != i)
+			for (int j = 1; j <= n + 1; j++)
+				swap(a[i][j], a[r][j]);
+		for (int j = 1; j <= n; j++)
+			if (i != j) {
+				double t = a[j][i] / a[i][i];
+				for (int k = i; k <= n + 1; k++)
+					a[j][k] -= a[i][k] * t;
+			}
+	}
+	if (fabs(a[n][n]) < 1e-8) {
+		cout << "No Solution" << endl;
+		exit(0);
+	}
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n;
+	cin >> n;
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= n + 1; j++)
+			cin >> a[i][j];
+	cout << fixed << setprecision(2);
+	gauss(n);
+	for (int i = 1; i <= n; i++)
+		cout << a[i][n + 1] / a[i][i] << endl;
+	return 0;
+}

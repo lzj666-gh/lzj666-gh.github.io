@@ -1,9 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 107572843
-//  题目ID: T327718
-#include<bits/stdc++.h>
-using namespace std;
-int main(){
-    cout<<"8457\n7528\n68344\n28910\n59388\n34886\n59388\n215697\n65363\n130151\n60864"<<endl;
-    return 0; 
-}

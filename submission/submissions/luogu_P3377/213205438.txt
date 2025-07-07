@@ -1,0 +1,91 @@
+//  OJ: 洛谷
+//  提交ID: 213205438
+//  题目ID: P3377
+#include <bits/stdc++.h>
+#define int long long 
+using namespace std;
+struct LIT {
+	struct Node {
+		int val, dist, id;
+		Node* lc, * rc, * fa;
+		Node(int v = 0, int i = 0) : val(v), id(i), lc(nullptr), rc(nullptr), fa(nullptr), dist(0) {}
+	};
+	Node* root;
+	unordered_map<int, Node*> id_map;
+	Node* merge(Node* a, Node* b) {
+		if (!a || !b) return a ? a : b;
+		if (a->val > b->val || (a->val == b->val && a->id > b->id)) swap(a, b);
+		a->rc = merge(a->rc, b);
+		a->rc->fa = a;
+		if (!a->lc || a->lc->dist < a->rc->dist) swap(a->lc, a->rc);
+		a->dist = (a->rc ? a->rc->dist + 1 : 0);
+		return a;
+	}
+	Node* find_root(Node* x) {
+		while (x && x->fa) x = x->fa;
+		return x;
+	}
+	void ins(int val, int id) {
+		Node* node = new Node(val, id);
+		id_map[id] = node;
+		root = merge(root, node);
+	}
+	void del(Node* x) {
+		if (!x) return;
+		id_map.erase(x->id);
+		Node* fa = x->fa;
+		Node* merged = merge(x->lc, x->rc);
+		if (merged) merged->fa = fa;
+		if (fa) {
+			(fa->lc == x ? fa->lc : fa->rc) = merged;
+			pushup(fa);
+		}
+		else {
+			root = merged;
+		}
+		delete x;
+	}
+	void pushup(Node* x) {
+		while (x) {
+			int l = x->lc ? x->lc->dist : -1;
+			int r = x->rc ? x->rc->dist : -1;
+			if (l < r) swap(x->lc, x->rc);
+			int new_dist = (x->rc ? x->rc->dist : -1) + 1;
+			if (x->dist == new_dist) break;
+			x->dist = new_dist;
+			x = x->fa;
+		}
+	}
+	LIT() : root(nullptr) {}
+};
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	LIT t;
+	int n, m;
+	cin >> n >> m;
+	for (int i = 1, a; i <= n; ++i) {
+		cin >> a;
+		t.ins(a, i);
+	}
+	while (m--) {
+		int op, x, y;
+		cin >> op;
+		if (op == 1) {
+			cin >> x >> y;
+			auto nx = t.id_map[x], ny = t.id_map[y];
+			if (!nx || !ny) continue;
+			auto rx = t.find_root(nx), ry = t.find_root(ny);
+			if (rx != ry) t.root = t.merge(rx, ry);
+		}
+		else {
+			cin >> x;
+			auto node = t.id_map[x];
+			if (!node) cout << "-1\n";
+			else {
+				cout << node->val << '\n';
+				t.del(node);
+			}
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 104460731
+//  题目ID: P3152
+using namespace std;
+int n;int cnt=0;
+void dg(int x)
+{
+    if(x==0)return;
+    cnt++;
+    if(x%2==1)x-=1;
+    x/=2;
+    dg(x);
+}
+int main()
+{
+    scanf("%d",&n);
+    dg(n);
+    printf("%d",cnt);
+    return 0;
+}

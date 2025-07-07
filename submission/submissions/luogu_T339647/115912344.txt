@@ -1,9 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 115912344
-//  题目ID: T339647
-#include<bits/stdc++.h>
-using namespace std;
-int main(){
-    cout<<41<<endl;
-    return 0;
-}

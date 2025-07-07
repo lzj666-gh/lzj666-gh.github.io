@@ -1,0 +1,116 @@
+//  OJ: 洛谷
+//  提交ID: 174326064
+//  题目ID: P3402
+#include<bits/stdc++.h>
+using namespace std;
+int n, m;
+namespace BCJ {
+	struct Tree {
+		int sum, ls, rs;
+	}tree[4000000 + 10];
+	int root[200000 + 10], idx;
+	void build(int p, int l, int r) {
+		if (l == r) {
+			tree[p].sum = l;
+			return;
+		}
+		tree[p].ls = ++idx;
+		build(idx, l, l + r >> 1);
+		tree[p].rs = ++idx;
+		build(idx, (l + r >> 1) + 1, r);
+	}
+	int query(int p, int fnd, int l, int r) {
+		if (l == r) return tree[p].sum;
+		if (l <= fnd && fnd <= (l + r >> 1)) return query(tree[p].ls, fnd, l, l + r >> 1);
+		else return query(tree[p].rs, fnd, (l + r >> 1) + 1, r);
+	}
+	void chg(int bef, int to, int idk, int val, int l, int r) {
+		if (l == r) {
+			tree[to].sum = val;
+			return;
+		}
+		if (l <= idk && idk <= (l + r >> 1)) {
+			tree[to].rs = tree[bef].rs;
+			tree[to].ls = ++idx;
+			chg(tree[bef].ls, tree[to].ls, idk, val, l, l + r >> 1);
+		}
+		else {
+			tree[to].ls = tree[bef].ls;
+			tree[to].rs = ++idx;
+			chg(tree[bef].rs, tree[to].rs, idk, val, (l + r >> 1) + 1, r);
+		}
+	}
+}
+namespace SIZE {
+	struct Tree {
+		int sum, ls, rs;
+	}tree[4000000 + 10];
+	int root[200000 + 10], idx;
+	void build(int p, int l, int r) {
+		if (l == r) {
+			tree[p].sum = 1;
+			return;
+		}
+		tree[p].ls = ++idx;
+		build(idx, l, l + r >> 1);
+		tree[p].rs = ++idx;
+		build(idx, (l + r >> 1) + 1, r);
+	}
+	int query(int p, int fnd, int l, int r) {
+		if (l == r) return tree[p].sum;
+		if (l <= fnd && fnd <= (l + r >> 1)) return query(tree[p].ls, fnd, l, l + r >> 1);
+		else return query(tree[p].rs, fnd, (l + r >> 1) + 1, r);
+	}
+	void chg(int bef, int to, int idk, int val, int l, int r) {
+		if (l == r) {
+			tree[to].sum = val;
+			return;
+		}
+		if (l <= idk && idk <= (l + r >> 1)) {
+			tree[to].rs = tree[bef].rs;
+			tree[to].ls = ++idx;
+			chg(tree[bef].ls, tree[to].ls, idk, val, l, l + r >> 1);
+		}
+		else {
+			tree[to].ls = tree[bef].ls;
+			tree[to].rs = ++idx;
+			chg(tree[bef].rs, tree[to].rs, idk, val, (l + r >> 1) + 1, r);
+		}
+	}
+}
+int find(int now, int x) {
+	int f = BCJ::query(BCJ::root[now], x, 1, n);
+	if (f == x) return x;
+	else return find(now, BCJ::query(BCJ::root[now], f, 1, n));
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m; 
+	BCJ::root[0] = ++BCJ::idx;
+	BCJ::build(BCJ::idx, 1, n);
+	SIZE::root[0] = ++SIZE::idx;
+	SIZE::build(SIZE::idx, 1, n);
+	for (int l = 1; l <= m; ++l) {
+		int opt, a, b;
+		cin >> opt;
+		if (opt == 1) {
+			cin >> a >> b;
+			int sza = SIZE::query(SIZE::root[l - 1], a, 1, n), szb = SIZE::query(SIZE::root[l - 1], b, 1, n);
+			if (sza < szb) BCJ::chg(BCJ::root[l - 1], BCJ::root[l] = ++BCJ::idx, find(l - 1, a), find(l - 1, b), 1, n);
+			else BCJ::chg(BCJ::root[l - 1], BCJ::root[l] = ++BCJ::idx, find(l - 1, b), find(l - 1, a), 1, n);
+		}
+		else if (opt == 2) {
+			cin >> a;
+			SIZE::root[l] = SIZE::root[a];
+			BCJ::root[l] = BCJ::root[a];
+		}
+		else {
+			cin >> a >> b;
+			SIZE::root[l] = SIZE::root[l - 1];
+			BCJ::root[l] = BCJ::root[l - 1];
+			cout << (BCJ::query(BCJ::root[l - 1], a, 1, n) == BCJ::query(BCJ::root[l - 1], b, 1, n)) << endl;
+		}
+		//for (int i = 1; i <= n; ++i) clog << query(root[l], i, 1, n) << ' '; clog << endl;
+	}
+	return 0;
+}

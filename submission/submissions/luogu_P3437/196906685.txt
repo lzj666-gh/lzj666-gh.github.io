@@ -1,0 +1,83 @@
+//  OJ: 洛谷
+//  提交ID: 196906685
+//  题目ID: P3437
+#include<iostream>
+using namespace std;
+int n, d, s;
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+template<int Inside>
+struct Seg_Tree { };
+template<>
+struct Seg_Tree<0> {
+	struct Node {
+		int ans, lzy;
+		Node():ans(0), lzy(-1) { }
+	}tree[int(1024 * 2.9) + 1];
+	void pushup(int p) { tree[p].ans = max(tree[lc(p)].ans, tree[rc(p)].ans); }
+	void pushdown(int p) {
+		if(tree[p].lzy != -1) {
+			tree[lc(p)].ans = tree[rc(p)].ans = tree[p].lzy;
+			tree[lc(p)].lzy = tree[rc(p)].lzy = tree[p].lzy;
+			tree[p].lzy = -1;
+		}
+	}
+	void build(int p, int nl, int nr) {
+		tree[p].lzy = -1;
+		if(nl == nr) return;
+		build(lc(p), nl, nl + nr >> 1);
+		build(rc(p), (nl + nr >> 1) + 1, nr);
+	}
+	void set(int p, int l, int r, int k, int nl, int nr) {
+		if(l <= nl && nr <= r) return tree[p].ans = tree[p].lzy = k, void();
+		if(nr < l || r < nl) return;
+		pushdown(p);
+		set(lc(p), l, r, k, nl, nl + nr >> 1);
+		set(rc(p), l, r, k, (nl + nr >> 1) + 1, nr);
+		pushup(p);
+	}
+	int query(int p, int l, int r, int nl, int nr) {
+		if(l <= nl && nr <= r) return tree[p].ans;
+		if(nr < l || r < nl) return 0;
+		pushdown(p);
+		return max(query(lc(p), l, r, nl, nl + nr >> 1), query(rc(p), l, r, (nl + nr >> 1) + 1, nr));
+	}
+};
+template<>
+struct Seg_Tree<1> {
+	Seg_Tree<0> tree[int(1024 * 2.9) + 1]; //mx
+	Seg_Tree<0> treee[int(1024 * 2.9) + 1]; //tag
+	void build(int p, int nl, int nr) {
+		tree[p].build(1, 1, s);
+		treee[p].build(1, 1, s);
+		if(nl == nr) return;
+		build(lc(p), nl, nl + nr >> 1);
+		build(rc(p), (nl + nr >> 1) + 1, nr);
+	}
+	void set(int p, int l, int r, int rest1, int rest2, int k, int nl, int nr) {
+		if(nr < l || r < nl) return;
+		tree[p].set(1, rest1, rest2, k, 1, s);
+		if(l <= nl && nr <= r) return treee[p].set(1, rest1, rest2, k, 1, s);
+		set(lc(p), l, r, rest1, rest2, k, nl, nl + nr >> 1);
+		set(rc(p), l, r, rest1, rest2, k, (nl + nr >> 1) + 1, nr);
+	}
+	int query(int p, int l, int r, int rest1, int rest2, int nl, int nr) {
+		if(l <= nl && nr <= r) return tree[p].query(1, rest1, rest2, 1, s);
+		if(nr < l || r < nl) return 0;
+		return max(query(lc(p), l, r, rest1, rest2, nl, nl + nr >> 1), max(query(rc(p), l, r, rest1, rest2, (nl + nr >> 1) + 1, nr), treee[p].query(1, rest1, rest2, 1, s)));
+	}
+};
+Seg_Tree<1>t;
+ signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> d >> s >> n; d++; s++;
+	t.build(1, 1, d);
+	while(n--) {
+		static int d, s, w, x, y;
+		cin >> d >> s >> w >> x >> y;
+		int tmp = t.query(1, x + 1, x + d, y + 1, y + s, 1, ::d) + w;
+		t.set(1, x + 1, x + d, y + 1, y + s, tmp, 1, ::d);
+	}
+	cout << t.query(1, 1, d, 1, s, 1, d) << endl;
+	return 0;
+}

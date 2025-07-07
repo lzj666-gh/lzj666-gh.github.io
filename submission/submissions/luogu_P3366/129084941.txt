@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 129084941
+//  题目ID: P3366
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,fa[20000+10],q,ans,cnt;
+struct Edge{
+	int from,to,val;
+	friend bool operator < (const Edge &a,const Edge &b){
+		return a.val<b.val;
+	}
+}edge[114514*2];
+int find(int x){
+	return x==fa[x]?x:fa[x]=find(fa[x]);
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;i++) fa[i]=i;
+	for(int i=1;i<=m;++i) cin>>edge[i].from>>edge[i].to>>edge[i].val;
+	sort(&edge[1],&edge[m+1]);
+	for(int i=1;i<=m;i++){
+		int v1=edge[i].from,v2=edge[i].to;
+		if(find(v1)==find(v2)) continue;
+		tot+=edge[i].val,cnt++;
+		fa[find(v1)]=fa[find(v2)];
+		if(cnt==n-1) break;
+	}
+	if(cnt!=n-1) cout<<"orz"<<endl;
+	else cout<<ans<<endl;
+	return 0;
+}
