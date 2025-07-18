@@ -26,13 +26,11 @@
 <meta property="og:site_name" content="lzj&#39;blog">
 <meta property="og:description" content="题解：CF253C Text Editor">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/rthg97ae.png">
 <meta property="article:published_time" content="2024-08-26T10:40:00.000Z">
 <meta property="article:modified_time" content="2025-05-08T06:27:24.000Z">
 <meta property="article:author" content="lzj">
 <meta property="article:tag" content="题解">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.luogu.com.cn/upload/image_hosting/rthg97ae.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -47,8 +45,6 @@
   <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
 
@@ -76,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lzj-blog.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"lzj-blog.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":false,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -263,7 +259,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2024-08-26 18:40" pubdate>
-          August 26, 2024 pm
+          2024年8月26日 晚上
         </time>
       </span>
     
@@ -329,19 +325,24 @@
                 
                 <h2 id="说明提示">说明提示</h2>
 <p>翻译坑人！这道题在 CF 上是要文件操作的，见下图。</p>
-<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/rthg97ae.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img
+src="https://cdn.luogu.com.cn/upload/image_hosting/rthg97ae.png" srcset="/img/loading.gif" lazyload /></p>
 <h2 id="做法">做法</h2>
-<p>见到这道题我们可以发现可以用题目中给出的条件建一张图，而这道题中所有边的边权均为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，因此可以使用 BFS。</p>
-<p>BFS 广度优先搜索是使用队列（queue，先进先出）来实现，整个过程也可以看做一个倒立的树形：</p>
-<ol>
+<p>见到这道题我们可以发现可以用题目中给出的条件建一张图，而这道题中所有边的边权均为
+<span class="math inline">1</span>，因此可以使用 BFS。</p>
+<p>BFS
+广度优先搜索是使用队列（queue，先进先出）来实现，整个过程也可以看做一个倒立的树形：</p>
+<ol type="1">
 <li>把根节点放到队列的末尾。</li>
-<li>每次从队列的头部取出一个元素，查看这个元素所有的下一级元素，把它们放到队列的末尾 (不需要排序，因为默认每次增加权重相同)。并把这个元素记为它下一级元素的前驱。</li>
+<li>每次从队列的头部取出一个元素，查看这个元素所有的下一级元素，把它们放到队列的末尾
+(不需要排序，因为默认每次增加权重相同)。并把这个元素记为它下一级元素的前驱。</li>
 <li>找到所要找的元素时结束程序。</li>
 <li>如果遍历整个树还没有找到，结束程序。</li>
 </ol>
 <h2 id="代码">代码</h2>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">int</span> n, a[<span class="hljs-number">100</span> + <span class="hljs-number">5</span>], bx, by, ex, ey;<br><span class="hljs-type">bool</span> vis[<span class="hljs-number">100</span> + <span class="hljs-number">5</span>][<span class="hljs-number">100000</span> + <span class="hljs-number">5</span>];<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>	<span class="hljs-built_in">freopen</span>(<span class="hljs-string">&quot;input.txt&quot;</span>, <span class="hljs-string">&quot;r&quot;</span>, stdin);<br>	<span class="hljs-built_in">freopen</span>(<span class="hljs-string">&quot;output.txt&quot;</span>, <span class="hljs-string">&quot;w&quot;</span>, stdout);<br>	ios_base::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>	cin &gt;&gt; n;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; ++i) cin &gt;&gt; a[i];<br>	queue&lt;tuple&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt;&gt;q;<br>	cin &gt;&gt; bx &gt;&gt; by &gt;&gt; ex &gt;&gt; ey;<br>	q.<span class="hljs-built_in">emplace</span>(bx, by, <span class="hljs-number">0</span>);<br>	<span class="hljs-keyword">while</span> (!q.<span class="hljs-built_in">empty</span>()) &#123;<br>		tuple&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt;now = q.<span class="hljs-built_in">front</span>(); q.<span class="hljs-built_in">pop</span>();<br>		<span class="hljs-type">int</span> x = <span class="hljs-built_in">get</span>&lt;<span class="hljs-number">0</span>&gt;(now), y = <span class="hljs-built_in">get</span>&lt;<span class="hljs-number">1</span>&gt;(now), d = <span class="hljs-built_in">get</span>&lt;<span class="hljs-number">2</span>&gt;(now);<br>		<span class="hljs-keyword">if</span> (vis[x][y]) <span class="hljs-keyword">continue</span>;<br>		vis[x][y] = <span class="hljs-number">1</span>;<br>		<span class="hljs-keyword">if</span> (x == ex &amp;&amp; y == ey) &#123;<br>			cout &lt;&lt; d &lt;&lt; endl;<br>			<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>		&#125;<br>		<span class="hljs-keyword">if</span> (y &gt; <span class="hljs-number">1</span>) q.<span class="hljs-built_in">emplace</span>(x, y - <span class="hljs-number">1</span>, d + <span class="hljs-number">1</span>);<br>		<span class="hljs-keyword">if</span> (y &lt;= a[x]) q.<span class="hljs-built_in">emplace</span>(x, y + <span class="hljs-number">1</span>, d + <span class="hljs-number">1</span>);<br>		<span class="hljs-keyword">if</span> (x &gt; <span class="hljs-number">1</span> &amp;&amp; a[x - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span> &gt;= y) q.<span class="hljs-built_in">emplace</span>(x - <span class="hljs-number">1</span>, y, d + <span class="hljs-number">1</span>);<br>		<span class="hljs-keyword">if</span> (x &lt; n &amp;&amp; a[x + <span class="hljs-number">1</span>] + <span class="hljs-number">1</span> &gt;= y) q.<span class="hljs-built_in">emplace</span>(x + <span class="hljs-number">1</span>, y, d + <span class="hljs-number">1</span>);<br>		<span class="hljs-keyword">if</span> (x &gt; <span class="hljs-number">1</span> &amp;&amp; a[x - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span> &lt; y) q.<span class="hljs-built_in">emplace</span>(x - <span class="hljs-number">1</span>, a[x - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>, d + <span class="hljs-number">1</span>);<br>		<span class="hljs-keyword">if</span> (x &lt; n &amp;&amp; a[x + <span class="hljs-number">1</span>] + <span class="hljs-number">1</span> &lt; y) q.<span class="hljs-built_in">emplace</span>(x + <span class="hljs-number">1</span>, a[x + <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>, d + <span class="hljs-number">1</span>);<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p><a target="_blank" rel="noopener" href="https://codeforces.com/contest/253/submission/278239292">AC 记录</a></p>
+<p><a target="_blank" rel="noopener" href="https://codeforces.com/contest/253/submission/278239292">AC
+记录</a></p>
 
                 
               </div>
@@ -379,7 +380,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>August 26, 2024</div>
+          <div>2024年8月26日</div>
         </div>
       
       
@@ -528,9 +529,6 @@
 
   
 
-
-
-  
 
 
 
@@ -746,14 +744,6 @@
         anchors.add(res.join(', '));
       }
     });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
   });
 </script>
 

@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 95464078
+//  题目ID: T295159
+from turtle import*
+pu()
+for n in range(100):
+    dot(n,'red')
+print("就这样？")
+setx(-10)
+sety(-10)
+write("落玉",1000)

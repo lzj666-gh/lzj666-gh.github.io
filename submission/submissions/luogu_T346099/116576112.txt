@@ -1,0 +1,71 @@
+//  OJ: 洛谷
+//  提交ID: 116576112
+//  题目ID: T346099
+#include<bits/stdc++.h>
+#define maxn 100000+10
+using namespace std;
+struct Edge{
+	int v,w,next;
+}edge[maxn];
+int dis[maxn],head[maxn],top,n,m,cnt[maxn];
+bool vis[maxn];
+void spfa(){
+	queue<int>q;
+	dis[1]=0;
+	q.push(1);
+	while(!q.empty()){
+		int now=q.front();
+		q.pop();
+		vis[now]=false;
+		for(int i=head[now];i;i=edge[i].next){
+			int to=edge[i].v;
+			if(dis[to]>dis[now]+edge[i].w){
+				dis[to]=dis[now]+edge[i].w;
+				if(!vis[to]){
+					vis[to]=true;
+					q.push(to);
+					cnt[to]++;
+					if(cnt[to]>=n){
+						cout<<"YES"<<endl;
+						return;
+					}
+				}
+			}
+		}
+	}
+	cout<<"NO"<<endl;
+//	for(int i=1;i<=n;i++){
+//		for(int j=head[i];j;i=edge[j].next){
+//			if(dis[i]+edge[j].w){
+//				cout<<"NO"<<endl;
+//				return;
+//			}
+//		}
+//	}
+//	cout<<"YES"<<endl;
+	return;
+}
+void add(int u,int v,int w){
+	edge[++top].v=v;
+	edge[top].w=w;
+	edge[top].next=head[u];
+	head[u]=top;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	for(int lzj=1;lzj<=T;lzj++){
+		memset(dis,0x3f,sizeof dis);
+		memset(cnt,0,sizeof cnt);
+		cin>>n>>m;
+		for(int i=1;i<=m;i++){
+			int x,y,z;
+			cin>>x>>y>>z;
+			add(x,y,z);
+			if(z>=0) add(y,x,z);
+		}
+		spfa();
+	}
+    return 0;
+}

@@ -1,0 +1,61 @@
+//  OJ: 洛谷
+//  提交ID: 159548768
+//  题目ID: T241192
+#include<bits/stdc++.h>
+#define lblk(i) ((i) / m * m)
+#define rblk(i) (((i) / m + 1) * m - 1)
+#define smblk(i, j) ((i) / m == (j) / m)
+#define gtblk(i) ((i) / m)
+using namespace std;
+vector<int>st[225];
+int n, opt, l, r, a[50000 + 10], m, blk[225];
+long long c;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	m = sqrt(n);
+	int tmpp = 1;
+	while (tmpp <= n) {
+		int cbc = gtblk(tmpp);
+		for (int i = 1; i <= m && tmpp <= n; ++i, ++tmpp)
+			st[cbc].push_back(a[i]);
+		sort(st[cbc].begin(), st[cbc].end());
+	}
+	while (n--) {
+		cin >> opt >> l >> r >> c;
+		if (!opt) {
+			if (smblk(l, r)) {
+				for (int i = l; i <= r; ++i) a[i] += c;
+				st[gtblk(l)].clear();
+				for (int i = lblk(l); i <= rblk(l); ++i) st[gtblk(l)].push_back(a[i]);
+				sort(st[gtblk(l)].begin(), st[gtblk(l)].end());
+				continue;
+			}
+			for (int i = l; i <= lblk(l); ++i) a[i] += c;
+			st[gtblk(l)].clear();
+			for (int i = lblk(l); i <= rblk(l); ++i) st[gtblk(l)].push_back(a[i]);
+			sort(st[gtblk(l)].begin(), st[gtblk(l)].end());
+			for (int i = lblk(r); i <= r; ++i) a[i] += c;
+			st[gtblk(r)].clear();
+			for (int i = lblk(r); i <= rblk(r); ++i) st[gtblk(r)].push_back(a[i]);
+			sort(st[gtblk(r)].begin(), st[gtblk(r)].end());
+			if (gtblk(l) + 1 < gtblk(r)) for (int i = gtblk(l) + 1; i < gtblk(r); ++i) blk[i] += c;
+		}
+		else {
+			int ans = 0; c = c * c;
+			if (smblk(l, r)) {
+				for (int i = l; i <= r; ++i) if (a[i] < c - blk[gtblk(l)]) ++ans;
+				cout << ans << endl;
+				continue;
+			}
+			for (int i = l; i <= rblk(l); ++i) if (a[i] < c - blk[gtblk(l)]) ++ans;
+			for (int i = lblk(r); i <= r; ++i) if (a[i] < c - blk[gtblk(r)]) ++ans;
+			if (gtblk(l) + 1 < gtblk(r))
+				for (int i = gtblk(l) + 1; i < gtblk(r); ++i)
+					ans += (upper_bound(st[i].begin(), st[i].end(), c - blk[i]) - st[i].begin());
+			cout << ans << endl;
+		}
+	}
+	return 0;
+}

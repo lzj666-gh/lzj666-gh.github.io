@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 156618862
+//  题目ID: T447175
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+struct Line {
+	int l, r, h;
+};
+struct point {
+	int l, r, sum, len;
+}tree[800000 + 10];
+void pushup(int p) {
+	tree[p].sum = tree[p << 1].sum + tree[p << 1 | 1].sum;
+	tree[p].len = tree[p << 1].len + tree[p << 1 | 1].len;
+}
+void add(int p, int l, int r, int val) {
+	if (tree[p].l > r || tree[p].r < l) return;
+	if (tree[p].l <= r && tree[p].r >= l) {
+		tree[p].sum += tree[p].r - tree[p].l + 1;
+		tree[p].l = tree[p].r + 1 - tree[p].l;
+	}
+	add(p << 1, l, l + r >> 1, val);
+	add(p << 1 | 1, l + r >> 1 | 1, r, val);
+	pushup(p);
+}
+signed main() {
+	ios_base::sync_with_stdio(false);
+	return 0;
+}

@@ -46,8 +46,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -74,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lzj-blog.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"lzj-blog.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":false,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -261,7 +259,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2025-02-26 17:56" pubdate>
-          February 26, 2025 pm
+          2025年2月26日 下午
         </time>
       </span>
     
@@ -272,7 +270,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          799 字
+          792 字
         
       </span>
     
@@ -325,33 +323,41 @@
             
               <div class="markdown-body">
                 
-                <h2 id="USACO25FEB">USACO25FEB</h2>
-<h3 id="B">B</h3>
-<p>开了个小号，打了一下，T1 简单切掉， T2、T3 没看，但是听他们一片哀嚎感觉好像有点问题，算了，找个时间去看一看吧。</p>
-<h3 id="S">S</h3>
-<p>正经打的，其实吧，这个银组本质上是不难的，只不过有点需要思维（<s>我没有的东西</s>），但是还是写出来了。</p>
-<h4 id="T1">T1</h4>
+                <h2 id="usaco25feb">USACO25FEB</h2>
+<h3 id="b">B</h3>
+<p>开了个小号，打了一下，T1 简单切掉， T2、T3
+没看，但是听他们一片哀嚎感觉好像有点问题，算了，找个时间去看一看吧。</p>
+<h3 id="s">S</h3>
+<p>正经打的，其实吧，这个银组本质上是不难的，只不过有点需要思维（<del>我没有的东西</del>），但是还是写出来了。</p>
+<h4 id="t1">T1</h4>
 <p>题意：给出一个序列，可以将一个数放到它之前的一个位置（只能做一次），求换之后的最大字典序子序列。</p>
 <p>十分显然，观察得到，假设没有提前操作，一个单调栈即可解决，当有提前操作时，它只有可能影响最大和次大值，直接做就行了，关键性质时只能提到前面，需要一定注意力。</p>
 <p>注意 USACO 是全文比较，不忽略行末空格。</p>
-<h4 id="T2">T2</h4>
+<h4 id="t2">T2</h4>
 <p>题意：给出一个字典，其中每个字符串互不为其他字符串的前缀，按一定顺序给出字典序列，每次求在第几个时可以得出答案（序列不重，也就是说前面询问的也是信息）</p>
 <p>简单题，建立字典树，倒序操作，转删为加，每个节点只会访问一次，时间复杂度可过。最关键的是要逆向思维，转删为加。</p>
-<h4 id="T3">T3</h4>
-<p>题意：给定 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo separator="true">,</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a,b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span></span></span></span> 每次可选择 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi mathvariant="normal">+=</mi><mo>⁡</mo><mi>b</mi><mtext> </mtext><mtext mathvariant="monospace">or</mtext><mtext> </mtext><mi>b</mi><mi mathvariant="normal">+=</mi><mo>⁡</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">a\operatorname{+=}b \space \texttt{or}  \space b\operatorname{+=}a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop"><span class="mord mathrm">+=</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mspace"> </span><span class="mord text"><span class="mord texttt">or</span></span><span class="mspace"> </span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop"><span class="mord mathrm">+=</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">a</span></span></span></span>，求能否达到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo separator="true">,</mo><mi>d</mi></mrow><annotation encoding="application/x-tex">c,d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">c</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span></span></span></span>。</p>
-<h2 id="2025022920250301"><s>20250229</s>20250301</h2>
+<h4 id="t3">T3</h4>
+<p>题意：给定 <span class="math inline"><em>a</em>, <em>b</em></span>
+每次可选择 <span class="math inline">$a\operatorname{+=}b \space
+\texttt{or}  \space b\operatorname{+=}a$</span>，求能否达到 <span
+class="math inline"><em>c</em>, <em>d</em></span>。</p>
+<h2 id="section"><del>20250229</del>20250301</h2>
 <p>喜报：今天考试开始时陈老下发了所有题目的数据，成功被迫换题。</p>
-<h3 id="T1-2">T1</h3>
+<h3 id="t1-1">T1</h3>
 <p>太棒了，又是使用一个大半年没用的算法又一遍打对的一天。矩阵快速幂考场上从零开始推，大样例又一遍过，简直是太棒啦！</p>
-<p>还有就是和出题人进行心理博弈的经验++，我就赌出题人在极限数据全放的极限数据，没有小数据，我就写了一个对于所有询问全都非常大的代码，并成功成为考场上唯二的 A 掉这道题的人。</p>
-<h3 id="T2-2">T2</h3>
-<p>没发现题目的变形，转而向原题面进行了一通复杂的推演，最后因为推论太过复杂而放弃，其实形式化并变形以后事情变得异常简单，DP 完全可以在 30min 以内推出。</p>
+<p>还有就是和出题人进行心理博弈的经验++，我就赌出题人在极限数据全放的极限数据，没有小数据，我就写了一个对于所有询问全都非常大的代码，并成功成为考场上唯二的
+A 掉这道题的人。</p>
+<h3 id="t2-1">T2</h3>
+<p>没发现题目的变形，转而向原题面进行了一通复杂的推演，最后因为推论太过复杂而放弃，其实形式化并变形以后事情变得异常简单，DP
+完全可以在 30min 以内推出。</p>
 <p>所以就是阅读能力和形式化能力太差了，如果在考场上能早点发现变形，那我也就绝对不至于考成这个鬼样子。</p>
-<h3 id="T3-2">T3</h3>
-<p>一点都不会，于是我放弃了这道题，这道题我们机房一共 7 人，共有 3 人为此题编写了代码，共获得了 0pt 的好成绩。</p>
-<p>但是赛后看题解就是简单 Hash+二分，最难的是想到前面的 DP 最优性（还是观察能力的问题）。</p>
-<h3 id="T4">T4</h3>
-<p>那张图的转化是我没想到的，数形结合是一个非常基本的算法思想吧，但是我考试时全想着怎么心理博弈了，最后成功失败，本来以为是骗分学竞赛，现在发现是<s>想象学竞赛</s>观察力竞赛了（恼）。</p>
+<h3 id="t3-1">T3</h3>
+<p>一点都不会，于是我放弃了这道题，这道题我们机房一共 7 人，共有 3
+人为此题编写了代码，共获得了 0pt 的好成绩。</p>
+<p>但是赛后看题解就是简单 Hash+二分，最难的是想到前面的 DP
+最优性（还是观察能力的问题）。</p>
+<h3 id="t4">T4</h3>
+<p>那张图的转化是我没想到的，数形结合是一个非常基本的算法思想吧，但是我考试时全想着怎么心理博弈了，最后成功失败，本来以为是骗分学竞赛，现在发现是<del>想象学竞赛</del>观察力竞赛了（恼）。</p>
 
                 
               </div>
@@ -389,7 +395,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>February 26, 2025</div>
+          <div>2025年2月26日</div>
         </div>
       
       
@@ -538,9 +544,6 @@
 
   
 
-
-
-  
 
 
 
@@ -756,14 +759,6 @@
         anchors.add(res.join(', '));
       }
     });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
   });
 </script>
 

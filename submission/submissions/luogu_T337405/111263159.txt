@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 111263159
+//  题目ID: T337405
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	printf("无限猖狂");
+	return 0;
+}

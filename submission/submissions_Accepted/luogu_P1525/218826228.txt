@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 218826228
+//  题目ID: P1525
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[2000000 + 10];
+int head[100000 + 10], idx = 1;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int col[100000 + 10], n, m;
+bool dfs(int x, int k) {
+	bool ret = 1;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].w > k)
+			if (!col[edge[i].v])
+				col[edge[i].v] = 3 - col[x], ret &= dfs(edge[i].v, k);
+			else if (col[edge[i].v] == col[x])
+				ret = 0;
+	return ret;
+}
+bool check(int mid) {
+	memset(col, 0, sizeof col);
+	bool res = 1;
+	for (int i = 1; i <= n; ++i)
+		if (!col[i]) col[i] = 1, res &= dfs(i, mid);
+	return res;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v, w; i <= m; ++i) cin >> u >> v >> w, add(u, v, w), add(v, u, w);
+	int l = -1, r = 1e9;
+	while (l < r - 1) {
+		int mid = l + r >> 1;
+		if (check(mid)) r = mid;
+		else l = mid;
+	}
+	cout << r << endl;
+	return 0;
+}

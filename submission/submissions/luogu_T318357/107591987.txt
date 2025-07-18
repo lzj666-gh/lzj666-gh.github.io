@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 107591987
+//  题目ID: T318357
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    cout<<"not ez"<<endl;
+    return 0; 
+}

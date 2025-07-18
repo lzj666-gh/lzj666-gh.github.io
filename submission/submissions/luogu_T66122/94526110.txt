@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 94526110
+//  题目ID: T66122
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int m,n,j,o;cin>>m>>n;
+	for(int i=m;i<=n;i++){
+		if(i%2==0) o+=i;
+		else j+=i;
+	}
+	cout<<o<<endl<<j;
+	return 0;
+}
+

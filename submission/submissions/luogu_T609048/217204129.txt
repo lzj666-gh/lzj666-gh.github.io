@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 217204129
+//  题目ID: T609048
+from math import*
+# n,k,l=list(map(int,input().split()))
+n=int(input())
+k=int(input())
+l=int(input())
+if n<=l+k-gcd(k,l):
+    print(l+k-n)
+else:
+    print(gcd(k,l))

@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 159734809
+//  题目ID: P10519
+#include<bits/stdc++.h>
+using namespace std;
+double x,y,t,v; 
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>x>>y>>t>>v;
+	t*=v;
+	t=t-int(t);
+	t*=360;
+	if(t>=180) t=360-t;
+	t=t * M_PI / 180.0;
+	cout<<fixed<<setprecision(10)<<sin(t/2)*sqrt(x*x+y*y)*2<<endl;
+	return 0;
+}

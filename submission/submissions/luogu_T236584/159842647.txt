@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 159842647
+//  题目ID: T236584
+#include<bits/stdc++.h>
+#define int long long
+#define lblk(i) ((i) / m * m)
+#define rblk(i) (((i) / m + 1) * m - 1)
+#define smblk(i, j) ((i) / m == (j) / m)
+#define gtblk(i) ((i) / m)
+using namespace std;
+long long st[1001];
+int n, T, opt, l, r, a[1000000 + 10], m, blk[1001];
+long long c;
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> T;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	m = sqrt(n);
+	int tmpp = 0;
+	while (tmpp <= n) {
+		int cbc = gtblk(tmpp);
+		for (int i = 1; i <= m && tmpp <= n; ++i, ++tmpp)
+			st[cbc] += a[tmpp];
+	}
+	while (T--) {
+		cin >> opt >> l >> r;
+		if (opt == 1) {
+			cin >> c;
+			if (smblk(l, r)) {
+				for (int i = l; i <= r; ++i) a[i] += c;
+				st[gtblk(l)] += c * (r - l + 1);
+				continue;
+			}
+			for (int i = l; i <= rblk(l); ++i) a[i] += c;
+			st[gtblk(l)] += (rblk(l) - l + 1) * c;
+			for (int i = lblk(r); i <= r; ++i) a[i] += c;
+			st[gtblk(r)] += (r - lblk(r) + 1) * c;
+			for (int i = gtblk(l) + 1; i < gtblk(r); ++i) blk[i] += c;
+		}
+		else {
+			int ans = 0;
+			if (smblk(l, r)) {
+				for (int i = l; i <= r; ++i) ans += blk[gtblk(l)] + a[i];
+				cout << ans << endl;
+				continue;
+			}
+			for (int i = l; i <= rblk(l); ++i) ans += blk[gtblk(l)] + a[i];
+			for (int i = lblk(r); i <= r; ++i) ans += blk[gtblk(r)] + a[i];
+			if (gtblk(l) + 1 < gtblk(r))
+				for (int i = gtblk(l) + 1; i < gtblk(r); ++i)
+					ans += m * blk[i] + st[i];
+			cout << ans << endl;
+		}
+	}
+	return 0;
+}

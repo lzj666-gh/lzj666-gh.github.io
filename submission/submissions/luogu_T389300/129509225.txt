@@ -1,0 +1,100 @@
+//  OJ: 洛谷
+//  提交ID: 129509225
+//  题目ID: T389300
+#include<bits/stdc++.h>
+using namespace std;
+int a,b;
+long long ans;
+inline long long max(long long &a,long long &b){return a<b?b:a;}
+int main(){
+	freopen("multi.in","r",stdin);
+	freopen("multi.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>a>>b;
+	for(bool a6:{true,false})
+		for(bool a5:{true,false})
+			for(bool a4:{true,false})
+				for(bool a3:{true,false})
+					for(bool a2:{true,false})
+						for(bool a1:{true,false}){
+							int na=a,nb=b;
+							if(a1){
+								int ag=a%10;
+								a-=ag;
+								int bg=b%10;
+								b-=bg;
+								a+=bg;
+								b+=ag;
+//								cerr<<"1 "<<a<<' '<<b<<' '<<ag<<' '<<bg<<endl;
+							}
+							if(a<10){
+								ans=max(ans,1ll*a*b);
+								continue;
+							}
+							if(a2){
+								int ag=(a/10)%10*10;
+								a-=ag;
+								int bg=(b/10)%10*10;
+								b-=bg;
+								a+=bg;
+								b+=ag;
+//								cerr<<"10 "<<a<<' '<<b<<' '<<ag<<' '<<bg<<endl;
+							}
+							if(a<100){
+								ans=max(ans,1ll*a*b);
+								continue;
+							}
+							if(a3){
+								int ag=(a/100)%10*100;
+								a-=ag;
+								int bg=(b/100)%10*100;
+								b-=bg;
+								a+=bg;
+								b+=ag;
+//								cerr<<"100 "<<a<<' '<<b<<' '<<ag<<' '<<bg<<endl;
+							}
+							if(a<1000){
+								ans=max(ans,1ll*a*b);
+								continue;
+							}
+							if(a4){
+								int ag=a/1000%10*1000;
+								a-=ag;
+								int bg=b/1000%10*1000;
+								b-=bg;
+								a+=bg;
+								b+=ag;
+//								cerr<<"1000 "<<a<<' '<<b<<' '<<ag<<' '<<bg<<endl;
+							}
+							if(a<10000){
+								ans=max(ans,1ll*a*b);
+								continue;
+							}
+							if(a5){
+								int ag=(a/10000)%10*10000;
+								a-=ag;
+								int bg=(b/10000)%10*10000;
+								b-=bg;
+								a+=bg;
+								b+=ag;
+//								cerr<<"10000 "<<a<<' '<<b<<' '<<ag<<' '<<bg<<endl;
+							}
+							if(a<100000){
+								ans=max(ans,1ll*a*b);
+								continue;
+							}
+							if(a6){
+								int ag=(a/100000)%10*100000;
+								a-=ag;
+								int bg=(b/100000)%10*100000;
+								b-=bg;
+								a+=bg;
+								b+=ag;
+//								cerr<<"100000 "<<a<<' '<<b<<' '<<ag<<' '<<bg<<endl;
+							}
+							ans=max(ans,1ll*a*b);
+							a=na,b=nb;
+						}
+	cout<<ans<<endl;
+	return 0;
+}

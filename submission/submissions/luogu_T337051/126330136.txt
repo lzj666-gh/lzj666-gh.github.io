@@ -1,0 +1,53 @@
+//  OJ: 洛谷
+//  提交ID: 126330136
+//  题目ID: T337051
+#include<bits/stdc++.h>
+using namespace std;
+inline int read(){
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c<'0'||c>'9'){
+		if(c=='-') s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0'){
+		x=(x<<3)+(x<<1)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+} 
+inline void write(int x){
+	if(x<0) putchar('-'),x=~x+1;
+	write(x/10);
+	putchar(x%10+'0');
+}
+inline int min(const int &a,const int &b){
+	return a<b?a:b;
+}
+int n,k,a[50000000+10];
+bool b[50000000+10];
+int main(){
+	n=read();
+	k=read();
+	if(1ll*n*k<=100000000){
+		int mina=1;
+		for(int i=1;i<=n;++i) a[i]=read(),mina=a[i]<a[mina]?i:mina;
+		b[mina]=true;
+//		cout<<mina<<' ';
+		for(int i=1;i<=k;++i){
+			mina=1;
+			for(int i=2;i<=n;++i){
+				if(b[i]) continue;
+				mina=a[i]<a[mina]?i:mina;
+			}
+//			cout<<mina<<' ';
+			b[mina]=true;
+		}
+		cout<<a[mina]<<endl;
+	}
+	else if(n*log(n)<=100000000){
+		for(int i=1;i<=n;++i) a[i]=read();
+		sort(&a[1],&a[n+1]);
+		cout<<a[k+1]<<endl;
+	}
+}

@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 147248864
+//  题目ID: T230092
+#include <bits/stdc++.h>
+using namespace std;
+void exgcd(long long a,long long b,long long &x,long long &y){
+    if(b==0){x=1;y=0;return;}
+    exgcd(b,a%b,x,y);
+    int z=x;x=y,y=z-y*(a/b);
+}
+inline long long inv(long long a,long long p){
+	long long x,y;
+	exgcd(a,p,x,y);
+	return (x%p+p)%p;
+}
+long long n,a[10],b[10];
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i) cin>>a[i]>>b[i];
+	long long p=1,x=0;
+	for(int i=1;i<=n;++i) p*=a[i];
+	for(int i=1;i<=n;++i){
+		x+=(b[i]*(p/a[i])*inv((p/a[i]),a[i]))%p;
+		if(x<0){
+			cout<<-1<<endl;
+			return 0;
+		} 
+	}
+	cout<<x%p<<endl;
+	return 0;
+}

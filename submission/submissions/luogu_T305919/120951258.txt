@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 120951258
+//  题目ID: T305919
+#include<bits/stdc++.h>
+#define maxn 1000000+10
+#define f_u(a,b) for(register int i=a;i<=b;++i)
+#define f_d(a,b) for(register int i=a;i>=b;--i)
+#define F_u(a,b) for(register int j=a;j<=b;++j)
+#define F_d(a,b) for(register int j=a;j>=b;--j)
+using namespace std;
+inline int read(){register char c=getchar();register int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=(x<<3)+(x<<1)+(c^48);c=getchar();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+int n,m,a[maxn];
+bool check(int k){
+	int re=0;
+	f_u(1,n){
+		re+=a[i]>k?a[i]-k:0;
+	}
+	return re>m;
+}
+int zhong_fen(){
+	register int l=1,r=a[n],mid;
+	while(l<r){
+		mid=(l+r)/2;
+		if(check(mid)){
+			l=mid+1;
+		}
+		else{
+			r=mid;
+		}
+	}
+	f_u(l-100,l+100) if(!check(i)) return i-1;
+	return l;
+}
+int main(){
+//	ios_base::sync_with_stdio(false);
+	n=read(),m=read();
+	f_u(1,n) a[i]=read();
+	sort(&a[1],&a[n+1]);
+	write(zhong_fen());
+	return 0;
+}

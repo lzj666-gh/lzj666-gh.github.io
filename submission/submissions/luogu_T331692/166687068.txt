@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 166687068
+//  题目ID: T331692
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+	int v,w,nxt;
+}edge[5000000+10];
+int idx,head[5000000+10];
+void add(int u,int v,int w){
+	edge[++idx]={v,w,head[u]};
+	head[u]=idx;
+}
+int n,d1[5000000+10],d2[5000000+10],k;
+bool vis[5000000+10];
+void dfs(int k){
+	vis[k]=1;
+	for(int i=head[k];i;i=edge[i].nxt){
+		if(vis[edge[i].v])continue;
+		dfs(edge[i].v);
+		int now=d1[edge[i].v]+edge[i].w;
+		if(now>d1[k])d2[k]=d1[k],d1[k]=now;
+		else if(now>d2[k])d2[k]=now;
+	}
+	if(!head[k])d1[k]=d2[k]=0;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>k;
+	for(int i=1,u,v;i<n;++i)cin>>u>>v,add(u,v,1),add(v,u,1);
+	if(k==1){
+		dfs(1);
+		int ans=INT_MIN;
+		for(int i=1;i<=n;++i)ans=max(ans,d1[i]+d2[i]);
+		cout<<(2*(n-1)-ans+1)<<endl;
+	}
+	
+	return k-1;
+}

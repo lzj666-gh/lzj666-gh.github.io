@@ -1,0 +1,115 @@
+//  OJ: 洛谷
+//  提交ID: 160308736
+//  题目ID: T241770
+#include<bits/stdc++.h>
+#define lblk(i) ((i) / m * m)
+#define rblk(i) (((i) / m + 1) * m - 1)
+#define smblk(i, j) ((i) / m == (j) / m)
+#define gtblk(i) ((i) / m)
+using namespace std;
+int n, l, r, c, a[100000 + 10], m, ans[325 + 10];
+bool blk[325 + 10];
+void Sqrt(int l, int r) noexcept {
+	if (!smblk(l, r)) cout << "cbcbc" << endl, exit(0);
+	int cbc = gtblk(l);
+	if (blk[cbc]) {
+		if (l == lblk(l) && r == rblk(r)) ans[cbc] = c;
+		else if (ans[cbc] == c) return;
+		else {
+			blk[cbc] = 0;
+			for (int i = lblk(l); i < l; ++i) a[i] = ans[cbc];
+			for (int i = r + 1; i <= rblk(r); ++i) a[i] = ans[cbc];
+			for (int i = l; i <= r; ++i) a[i] = c;
+		}
+		return;
+	}
+	for (int i = l; i <= r; ++i) {
+		a[i] = c;
+	}
+	blk[cbc] = 1;
+	ans[cbc] = a[cbc * m];
+	for (int i = lblk(l); i <= rblk(l); ++i) {
+		if (a[i] != a[i - 1]) {
+			blk[cbc] = 0;
+			ans[cbc] = 0;
+			return;
+		}
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	m = (int)sqrt(n);
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = 0; i <= n / m; ++i) {
+		blk[i] = 1;
+		ans[i] = a[i * m];
+		for (int j = i * m + 1; j <= (i + 1) * m - 1; ++j) {
+			if (a[j] != a[j - 1]) {
+				blk[i] = 0;
+				ans[i] = 0;
+				break;
+			}
+		}
+	}
+	while (cin >> l >> r >> c) {
+		long long anss = 0;
+		if (smblk(l, r)) {
+			for (int i = l; i <= r; ++i) {
+				anss += a[i] == c;
+				a[i] = c;
+			}
+			cout << anss << endl;
+			continue;
+		}
+		if (blk[gtblk(l)]) 
+			anss += ((ans[gtblk(l)] == c) ? rblk(l) - l + 1 : 0);
+		else {
+			for (int i = l; i <= rblk(l); ++i) {
+				anss += a[i] == c;
+			}
+		}
+		if (blk[gtblk(r)]) 
+			anss += ((ans[gtblk(r)] == c) ? r - lblk(r) + 1 : 0);
+		else {
+			for (int i = lblk(r); i <= r; ++i) {
+				anss += a[i] == c;
+			}
+		}
+		if (gtblk(l) + 1 < gtblk(r))
+			for (int i = gtblk(l) + 1; i < gtblk(r); ++i) {
+				if (blk[i]) {
+					anss += ((ans[i] == c) ? m : 0);
+					continue;
+				}
+				for (int j = i * m; j <= (i + 1) * m - 1; ++j) {
+					anss += a[j] == c;
+				}
+			}
+		cout << anss << endl;
+		Sqrt(l, rblk(l));
+		Sqrt(lblk(r), r);
+		if (gtblk(l) + 1 < gtblk(r))
+			for (int i = gtblk(l) + 1; i < gtblk(r); ++i) {
+				if (blk[i]) {
+					ans[i] = c;
+					continue;
+				}
+				Sqrt(i * m, (i + 1) * m - 1);
+			}
+//		cout << "now a : "; for (int i = 1; i <= n; ++i) cout << (blk[gtblk(i)] ? ans[gtblk(i)] : a[i]) << ' '; cout << endl;
+	}
+	return 0;
+}
+/*
+4
+1 2 2 3
+0 1 3 1
+2 2 2 2
+1 1 4 4
+2 2 2 2
+0 1 2 2
+2 2 2 2
+1 1 2 4
+2 2 2 2
+*/

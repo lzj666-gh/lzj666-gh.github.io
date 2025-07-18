@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 107573843
+//  题目ID: T314410
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    return 0; 
+}

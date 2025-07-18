@@ -1,0 +1,74 @@
+//  OJ: 洛谷
+//  提交ID: 166305895
+//  题目ID: T329671
+#include<bits/stdc++.h>
+using namespace std;
+int n,m1,m2,s,a,b,c;
+struct Edge{
+	int v,nxt,w;
+}edge[50000+50000+10];
+int head[25000+10],dis[25000+10],idx,ltk[25000+10],tot;
+inline void add(int u,int v,int val){
+	edge[++idx]={v,head[u],val};
+	head[u]=idx;
+}
+namespace Dij{
+	struct Node{
+		int first,second;
+		friend bool operator<(const Node&a,const Node&b){
+			return a.first>b.first;
+		}
+	};
+	priority_queue<Node>q;
+	bool vis[25000+10];
+	void dij(int s){
+		q.push({dis[s],s});
+		while(!q.empty()){
+			Node p=q.top();q.pop();
+			if(vis[p.second]) continue;
+			vis[p.second]=1;
+			for(int i=head[p.second];i;i=edge[i].nxt){
+				if(dis[edge[i].v]>dis[p.second]+edge[i].w){
+					dis[edge[i].v]=dis[p.second]+edge[i].w;
+					q.push({dis[p.second]+edge[i].w,edge[i].v});
+				}
+			}
+		}
+	}
+	void init(){
+		memset(dis,0x3f,sizeof dis);
+		dis[s]=0;
+	}
+}
+namespace get_ltk{
+	void dfs(int k,int idk){
+		ltk[k]=idk;
+		for(int i=head[k];i;i=edge[i].nxt)
+			dfs(edge[i].v,idk);
+	}
+	void get(){
+		for(int i=1;i<=n;++i){
+			if(ltk[i]) continue;
+			dfs(i,++tot);
+		}
+	}
+}
+namespace top{
+	int rd[25000+10];
+	void top_sort(){
+		
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m1>>m2>>s;Dij::init();
+	for(int i=1;i<=m1;++i) cin>>a>>b>>c,add(a,b,c),add(b,a,c);
+	get_ltk::get();
+	for(int i=1;i<=m2;++i) cin>>a>>b>>c,top::rd[ltk[b]]++;
+	top::top_sort();
+	for(int i=1;i<=n;++i){
+		if(dis[i]==0x3f3f3f3f) cout<<"NO PATH\n";
+		else cout<<dis[i]<<endl;
+	}
+	return 0;
+}

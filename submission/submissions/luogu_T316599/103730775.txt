@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 103730775
+//  题目ID: T316599
+#include<bits/stdc++.h>
+using namespace std;
+long long n,a[1000+10],b[1000+10];
+int main(){
+	scanf("%d",&n);
+	a[1]=1;b[1]=8;
+	for(int i=2;i<=n;i++){
+		a[i]=a[i-1]+9*b[i-1];
+		a[i]%=12345;
+		b[i]=b[i-1]+9*a[i-1];
+		b[i]%=12345;
+	}
+	cout<<b[n];
+	return 0;
+}

@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 107576135
+//  题目ID: T327700
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    cout<<"thisisthesample"<<endl;
+    return 0; 
+}

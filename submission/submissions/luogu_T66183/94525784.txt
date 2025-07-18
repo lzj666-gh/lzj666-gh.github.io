@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 94525784
+//  题目ID: T66183
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int m,n;cin>>m>>n;short int f;
+	for(int i=m;i<=n;i++){
+		if((i%100+i/100)*(i%100+i/100)==i){
+			cout<<i<<endl;f=1;
+		}
+	}
+	if(f==0)cout"NONE";
+	return 0;
+}
+

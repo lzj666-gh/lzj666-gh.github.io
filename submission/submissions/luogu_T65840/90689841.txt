@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 90689841
+//  题目ID: T65840
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int a,b,c;
+    cin>>a>>b>>c;
+    cout<<"Eaten Entirely: "<<(c+b-1)/b;
+    cout<<"Remaining Entirely: "<<a-(c+b-1)/b;
+     
+ 
+    return 0;
+}

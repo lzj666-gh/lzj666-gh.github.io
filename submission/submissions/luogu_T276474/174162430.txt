@@ -1,0 +1,66 @@
+//  OJ: 洛谷
+//  提交ID: 174162430
+//  题目ID: T276474
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[500000 + 10];
+int head[100000 + 10], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int cnt, prime[80000], del[1000001];
+bool num[1000001];
+void make() {
+	for (int i = 2; i <= 1000000; i++) {
+		if (!num[i]) {
+			prime[cnt++] = i;
+		}
+		for (int j = 0; j < cnt; j++) {
+			if (i * prime[j] > 1000000) break;
+			num[i * prime[j]] = true;
+			del[i * prime[j]] = prime[j];
+			if (i % prime[j] == 0) break;
+		}
+	}
+}
+int n;
+set<int>number;
+set<int>q;
+int path[80000];
+int get(int s) {
+	if (path[s]) return -1;
+	int maxlen = 0;
+	q.insert(s);
+	while (!q.empty()) {
+		int now = *(q.begin());
+		maxlen = max(maxlen, path[now]);
+		q.erase(q.begin());
+		for (int i = head[now]; i; i = edge[i].nxt) {
+			path[edge[i].v] = max(path[edge[i].v], path[now] + 1);
+			q.insert(edge[i].v);
+		}
+	}
+	return maxlen;
+}
+int main() {
+//	freopen("chain.in", "r", stdin);
+//	freopen("chain.out", "w", stdout);
+	ios_base::sync_with_stdio(false);
+	make();
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		int a;
+		cin >> a;
+		add(del[a], a / del[a]);
+		number.insert(del[a]), number.insert(a / del[a]);
+	}
+	int ans = 0;
+	for (set<int>::iterator it = number.begin(); it != number.end(); it++) {
+		ans = max(ans, get(*it));
+	}
+	cout << ans << endl;
+	return 0;
+}

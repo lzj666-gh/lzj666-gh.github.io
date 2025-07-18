@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 107614000
+//  题目ID: T327860
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    cout<<"M"<<endl;
+    return 0; 
+}

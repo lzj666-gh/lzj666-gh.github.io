@@ -50,8 +50,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -78,7 +76,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lzj-blog.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"lzj-blog.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":false,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -265,7 +263,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2025-02-07 11:42" pubdate>
-          February 7, 2025 am
+          2025年2月7日 中午
         </time>
       </span>
     
@@ -276,7 +274,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          835 字
+          911 字
         
       </span>
     
@@ -287,7 +285,7 @@
         
         
         
-          7 分钟
+          8 分钟
         
       </span>
     
@@ -330,202 +328,259 @@
               <div class="markdown-body">
                 
                 <h2 id="前言">前言</h2>
-<p>由于本人太久没复习 KMP 了，复习好像重学了一遍，在这里写个博客来记录一下。</p>
+<p>由于本人太久没复习 KMP
+了，复习好像重学了一遍，在这里写个博客来记录一下。</p>
 <p>另：还有其他字符串算法，一并整理了算了。</p>
-<h2 id="KMP">KMP</h2>
+<h2 id="kmp">KMP</h2>
 <p>初学时好像挺蒙，只觉得好像那样，实际上它确有精妙之处。</p>
-<p>首先定义一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>o</mi><mi>r</mi><mi>d</mi><mi>e</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">border</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span></span></span></span> 数组为匹配串前 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 位的最长公共前后缀（不算它自己）长度（同时也是前缀结束位置）为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>o</mi><mi>r</mi><mi>d</mi><mi>e</mi><msub><mi>r</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">border_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。</p>
-<p>考虑如何去求 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>o</mi><mi>r</mi><mi>d</mi><mi>e</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">border</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span></span></span></span>：</p>
-<p>假设当前处理到第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 位，那么前 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">i-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7429em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 位的都已经处理好了，对于第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">i-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7429em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 位的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>o</mi><mi>r</mi><mi>d</mi><mi>e</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">border</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span></span></span></span>，我们发现可以考虑加上一位构成我们新的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>o</mi><mi>r</mi><mi>d</mi><mi>e</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">border</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span></span></span></span>，但是如果失配呢？</p>
-<p>由于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>o</mi><mi>r</mi><mi>d</mi><mi>e</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">border</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span></span></span></span> 为最长公共前后缀，所以它是前面的等于后面的，考虑取前面的前缀与后面的后缀来进行新的匹配。</p>
+<p>首先定义一个 <span
+class="math inline"><em>b</em><em>o</em><em>r</em><em>d</em><em>e</em><em>r</em></span>
+数组为匹配串前 <span class="math inline"><em>i</em></span>
+位的最长公共前后缀（不算它自己）长度（同时也是前缀结束位置）为 <span
+class="math inline"><em>b</em><em>o</em><em>r</em><em>d</em><em>e</em><em>r</em><sub><em>i</em></sub></span>。</p>
+<p>考虑如何去求 <span
+class="math inline"><em>b</em><em>o</em><em>r</em><em>d</em><em>e</em><em>r</em></span>：</p>
+<p>假设当前处理到第 <span class="math inline"><em>i</em></span>
+位，那么前 <span class="math inline"><em>i</em> − 1</span>
+位的都已经处理好了，对于第 <span
+class="math inline"><em>i</em> − 1</span> 位的 <span
+class="math inline"><em>b</em><em>o</em><em>r</em><em>d</em><em>e</em><em>r</em></span>，我们发现可以考虑加上一位构成我们新的
+<span
+class="math inline"><em>b</em><em>o</em><em>r</em><em>d</em><em>e</em><em>r</em></span>，但是如果失配呢？</p>
+<p>由于 <span
+class="math inline"><em>b</em><em>o</em><em>r</em><em>d</em><em>e</em><em>r</em></span>
+为最长公共前后缀，所以它是前面的等于后面的，考虑取前面的前缀与后面的后缀来进行新的匹配。</p>
 <p>来个图吧。</p>
 <table>
+
 <thead>
 <tr>
-<th style="text-align:center">a</th>
-<th style="text-align:center">b</th>
-<th style="text-align:center">a</th>
-<th style="text-align:center">b</th>
-<th style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathcolor="red"><mi>a</mi></mstyle></mrow><annotation encoding="application/x-tex">\color{red}{a}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord" style="color:red;"><span class="mord mathnormal" style="color:red;">a</span></span></span></span></span></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
+<th style="text-align: center;">a</th>
+<th style="text-align: center;">b</th>
+<th style="text-align: center;">a</th>
+<th style="text-align: center;">b</th>
+<th style="text-align: center;"><span
+class="math inline"><em>a</em></span></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">c</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">c</td>
 </tr>
 <tr>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"><strong>a</strong></td>
-<td style="text-align:center"><strong>b</strong></td>
-<td style="text-align:center"><strong>a</strong></td>
-<td style="text-align:center"><strong>b</strong></td>
-<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathcolor="red"><mi>c</mi></mstyle></mrow><annotation encoding="application/x-tex">\color{red}{c}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord" style="color:red;"><span class="mord mathnormal" style="color:red;">c</span></span></span></span></span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>a</strong></td>
+<td style="text-align: center;"><strong>b</strong></td>
+<td style="text-align: center;"><strong>a</strong></td>
+<td style="text-align: center;"><strong>b</strong></td>
+<td style="text-align: center;"><span
+class="math inline"><em>c</em></span></td>
 </tr>
 </tbody>
 </table>
-<p>假设处理到第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>7</mn></mrow><annotation encoding="application/x-tex">7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">7</span></span></span></span> 位了，那么我们试图使用前面（第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6</mn></mrow><annotation encoding="application/x-tex">6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">6</span></span></span></span> 位）的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>o</mi><mi>r</mi><mi>d</mi><mi>e</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">border</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span></span></span></span> 来匹配。</p>
-<p><strong>abab</strong>a <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≠</mo></mrow><annotation encoding="application/x-tex">\not =</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span></span><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">=</span></span></span></span> <strong>abab</strong>c</p>
+<p>假设处理到第 <span class="math inline">7</span>
+位了，那么我们试图使用前面（第 <span class="math inline">6</span> 位）的
+<span
+class="math inline"><em>b</em><em>o</em><em>r</em><em>d</em><em>e</em><em>r</em></span>
+来匹配。</p>
+<p><strong>abab</strong>a <span class="math inline">≠</span>
+<strong>abab</strong>c</p>
 <p>考虑取前面的前缀与后面的后缀来进行新的匹配。</p>
-<table>
+<table style="width:100%;">
+
 <thead>
 <tr>
-<th style="text-align:center">a</th>
-<th style="text-align:center">b</th>
-<th style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathcolor="red"><mi>a</mi></mstyle></mrow><annotation encoding="application/x-tex">\color{red}{a}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord" style="color:red;"><span class="mord mathnormal" style="color:red;">a</span></span></span></span></span></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
+<th style="text-align: center;">a</th>
+<th style="text-align: center;">b</th>
+<th style="text-align: center;"><span
+class="math inline"><em>a</em></span></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">c</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">c</td>
 </tr>
 <tr>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"><strong>a</strong></td>
-<td style="text-align:center"><strong>b</strong></td>
-<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathcolor="red"><mi>c</mi></mstyle></mrow><annotation encoding="application/x-tex">\color{red}{c}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord" style="color:red;"><span class="mord mathnormal" style="color:red;">c</span></span></span></span></span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>a</strong></td>
+<td style="text-align: center;"><strong>b</strong></td>
+<td style="text-align: center;"><span
+class="math inline"><em>c</em></span></td>
 </tr>
 </tbody>
 </table>
 <p>反正都是一样的串，又是公共前后缀，所以肯定一样啊，又取的最长，所以正确性也有了保障。</p>
-<p>还是失配怎么办？接着取 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>o</mi><mi>r</mi><mi>d</mi><mi>e</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">border</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span></span></span></span> 就行了啊。</p>
+<p>还是失配怎么办？接着取 <span
+class="math inline"><em>b</em><em>o</em><em>r</em><em>d</em><em>e</em><em>r</em></span>
+就行了啊。</p>
 <p>再举个例子。</p>
 <table>
+
 <thead>
 <tr>
-<th style="text-align:center">a</th>
-<th style="text-align:center">b</th>
-<th style="text-align:center">c</th>
-<th style="text-align:center">a</th>
-<th style="text-align:center">b</th>
-<th style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathcolor="red"><mi>a</mi></mstyle></mrow><annotation encoding="application/x-tex">\color{red}{a}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord" style="color:red;"><span class="mord mathnormal" style="color:red;">a</span></span></span></span></span></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
+<th style="text-align: center;">a</th>
+<th style="text-align: center;">b</th>
+<th style="text-align: center;">c</th>
+<th style="text-align: center;">a</th>
+<th style="text-align: center;">b</th>
+<th style="text-align: center;"><span
+class="math inline"><em>a</em></span></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">c</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">c</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">c</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">c</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">c</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">c</td>
 </tr>
 <tr>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"><strong>a</strong></td>
-<td style="text-align:center"><strong>b</strong></td>
-<td style="text-align:center"><strong>c</strong></td>
-<td style="text-align:center"><strong>a</strong></td>
-<td style="text-align:center"><strong>b</strong></td>
-<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathcolor="red"><mi>c</mi></mstyle></mrow><annotation encoding="application/x-tex">\color{red}{c}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord" style="color:red;"><span class="mord mathnormal" style="color:red;">c</span></span></span></span></span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>a</strong></td>
+<td style="text-align: center;"><strong>b</strong></td>
+<td style="text-align: center;"><strong>c</strong></td>
+<td style="text-align: center;"><strong>a</strong></td>
+<td style="text-align: center;"><strong>b</strong></td>
+<td style="text-align: center;"><span
+class="math inline"><em>c</em></span></td>
 </tr>
 </tbody>
 </table>
 <p>考虑取前面的前缀与后面的后缀来进行新的匹配。</p>
 <table>
+
 <thead>
 <tr>
-<th style="text-align:center">a</th>
-<th style="text-align:center">b</th>
-<th style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathcolor="red"><mi>c</mi></mstyle></mrow><annotation encoding="application/x-tex">\color{red}{c}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord" style="color:red;"><span class="mord mathnormal" style="color:red;">c</span></span></span></span></span></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
-<th style="text-align:center"></th>
+<th style="text-align: center;">a</th>
+<th style="text-align: center;">b</th>
+<th style="text-align: center;"><span
+class="math inline"><em>c</em></span></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">c</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">c</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">c</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">c</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">c</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">c</td>
 </tr>
 <tr>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"><strong>a</strong></td>
-<td style="text-align:center"><strong>b</strong></td>
-<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathcolor="red"><mi>c</mi></mstyle></mrow><annotation encoding="application/x-tex">\color{red}{c}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord" style="color:red;"><span class="mord mathnormal" style="color:red;">c</span></span></span></span></span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>a</strong></td>
+<td style="text-align: center;"><strong>b</strong></td>
+<td style="text-align: center;"><span
+class="math inline"><em>c</em></span></td>
 </tr>
 </tbody>
 </table>
-<p>匹配上了！这就是它的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>o</mi><mi>r</mi><mi>d</mi><mi>e</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">border</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span></span></span></span>。</p>
-<p>同理，去用匹配串取匹配待匹配串，如果失配了，那么就跳到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>o</mi><mi>r</mi><mi>d</mi><mi>e</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">border</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span></span></span></span> 继续尝试。</p>
-<p>为什么可以减小时间复杂度呢？其实还是因为有了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>o</mi><mi>r</mi><mi>d</mi><mi>e</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">border</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span></span></span></span>，也就是失配数组，减少了重复冗余的比较。</p>
-<h2 id="AC-自动机">AC 自动机</h2>
+<p>匹配上了！这就是它的 <span
+class="math inline"><em>b</em><em>o</em><em>r</em><em>d</em><em>e</em><em>r</em></span>。</p>
+<p>同理，去用匹配串取匹配待匹配串，如果失配了，那么就跳到 <span
+class="math inline"><em>b</em><em>o</em><em>r</em><em>d</em><em>e</em><em>r</em></span>
+继续尝试。</p>
+<p>为什么可以减小时间复杂度呢？其实还是因为有了 <span
+class="math inline"><em>b</em><em>o</em><em>r</em><em>d</em><em>e</em><em>r</em></span>，也就是失配数组，减少了重复冗余的比较。</p>
+<h2 id="ac-自动机">AC 自动机</h2>
 <p>trie 树会吧，在此基础上我们加一堆边。</p>
-<p>定义回跳边为当前节点的在树边（原来的 trie 树边）上的父亲节点的回跳边所指的节点的与自己同一方向的儿子（没有的就指到根节点）。</p>
+<p>定义回跳边为当前节点的在树边（原来的 trie
+树边）上的父亲节点的回跳边所指的节点的与自己同一方向的儿子（没有的就指到根节点）。</p>
 <p>有点绕，来张图。</p>
-<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/y2mbtgtd.png" srcset="/img/loading.gif" lazyload alt="呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀"></p>
+<figure>
+<img src="https://cdn.luogu.com.cn/upload/image_hosting/y2mbtgtd.png" srcset="/img/loading.gif" lazyload
+alt="呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀" />
+<figcaption
+aria-hidden="true">呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀</figcaption>
+</figure>
 <p>所以呢？它究竟代表什么呢？</p>
 <p>观察下面这张图：</p>
-<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/o4eom0ar.png" srcset="/img/loading.gif" lazyload alt="左侧为插入的字母，右侧为 trie 树，绿色为回跳边"></p>
-<p>容易发现回跳边所指的节点代表的字符串为它在这个 trie 树上的最长后缀。</p>
+<figure>
+<img src="https://cdn.luogu.com.cn/upload/image_hosting/o4eom0ar.png" srcset="/img/loading.gif" lazyload
+alt="左侧为插入的字母，右侧为 trie 树，绿色为回跳边" />
+<figcaption aria-hidden="true">左侧为插入的字母，右侧为 trie
+树，绿色为回跳边</figcaption>
+</figure>
+<p>容易发现回跳边所指的节点代表的字符串为它在这个 trie
+树上的最长后缀。</p>
 <p>定义转移边为一个节点的回跳边所指的节点的与自己同一方向的儿子（没有的就指到根节点）。</p>
-<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/ngv31rip.png" srcset="/img/loading.gif" lazyload alt="连了两条边出去的就是当前节点，这都不会看那就是真的没学懂了"></p>
-<p>容易发现转移边所指的节点代表的字符串为它在这个 trie 树上的有最长公共（它的）前（我的）后缀的串。</p>
+<figure>
+<img src="https://cdn.luogu.com.cn/upload/image_hosting/ngv31rip.png" srcset="/img/loading.gif" lazyload
+alt="连了两条边出去的就是当前节点，这都不会看那就是真的没学懂了" />
+<figcaption
+aria-hidden="true">连了两条边出去的就是当前节点，这都不会看那就是真的没学懂了</figcaption>
+</figure>
+<p>容易发现转移边所指的节点代表的字符串为它在这个 trie
+树上的有最长公共（它的）前（我的）后缀的串。</p>
 <p>所以在主串匹配的时候就不断走树边（正常扩展）和转移边（失配），而每到一个节点就把由回调边组成的从它到根节点的链上的所有节点都统计一遍，就是答案了。</p>
-<p>优化：如果只统计出现的串的个数就给每个节点打上标记，如果统计次数的话就将每个起始点出现次数加加，最后再统一用 topo 遍历一遍回跳边层层扩展上去就行了。</p>
-<p>时间复杂度还是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>m</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n + m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">m</span><span class="mclose">)</span></span></span></span> 的。</p>
+<p>优化：如果只统计出现的串的个数就给每个节点打上标记，如果统计次数的话就将每个起始点出现次数加加，最后再统一用
+topo 遍历一遍回跳边层层扩展上去就行了。</p>
+<p>时间复杂度还是 <span
+class="math inline"><em>O</em>(<em>n</em> + <em>m</em>)</span> 的。</p>
 
                 
               </div>
@@ -563,7 +618,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>February 7, 2025</div>
+          <div>2025年2月7日</div>
         </div>
       
       
@@ -712,9 +767,6 @@
 
   
 
-
-
-  
 
 
 
@@ -930,14 +982,6 @@
         anchors.add(res.join(', '));
       }
     });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
   });
 </script>
 

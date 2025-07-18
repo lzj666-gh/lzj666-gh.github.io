@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 90945055
+//  题目ID: T65934
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a,b,c;cin>>a>>b>>c;
+	int d;
+	if(b>a){
+		d=a;a=b;b=d;
+	}
+	else if(c>a){
+		d=a;a=c;c=d;
+	}
+	//a最大 
+	
+	
+	if(c+b>a){
+		if(a==b){
+			cout<<"Isoceles Triangle";
+		}
+		else if(a==c){
+			cout<<"Isoceles Triangle";
+		}
+		else if(c==b){
+			cout<<"Isoceles Triangle";
+		}
+		else{
+			cout<<"Yes but not isoceles";
+		}
+		
+	}
+	else{
+		cout<<"No";
+	}
+}
+

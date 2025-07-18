@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 140081789
+//  题目ID: T219542
+#include<bits/stdc++.h>
+#include<ext/pb_ds/priority_queue.hpp>
+using namespace std;
+struct node{
+	int p,d;
+	friend bool operator > (const node &x,const node &y){
+		return x.d==y.d?x.p<y.p:x.d>y.d;
+	}
+};
+int n;
+int main(){
+	ios_base::sync_with_stdio(false);
+	while(cin>>n){
+		priority_queue<node,vector<node>,greater<node>> q;
+		for(int i=1,x,y;i<=n;++i){
+			cin>>x>>y;
+			q.push({x,y});
+		}
+		int idx=1,ans=0;
+		while(!q.empty()){
+			while(q.size()&&q.top().d<idx) q.pop();
+			ans+=q.top().p;
+			++idx;
+		}
+		cout<<ans<<endl;
+	}
+	return 0;
+}

@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 195329649
+//  题目ID: T236582
+#include<bits/stdc++.h>
+using namespace std;
+int n, opt, x, y, k, N, q;
+vector<int>v;
+void add(int x, int k) {
+	for (x += N; x >= 1; x >>= 1) v[x] += k;
+}
+int query(int x, int y) {
+	int ans = 0;
+	for (x += N - 1, y += N + 1; x ^ y ^ 1; x >>= 1, y >>= 1) {
+		if (~x & 1) ans += v[x ^ 1];
+		if (y & 1) ans += v[y ^ 1];
+	}
+	return ans;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> q;
+	v.push_back(0);
+	for (int i = 1, tmp; i <= n; ++i) cin >> tmp, v.push_back(tmp);
+	N = pow(2, ceil(log2(n + 2))) + 1;
+	v.resize(N * 2 + 2);
+	for (int i = N + 1; i <= N + n; ++i) v[i] = v[i - N];
+	for (int i = N; i >= 1; --i) v[i] = v[i << 1] + v[i << 1 | 1];
+	while (q--) {
+		int opt, x, y, k;
+		cin >> opt;
+		if (opt == 1) {
+			cin >> x >> k;
+			add(x, k);
+		}
+		else if (opt == 2) {
+			cin >> x >> y;
+			cout << query(x, y) << endl;
+		}
+	}
+	return 0;
+}

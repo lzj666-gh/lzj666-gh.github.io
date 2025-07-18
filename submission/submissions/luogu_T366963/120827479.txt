@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 120827479
+//  题目ID: T366963
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios::sync_with_stdio(false);
+	cout<<"ACDAB"<<"BCBBB"<<"CBAAA"<<"FFTT"<<"BC"<<"FTTF"<<"DC"<<"FTT"<<"BAA"<<"BBCBD"<<"BABDD"<<endl;
+	return 0;
+}
+/*
+1010001010
+1110100110
+1110101110
+1010000010
+0100101101
+*/

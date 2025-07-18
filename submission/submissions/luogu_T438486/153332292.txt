@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 153332292
+//  题目ID: T438486
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	cout<<"6e+i";
+}

@@ -1,0 +1,149 @@
+//  OJ: 洛谷
+//  提交ID: 156914106
+//  题目ID: T237472
+#include<bits/stdc++.h>
+using namespace std;
+struct Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+	struct point {
+		int l, r;
+		long long sum, lazy;
+		point() :l(0), r(0), sum(0), lazy(0) {}
+		point(int ll, int rr, long long ssum, long long lzy) :l(ll), r(rr), sum(ssum), lazy(lzy) {}
+	}tree[4 * 500000 + 10];
+	void pushdown(int p) {
+		if (tree[p].lazy) {
+			tree[lc(p)].sum += (tree[lc(p)].r - tree[lc(p)].l) * tree[p].lazy;
+			tree[rc(p)].sum += (tree[rc(p)].r - tree[rc(p)].l) * tree[p].lazy;
+			tree[lc(p)].lazy += tree[p].lazy;
+			tree[rc(p)].lazy += tree[p].lazy;
+			tree[p].lazy = 0;
+		}
+	}
+	void pushup(int p) {
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+	}
+	void add(int p, int l, int r, int k) {
+		if (tree[p].l >= r || tree[p].r <= l) return;
+		if (tree[p].l == tree[p].r - 1) {
+			if (tree[p].lazy) tree[p].lazy = 0;
+			tree[p].sum += k;
+			return;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) {
+			tree[p].lazy += k;
+			pushdown(p);
+			pushup(p);
+			return;
+		}
+		pushdown(p);
+		add(lc(p), l, r, k);
+		add(rc(p), l, r, k);
+		pushup(p);
+	}
+	long long query(int p, int l, int r) {
+		if (tree[p].l >= r || tree[p].r <= l) return 0;
+		if (tree[p].l == tree[p].r - 1) {
+			if (tree[p].lazy) tree[p].lazy = 0;
+			return tree[p].sum;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) return tree[p].sum;
+		pushdown(p);
+		long long ans = 1ll * query(lc(p), l, r) + query(rc(p), l, r);
+		pushup(p);
+		return ans;
+	}
+	void build(int p, int l, int r, const vector<int>& v) {
+		tree[p].l = l, tree[p].r = r, tree[p].lazy = 0;
+		if (l == r - 1) {
+			tree[p] = { l,r,v[l],0 };
+			return;
+		}
+		build(lc(p), l, l + r >> 1, v);
+		build(rc(p), l + r >> 1, r, v);
+		pushup(p);
+	}
+	void sett(int p, int x, int k) {
+		if (tree[p].l > x || tree[p].r <= x) return;
+		if (tree[p].l == tree[p].r - 1 && tree[p].l == x) {
+			if (tree[p].lazy) tree[p].lazy = 0;
+			tree[p].sum = k;
+			return;
+		}
+		pushdown(p);
+		sett(lc(p), x, k);
+		sett(rc(p), x, k);
+		pushup(p);
+	}
+	void clear(int p, int l, int r) {
+		tree[p].l = l, tree[p].r = r, tree[p].lazy = 0, tree[p].sum = 0;
+		if (l == r - 1) return;
+		clear(lc(p), l, l + r >> 1);
+		clear(rc(p), l + r >> 1, r);
+	}
+}t;
+long long a[500000 + 10], b[500000 + 10];
+int n, m;
+struct Seg {
+	int l, r;
+	long long val;
+}tr[500000 + 10 << 2];
+#ifdef ONLINE_JUDGE
+long long gcd(long long a, long long b) {
+	return abs(__gcd(a, b));
+}
+#else
+#define gcd(a, b) abs(gcd(a, b))
+#endif
+void build(int p, int l, int r) {
+	tr[p].l = l; tr[p].r = r;
+	if (l == r) {
+		tr[p].val = b[l];
+		return;
+	}
+	int mid = l + r >> 1;
+	build(p << 1, l, mid), build(p << 1 | 1, mid + 1, r);
+	tr[p].val = gcd(tr[p << 1].val, tr[p << 1 | 1].val);
+}
+void pluss(int p, int x, long long val) {
+	if (tr[p].l == x && tr[p].r == x) {
+		tr[p].val += val;
+		return;
+	}
+	int mid = tr[p].l + tr[p].r >> 1;
+	if (x <= mid) pluss(p << 1, x, val);
+	else pluss(p << 1 | 1, x, val);
+	tr[p].val = gcd(tr[p << 1].val, tr[p << 1 | 1].val);
+}
+long long query(int p, int l, int r) {
+	if (tr[p].l >= l && tr[p].r <= r) return tr[p].val;
+	int mid = tr[p].l + tr[p].r >> 1;
+	long long val = 0;
+	if (l <= mid) val = gcd(val, query(p << 1, l, r));
+	if (r > mid) val = gcd(val, query(p << 1 | 1, l, r));
+	return val;
+}
+int main() {
+	cin >> n >> m;
+	t.clear(1, 1, n + 1);
+	for (int i = 1; i <= n; i++) cin >> a[i], b[i] = a[i] - a[i - 1], t.add(1, i, i + 1, b[i]);
+	build(1, 1, n);
+	while (m--) {
+		string op; int l, r;
+		cin >> op >> l >> r;
+		if (op == "C") {
+			long long d;
+			cin >> d;
+			pluss(1, l, d);
+			if (r < n) pluss(1, r + 1, -d);
+			t.add(1, l, l + 1, d);
+			t.add(1, r + 1, r + 2, -d);
+		}
+		else {
+			if (l == r) cout << t.query(1, 1, l + 1) << endl;
+			else cout << gcd(t.query(1, 1, l + 1), query(1, l + 1, r)) << endl;
+		}
+	}
+	return 0;
+}

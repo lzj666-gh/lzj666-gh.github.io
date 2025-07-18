@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 101833886
+//  题目ID: T261057
+#include <bits/stdc++.h>
+using namespace std;
+const int maxn = 100005;
+const int inf = 0x7f7f7f7f;
+ 
+struct node
+{
+    string s;
+    int len;
+} w[maxn];
+int a[maxn];
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    getchar();
+    while (n--)
+    {
+        int minn = inf, maxx = 0;
+        for (int i = 1; i <= 4; ++i)
+        {
+            cin >> w[i].s;
+            w[i].len = w[i].s.size();
+            maxx = max(maxx, w[i].len);
+            minn = min(minn, w[i].len);
+        }
+        int cnt = 0, cnt1 = 0, flag = 0, flag1 = 0;
+        for (int i = 1; i <= 4; ++i)
+        {
+            if (w[i].len > minn)
+                ++cnt;
+            if (w[i].len < maxx)
+                ++cnt1;
+            if (w[i].len == minn)
+                flag = i;
+            if (w[i].len == maxx)
+                flag1 = i;
+        }
+        if (cnt == 3)
+            printf("%c\n", 'A' + flag - 1);
+        else if (cnt1 == 3)
+            printf("%c\n", 'A' + flag1 - 1);
+        else
+           printf("C\n");
+    }
+}

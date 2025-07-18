@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 159653051
+//  题目ID: T241770
+#include<bits/stdc++.h>
+using namespace std;
+long long a[50000+10],n,c,l,r,opt;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i) cin>>a[i];
+	for(int cbc=1;cbc<=n;++cbc){
+		cin>>l>>r>>c;
+		int ans=-0;
+		for(int i=l;i<=r;++i) ans+=a[i]==c;
+		cout<<ans<<endl;
+		for(int i=l;i<=r;++i) a[i]=c;
+	}
+	return 0;
+}

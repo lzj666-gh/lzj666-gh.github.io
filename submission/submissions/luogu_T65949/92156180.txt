@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 92156180
+//  题目ID: T65949
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int a,b,c,d;
+	cin>>a;
+	if(a<0){
+		a=a*-1;
+		b=a%10;
+		c=a/10%10;
+		d=a/100;
+		a=100*b+10*c+d;
+		printf("-%d",a);
+	}
+	else{
+		b=a%10;
+		c=a/10%10;
+		d=a/100;
+		a=100*b+10*c+d;
+		printf("%d",a);
+	}
+
+	return 0;
+}

@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 90911521
+//  题目ID: T65812
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	double m,n,d;
+	cin>>m>>n;
+	d=(m-n)/5;
+	cout<<m-d*1<<" ";
+	cout<<m-d*2<<" ";
+	cout<<m-d*3<<" ";
+	cout<<m-d*4;
+	return 0;
+}
+

@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 94786617
+//  题目ID: T66237
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int a=1;
+	double s=0;
+	for(a;1/a>=0.0000001;a++){
+		s=s+1/a;
+	}
+	printf("%.7lf",s);
+	return 0;
+}
+

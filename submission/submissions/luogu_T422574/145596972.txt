@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 145596972
+//  题目ID: T422574
+#include<bits/stdc++.h>
+using namespace std;
+int cnt,primenum[500000000],n,d[1000000+10],lpr[1000000+10];
+bool num[1000000+10];
+void prime(){
+	d[1]=1;
+	for(int i=2;i<=1000000+10;i++){
+		if(!num[i]){
+			primenum[cnt++]=i;
+			d[i]=2;lpr[i]=1;
+		}
+		for(int j=0;j<cnt;j++){
+			if(i*1ll*primenum[j]>1000000+10) break;
+			num[i*primenum[j]]=true;
+			if(i%primenum[j]==0){
+				d[i*primenum[j]]=d[i]/(lpr[i]+1)*(lpr[i]+2);
+				lpr[i*primenum[j]]=lpr[i]+1;
+				break;
+			}
+			else{
+				d[i*primenum[j]]=d[i]*2;
+				lpr[i*primenum[j]]=1;
+			}
+		}
+	}
+}
+int main(){
+	cin>>n;
+	prime();
+	for(int i=1;i<=n;++i) cout<<d[i]<<'\n';
+	return 0;
+}

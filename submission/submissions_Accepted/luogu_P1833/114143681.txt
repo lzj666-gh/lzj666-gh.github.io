@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 114143681
+//  题目ID: P1833
+#include<bits/stdc++.h>
+using namespace std;
+int max(int x,int y){
+    return x>y?x:y;
+}
+int nx,ny,ex,ey,n,f[1010];
+int w[10005],v[10005],c[10005];
+int top,cc[1000005],vv[1000005];
+void ikun() {
+	for(int i=1;i<=n;i++) {
+		int t=1;
+		while(c[i]) {
+			cc[++top]=t*w[i];
+			vv[top]=t*v[i];
+			c[i]-=t; t*=2;
+			if(c[i]<t) {
+				cc[++top]=w[i]*c[i];
+				vv[top]=v[i]*c[i];
+				break;
+			}
+		}
+	}
+}
+int main() {
+	scanf("%d:%d%d:%d%d",&nx,&ny,&ex,&ey,&n);
+	int t=(ex*60+ey)-(nx*60+ny);
+	for(int i=1;i<=n;i++) {
+		scanf("%d%d%d",&w[i],&v[i],&c[i]);
+		if(!c[i]) c[i]=999999;
+	}
+	ikun();
+	for(int i=1;i<=top;i++) {
+		for(int j=t;j>=cc[i];j--)
+			f[j]=max(f[j],f[j-cc[i]]+vv[i]);
+	}
+	printf("%d",f[t]);
+	return 0;
+} 

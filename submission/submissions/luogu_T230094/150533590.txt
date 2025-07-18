@@ -1,0 +1,175 @@
+//  OJ: 洛谷
+//  提交ID: 150533590
+//  题目ID: T230094
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+#pragma warning(disable:4244)
+#pragma warning(disable:6262)
+template<typename T1, typename T2>
+ostream& operator << (ostream& out, pair<T1, T2>& p) {
+	out << '{' << p.first << ',' << p.second << '}';
+	return out;
+}
+template<typename T>
+ostream& operator << (ostream& out, vector<T>p) {
+	for (T t : p) out << t << ';';
+	return out;
+}
+struct LZJ {
+	int n, m;
+	int num[64 + 10][64 + 10];
+	LZJ() {
+		memset(num, 0, sizeof num);
+		n = m = 0;
+	}
+	LZJ(int nn) {
+		memset(num, 0, sizeof num);
+		n = m = nn;
+		for (int i = 0; i <= n; ++i)
+			num[i][i] = 1;
+	}
+	LZJ(int nn, int mm) {
+		n = nn, m = mm;
+		memset(num, 0, sizeof num);
+	}
+	friend LZJ operator * (const LZJ& a, const LZJ& b) {
+		LZJ c = LZJ(a.n, b.m);
+		if (a.m != b.n) cerr << "the first " << a << "want to mul the second " << b << endl << "ERR", exit(0);
+		for (int i = 0; i <= a.n; ++i)
+			for (int j = 0; j <= b.m; ++j)
+				for (int k = 0; k <= a.m; ++k)
+					c.num[i][j] += (a.num[i][k] * b.num[k][j]);
+		return c;
+	}
+	friend LZJ operator %(const LZJ& a, const int& m) {
+		LZJ c = a;
+		for (int i = 0; i <= a.n; ++i)
+			for (int j = 0; j <= a.m; ++j)
+				c.num[i][j] %= m;
+		return c;
+	}
+	friend ostream& operator<<(ostream& out, const LZJ& a) {
+		out << "is {" << a.n << " with " << a.m << "}\n";
+		for (int i = 0; i <= a.n; ++i, out << endl)
+			for (int j = 0; j <= a.m; ++j)
+				out << a.num[i][j] << ' ';
+		return out;
+	}
+}exam, lzJ, ans;
+LZJ poww(LZJ a, long long x) {
+	if (x == 0) return lzJ;
+	LZJ t = poww(a, x / 2);
+	t = (t * t);
+	if (x & 1) t = (t * a);
+	return t;
+}
+long long n, m, t, actt;
+LZJ lzj[60 + 10];
+string act[10][10];
+string reall[10];
+int cbc[10][10]; char jb;
+inline int pos(int x, int y) {
+	return (x - 1) * m + y;
+}
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> t >> actt;
+	exam = lzJ = LZJ(n * m);
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j)
+			cin >> jb, cbc[i][j] = jb ^ 48;
+	for (int i = 0; i < actt; ++i)
+		cin >> reall[i];
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j)
+			act[i][j] = reall[cbc[i][j]];
+	for (int k = 0; k < 60; ++k) {
+		lzj[k].m = n * m, lzj[k].n = n * m;
+		lzj[k].num[0][0] = 1;
+		for (int i = 1; i <= n; ++i)
+			for (int j = 1; j <= m; ++j) {
+				char tmp = act[i][j][k % act[i][j].size()];
+				if (tmp >= '0' && tmp <= '9') lzj[k].num[pos(i, j)][pos(i, j)] = 1, lzj[k].num[0][pos(i, j)] = tmp ^ 48;
+				else if (tmp == 'D') lzj[k].num[pos(i, j)][pos(i, j)] = 0;
+				else {
+					switch (tmp) {
+					case 'W': {
+						lzj[k].num[pos(i, j)][pos(i, j)] = 0;
+						if (j > 1) lzj[k].num[pos(i, j)][pos(i, j - 1)] = 1, lzj[k].num[pos(i, j - 1)][pos(i, j - 1)] = 1;
+						break;
+					}
+					case 'E': {
+						lzj[k].num[pos(i, j)][pos(i, j)] = 0;
+						if (j < m) lzj[k].num[pos(i, j)][pos(i, j + 1)] = 1, lzj[k].num[pos(i, j + 1)][pos(i, j + 1)] = 1;
+						break;
+					}
+					case 'S': {
+						lzj[k].num[pos(i, j)][pos(i, j)] = 0;
+						if (i < n) lzj[k].num[pos(i, j)][pos(i + 1, j)] = 1, lzj[k].num[pos(i + 1, j)][pos(i + 1, j)] = 1;
+						break;
+					}
+					case 'N': {
+						lzj[k].num[pos(i, j)][pos(i, j)] = 0;
+						if (i > 1) lzj[k].num[pos(i, j)][pos(i - 1, j)] = 1, lzj[k].num[pos(i - 1, j)][pos(i - 1, j)] = 1;
+						break;
+					}
+					default: {
+						cout << "cbcbcbcbcbcbcbcbcbcbcbcbcbccbcbcbcbcbcbcerrrrrrrrrrrrrrrrrrrrrrr" << endl;
+						return 0;
+					}
+					}
+				}
+			}
+		exam = exam * lzj[k];
+//		cout << lzj[k] << endl;
+	}
+	ans.n = 0; ans.m = n * m;
+	ans.num[0][0] = 1;
+	LZJ cbcyc=ans*lzj[0]*lzj[1]*lzj[2]*lzj[3]*lzj[4]*lzj[5];
+	for(int i=1;i<=n;++i,cout<<endl)
+		for(int j=1;j<=m;++j)
+			cout<<cbcyc.num[0][pos(i,j)]<<' ';
+	for(int qwq=0;qwq^15;qwq++){
+		cbcyc=cbcyc*lzj[0]*lzj[1]*lzj[2]*lzj[3]*lzj[4]*lzj[5];
+		for(int i=1;i<=n;++i,cout<<endl)
+			for(int j=1;j<=m;++j)
+				cout<<cbcyc.num[0][pos(i,j)]<<' ';
+		cout<<endl;
+	}
+	ans = ans * poww(exam, t / 60);
+	int lim = t % 60;
+	for (int i = 0; i ^ lim; ++i)
+		ans = ans * lzj[i];
+// 	cout<<ans<<endl;
+	int anss = -1;
+	for (int i = 0; i <= n * m; ++i) anss = max(anss, ans.num[0][i]);
+	cout << anss << endl;
+	return 0;
+}
+/*
+8 8 390 6
+51111112
+11111122
+41111222
+44112222
+44403222
+44433322
+44333332
+43333333
+000000
+00000E
+00000S
+00000W
+00000N
+10000E
+
+0:空
+1:6->右
+2:6->下 
+3:6->左
+4:6->上 
+5:1->加、6->右 
+
+3
+*/

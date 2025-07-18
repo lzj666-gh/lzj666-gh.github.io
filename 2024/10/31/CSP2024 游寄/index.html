@@ -46,8 +46,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -74,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lzj-blog.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"lzj-blog.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":false,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -261,7 +259,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2024-10-31 15:53" pubdate>
-          October 31, 2024 pm
+          2024年10月31日 下午
         </time>
       </span>
     
@@ -272,7 +270,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          959 字
+          936 字
         
       </span>
     
@@ -325,50 +323,68 @@
             
               <div class="markdown-body">
                 
-                <h1>初赛</h1>
+                <h1 id="初赛">初赛</h1>
 <p>你说得对，但是前面忘了，中间忘了，后面忘了，但是随便过。</p>
-<h1>复赛</h1>
-<h2 id="Day-0">Day 0</h2>
-<p><s>熬夜打原神，原神真好玩。</s> 不敢熬夜，赶紧睡觉，我睡睡睡睡睡，直接一路睡到考场（雾）。</p>
-<h2 id="Day-1">Day 1</h2>
+<h1 id="复赛">复赛</h1>
+<h2 id="day-0">Day 0</h2>
+<p><del>熬夜打原神，原神真好玩。</del>
+不敢熬夜，赶紧睡觉，我睡睡睡睡睡，直接一路睡到考场（雾）。</p>
+<h2 id="day-1">Day 1</h2>
 <p>到了七中高新，左右看了看，没发现几个同届的，倒发现几个学弟学妹。听到有人在讨论怎么骗分，不是吧，-J就骗？随便和学弟学妹交流了一下心得，发现能进考场了，就进去了。</p>
-<h3 id="J">-J</h3>
+<h3 id="j">-J</h3>
 <p>好，今年居然能考前上机测试，直接花15min打+调一颗线段树，然后发现同机房的都在玩？例如一个同校的学弟就在玩小恐龙，别说，打的比我好（大雾）。</p>
-<h4 id="T1">T1</h4>
+<h4 id="t1">T1</h4>
 <p>水，比去年水， <code>map</code> 打完走人。</p>
-<h4 id="T2">T2</h4>
+<h4 id="t2">T2</h4>
 <p>比去年水， <code>dfs</code> 打完走人（吗？）。</p>
 <p>不对，大样例怎么爆栈了？！吓得我当场原地旋转720°加后空翻震惊监考老师的同时开了无限栈，诶，不对，无限栈咋开来着，哦，只需要这样，这样，再那样就可以了，最后也是过了大样例，吓我一跳。</p>
-<h4 id="T3">T3</h4>
-<p>先写了个记忆化递归打表程序，发现十分有规律，就是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext> </mtext><mo lspace="0.22em" rspace="0.22em"><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">d</mi></mrow></mo><mtext> </mtext><mn>7</mn></mrow><annotation encoding="application/x-tex">\bmod 7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mord">7</span></span></span></span> 然后特判就行了，做到现在过完大样例大约 0.75h 左右，开 T4！</p>
-<h4 id="T4">T4</h4>
-<p>不对！这 T4 不对劲，我看着起码有上位绿，甚至有蓝，完了，是不是我思考复杂了，再推简单思路。</p>
+<h4 id="t3">T3</h4>
+<p>先写了个记忆化递归打表程序，发现十分有规律，就是 <span
+class="math inline"> mod  7</span>
+然后特判就行了，做到现在过完大样例大约 0.75h 左右，开 T4！</p>
+<h4 id="t4">T4</h4>
+<p>不对！这 T4
+不对劲，我看着起码有上位绿，甚至有蓝，完了，是不是我思考复杂了，再推简单思路。</p>
 <p>只剩 0.5h 了，寄，赶紧打个暴力的区间 DP，感觉要遭。</p>
-<h3 id="S">-S</h3>
-<p>接着打了棵 FHQ，还没有调呢就听见这个考场有人根据大样例推测名字为 <code>duel</code> 的题是输出序列中出现最多的元素出现多少次，不是，赛前 10min 写完 T1 正解，这个人怕不是开了。</p>
-<h4 id="T1-2">T1</h4>
+<h3 id="s">-S</h3>
+<p>接着打了棵 FHQ，还没有调呢就听见这个考场有人根据大样例推测名字为
+<code>duel</code> 的题是输出序列中出现最多的元素出现多少次，不是，赛前
+10min 写完 T1 正解，这个人怕不是开了。</p>
+<h4 id="t1-1">T1</h4>
 <p>最后想着用 <code>set</code> 维护，还是思路有正确性的。</p>
-<h4 id="T2-2">T2</h4>
-<p>感觉还是大模拟，随便看了几下，口胡了一个思路，几下过了大样例，开 T3，T4 去。</p>
-<h4 id="T3-2">T3</h4>
-<p>先把暴力打上再说。去 T4 看一眼……WC，什么玩意，不会，再来打 T3，思考了 0.114514ms 后觉得先把 T4 暴力打上再说。然后就回不来了。</p>
-<h4 id="T4-2">T4</h4>
-<p>咋感觉起码有紫，暴力打完了后调了很久都不过样例，一直调到结束，期间检查了 1919810 次 <code>freopen</code>。</p>
-<h2 id="Day2">Day2</h2>
+<h4 id="t2-1">T2</h4>
+<p>感觉还是大模拟，随便看了几下，口胡了一个思路，几下过了大样例，开
+T3，T4 去。</p>
+<h4 id="t3-1">T3</h4>
+<p>先把暴力打上再说。去 T4 看一眼……WC，什么玩意，不会，再来打 T3，思考了
+0.114514ms 后觉得先把 T4 暴力打上再说。然后就回不来了。</p>
+<h4 id="t4-1">T4</h4>
+<p>咋感觉起码有紫，暴力打完了后调了很久都不过样例，一直调到结束，期间检查了
+1919810 次 <code>freopen</code>。</p>
+<h2 id="day2">Day2</h2>
 <p>出难度了，S 组是什么东西！算了，明年再战吧。</p>
-<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="monospace">-J</mtext><mo>=</mo><mn>100</mn><mo>+</mo><mn>100</mn><mo>+</mo><mn>100</mn><mo>+</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">\texttt{-J} = 100 + 100 + 100 + 20</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord text"><span class="mord texttt">-J</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">100</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">100</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">100</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">20</span></span></span></span></p>
-<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="monospace">-S</mtext><mo>=</mo><mn>100</mn><mo>+</mo><mn>100</mn><mo>+</mo><mn>20</mn><mo>+</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\texttt{-S} = 100 + 100 + 20 + 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord text"><span class="mord texttt">-S</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">100</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">100</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">20</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></p>
-<h2 id="Day8">Day8</h2>
-<p>出成绩了，J 组的  T4 挂了 5pts，其他倒没挂。</p>
-<h1>赛后总结</h1>
-<h2 id="J-T4">-J T4</h2>
-<p>赛后看了题解，感觉区间 DP 做法还是赛时可做的，但是局限于我最开始的图论做法，而且不想着怎么去优化，区间 DP 也想过，但是没想过怎么压缩状态，总结下来就是思路想不到，迷途不知返，以后一定要多尝试几种思路。</p>
-<h2 id="S-T3">-S T3</h2>
-<p>不对啊，同机房的大佬都想到做法了，我真是个蒟蒻。赛后问了一下解法，发现怎么又是区间 DP，看来我接下来这一年要好好学一下区间 DP 了，不然普及提高全部挂分，挂大分。fc 了一下我的思路要转到区间 DP 上有多难，其实差距也只有亿点大罢了，只需要转移一个最近的同色和异色，wssb。</p>
-<h2 id="S-T4">-S T4</h2>
+<p><span
+class="math inline"><code>-J</code> = 100 + 100 + 100 + 20</span></p>
+<p><span
+class="math inline"><code>-S</code> = 100 + 100 + 20 + 0</span></p>
+<h2 id="day8">Day8</h2>
+<p>出成绩了，J 组的 T4 挂了 5pts，其他倒没挂。</p>
+<h1 id="赛后总结">赛后总结</h1>
+<h2 id="j-t4">-J T4</h2>
+<p>赛后看了题解，感觉区间 DP
+做法还是赛时可做的，但是局限于我最开始的图论做法，而且不想着怎么去优化，区间
+DP
+也想过，但是没想过怎么压缩状态，总结下来就是思路想不到，迷途不知返，以后一定要多尝试几种思路。</p>
+<h2 id="s-t3">-S T3</h2>
+<p>不对啊，同机房的大佬都想到做法了，我真是个蒟蒻。赛后问了一下解法，发现怎么又是区间
+DP，看来我接下来这一年要好好学一下区间 DP
+了，不然普及提高全部挂分，挂大分。fc 了一下我的思路要转到区间 DP
+上有多难，其实差距也只有亿点大罢了，只需要转移一个最近的同色和异色，wssb。</p>
+<h2 id="s-t4">-S T4</h2>
 <p>真的不会了，在我眼里这道题几乎全部不可做，最暴力的暴力都不会打，看的出来我是真的蒟了。</p>
 <h2 id="感言">感言</h2>
-<p>本来还以为要退队了呢，还好这次挂的分少，得以幸存（？）。总结一下就是区间 DP 和 Just do it，几种思路就都写上也行。</p>
+<p>本来还以为要退队了呢，还好这次挂的分少，得以幸存（？）。总结一下就是区间
+DP 和 Just do it，几种思路就都写上也行。</p>
 <p>咕咕咕。</p>
 
                 
@@ -407,7 +423,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>October 31, 2024</div>
+          <div>2024年10月31日</div>
         </div>
       
       
@@ -556,9 +572,6 @@
 
   
 
-
-
-  
 
 
 
@@ -774,14 +787,6 @@
         anchors.add(res.join(', '));
       }
     });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
   });
 </script>
 

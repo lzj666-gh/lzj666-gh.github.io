@@ -19,12 +19,12 @@
   <meta name="author" content="lzj">
   <meta name="keywords" content="">
   
-    <meta name="description" content="看到大量OIers破防，我就知道这题出对了。多组数据，如果有解，输出Νo，并输出方案数对998244853取模的结果；如果无解，输出ΥΕ5。题面禁止复制。我的std经过极限卡常，跑了1.02s，所以这题时限1024ms。计算过程会爆int，但用long long会MLE。这是一道字符串题，但字符集不只是英文字母，你需要准确用UTF-8编码读取字符。对ƶ̇这种组合字符，你需要把它当成1个字符，而不是">
+    <meta name="description" content="看到大量OIers破防，我就知道这题出对了。多组数据，如果有解，输出Νo，并输出方案数对998244853取模的结果；如果无解，输出ΥΕ5。题面禁止复制。我的std经过极限卡常，跑了1.02s，所以这题时限1024ms。计算过程会爆int，但用long long会MLE。这是一道字符串题，但字符集不只是英文字母，你需要准确用UTF-8编码读取字符。对ƶ̇这种组合字符，你需要把它当成1个字符，而不">
 <meta property="og:type" content="website">
 <meta property="og:title" content="云剪切板">
 <meta property="og:url" content="https://lzj-blog.top/paste/exrvzz4f.html">
 <meta property="og:site_name" content="lzj&#39;blog">
-<meta property="og:description" content="看到大量OIers破防，我就知道这题出对了。多组数据，如果有解，输出Νo，并输出方案数对998244853取模的结果；如果无解，输出ΥΕ5。题面禁止复制。我的std经过极限卡常，跑了1.02s，所以这题时限1024ms。计算过程会爆int，但用long long会MLE。这是一道字符串题，但字符集不只是英文字母，你需要准确用UTF-8编码读取字符。对ƶ̇这种组合字符，你需要把它当成1个字符，而不是">
+<meta property="og:description" content="看到大量OIers破防，我就知道这题出对了。多组数据，如果有解，输出Νo，并输出方案数对998244853取模的结果；如果无解，输出ΥΕ5。题面禁止复制。我的std经过极限卡常，跑了1.02s，所以这题时限1024ms。计算过程会爆int，但用long long会MLE。这是一道字符串题，但字符集不只是英文字母，你需要准确用UTF-8编码读取字符。对ƶ̇这种组合字符，你需要把它当成1个字符，而不">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-13T04:26:33.000Z">
 <meta property="article:modified_time" content="2025-05-13T04:29:38.000Z">
@@ -67,7 +67,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lzj-blog.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"lzj-blog.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":false,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -270,23 +270,31 @@
                 
 
 <article class="page-content">
-  <p>看到大量OIers破防，我就知道这题出对了。多组数据，如果有解，输出Νo，并输出方案数对998244853取模的结果；如果无解，输出ΥΕ5。题面禁止复制。我的std经过极限卡常，跑了1.02s，所以这题时限1024ms。计算过程会爆int，但用long long会MLE。这是一道字符串题，但字符集不只是英文字母，你需要准确用UTF-8编码读取字符。对ƶ̇这种组合字符，你需要把它当成1个字符，而不是拆成ƶ和  ̇。（请注意输出内容不是普通的英文字母。当然这句话题面里没有。）</p>
+  <p>看到大量OIers破防，我就知道这题出对了。多组数据，如果有解，输出Νo，并输出方案数对998244853取模的结果；如果无解，输出ΥΕ5。题面禁止复制。我的std经过极限卡常，跑了1.02s，所以这题时限1024ms。计算过程会爆int，但用long
+long会MLE。这是一道字符串题，但字符集不只是英文字母，你需要准确用UTF-8编码读取字符。对ƶ̇这种组合字符，你需要把它当成1个字符，而不是拆成ƶ和
+̇。（请注意输出内容不是普通的英文字母。当然这句话题面里没有。）</p>
 <p>作者：Grammar</p>
-<p>链接：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/667574614/answer/3632617732">https://www.zhihu.com/question/667574614/answer/3632617732</a></p>
+<p>链接：<a
+target="_blank" rel="noopener" href="https://www.zhihu.com/question/667574614/answer/3632617732"
+class="uri">https://www.zhihu.com/question/667574614/answer/3632617732</a></p>
 <p>来源：知乎</p>
 <p>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
 <p>坑点解析：</p>
 <blockquote>
 <p>如果有解，输出Νo</p>
 </blockquote>
-<p><strong>有解</strong>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">N</mi></mrow><annotation encoding="application/x-tex">Ν</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">N</span></span></span></span> 而非字符 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span>。</p>
+<p><strong>有解</strong>、<span class="math inline"><em>Ν</em></span>
+而非字符 <span class="math inline"><em>N</em></span>。</p>
 <blockquote>
 <p>998244853</p>
 </blockquote>
 <blockquote>
 <p>ΥΕ5</p>
 </blockquote>
-<p>同理，不是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mi>E</mi><mi>S</mi></mrow><annotation encoding="application/x-tex">YES</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mord mathnormal" style="margin-right:0.05764em;">ES</span></span></span></span>，也不是英文字母 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mi>E</mi><mn>5</mn></mrow><annotation encoding="application/x-tex">YE5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">5</span></span></span></span>，而是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Υ</mi><mi mathvariant="normal">E</mi><mn>5</mn></mrow><annotation encoding="application/x-tex">ΥΕ5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">ΥE5</span></span></span></span></p>
+<p>同理，不是 <span
+class="math inline"><em>Y</em><em>E</em><em>S</em></span>，也不是英文字母
+<span class="math inline"><em>Y</em><em>E</em>5</span>，而是 <span
+class="math inline"><em>Υ</em><em>Ε</em>5</span></p>
 <p>其他的自己就能看出来吧。</p>
 
 

@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 91163633
+//  题目ID: T65939
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a;cin>>a;
+	if(a%135==0){
+		cout<<"YES: 3 5 7";
+	}
+	else if(a%15==0){
+		cout<<"YES: 3 5";
+	}
+	else if(a%35==0){
+		cout<<"YES: 5 7";
+	}
+	else if(a%21==0){
+		cout<<"YES: 3 7";
+	}
+	else if(a%3==0){
+		cout<<"YES: 3";
+	}
+	else if(a%5==0){
+		cout<<"YES: 5";
+	}
+	else if(a%7==0){
+		cout<<"YES: 7";
+	}
+	else{
+		cout<<"NO: 3 5 7";
+	}
+	return 0;
+}

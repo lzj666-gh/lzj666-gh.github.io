@@ -1,7 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 115352056
-//  题目ID: P2293
-import math as m
-a=int(input())
-b=int(input())
-print(m.floor(m.pow(b,1/a)+0.000000001))

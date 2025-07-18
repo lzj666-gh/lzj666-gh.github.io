@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 155941616
+//  题目ID: T235118
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+	int v,nxt;
+}edge[200000+10];
+int n,m,idx,head[400000+10],k,ord2[400000+10];bool ord[400000+10];
+void add(int u,int v){edge[++idx]={v,head[u]};head[u]=idx;}
+vector<Edge>cbc[200000+10];
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1,u,v;i<=m;++i){
+		cin>>u>>v;
+		cbc[u].push_back({u,v});
+	}
+	cin>>k;
+	for(int i=1;i<=k;++i)cin>>ord2[i],ord[ord2[i]]=1;
+	for(int i=1;i<=n;++i) if(!ord[i]){
+		for(const Edge&a:cbc[i])if(!ord[a.nxt]) add(a.v,a.nxt),add(a,xnt,a.v);
+	}
+	for(int i=k;i>=1;--i){
+		
+	}
+	return 0;
+}
