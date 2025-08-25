@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 232098477
+//  题目ID: T528863
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+int k, n, bit[21], cost[21];
+long long ans;
+pair<int, int>p[1000000 + 5];
+signed main() {
+//	file(recipe);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> k;
+	n = 1 << k;
+	for (int i = 1; i < n; ++i) {
+		cin >> p[i].first; p[i].second = i;
+	}
+	sort(p + 1, p + n);
+	for (int i = 1; i < n; ++i) {
+		int k = p[i].second, c = p[i].first;
+		for (int i = 20; i >= 0; --i) {
+			if ((1ll << i) & k) {
+				if (bit[i]) {
+					k ^= bit[i];
+				}
+				else {
+					cost[i] = c;
+					bit[i] = k;
+					break;
+				}
+			}
+		}
+	}
+	for (int i = 0; i <= 20; ++i) ans += cost[i];
+	cout << ans << endl;
+	return 0;
+}

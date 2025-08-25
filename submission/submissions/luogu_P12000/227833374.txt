@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 227833374
+//  题目ID: P12000
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1000000 + 5;
+int n, a[N], b[N], nxt[N];
+bool check(int x) {
+	int now = 0, v = 0;
+	for (int i = 1; i <= n; ++i) {
+		int c = (nxt[i] - 1) * x - v;
+		now += b[i];
+		if (now * a[i] < c) v += now * a[i], now = 0;
+		else if (c > 0) {
+			int buy = min(c / a[i] + (c % a[i] != 0), now);
+			v += buy * a[i]; now -= buy;
+		}
+		if (v < i * x) return 0;
+	}
+	return 1;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T; cin >> T;
+	while (T--) {
+		cin >> n;
+		for (int i = 1; i <= n; ++i) cin >> a[i];
+		for (int i = 1; i <= n; ++i) cin >> b[i];
+		for (int i = 1; i <= n; ++i) nxt[i] = n + 1;
+		stack<int>s;
+		for (int i = 1; i <= n; ++i) {
+			while (!s.empty() && a[s.top()] < a[i])
+				nxt[s.top()] = i, s.pop();
+			s.push(i);
+		}
+		int l = 0, r = 1e12;
+		while (l < r - 1) {
+			int mid = l + r >> 1;
+			if (check(mid)) l = mid;
+			else r = mid;
+		}
+		cout << l << endl;
+	}
+	return 0;
+}

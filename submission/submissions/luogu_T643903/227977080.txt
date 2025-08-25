@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 227977080
+//  题目ID: T643903
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int D[1000], n, r;
+double P[1000];
+double dfs(int x, int k, double p, int sum) {
+	if (k == r) return p * sum;
+	if (x == n + 1) return dfs(1, k + 1, p, sum);
+	if (p == 0) return 0;
+	double cbc = 0, ssum = 0;
+	swap(cbc, P[x]);
+	ssum += dfs(1, k + 1, p * cbc, sum + D[x]);
+	swap(cbc, P[x]);
+	return ssum + dfs(x + 1, k, p * (1 - P[x]), sum);
+}
+int32_t main(int32_t argc, char** argv) {
+//	if (argc >= 2) freopen(argv[1], "r", stdin);
+//	else freopen("pipe.in", "r", stdin);
+//	if (argc >= 3) freopen(argv[2], "w", stdout);
+//	else freopen("pipe.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		cin >> n >> r;
+		for (int i = 1; i <= n; ++i) cin >> P[i] >> D[i];
+		cout << fixed << setprecision(10) << dfs(1, 0, 1, 0) << endl;
+	}
+	return 0;
+}

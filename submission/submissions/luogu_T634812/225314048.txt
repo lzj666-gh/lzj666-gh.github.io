@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 225314048
+//  题目ID: T634812
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    long long n,a,b;
+    cin>>n>>a>>b;
+    cout<<min(a*n,b);
+}

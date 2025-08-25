@@ -1,0 +1,57 @@
+//  OJ: 洛谷
+//  提交ID: 222765980
+//  题目ID: P3565
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e5 + 5;
+struct Edge {
+	int v, nxt;
+}edge[N << 1];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int dep[N], son[N];
+void dfs1(int x, int fa) {
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs1(edge[i].v, x), dep[edge[i].v] > dep[son[x]] && (son[x] = edge[i].v);
+	dep[x] = dep[son[x]] + 1;
+}
+using it = int*;
+int ARR[N << 2], ans;
+it f[N], g[N], p = ARR;
+int n;
+void dfs(int x, int fa) {
+	if (son[x])
+		f[son[x]] = f[x] + 1, g[son[x]] = g[x] - 1, dfs(son[x], x);
+	f[x][0] = 1; ans += g[x][0];
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if ((edge[i].v ^ fa) && (edge[i].v ^ son[x])) {
+			f[edge[i].v] = p; p += dep[edge[i].v] << 1;
+			g[edge[i].v] = p; p += dep[edge[i].v] << 1;
+			dfs(edge[i].v, x);
+			for (int j = 0; j < dep[edge[i].v]; j++) {
+				if (j) ans += f[x][j - 1] * g[edge[i].v][j];
+				ans += g[x][j + 1] * f[edge[i].v][j];
+			}
+			for (int j = 0; j < dep[edge[i].v]; j++) {
+				g[x][j + 1] += f[x][j + 1] * f[edge[i].v][j];
+				if (j) g[x][j - 1] += g[edge[i].v][j];
+				f[x][j + 1] += f[edge[i].v][j];
+			}
+		}
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1, u, v; i < n; ++i) cin >> u >> v, add(u, v), add(v, u);
+	dfs1(1, 1);
+	f[1] = p; p += dep[1] << 1;
+	g[1] = p; p += dep[1] << 1;
+	dfs(1, 1);
+	cout << ans << endl;
+	return 0;
+}

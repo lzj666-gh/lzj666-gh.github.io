@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 227381063
+//  题目ID: T633937
+import sys
+s = lambda: sys.stdin.readline()
+total_c = s.count('c')
+left_c = 0
+ans = 0
+for ch in s:
+    if ch == 'c':
+        left_c += 1
+    elif ch == 'y':
+        # 当前位置之后的 'c' 的个数 = 总 'c' 数 - 当前位置之前的 'c' 的个数
+        right_c = total_c - left_c
+        ans += left_c * right_c
+print(ans % (10000000 + 9))

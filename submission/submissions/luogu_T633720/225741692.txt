@@ -1,0 +1,7 @@
+//  OJ: 洛谷
+//  提交ID: 225741692
+//  题目ID: T633720
+sys.maxsize=1e10000000
+a=input()
+b=input()
+print(abs(a-b))

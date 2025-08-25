@@ -1,0 +1,60 @@
+//  OJ: 洛谷
+//  提交ID: 220069064
+//  题目ID: P5836
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 2e5 + 10, M = 4e5 + 10, inf = 0x3f3f3f3f;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+void addedge(int u, int v) {
+	add(u, v); add(v, u);
+}
+int fa[N][20], dep[N], n, m;
+bool cn[N][2][20], a[N];
+void dfs(int x, int f) {
+	fa[x][0] = f; dep[x] = dep[f] + 1;
+	for (int i = 1; i < 20; ++i) fa[x][i] = fa[fa[x][i - 1]][i - 1];
+	cn[x][a[x]][0] = 1;
+	for (int i = 1; i < 20; ++i)
+		cn[x][0][i] = cn[fa[x][i - 1]][0][i - 1] || cn[x][0][i - 1],
+		cn[x][1][i] = cn[fa[x][i - 1]][1][i - 1] || cn[x][1][i - 1];
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ f)
+			dfs(edge[i].v, x);
+}
+void init() {
+	dfs(1, 1);
+}
+int query(int x, int y, bool qry) {
+	if (dep[x] < dep[y]) swap(x, y);
+	int cur = dep[x] - dep[y];
+	bool ans = 0;
+	for (int i = 0; i < 20; ++i)
+		if (cur & (1 << i))
+			ans = ans || cn[x][qry][i], x = fa[x][i];
+	if (x == y) return ans;
+	for (int i = 19; i >= 0; --i)
+		if (fa[x][i] ^ fa[y][i])
+			ans = ans || cn[x][qry][i], x = fa[x][i],
+			ans = ans || cn[y][qry][i], y = fa[y][i];
+	return ans || cn[x][qry][0] || cn[y][qry][0];
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	char ch;
+	for (int i = 1; i <= n; ++i) cin >> ch, a[i] = ch == 'G';
+	for (int i = 1, x, y; i < n; ++i) cin >> x >> y, addedge(x, y);
+	init();
+	while (m--) {
+		int a, b;
+		cin >> a >> b >> ch;
+		cout << query(a, b, ch == 'G');
+	}
+}

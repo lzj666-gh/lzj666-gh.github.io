@@ -1,0 +1,72 @@
+//  OJ: 洛谷
+//  提交ID: 232341062
+//  题目ID: P5656
+#include<bits/stdc++.h>
+#define int ll
+using ll = long long;
+using namespace std;
+namespace IO {
+	template<class... T2> inline void qread(char& IEE, T2&... ls);
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls);
+	template<class... T2> inline void qwrite(char IEE, T2... ls);
+	template<class... T2> inline void qwrite(const char* str, T2... ls);
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls);
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls);
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	template<class... T2> inline void qwrite(char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+int exgcd(int a, int b, int& x, int& y) {
+	if (b == 0) { x = 1; y = 0; return a; }
+	int t = exgcd(b, a % b, y, x);
+	y -= a / b * x;
+	return t;
+}
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T, a, b, c, x, y;
+	qread(T);
+	while (T--) {
+		qread(a, b, c);
+		long long d = exgcd(a, b, x, y);
+		if (c % d) {
+			qwrite(-1, '\n');
+			continue;
+		}
+		x *= c / d; y *= c / d;
+		long long dx = b / d, dy = a / d;
+		// a * x + b * y = c
+		if (x <= 0) {
+			int k = round(ceil((-x + 1.0) / dx));
+			x += dx * k; y -= dy * k;
+		}
+		if (y <= 0) {
+			int k = round(ceil((-y + 1.0) / dy));
+			x -= dx * k; y += dy * k;
+		}
+		if (x <= 0) {
+			qwrite(int(x + dx * round(ceil((-x + 1.0) / dx))), ' ', y, '\n');
+		}
+		else {
+			int x1, x2, y1, y2;
+			int k = (x - 1) / dx;
+			x1 = x - dx * k; y2 = y + dy * k;
+			k = (y - 1) / dy;
+			x2 = x + dx * k; y1 = y - dy * k;
+			qwrite((x2 - x1) / dx + 1, ' ', x1, ' ', y1, ' ', x2, ' ', y2, '\n');
+		}
+	}
+	return 0;
+}

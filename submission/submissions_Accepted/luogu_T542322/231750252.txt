@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 231750252
+//  题目ID: T542322
+#include<bits/stdc++.h>
+using namespace std;
+int n; vector<string>ans[200 + 5];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i)
+		for (int j = n - 1, l = i * 2 - 1; j >= i; --j, ++l)
+			ans[l].push_back("CMPSWP R" + to_string(j) + " R" + to_string(j + 1));
+	int cbc = (n - 1) * 2 - 1;
+	cout << cbc << endl;
+	for (int i = 1; i <= cbc; ++i) {
+		for (auto& k : ans[i]) cout << k << ' ';
+		cout << endl;
+	}
+	return 0;
+}

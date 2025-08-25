@@ -1,0 +1,157 @@
+//  OJ: 洛谷
+//  提交ID: 222278827
+//  题目ID: P3203
+#include<bits/stdc++.h>
+using namespace std;
+class LCT {
+#define lc son[0]
+#define rc son[1]
+public:
+	LCT() {
+		Null = new iterator;
+		Null->fa = Null;
+		memset(pt, 0, sizeof pt);
+	}
+	void build(int n) {
+		for (int i = 0; i <= n; ++i) {
+			pt[i] = new iterator;
+			pt[i]->tag = 0; pt[i]->ans = 1;
+			pt[i]->fa = pt[i]->lc = pt[i]->rc = Null;
+			pt[i]->val = i;
+		}
+	}
+	void link(int a, int b) {
+		beroot(pt[a]);
+		if (pt[a] != find(pt[b])) pt[a]->fa = pt[b];
+	}
+	void cut(int a, int b) {
+		belink(pt[a], pt[b]);
+		if (pt[b]->lc == pt[a]) pt[b]->lc = pt[a]->fa = Null;
+	}
+	int ask(int a, int b) {
+		belink(pt[a], pt[b]);
+		return pt[b]->ans;
+	}
+	void dfs(auto p) {
+		if (p == Null) return;
+		cerr << p->val << ' ';
+		dfs(p->lc); dfs(p->rc);
+	}
+	void debug(int, int n) {
+		for (int i = 0; i <= n; ++i) {
+			dfs(pt[i]);
+			cerr << endl;
+		}
+	}
+	void debug(int n) {
+		for (int i = 0; i <= n; ++i) {
+			it p = pt[i];
+			cerr << i; p = p->fa;
+			while (p != Null && p->fa != p) {
+				cerr << "->" << p->val;
+				p = p->fa;
+			}
+			cerr << endl;
+		}
+	}
+protected:
+	struct iterator {
+		int ans, val; bool tag;
+		iterator* fa, * son[2];
+		iterator() :val(), ans(), tag(), fa(), son() {}
+	};
+	using it = iterator*;
+	it pt[200000 + 5], Null;
+	void swap(it p) {
+		std::swap(p->lc, p->rc);
+		p->tag ^= 1;
+	}
+	void pushup(it p) {
+		p->ans = p->lc->ans + p->rc->ans + 1;
+	}
+	void pushdown(it p) {
+		if (p->tag) {
+			if (p->lc != Null) swap(p->lc);
+			if (p->rc != Null) swap(p->rc);
+			p->tag = 0;
+		}
+	}
+	void update(it p) {
+		if (notroot(p)) update(p->fa);
+		pushdown(p);
+	}
+	bool notroot(it p) {
+		if (p == Null) return 0;
+		return p->fa->lc == p || p->fa->rc == p;
+	}
+	it find(it p) {
+		access(p);
+		splay(p);
+		while (p->lc != Null) p = p->lc;
+		splay(p);
+		return p;
+	}
+	void beroot(it p) {
+		access(p);
+		splay(p);
+		swap(p);
+	}
+	void access(it p) {
+		it q = Null;
+		while (p != Null) {
+			splay(p);
+			p->rc = q;
+			pushup(p);
+			q = p; p = p->fa;
+		}
+	}
+	void belink(it p, it q) {
+		beroot(p);
+		access(q);
+		splay(q);
+	}
+	void rotate(it& p) {
+		bool w = p->fa->rc == p;
+		it fa = p->fa, ffa = fa->fa, s = p->son[!w];
+		if (notroot(fa)) ffa->son[fa == ffa->rc] = p;
+		if (s != Null) s->fa = fa;
+		fa->son[w] = s;
+		p->son[!w] = fa;
+		fa->fa = p;
+		p->fa = ffa;
+		pushup(fa);
+		pushup(p);
+	}
+	void splay(it p) {
+		update(p);
+		while (notroot(p)) {
+			it y = p->fa, z = y->fa;
+			if (notroot(y)) rotate(((z->lc == y) ^ (y->lc == p)) ? p : y);
+			rotate(p);
+		}
+	}
+}t;
+int n, m, opt, x, k, kk[200000 + 5];
+int main() {
+	freopen("sheep.in", "r", stdin);
+	freopen("sheep.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	t.build(n);
+	for (int i = 0; i < n; ++i) {
+		cin >> kk[i];
+		t.link(i, min(i + kk[i], n));
+	}
+	cin >> m;
+	while (m--) {
+		cin >> opt >> x;
+		if (opt == 1) cout << t.ask(x, n) - 1 << endl;
+		if (opt == 2) {
+			cin >> k;
+			t.cut(x, min(x + kk[x], n));
+			kk[x] = k;
+			t.link(x, min(x + kk[x], n));
+		}
+	}
+	return 0;
+}

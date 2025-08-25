@@ -18,7 +18,7 @@ def search_files(index, query):
     return results
 
 if __name__ == "__main__":
-    INDEX_FILE = "index.json"
+    INDEX_FILE = "search_index.json"
     
     index_data = load_index(INDEX_FILE)
     query = input("请输入要搜索的内容: ").strip()

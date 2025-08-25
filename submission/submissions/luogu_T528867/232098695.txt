@@ -1,0 +1,86 @@
+//  OJ: 洛谷
+//  提交ID: 232098695
+//  题目ID: T528867
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+using uint = uint32_t;
+struct Edge {
+	int v, w, nxt;
+}edge[300000 + 5];
+int head[5000 + 5], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int fa[5000 + 5][21], df[5000 + 5], dep[5000 + 5];
+void dfs(int x, int f) {
+	fa[x][0] = f; dep[x] = dep[f] + 1;
+	for (int i = 1; i <= 20; ++i) fa[x][i] = fa[fa[x][i - 1]][i - 1];
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (edge[i].v ^ f) {
+			df[edge[i].v] = edge[i].w;
+			dfs(edge[i].v, x);
+		}
+	}
+}
+int LCA(int x, int y) {
+	if (dep[x] < dep[y]) swap(x, y);
+	int gap = dep[x] - dep[y];
+	for (int i = 20; i >= 0; --i)
+		if ((1 << i) & gap)
+			x = fa[x][i];
+	if (x == y) return x;
+	for (int i = 20; i >= 0; --i)
+		if (fa[x][i] ^ fa[y][i])
+			x = fa[x][i], y = fa[y][i];
+	return fa[x][0];
+}
+int n, q;
+vector<int> mem[5000 + 5];
+bool vis[5000 + 5];
+vector<int>& dfs(int n) {
+	if (vis[n]) return mem[n];
+	vis[n] = 1;
+	if (n == 1) {
+		vector<int>v; v.push_back(1);
+		return mem[1] = v;
+	}
+	mem[n].resize(n);
+	fill(mem[n].begin(), mem[n].end(), 0);
+	for (int i = 0; i < n; ++i)
+		for (int j = i; j < n; ++j) {
+			if (j - i + 1 == n) continue;
+			vector<int>& vv = dfs(j - i + 1);
+			for (int k1 = 0, k2 = i; k2 <= j; ++k1, ++k2)
+				mem[n][k2] += vv[k1];
+		}
+	return mem[n];
+}
+signed main() {
+//	file(cross);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> q;
+	for (int i = 1, u, v, w; i < n; ++i) cin >> u >> v >> w, add(u, v, w), add(v, u, w);
+	dfs(1, 1);
+	while (q--) {
+		int opt, u, k;
+		cin >> opt >> u >> k;
+		if (opt == 1) df[u] = k;
+		else {
+			int l = LCA(u, k);
+			uint ans = 0, tot = dep[u] - dep[l] + dep[k] - dep[l];
+			if (tot >= 70) {
+				cout << 0 <<endl;
+				continue;
+			}
+			vector<int>& v2t = dfs(tot);
+			for (uint i = tot - 1; k ^ l; --i, k = fa[k][0])
+				ans += v2t[i] * df[k];
+			for (uint i = 0; u ^ l; ++i, u = fa[u][0])
+				ans += v2t[i] * df[u];
+			cout << ans << endl;
+		}
+	}
+	return 0;
+}

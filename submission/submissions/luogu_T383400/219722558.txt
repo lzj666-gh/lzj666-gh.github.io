@@ -1,0 +1,95 @@
+//  OJ: 洛谷
+//  提交ID: 219722558
+//  题目ID: T383400
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 2e4 + 10, M = 2e5 + 10;
+int a[N], n, m, b[M];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int j = 1; j <= m; ++j) cin >> b[j];
+	bool Sub2 = 1, Sub3 = 1;
+	for (int i = 1; i < m; ++i)
+		Sub2 &= b[i] == b[i + 1], Sub3 &= b[i + 1] % b[i] == 0;
+	if (m == 1) { // Sub1
+		int ans = 0, sum = 0;
+		for (int i = 1; i <= n; ++i)
+			ans += a[i] % b[1] == 0 ? a[i] : 0,
+			sum += a[i];
+		cout << min(ans, sum - ans) << endl;
+		return 0;
+	}
+	if (Sub2) {
+		int ans = 0, sum = 0;
+		for (int i = 1; i <= n; ++i)
+			ans += a[i] % b[1] == 0 ? a[i] : 0,
+			sum += a[i];
+		cout << max(min(ans, sum - ans), 0ll) << endl;
+		return 0;
+	}
+	if (Sub3) {
+		int ans = 0, sum = 0;
+		for (int i = 1; i <= n; ++i)
+			ans += a[i] % b[1] == 0 ? a[i] : 0,
+			sum += a[i];
+		// I don't know how to do yet.
+	}
+
+	list<int>now;
+	for (int i = 1; i <= n; ++i) now.push_back(a[i]);
+	for (int i = 1; i <= m; ++i) {
+		list<int>::iterator it = now.begin();
+		int ans = 0, sum = 0;
+		while (it != now.end()) {
+			ans += *it % b[i] == 0 ? *it : 0;
+			sum += *it;
+			it++;
+		}
+		if (i & 1) {
+			//cerr << "Alice: ";
+			if (ans < sum - ans) {
+				//cerr << "only " << b[i] << endl;
+				it = now.begin();
+				while (it != now.end()) {
+					if (*it % b[i] == 0) it++;
+					else it = now.erase(it);
+				}
+			}
+			else {
+				//cerr << "not " << b[i] << endl;
+				it = now.begin();
+				while (it != now.end()) {
+					if (*it % b[i]) it++;
+					else it = now.erase(it);
+				}
+			}
+		}
+		else {
+			//cerr << "Bob: ";
+			if (ans > sum - ans) {
+				//cerr << "only " << b[i] << endl;
+				it = now.begin();
+				while (it != now.end()) {
+					if (*it % b[i] == 0) it++;
+					else it = now.erase(it);
+				}
+			}
+			else {
+				//cerr << "not " << b[i] << endl;
+				it = now.begin();
+				while (it != now.end()) {
+					if (*it % b[i]) it++;
+					else it = now.erase(it);
+				}
+			}
+		}
+	}
+	int ans = 0;
+	list<int>::iterator it = now.begin();
+	while (it != now.end()) ans += *it, it++;
+	cout << ans << endl;
+	return 0;
+}

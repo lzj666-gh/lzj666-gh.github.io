@@ -1,0 +1,325 @@
+//  OJ: 洛谷
+//  提交ID: 224976515
+//  题目ID: P4196
+#include<bits/stdc++.h>
+using namespace std;
+constexpr double eps = 1e-10;
+class Vector2D {
+public:
+	double x, y;
+	Vector2D(double x = 0.0, double y = 0.0) : x(x), y(y) {}
+	Vector2D operator+(const Vector2D& other) const { return Vector2D(x + other.x, y + other.y); }
+	Vector2D operator-(const Vector2D& other) const { return Vector2D(x - other.x, y - other.y); }
+	double operator*(const Vector2D& other) const { return x * other.x + y * other.y; }
+	double operator&(const Vector2D& other) const { return x * other.y - other.x * y; }
+	Vector2D operator*(double scalar) const { return Vector2D(x * scalar, y * scalar); }
+	Vector2D operator/(double scalar) const { return Vector2D(x / scalar, y / scalar); }
+	Vector2D operator-() const { return Vector2D(-x, -y); }
+	bool operator==(const Vector2D& other) const { return (abs(x - other.x) < eps) && (abs(y - other.y) < eps); }
+	bool operator!=(const Vector2D& other) const { return !(*this == other); }
+	double magnitude() const { return sqrt(x * x + y * y); }
+	friend ostream& operator<<(ostream& os, const Vector2D& v) { return os << "<" << v.x << "," << v.y << ">"; }
+	friend Vector2D operator*(double scalar, const Vector2D& vec) { return vec * scalar; }
+	friend bool operator<(const Vector2D& a, const Vector2D& b) { return a.x < b.x || (abs(a.x - b.x) < eps && a.y < b.y); }
+};
+class Point2D {
+public:
+	double x, y;
+	Point2D(double x = 0.0, double y = 0.0) : x(x), y(y) {}
+	Point2D operator+(const Vector2D& vec) const { return Point2D(x + vec.x, y + vec.y); }
+	Point2D operator-(const Vector2D& vec) const { return Point2D(x - vec.x, y - vec.y); }
+	Vector2D operator-(const Point2D& other) const { return Vector2D(x - other.x, y - other.y); }
+	bool operator==(const Point2D& other) const { return (abs(x - other.x) < eps) && (abs(y - other.y) < eps); }
+	bool operator!=(const Point2D& other) const { return !(*this == other); }
+	double distanceTo(const Point2D& other) const {
+		double dx = x - other.x;
+		double dy = y - other.y;
+		return sqrt(dx * dx + dy * dy);
+	}
+	friend ostream& operator<<(ostream& os, const Point2D& p) {
+		os << "(" << p.x << "," << p.y << ")";
+		return os;
+	}
+};
+namespace CalculateGeometry {
+	Point2D circumcenter(const Point2D& A, const Point2D& B, const Point2D& C) {
+		Point2D AB_mid((A.x + B.x) / 2.0, (A.y + B.y) / 2.0);
+		Point2D AC_mid((A.x + C.x) / 2.0, (A.y + C.y) / 2.0);
+		double ab_dx = B.x - A.x, ab_dy = B.y - A.y, ac_dx = C.x - A.x, ac_dy = C.y - A.y;
+		double a1 = ab_dx, b1 = ab_dy, c1 = ab_dx * AB_mid.x + ab_dy * AB_mid.y;
+		double a2 = ac_dx, b2 = ac_dy, c2 = ac_dx * AC_mid.x + ac_dy * AC_mid.y;
+		double det = a1 * b2 - a2 * b1;
+		if (abs(det) < eps) {
+			throw invalid_argument("Three-point collinearity and cannot form a triangle");
+		}
+		double center_x = (c1 * b2 - c2 * b1) / det;
+		double center_y = (a1 * c2 - a2 * c1) / det;
+		return Point2D(center_x, center_y);
+	}
+	Point2D incenter(const Point2D& A, const Point2D& B, const Point2D& C) {
+		double a = B.distanceTo(C), b = A.distanceTo(C), c = A.distanceTo(B);
+		if (a < eps || b < eps || c < eps) {
+			throw invalid_argument("Three points are collinear or coincident and cannot form a triangle");
+		}
+		double sum = a + b + c;
+		double incenter_x = (a * A.x + b * B.x + c * C.x) / sum;
+		double incenter_y = (a * A.y + b * B.y + c * C.y) / sum;
+		return Point2D(incenter_x, incenter_y);
+	}
+	double distanceToLine(const Point2D& P, const Point2D& A, const Point2D& B) {
+		double A_coeff = A.y - B.y;
+		double B_coeff = B.x - A.x;
+		double C_coeff = A.x * B.y - B.x * A.y;
+		return abs(A_coeff * P.x + B_coeff * P.y + C_coeff) / sqrt(A_coeff * A_coeff + B_coeff * B_coeff);
+	}
+	vector<Point2D> circleIntersections(const Point2D& c1, double r1, const Point2D& c2, double r2) {
+		vector<Point2D> intersections;
+		double d = c1.distanceTo(c2);
+		if (d < eps) {
+			if (abs(r1 - r2) < eps) {
+				throw invalid_argument("Concentric circles with equal radii and an infinite number of intersections");
+			}
+			else {
+				return intersections;
+			}
+		}
+		if (d > r1 + r2 + eps) return intersections;
+		if (d < abs(r1 - r2) - eps) return intersections;
+		double dx = (c2.x - c1.x) / d;
+		double dy = (c2.y - c1.y) / d;
+		double a = (r1 * r1 - r2 * r2 + d * d) / (2 * d);
+		double h = sqrt(r1 * r1 - a * a);
+		Point2D mid(c1.x + a * dx, c1.y + a * dy);
+		double perp_dx = -dy;
+		double perp_dy = dx;
+		if (h < eps) {
+			intersections.push_back(mid);
+		}
+		else {
+			intersections.push_back(Point2D(
+				mid.x + h * perp_dx,
+				mid.y + h * perp_dy
+			));
+			intersections.push_back(Point2D(
+				mid.x - h * perp_dx,
+				mid.y - h * perp_dy
+			));
+		}
+		return intersections;
+	}
+	vector<Point2D> circleLineIntersections(const Point2D& center, double radius, const Point2D& lineP1, const Point2D& lineP2) {
+		vector<Point2D> intersections;
+		Vector2D dir = lineP2 - lineP1;
+		Vector2D diff = lineP1 - center;
+		double a = dir.x * dir.x + dir.y * dir.y;
+		double b = 2 * (diff.x * dir.x + diff.y * dir.y);
+		double c = diff.x * diff.x + diff.y * diff.y - radius * radius;
+		double discriminant = b * b - 4 * a * c;
+		if (abs(a) < eps) {
+			if (abs(c) < eps) {
+				throw invalid_argument("The line degenerates into a point and on a circle, there are infinitely many intersections");
+			}
+			return intersections;
+		}
+		if (discriminant < -eps) {
+			return intersections;
+		}
+		else if (abs(discriminant) < eps) {
+			double t = -b / (2 * a);
+			intersections.push_back(lineP1 + dir * t);
+		}
+		else {
+			double sqrtDiscriminant = sqrt(discriminant);
+			double t1 = (-b + sqrtDiscriminant) / (2 * a);
+			double t2 = (-b - sqrtDiscriminant) / (2 * a);
+			intersections.push_back(lineP1 + dir * t1);
+			intersections.push_back(lineP1 + dir * t2);
+		}
+		return intersections;
+	}
+	Point2D LineIntersection(const Point2D& Line1p1, const Point2D& Line1p2, const Point2D& Line2p1, const Point2D& Line2p2) {
+		double A1 = Line1p2.y - Line1p1.y;
+		double B1 = Line1p1.x - Line1p2.x;
+		double C1 = A1 * Line1p1.x + B1 * Line1p1.y;
+		double A2 = Line2p2.y - Line2p1.y;
+		double B2 = Line2p1.x - Line2p2.x;
+		double C2 = A2 * Line2p1.x + B2 * Line2p1.y;
+		double D = A1 * B2 - A2 * B1;
+		if (fabs(D) < eps) {
+			return Point2D(NAN, NAN);
+		}
+		double x = (B2 * C1 - B1 * C2) / D;
+		double y = (A1 * C2 - A2 * C1) / D;
+		return Point2D(x, y);
+	}
+	vector<Point2D> ConvexHull(vector<Point2D> points) {
+		int n = points.size();
+		if (n <= 1) return points;
+		sort(points.begin(), points.end(), [](const Point2D& a, const Point2D& b) {
+			return a.x < b.x || (abs(a.x - b.x) < eps && a.y < b.y);
+				});
+		vector<Point2D> hull;
+		for (int i = 0; i < n; ++i) {
+			while (hull.size() >= 2) {
+				Point2D A = hull[hull.size() - 2];
+				Point2D B = hull.back();
+				Point2D C = points[i];
+				Vector2D v1 = B - A;
+				Vector2D v2 = C - A;
+				if ((v1 & v2) <= 0) {
+					hull.pop_back();
+				}
+				else {
+					break;
+				}
+			}
+			hull.push_back(points[i]);
+		}
+		int down_size = hull.size();
+		for (int i = n - 2; i >= 0; i--) {
+			while (hull.size() > down_size) {
+				Point2D A = hull[hull.size() - 2];
+				Point2D B = hull.back();
+				Point2D C = points[i];
+				Vector2D v1 = B - A;
+				Vector2D v2 = C - A;
+				if ((v1 & v2) <= 0) {
+					hull.pop_back();
+				}
+				else {
+					break;
+				}
+			}
+			hull.push_back(points[i]);
+		}
+		if (hull.size() > 1 && hull.front().x == hull.back().x && hull.front().y == hull.back().y) {
+			hull.pop_back();
+		}
+		return hull;
+	}
+	double RoatingCalipers(const vector<Point2D>& poly) {
+		int m = poly.size();
+		if (m == 1) {
+			return 0;
+		}
+		double ans = 0;
+		int cur = 0;
+		for (int i = 0; i < m; ++i) {
+			Point2D A = poly[i];
+			Point2D B = poly[(i + 1) % m];
+			double currentDist = CalculateGeometry::distanceToLine(poly[cur], A, B);
+			while (true) {
+				int next_cur = (cur + 1) % m;
+				double nextDist = CalculateGeometry::distanceToLine(poly[next_cur], A, B);
+				if (nextDist > currentDist + eps) {
+					cur = next_cur;
+					currentDist = nextDist;
+				}
+				else {
+					break;
+				}
+			}
+			double d1 = (poly[cur] - A).magnitude();
+			double d2 = (poly[cur] - B).magnitude();
+			ans = max(ans, max(d1, d2));
+		}
+		return ans;
+	}
+}
+double angle(const Vector2D& v) {
+	return atan2(v.y, v.x);
+}
+struct Line {
+	Point2D p1, p2;
+	Vector2D dir;
+	Line() {}
+	Line(Point2D a, Point2D b) : p1(a), p2(b), dir(b - a) {}
+	friend bool operator<(const Line& lhs, const Line& rhs) {
+		double a1 = angle(lhs.dir), a2 = angle(rhs.dir);
+		if (fabs(a1 - a2) > eps) {
+			return a1 < a2;
+		}
+		Vector2D v = lhs.p1 - rhs.p1;
+		double cross = rhs.dir & v;
+		return cross > eps;
+	}
+};
+bool onLeft(const Line& line, const Point2D& p) {
+	Vector2D v = p - line.p1;
+	return (line.dir & v) >= -eps;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cout << fixed << setprecision(3);
+	int n;
+	cin >> n;
+	vector<Line> lines;
+	for (int i = 0; i < n; ++i) {
+		int m; cin >> m;
+		vector<Point2D> poly(m);
+		for (int j = 0; j < m; ++j)
+			cin >> poly[j].x >> poly[j].y;
+		for (int j = 0; j < m; ++j)
+			lines.push_back(Line(poly[j], poly[(j + 1) % m]));
+	}
+	sort(lines.begin(), lines.end());
+	vector<Line> uniqueLines;
+	for (int i = 0; i < lines.size(); ++i)
+		if (!(i > 0 && fabs(angle(uniqueLines.back().dir) - angle(lines[i].dir)) < eps && (fabs(uniqueLines.back().dir & (lines[i].p1 - uniqueLines.back().p1)) < eps)))
+			uniqueLines.push_back(lines[i]);
+	lines = uniqueLines;
+	deque<Line> dq;
+	for (int i = 0; i < lines.size(); ++i) {
+		while (dq.size() >= 2) {
+			Point2D p = CalculateGeometry::LineIntersection(dq[dq.size() - 2].p1, dq[dq.size() - 2].p2, dq.back().p1, dq.back().p2);
+			if (p.x != p.x) {
+				dq.pop_back();
+				continue;
+			}
+			if (!onLeft(lines[i], p)) dq.pop_back();
+			else break;
+		}
+		while (dq.size() >= 2) {
+			Point2D p = CalculateGeometry::LineIntersection(dq[0].p1, dq[0].p2, dq[1].p1, dq[1].p2);
+			if (p.x != p.x) {
+				dq.pop_front();
+				continue;
+			}
+			if (!onLeft(lines[i], p)) dq.pop_front();
+			else break;
+		}
+		dq.push_back(lines[i]);
+	}
+	while (dq.size() >= 2) {
+		Point2D p = CalculateGeometry::LineIntersection(dq[dq.size() - 2].p1, dq[dq.size() - 2].p2, dq.back().p1, dq.back().p2);
+		if (p.x != p.x) {
+			dq.pop_back();
+			continue;
+		}
+		if (!onLeft(dq[0], p)) dq.pop_back();
+		else break;
+	}
+	while (dq.size() >= 2) {
+		Point2D p = CalculateGeometry::LineIntersection(dq[0].p1, dq[0].p2, dq[1].p1, dq[1].p2);
+		if (p.x != p.x) {
+			dq.pop_front();
+			continue;
+		}
+		if (!onLeft(dq.back(), p)) dq.pop_front();
+		else break;
+	}
+	if (dq.size() < 3) return cout << "0.000" << endl, 0;
+	vector<Point2D> poly;
+	int nq = dq.size();
+	for (int i = 0; i < nq; ++i) {
+		int j = (i + 1) % nq;
+		Point2D p = CalculateGeometry::LineIntersection(dq[i].p1, dq[i].p2, dq[j].p1, dq[j].p2);
+		if (p.x != p.x) return cout << "0.000" << endl, 0;
+		poly.push_back(p);
+	}
+	double area = 0.0;
+	int m = poly.size();
+	for (int i = 0; i < m; ++i) area += poly[i].x * poly[(i + 1) % m].y - poly[(i + 1) % m].x * poly[i].y;
+	cout << abs(area) / 2 << endl;
+	return 0;
+}

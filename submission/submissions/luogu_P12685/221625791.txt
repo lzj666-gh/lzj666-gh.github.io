@@ -1,0 +1,123 @@
+//  OJ: 洛谷
+//  提交ID: 221625791
+//  题目ID: P12685
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 64000000;
+int n, m, a[200005];
+long long ans;
+struct Seg_Tree {
+#define lc(p) (tree[p].ls)
+#define rc(p) (tree[p].rs)
+#define mid (l + r >> 1)
+	struct Node {
+		int sum = 0, ls = 0, rs = 0;
+	} tree[N];
+	int idx = 1, root[800005];
+	stack<int>trash;
+	inline int newnode() {
+		if (trash.empty()) return ++idx;
+		int k = trash.top();
+		trash.pop();
+		return k;
+	}
+	void add(int& p, int l, int r, int x, int val) {
+		if (!p) p = newnode();
+		tree[p].sum += val;
+		if (l == r) return;
+		if (x <= mid) add(lc(p), l, mid, x, val);
+		else add(rc(p), mid + 1, r, x, val);
+		if (!tree[p].sum) {
+			trash.push(p);
+			p = 0;
+		}
+	}
+	int querysum(int p, int l, int r, int x, int y) {
+		if (!p || y < l || x > r) return 0;
+		if (x <= l && r <= y) return tree[p].sum;
+		return querysum(lc(p), l, mid, x, y) + querysum(rc(p), mid + 1, r, x, y);
+	}
+	void merge(int& p, int lp, int rp, int l, int r) {
+		if (!lp && !rp) return;
+		tree[p = newnode()].sum = tree[lp].sum + tree[rp].sum;
+		if (l == r) return;
+		merge(lc(p), lc(lp), lc(rp), l, mid);
+		merge(rc(p), rc(lp), rc(rp), mid + 1, r);
+	}
+	void build(int p, int l, int r) {
+		if (l == r) {
+			add(root[p], 1, n, a[l], 1);
+			return;
+		}
+		build(p << 1, l, mid);
+		build(p << 1 | 1, mid + 1, r);
+		merge(root[p], root[p << 1], root[p << 1 | 1], 1, n);
+	}
+	vector<int> tr;
+	void get_roots(int p, int l, int r, int ql, int qr) {
+		if (ql > qr) return;
+		if (ql <= l && r <= qr) {
+			tr.push_back(root[p]);
+			return;
+		}
+		int m = mid;
+		if (ql <= m) get_roots(p << 1, l, m, ql, qr);
+		if (qr > m) get_roots(p << 1 | 1, m + 1, r, ql, qr);
+	}
+	int clac(int l, int r, int k) {
+		tr.clear();
+		get_roots(1, 1, n, l, r);
+		int cnt = 0;
+		for (int& rt : tr)
+			cnt += querysum(rt, 1, n, 1, k - 1), cnt -= querysum(rt, 1, n, k + 1, n);
+		return cnt;
+	}
+	void change(int p, int l, int r, int x, int k) {
+		add(root[p], 1, n, a[x], -1);
+		add(root[p], 1, n, a[k], 1);
+		if (l == r) return;
+		if (x <= mid) change(p << 1, l, mid, x, k);
+		else change(p << 1 | 1, mid + 1, r, x, k);
+	}
+	void exchange(int x, int y) {
+		change(1, 1, n, x, y);
+		change(1, 1, n, y, x);
+		swap(a[x], a[y]);
+	}
+	vector<int>b;
+	void init() {
+		cin >> n;
+		for (int i = 1; i <= n; ++i) cin >> a[i], b.push_back(a[i]);
+		sort(b.begin(), b.end()); b.erase(unique(b.begin(), b.end()), b.end());
+		for (int i = 1; i <= n; ++i) a[i] = lower_bound(b.begin(), b.end(), a[i]) - b.begin() + 1;
+		cin >> m;
+		build(1, 1, n);
+		int ant = 0;
+		for (int i = 1; i <= n; ++i) {
+			ans += querysum(ant, 1, n, a[i] + 1, n);
+			add(ant, 1, n, a[i], 1);
+		}
+	}
+} t;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	t.init();
+	cout << ans << endl;
+	for (int i = 1, x, y; i <= m; ++i) {
+		cin >> x >> y;
+		if (x == y) {
+			cout << ans << endl;
+			continue;
+		}
+		if (x > y) swap(x, y);
+		if (y > x + 1) {
+			ans -= t.clac(x + 1, y - 1, a[x]);
+			ans += t.clac(x + 1, y - 1, a[y]);
+		}
+		if (a[x] > a[y]) ans--;
+		if (a[y] > a[x]) ans++;
+		t.exchange(x, y);
+		cout << ans << endl;
+	}
+	return 0;
+}

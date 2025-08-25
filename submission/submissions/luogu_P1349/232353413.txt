@@ -1,0 +1,91 @@
+//  OJ: 洛谷
+//  提交ID: 232353413
+//  题目ID: P1349
+#include<bits/stdc++.h>
+using namespace std;
+namespace IO {
+	template<class... T2> inline void qread(char& IEE, T2&... ls);
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls);
+	template<class... T2> inline void qwrite(char IEE, T2... ls);
+	template<class... T2> inline void qwrite(const char* str, T2... ls);
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls);
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls);
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	inline void qread(char& IEE) { IEE = gc(); }
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	template<class... T2> inline void qwrite(const char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class ...T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+int mod;
+template<int N, int M>
+struct Matix {
+	int num[N][M];
+	Matix() {
+		clear();
+#if N == M
+		for (int i = 0; i < N; ++i) num[i][i] = 1;
+#endif
+	}
+	void clear() {
+		memset(num, 0, sizeof num);
+	}
+};
+template<int N, int M>
+Matix<N, M>operator+(const Matix<N, M>& a, const Matix<N, M>& b) {
+	static Matix<N, M> c;
+	c.clear();
+	for (int i = 0; i < N; ++i)
+		for (int j = 0; j < M; ++j)
+			c.num[i][j] = (a.num[i][j] + b.num[i][j]) % mod;
+	return c;
+}
+template<int N, int M>
+Matix<N, M>operator-(const Matix<N, M>& a, const Matix<N, M>& b) {
+	static Matix<N, M> c;
+	c.clear();
+	for (int i = 0; i < N; ++i)
+		for (int j = 0; j < M; ++j)
+			c.num[i][j] = (a.num[i][j] - b.num[i][j] + mod) % mod;
+	return c;
+}
+template<int N, int K, int M>
+Matix<N, M>operator*(const Matix<N, K>& a, const Matix<K, M>& b) {
+	static Matix<N, M> c;
+	c.clear();
+	for (int i = 0; i < N; ++i)
+		for (int j = 0; j < M; ++j)
+			for (int k = 0; k < K; ++k)
+				c.num[i][j] = (c.num[i][j] + 1ll * a.num[i][k] * b.num[k][j] % mod) % mod;
+	return c;
+}
+Matix<2, 2>qpow(Matix<2, 2>a, int b) {
+	static Matix<2, 2> one;
+	if (b == 0) return one;
+	if (b == 1) return a;
+	Matix<2, 2>res = qpow(a, b >> 1);
+	res = res * res;
+	if (b & 1) return res * a;
+	return res;
+}
+Matix<2, 2>a; Matix<1, 2>b; int p, q, a1, a2, n;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> p >> q >> a1 >> a2 >> n >> mod;
+	a.clear();
+	a.num[0][0] = 0; a.num[0][1] = p;
+	a.num[1][0] = 1; a.num[1][1] = q;
+	b.num[0][0] = a1; b.num[0][1] = a2;
+	cout << (b * qpow(a, n - 2)).num[0][1] << endl;
+	return 0;
+}

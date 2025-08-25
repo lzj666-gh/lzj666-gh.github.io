@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 226748038
+//  题目ID: T541590
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, T, a[1000000 + 5], df[1000000 + 5], pr[1000000 + 5];
+int32_t main(int32_t argc, char** argv) {
+//	if (argc >= 2) freopen(argv[1], "r", stdin);
+//	else freopen("a.in", "r", stdin);
+//	if (argc >= 3) freopen(argv[2], "w", stdout);
+//	else freopen("a.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> T;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = 1; i <= n; ++i) df[i] = df[i - 1] + a[i - 1];
+	for (int i = 1; i <= n; ++i) pr[i] = max(a[i], pr[i - 1]);
+	for (int i = 1; i <= n; ++i) {
+		//cerr << i << ": " << df[i] << ' ' << T - df[i] << '/' << pr[i] << endl;
+		cout << max((T - df[i]) / pr[i] + ((T - df[i]) % pr[i] >= a[i]) + 1, 1ll) << endl;
+	}
+	return 0;
+}

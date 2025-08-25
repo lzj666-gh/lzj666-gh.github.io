@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 220726951
+//  题目ID: P1045
+#include<bits/stdc++.h>
+using namespace std;
+int c[500000+10]={1,2,0},p; 
+void gjc(int a[],int b[]){
+	//将a[]*b[]储存到c中 
+	c[0]=a[0]+b[0];
+	for(int i=1;i<=a[0];i++){
+		for(int j=1;j<=b[0];j++){
+			c[i+j-1]+=a[i]*b[j];
+			if(c[i+j-1]>=10){
+				c[i+j]+=c[i+j-1]/10;
+				c[i+j-1]=c[i+j-1]%10;
+			}
+		}
+	}
+	while(c[c[0]]==0&&c[0]>1) c[0]--;
+	if(c[0]>500) c[0]=500;
+	//高精度乘法，c*c 
+}
+void dg(int x){
+	//递归：求2的x次方 储存在c数组中 
+	if(x==0) return;
+	//2的0次方为1，直接返回 
+	dg(x/2);
+	//2的x/2次方的平方为2的x次方 
+	gjc(c,c);
+	if(x%2==1){
+		int l[2]={1,2};
+		gjc(c,l);
+	}
+
+	//将c平方 
+}
+int main()
+{
+	scanf("%d",&p);
+	//输入p 
+	dg(p);
+	printf("%d",c[0]);
+	return 0;
+}
+//我就不明白了，怎么溢出的呢？ 

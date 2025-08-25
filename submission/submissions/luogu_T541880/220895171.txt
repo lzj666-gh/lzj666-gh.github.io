@@ -1,0 +1,5 @@
+//  OJ: 洛谷
+//  提交ID: 220895171
+//  题目ID: T541880
+#include<stdio.h>
+main(){printf("suecial");}

@@ -1,0 +1,270 @@
+//  OJ: 洛谷
+//  提交ID: 227317698
+//  题目ID: T640599
+#include<bits/stdc++.h>
+using namespace std;
+namespace dg {
+	struct TP { long long N; int Q, on, md, ql; };
+	const TP tps[21] = {
+		{10, 10, 0, 0, 0}, { 100, 100, 1, 0, 0 }, {100, 100, 1, 0, 0}, {100, 100, 1, 0, 0}, {100, 100, 1, 0, 0},
+		{10000, 1000, 1, 0, 0}, {10000, 1000, 1, 0, 0}, {10000, 1000, 1, 1, 0}, {10000, 1000, 1, 1, 0},
+		{10000000, 100000, 0, 0, 10000}, {10000000, 100000, 0, 0, 10000}, {10000000, 100000, 0, 0, 10000}, {10000000, 100000, 0, 0, 10000},
+		{10000000, 100000, 0, 1, 10000}, {10000000, 100000, 0, 1, 10000}, {10000000, 100000, 0, 1, 10000}, {10000000, 100000, 0, 1, 10000},
+		{1000000000, 100000, 1, 0, 10000}, {1000000000, 100000, 1, 0, 10000}, {1000000000, 100000, 1, 1, 10000}, {1000000000, 100000, 1, 1, 10000}
+	};
+	uint64_t s0, s1;
+	int tid, st, ct, opc, qc, cop;
+	long long Nv, Qv, onv, mdv, cl, cr, last_l;
+	void data_init(int id, int sd) {
+		s0 = 0x8a5cd789635d2dffULL ^ (sd + 1);
+		s1 = 0x121fd2155c472f96ULL ^ (sd + 1);
+		if (!s0 && !s1) s0 = 1;
+		tid = id; st = ct = opc = qc = 0;
+		Nv = tps[tid].N;
+		Qv = tps[tid].Q;
+		onv = tps[tid].on;
+		mdv = tps[tid].md;
+	}
+	uint64_t xrand() {
+		uint64_t x = s0, y = s1;
+		s0 = y; x ^= x << 23;
+		s1 = x ^ y ^ (x >> 17) ^ (y >> 26);
+		return s1 + y;
+	}
+	long long nxt(long long a, long long b) {
+		if (a > b) return a;
+		if (a == b) return a;
+		uint64_t r = xrand();
+		return a + r % (b - a + 1);
+	}
+	void gen_interval(long long& l, long long& r) {
+		if (xrand() % 100 < 70) {
+			l = 1;
+			r = Nv;
+			return;
+		}
+		long long min_len = min(1000000LL, Nv / 10);
+		if (min_len < 10000) min_len = 10000;
+		if (min_len > Nv) min_len = Nv;
+		long long len = nxt(min_len, Nv);
+		l = nxt(1, Nv - len + 1);
+		r = l + len - 1;
+	}
+	long long next_int() {
+		if (st == 0) {
+			if (ct == 0) { ct++; return Nv; }
+			if (ct == 1) { ct++; return Qv; }
+			if (ct == 2) { ct++; return onv; }
+			st = 1; ct = 0; return mdv;
+		}
+		if (st == 1) {
+			if (opc >= Qv) {
+				st = 2;
+				return mdv ? qc ? nxt(1, qc) : 0 : 0;
+			}
+			if (ct == 0) {
+				if (tps[tid].ql > 0 && qc >= tps[tid].ql) cop = 1;
+				else if (opc > Qv * 0.8) cop = (xrand() % 100 < 90) ? 2 : 1;
+				else if (opc > Qv * 0.6) cop = (xrand() % 100 < 60) ? 2 : 1;
+				else cop = (xrand() % 100 < 20) ? 2 : 1;
+				ct = 1;
+				return cop;
+			}
+			if (ct == 1) {
+				gen_interval(cl, cr);
+				last_l = cl;
+				last_l = max(1LL, min(Nv, last_l));
+				ct = 2;
+				return last_l;
+			}
+			long long r_val = cr;
+			r_val = max(1LL, min(Nv, r_val));
+			r_val = max(last_l, r_val);
+			if (cop == 2) qc++;
+			ct = 0; opc++;
+			return r_val;
+		}
+		return 0;
+	}
+}
+using namespace dg;
+#define int long long
+constexpr int MAXKN = 20, MAXN = 200005;
+struct Point {
+	int x, y;
+	Point(int x = 0, int y = 0) : x(x), y(y) {}
+	bool operator==(const Point& o) const { return x == o.x && y == o.y; }
+	bool operator<(const Point& o) const { return x < o.x || (x == o.x && y < o.y); }
+};
+struct Node {
+	int cnt, sum, lson, rson;
+	Point pos, lpos, rpos;
+	Node() : cnt(0), sum(0), lson(0), rson(0) {}
+};
+struct KDTree {
+	Node tree[MAXN];
+	vector<int> free_stack;
+	vector<pair<Point, int>> merge_stack;
+	int root[MAXKN];
+	KDTree() {
+		memset(root, 0, sizeof(root));
+		for (int i = MAXN - 1; i >= 1; i--) free_stack.push_back(i);
+	}
+	int new_node() {
+		int id = free_stack.back();
+		free_stack.pop_back(); tree[id] = Node();
+		return id;
+	}
+	void push_up(int p) {
+		auto& t = tree[p];
+		t.sum = tree[t.lson].sum + tree[t.rson].sum + t.cnt;
+		t.lpos = t.rpos = t.pos;
+		if (t.lson) {
+			auto& l = tree[t.lson];
+			t.lpos.x = min(t.lpos.x, l.lpos.x);
+			t.lpos.y = min(t.lpos.y, l.lpos.y);
+			t.rpos.x = max(t.rpos.x, l.rpos.x);
+			t.rpos.y = max(t.rpos.y, l.rpos.y);
+		}
+		if (t.rson) {
+			auto& r = tree[t.rson];
+			t.lpos.x = min(t.lpos.x, r.lpos.x);
+			t.lpos.y = min(t.lpos.y, r.lpos.y);
+			t.rpos.x = max(t.rpos.x, r.rpos.x);
+			t.rpos.y = max(t.rpos.y, r.rpos.y);
+		}
+	}
+	void dfs(int u) {
+		if (!u) return;
+		merge_stack.emplace_back(tree[u].pos, tree[u].cnt);
+		free_stack.push_back(u);
+		dfs(tree[u].lson);
+		dfs(tree[u].rson);
+	}
+	int build(int l, int r, int dim) {
+		if (l > r) return 0;
+		int id = new_node();
+		if (l == r) {
+			tree[id].pos = merge_stack[l].first;
+			tree[id].cnt = merge_stack[l].second;
+			return push_up(id), id;
+		}
+		int mid = (l + r) / 2;
+		nth_element(merge_stack.begin() + l, merge_stack.begin() + mid, merge_stack.begin() + r + 1, [dim](auto& a, auto& b) { return dim ? (a.first.y < b.first.y) : (a.first.x < b.first.x); });
+		tree[id].pos = merge_stack[mid].first;
+		tree[id].cnt = merge_stack[mid].second;
+		tree[id].lson = build(l, mid - 1, dim ^ 1);
+		tree[id].rson = build(mid + 1, r, dim ^ 1);
+		return push_up(id), id;
+	}
+	int merge(int ra, int rb) {
+		dfs(ra); dfs(rb);
+		sort(merge_stack.begin(), merge_stack.end());
+		vector<pair<Point, int>> tmp;
+		for (auto& p : merge_stack) {
+			if (!tmp.empty() && tmp.back().first == p.first)
+				tmp.back().second += p.second;
+			else
+				tmp.push_back(p);
+		}
+		merge_stack = move(tmp);
+		int rt = build(0, merge_stack.size() - 1, 0);
+		merge_stack.clear();
+		return rt;
+	}
+	void insert(Point p, int val) {
+		merge_stack = { {p, val} };
+		int r = build(0, 0, 0);
+		merge_stack.clear();
+		for (int i = 0; i < MAXKN; i++) {
+			if (!root[i]) {
+				root[i] = r;
+				return;
+			}
+			r = merge(root[i], r);
+			root[i] = 0;
+		}
+	}
+	int query(int u, Point L, Point R) {
+		if (!u) return 0;
+		auto& t = tree[u];
+		if (L.x <= t.lpos.x && t.rpos.x <= R.x && L.y <= t.lpos.y && t.rpos.y <= R.y) return t.sum;
+		int res = 0;
+		if (L.x <= t.pos.x && t.pos.x <= R.x && L.y <= t.pos.y && t.pos.y <= R.y) res += t.cnt;
+		if (!(t.rpos.x < L.x || R.x < t.lpos.x || t.rpos.y < L.y || R.y < t.lpos.y)) {
+			res += query(t.lson, L, R);
+			res += query(t.rson, L, R);
+		}
+		return res;
+	}
+	int query(Point L, Point R) {
+		int res = 0;
+		for (int i = 0; i < MAXKN; i++)
+			if (root[i])
+				res += query(root[i], L, R);
+		return res;
+	}
+}tree;
+int n, m, op, x, y;
+int** a;
+const int mod = 9982443353;
+int solve(int x, int y) {
+	int ans = 0;
+	for (int i = 0; i <= x; ++i) {
+		ans = (a[x - i][y + i] - ans) % mod;
+		if (ans < 0) ans += mod;
+	}
+	return ans;
+}
+int special, online;
+int32_t main() {
+//	freopen("bilibili.in", "r", stdin);
+//	freopen("bilibili.out", "w", stdout);
+	long long testid, seed;
+	cin >> testid >> seed;
+	data_init(testid, seed);
+	vector<int> ans;
+	int last_ans = 0xccf;
+	n = next_int(); m = next_int(); online = next_int(); special = next_int();
+	for (int i = 1; i <= m; i++) {
+		op = next_int(); x = next_int(); y = next_int();
+		if (online) x ^= last_ans, y ^= last_ans;
+		x = x % n + 1; y = y % n + 1;
+		if (x > y) swap(x, y);
+		if (op == 1) tree.insert({ x,y }, 1);
+		else ans.push_back(last_ans = tree.query({ 1,y }, { x,n }));
+	}
+	int L = ans.size();
+	if (!special) {
+		long long sum = 0;
+		for (int i = 1; i < L; ++i) ans[i] ^= ans[i - 1];
+		for (int i = 0; i < L; ++i)
+			for (int j = i; j < L; ++j)
+				sum = (sum + (ans[j] ^ (i == 0 ? 0 : ans[i - 1]))) % mod;
+		cout << sum << endl;
+		return 0;
+	}
+	int K = next_int();
+	a = new int* [L + 1];
+	for (int i = 0, j = L; i < L; i++, j--)
+		a[i] = new int[j + 1];
+	for (int i = 0; i < L; ++i)
+		a[0][i] = ans[i] % mod;
+	for (int i = 1; i < L; i++) {
+		int k = L - i;
+		for (int j = 0; j < k; j++) {
+			a[i][j] = (a[i - 1][j] - a[i - 1][j + 1]) % mod;
+			if (a[i][j] < 0) a[i][j] += mod;
+		}
+	}
+	int anss = 0;
+	for (int k = 1; k <= K; k++) {
+		int l = min(k - 1, L - k), r = max(k - 1, L - k);
+		int x = r - l, val = solve(x, l);
+		anss = (anss + static_cast<__int128>(val) * (x + 1) % mod) % mod;
+	}
+	anss %= mod;
+	if (anss < 0) anss += mod;
+	cout << (long long)anss << endl;
+	return 0;
+}

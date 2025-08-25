@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 222702367
+//  题目ID: P2014
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 300 + 5;
+struct Edge {
+	int v, w, nxt;
+}edge[N];
+int head[N], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int n, k, dp[N][N];
+void dfs(int x) {
+	for (int ii = head[x]; ii; ii = edge[ii].nxt) {
+		dfs(edge[ii].v);
+		for (int i = k; i; --i)
+			for (int j = i - 1; j >= 0; --j)
+				dp[x][i] = max(dp[x][i], dp[edge[ii].v][j] + dp[x][i - j - 1] + edge[ii].w);
+	}
+
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> k;
+	for (int i = 1, v, w; i <= n; ++i) cin >> v >> w, add(v, i, w);
+	dfs(0);
+	cout << dp[0][k] << endl;
+	return 0;
+}

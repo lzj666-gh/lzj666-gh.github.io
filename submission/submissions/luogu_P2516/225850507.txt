@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 225850507
+//  题目ID: P2516
+#include<bits/stdc++.h>
+using namespace std;
+string s1, s2;
+int dp[5000][5000], len[5000][5000];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> s1 >> s2;
+	for (int i = 1; i <= s1.size(); ++i)
+		for (int j = 1; j <= s2.size(); ++j) {
+			if (dp[i][j] < dp[i][j - 1]) dp[i][j] = dp[i][j - 1], len[i][j] = len[i][j - 1];
+			else if (dp[i][j] == dp[i][j - 1]) len[i][j] += len[i][j - 1];
+			if (dp[i][j] < dp[i - 1][j]) dp[i][j] = dp[i - 1][j], len[i][j] = len[i - 1][j];
+			else if (dp[i][j] == dp[i - 1][j]) len[i][j] += len[i - 1][j];
+			if (dp[i][j] < dp[i - 1][j - 1] + (s1[i - 1] == s2[j - 1])) dp[i][j] = dp[i - 1][j - 1] + (s1[i - 1] == s2[j - 1]), len[i][j] = len[i - 1][j - 1];
+			else if (dp[i][j] == dp[i - 1][j - 1] + (s1[i - 1] == s2[j - 1])) len[i][j] += len[i - 1][j - 1];
+			len[i][j] = max(len[i][j], 1);
+		}
+	cout << dp[s1.size()][s2.size()] - 1 << endl << len[s1.size()][s2.size()] << endl;
+	return 0;
+}

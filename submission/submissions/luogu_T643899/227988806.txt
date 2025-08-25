@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 227988806
+//  题目ID: T643899
+#include<bits/stdc++.h>
+using namespace std;
+int nxt[1000000 + 10];
+string s;
+int kmp() {
+	int j = 0, k = -1;
+	nxt[j] = -1;
+	while (j < s.size()) {
+		if (k == -1 || s[j] == s[k])
+			nxt[++j] = ++k;
+		else k = nxt[k];
+	}
+	return nxt[j];
+}
+int32_t main(int32_t argc, char** argv) {
+//	if (argc >= 2) freopen(argv[1], "r", stdin);
+//	else freopen("divide.in", "r", stdin);
+//	if (argc >= 3) freopen(argv[2], "w", stdout);
+//	else freopen("divide.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		cin >> s;
+		int ans = 0, t;
+		while (1) {
+			t = kmp();
+			if (!t) { ans++; break; }
+			while (nxt[t]) t = nxt[t];
+			s = s.substr(t, s.size() - t - t);
+			if (s.empty()) { ans++; ans++; break; }
+			ans++; ans++;
+		}
+		cout << ans << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 222865459
+//  题目ID: P4408
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 2e5 + 5;
+struct Edge {
+	int v, w, nxt;
+}edge[N << 1];
+int head[N], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int n, m, dep[N], dis[2][N];
+int dfs(int x, int fa) {
+	int ans = x;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa) {
+			dep[edge[i].v] = dep[x] + edge[i].w;
+			int k = dfs(edge[i].v, x);
+			if (dep[k] > dep[ans])
+				ans = k;
+		}
+	return ans;
+}
+void getdis(int x, int fa, int* dis) {
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dis[edge[i].v] = dis[x] + edge[i].w,
+			getdis(edge[i].v, x, dis);
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v, w; i < n; ++i)
+		cin >> u >> v >> w, add(u, v, w), add(v, u, w);
+	dep[1] = 0;
+	int A = dfs(1, 1);
+	dep[A] = 0;
+	int B = dfs(A, A);
+	int ans = dep[B], anss = 0;
+	dis[0][A] = 0; dis[1][B] = 0;
+	getdis(A, A, dis[0]); getdis(B, B, dis[1]);
+	for (int i = 1; i <= n; ++i)
+		anss = max(anss, min(dis[0][i], dis[1][i]));
+	cout << ans + anss << endl;
+	return 0;
+}

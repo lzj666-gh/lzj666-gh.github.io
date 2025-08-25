@@ -1,0 +1,57 @@
+//  OJ: 洛谷
+//  提交ID: 222715574
+//  题目ID: P3174
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 3e5 + 5;
+struct Edge {
+	int v, nxt;
+}edge[N << 1];
+int head[N], r[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx; r[v]++;
+}
+int dp[N][2], ans[N];
+void dfs(int x, int fa) {
+	if (r[x] == 1) {
+		dp[x][0] = dp[x][1] = ans[x] = 1;
+		return;
+	}
+	int cnt = 0;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa) {
+			dfs(edge[i].v, x); ++cnt;
+			if (dp[edge[i].v][0] > dp[x][0]) {
+				dp[x][1] = dp[x][0];
+				dp[x][0] = dp[edge[i].v][0];
+			}
+			else if (dp[edge[i].v][0] > dp[x][1]) {
+				dp[x][1] = dp[edge[i].v][0];
+			}
+		}
+	ans[x] = dp[x][0] + dp[x][1] + cnt - 1;
+	dp[x][0] += cnt; dp[x][1] += cnt;
+	//cerr << x << ": " << dp[x][0] << ',' << dp[x][1] << endl;
+}
+int n, m, u[N], v[N];
+int val[N];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	iota(val + 1, val + n + 1, 1);
+	for (int i = 1; i < n; ++i)
+		cin >> u[i] >> v[i];
+	int anss = 0;
+	for (int i = 0; i < 100; ++i) {
+		shuffle(val + 1, val + n + 1, mt19937_64(time(0)));
+		idx = 0; memset(dp, 0, sizeof dp); memset(r, 0, sizeof r);
+		memset(head, 0, sizeof head);
+		for (int i = 1; i < n; ++i)
+			add(val[u[i]], val[v[i]]), add(val[v[i]], val[u[i]]);
+		dfs(1, 1);
+		anss = max(anss, ans[1]);
+	}
+	cout << anss << endl;
+	return 0;
+}

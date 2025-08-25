@@ -1,0 +1,86 @@
+//  OJ: 洛谷
+//  提交ID: 227715088
+//  题目ID: P6833
+#include<bits/stdc++.h>
+#include<array>
+using namespace std;
+template<int N = 100000 + 10, int M = 1000000 + 10, long long inf = INT_MAX>
+class Graph {
+	struct Edge {
+		int v, w, nxt;
+		Edge(int v = 0, int w = 0, int nxt = 0) :v(v), w(w), nxt(nxt) {}
+	}edge[M];
+	int head[N], idx;
+public:
+	int n, m;
+	void add(int u, int v, int w = 1) {
+		edge[++idx] = { v,w,head[u] };
+		head[u] = idx;
+	}
+	Graph() :n(), m(), head(), idx(), edge() {}
+	array<long long, N> dijkstra(int s) {
+		static array<long long, N> dis;
+		static bitset<N> vis;
+		dis.fill(inf);
+		vis.reset();
+		dis[s] = 0;
+		priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>q;
+		q.emplace(0, s);
+		while (!q.empty()) {
+			int now = q.top().second;
+			q.pop();
+			if (vis[now]) continue;
+			vis[now] = 1;
+			for (int i = head[now]; i; i = edge[i].nxt)
+				if (dis[edge[i].v] > dis[now] + edge[i].w)
+					dis[edge[i].v] = dis[now] + edge[i].w,
+					q.emplace(dis[edge[i].v], edge[i].v);
+		}
+		return dis;
+	}
+	array<int, N> spfa(int s) {
+		static array<int, N> dis;
+		static bitset<N> vis;
+		dis.fill(inf);
+		vis.reset();
+		dis[s] = 0;
+		queue<int> q;
+		q.push(s);
+		while (!q.empty()) {
+			int now = q.front();
+			q.pop();
+			if (vis[now]) continue;
+			vis[now] = 1;
+			for (int i = head[now]; i; i = edge[i].nxt)
+				if (dis[edge[i].v] > dis[now] + edge[i].w) {
+					dis[edge[i].v] = dis[now] + edge[i].w;
+					q.push(edge[i].v);
+				}
+		}
+		return dis;
+	}
+};
+Graph<1000000 + 5, 4000000 + 5, 0x3fffffffffffffff>g;
+int idx[1005][1005], val[1005][1005], n, m, a, b, c, cbc;
+array<long long, 1000000 + 5>h1, h2, h3;
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> a >> b >> c;
+	for (int i = n; i >= 1; --i)
+		for (int j = 1; j <= m; ++j)
+			idx[i][j] = ++cbc,
+			cin >> val[i][j];
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j)
+			1 < i && (g.add(idx[i][j], idx[i - 1][j], val[i - 1][j]), 1),
+			i < n && (g.add(idx[i][j], idx[i + 1][j], val[i + 1][j]), 1),
+			1 < j && (g.add(idx[i][j], idx[i][j - 1], val[i][j - 1]), 1),
+			j < m && (g.add(idx[i][j], idx[i][j + 1], val[i][j + 1]), 1);
+	h1 = g.dijkstra(idx[n][a]); h2 = g.dijkstra(idx[1][b]); h3 = g.dijkstra(idx[1][c]);
+	long long ans = INT_MAX;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j)
+			ans = min(ans, h1[idx[i][j]] + h2[idx[i][j]] - val[i][j] + h3[idx[i][j]] - val[i][j]);
+	cout << ans + val[n][a] + val[1][b] + val[1][c] << endl;
+	return 0;
+}

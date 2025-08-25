@@ -1,0 +1,160 @@
+//  OJ: 洛谷
+//  提交ID: 220685562
+//  题目ID: P4556
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e5 + 5, M = 2e5 + 5;
+namespace IO {
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	inline void qread(char& IEE) { IEE = gc(); }
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	inline void qwrite(char IEE) { putc_(IEE); }
+	inline void qwrite(const char* str) { while (*str != '\0') putc_(*str++); }
+	inline void qwrite(const std::string& IEE) { qwrite(IEE.c_str()); }
+	template<class... T2> inline void qwrite(const char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class ...T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+class Seg_Tree {
+protected:
+	struct Node {
+		int sum, ans; Node* ls, * rs;
+		Node() : sum(0), ans(0), ls(nullptr), rs(nullptr) {}
+		Node(int val) : sum(1), ans(val), ls(nullptr), rs(nullptr) {}
+	};
+	Node* root; int n; bool destoryed;
+	void pushup(Node* p) {
+		if (!p) return;
+		p->sum = 0;
+		if (p->ls) {
+			p->sum = p->ls->sum;
+			p->ans = p->ls->ans;
+		}
+		if (p->rs) {
+			if (p->rs->sum > p->sum || (p->rs->sum == p->sum && p->rs->ans < p->ans)) {
+				p->sum = p->rs->sum;
+				p->ans = p->rs->ans;
+			}
+		}
+	}
+	void add(Node*& p, int l, int r, int x, int val = 1) {
+		if (p == nullptr) p = new Node();
+		if (l == r) {
+			p->sum += val;
+			p->ans = l;
+			return;
+		}
+		int mid = (l + r) >> 1;
+		if (x <= mid) add(p->ls, l, mid, x, val);
+		else add(p->rs, mid + 1, r, x, val);
+		pushup(p);
+	}
+	Node* merge(Node* p, Node* q) {
+		if (!p) return q;
+		if (!q) return p;
+		if (p->ls == nullptr && p->rs == nullptr && q->ls == nullptr && q->rs == nullptr) {
+			p->sum += q->sum;
+			return p;
+		}
+		p->ls = merge(p->ls, q->ls);
+		p->rs = merge(p->rs, q->rs);
+		pushup(p);
+		return p;
+	}
+	void debug(Node* p, int l, int r) {
+		if (p == nullptr) return;
+		if (l == r) {
+			cerr << l << " " << p->sum << endl;
+			return;
+		}
+		int mid = (l + r) >> 1;
+		debug(p->ls, l, mid);
+		debug(p->rs, mid + 1, r);
+	}
+public:
+	Seg_Tree() : root(nullptr), n(0), destoryed(0) {}
+	int size() { return root ? root->sum : -1; }
+	void build(int n_) { n = n_; }
+	void add(int x, int val = 1) {
+		if (destoryed) throw logic_error("This segment tree is destoryed!");
+		add(root, 1, n, x, val);
+	}
+	int query() { return root ? root->ans : 0; }
+	void operator+=(Seg_Tree& other) {
+		if (destoryed || other.destoryed) throw logic_error("This segment tree is destoryed!");
+		root = merge(root, other.root);
+		other.destoryed = 1;
+	}
+	void debug() {
+		if (destoryed) throw logic_error("This segment tree is destoryed!");
+		debug(root, 1, n);
+	}
+}t[200000 + 5];
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+void addedge(int u, int v) {
+	add(u, v); add(v, u);
+}
+int fa[N][20], dep[N];
+void dfs(int x, int f) {
+	fa[x][0] = f; dep[x] = dep[f] + 1;
+	for (int i = 1; i < 20; ++i) fa[x][i] = fa[fa[x][i - 1]][i - 1];
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ f)
+			dfs(edge[i].v, x);
+}
+int LCA(int x, int y) {
+	if (dep[x] < dep[y]) swap(x, y);
+	int gap = dep[x] - dep[y];
+	for (int i = 0; i < 20; ++i) if (gap & (1ll << i)) x = fa[x][i];
+	if (x == y) return x;
+	for (int i = 19; i >= 0; --i)
+		if (fa[x][i] ^ fa[y][i])
+			x = fa[x][i], y = fa[y][i];
+	return fa[x][0];
+}
+int n, m, a, b, v, ans[N];
+void work(int now, int fa) {
+	for (int i = head[now]; i; i = edge[i].nxt) {
+		if (edge[i].v == fa) continue;
+		work(edge[i].v, now);
+		t[now] += t[edge[i].v];
+	}
+	ans[now] = t[now].query();
+}
+signed main() {
+	qread(n, m);
+	for (int i = 1; i < n; ++i) {
+		qread(a, b);
+		addedge(a, b);
+	}
+	for (int i = 1; i <= n; ++i) t[i].build(100000);
+	dfs(2, 2);
+	while (m--) {
+		qread(a, b, v);
+		int l = LCA(a, b);
+		t[a].add(v, 1); t[b].add(v, 1);
+		t[l].add(v, -1);
+		if (fa[l][0] ^ l) t[fa[l][0]].add(v, -1);
+	}
+	work(2, 2);
+	for (int i = 1; i <= n; ++i) qwrite(ans[i], '\n');
+	return 0;
+}

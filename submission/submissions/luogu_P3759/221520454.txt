@@ -1,0 +1,127 @@
+//  OJ: 洛谷
+//  提交ID: 221520454
+//  题目ID: P3759
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 8e6, mod = 1e9 + 7;
+int n, m, a[50005], v[50005];
+long long ans;
+struct Seg_Tree {
+#define lc(p) (tree[p].ls)
+#define rc(p) (tree[p].rs)
+#define mid (l + r >> 1)
+	struct Node {
+		int sum = 0, tot = 0, ls = 0, rs = 0;
+	}tree[N];
+	int idx = 0, root[400005];
+	void add(int& p, int l, int r, int x, int val) {
+		if (!p) p = ++idx;
+		tree[p].sum += val;
+		tree[p].tot += val < 0 ? -1 : 1;
+		if (l == r) return;
+		if (x <= mid) add(lc(p), l, mid, x, val);
+		else add(rc(p), mid + 1, r, x, val);
+	}
+	int querysum(int p, int l, int r, int x, int y) {
+		if (!p || y < l || x > r) return 0;
+		if (x <= l && r <= y) return tree[p].sum;
+		return querysum(lc(p), l, mid, x, y) + querysum(rc(p), mid + 1, r, x, y);
+	}
+	int querytot(int p, int l, int r, int x, int y) {
+		if (!p || y < l || x > r) return 0;
+		if (x <= l && r <= y) return tree[p].tot;
+		return querytot(lc(p), l, mid, x, y) + querytot(rc(p), mid + 1, r, x, y);
+	}
+	void merge(int& p, int lp, int rp, int l, int r) {
+		if (!lp && !rp) return;
+		tree[p = ++idx].sum = tree[lp].sum + tree[rp].sum;
+		tree[p].tot = tree[lp].tot + tree[rp].tot;
+		if (l == r) return;
+		merge(lc(p), lc(lp), lc(rp), l, mid);
+		merge(rc(p), rc(lp), rc(rp), mid + 1, r);
+	}
+	void build(int p, int l, int r) {
+		if (l == r) return add(root[p], 1, n, a[l], v[l]);
+		build(p << 1, l, mid);
+		build(p << 1 | 1, mid + 1, r);
+		merge(root[p], root[p << 1], root[p << 1 | 1], 1, n);
+	}
+	vector<int> tr;
+	void get_roots(int p, int l, int r, int ql, int qr) {
+		if (ql > qr) return;
+		if (ql <= l && r <= qr) {
+			tr.push_back(root[p]);
+			return;
+		}
+		int m = mid;
+		if (ql <= m) get_roots(p << 1, l, m, ql, qr);
+		if (qr > m) get_roots(p << 1 | 1, m + 1, r, ql, qr);
+	}
+	pair<int, int> less(int l, int r, int k) {
+		tr.clear();
+		get_roots(1, 1, n, l, r);
+		int cnt1 = 0, cnt2 = 0;
+		for (int& rt : tr)
+			cnt1 += querysum(rt, 1, n, 0, k - 1),
+			cnt2 += querytot(rt, 1, n, 0, k - 1);
+		return make_pair(cnt1, cnt2);
+	}
+	pair<int,int> greater(int l, int r, int k) {
+		tr.clear();
+		get_roots(1, 1, n, l, r);
+		int cnt1 = 0, cnt2 = 0;
+		for (int& rt : tr)
+			cnt1 += querysum(rt, 1, n, k + 1, n),
+			cnt2 += querytot(rt, 1, n, k + 1, n);
+		return make_pair(cnt1, cnt2);
+	}
+	void change(int p, int l, int r, int x, int k) {
+		add(root[p], 1, n, a[x], -v[x]);
+		add(root[p], 1, n, a[k], v[k]);
+		if (l == r) return;
+		if (x <= mid) change(p << 1, l, mid, x, k);
+		else change(p << 1 | 1, mid + 1, r, x, k);
+	}
+	void exchange(int x, int y) {
+		change(1, 1, n, x, y);
+		change(1, 1, n, y, x);
+		swap(a[x], a[y]);
+		swap(v[x], v[y]);
+	}
+	void init() {
+		cin >> n >> m;
+		for (int i = 1; i <= n; ++i) cin >> a[i] >> v[i];
+		build(1, 1, n);
+		int ant = 0;
+		for (int i = 1; i <= n; ++i) {
+			ans += querysum(ant, 1, n, a[i] + 1, n) + querytot(ant, 1, n, a[i] + 1, n) * v[i];
+			add(ant, 1, n, a[i], v[i]);
+		}
+	}
+}t;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	t.init();
+	for (int i = 1, x, y; i <= m; ++i) {
+		cin >> x >> y;
+		if (x == y) {
+			cout << ans % mod << endl;
+			continue;
+		}
+		if (x > y) swap(x, y);
+		static auto calc = [](const pair<int, int>& p, const int& v)->int {return p.first + p.second * v; };
+		ans += calc(t.greater(1, x - 1, a[y]), v[y])
+			+ calc(t.greater(1, y - 1, a[x]), v[x])
+			- calc(t.greater(1, x - 1, a[x]), v[x])
+			- calc(t.greater(1, y - 1, a[y]), v[y]);
+		if (y > x + 1)
+			ans += calc(t.less(x + 1, y - 1, a[y]), v[y])
+			- calc(t.less(x + 1, y - 1, a[x]), v[x]);
+		if (a[x] > a[y]) ans -= (v[x] + v[y]);
+		if (a[y] > a[x]) ans += (v[x] + v[y]);
+		t.exchange(x, y);
+		cout << ans % mod << endl;
+	}
+	return 0;
+}

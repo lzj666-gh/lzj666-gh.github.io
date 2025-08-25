@@ -1,0 +1,102 @@
+//  OJ: 洛谷
+//  提交ID: 225745888
+//  题目ID: T633722
+#include <iostream>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m, k;
+    cin >> n >> m >> k;
+
+    unordered_map<string, int> ioers_room;
+    for (int i = 0; i < m; ++i) {
+        string name;
+        int room;
+        cin >> name >> room;
+        ioers_room[name] = room;
+    }
+
+    unordered_map<string, int> teachers_room;
+    for (int i = 0; i < k; ++i) {
+        string name;
+        cin >> name;
+        teachers_room[name] = -1;  // Initially not in any room
+    }
+
+    unordered_set<string> opened_florr;
+    unordered_set<string> punished;
+    int current_room = 1;
+
+    cin.ignore();  // Ignore the newline after last teacher's name
+
+    for (int i = 0; i < n; ++i) {
+        string line;
+        getline(cin, line);
+        // Remove the trailing '@' if present
+        if (!line.empty() && line.back() == '@') {
+            line.pop_back();
+        }
+
+        if (line.find(" opened florr.io") != string::npos) {
+            string name = line.substr(0, line.find(" opened florr.io"));
+            opened_florr.insert(name);
+        } else if (line.find(" closed florr.io") != string::npos) {
+            string name = line.substr(0, line.find(" closed florr.io"));
+            opened_florr.erase(name);
+        } else if (line.find(" comes in") != string::npos) {
+            string name = line.substr(0, line.find(" comes in"));
+            if (teachers_room.count(name)) {
+                // Teacher comes into current room
+                teachers_room[name] = current_room;
+            }
+        } else if (line.find(" goes out") != string::npos) {
+            string name = line.substr(0, line.find(" goes out"));
+            if (teachers_room.count(name)) {
+                // Teacher leaves current room
+                teachers_room[name] = -1;
+            }
+        } else if (line.find("in computer room ") != string::npos) {
+            size_t pos = line.find("in computer room ");
+            string room_str = line.substr(pos + 17);
+            current_room = stoi(room_str);
+        }
+
+        // Check for punished ioers after each event
+        for (const auto& ioer : opened_florr) {
+            int ioer_room = ioers_room[ioer];
+            for (const auto& teacher : teachers_room) {
+                if (teacher.second == ioer_room) {
+                    punished.insert(ioer);
+                    break;
+                }
+            }
+        }
+    }
+
+    if (punished.size() == m) {
+    	for(string i:punished){
+    		cout<<i<<endl;
+		}
+        cout << "bad,bad,bad IOIers!!!\n";
+    } else if (punished.empty()) {
+        cout << "good,good,good OIers!!!\n";
+    } else {
+        vector<string> punished_list(punished.begin(), punished.end());
+        sort(punished_list.begin(), punished_list.end());
+        for (const auto& name : punished_list) {
+            cout << name << '\n';
+        }
+        cout << "ioers | OIers???\n";
+    }
+
+    return 0;
+}

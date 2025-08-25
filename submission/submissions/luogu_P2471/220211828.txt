@@ -1,0 +1,66 @@
+//  OJ: 洛谷
+//  提交ID: 220211828
+//  题目ID: P2471
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e6 + 5;
+struct Seg_Tree {
+#define lc(p) (tree[p].ls == -1 ? tree[p].ls = ++idx : tree[p].ls)
+#define rc(p) (tree[p].rs == -1 ? tree[p].rs = ++idx : tree[p].rs)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int max, sum, ls, rs;
+		Node() : max(0), sum(0), ls(-1), rs(-1) {}
+	}tree[N << 2];
+	int idx = 1;
+	void pushup(int p) {
+		tree[p].max = max(tree[lc(p)].max, tree[rc(p)].max);
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+	}
+	void add(int p, int l, int r, int x, int val) {
+		if (l == r){
+			tree[p].max += val;
+			tree[p].sum++;
+			return;
+		}
+		if (x <= mid) add(lson, x, val);
+		if (x > mid) add(rson, x, val);
+		pushup(p);
+	}
+	int query(int p, int l, int r, int L, int R) {
+		if (L > R) return 0;
+		if (L <= l && r <= R) return tree[p].max;
+		if (r < L || R < l) return 0;
+		return max(query(lson, L, R), query(rson, L, R));
+	}
+	int query_sum(int p, int l, int r, int L, int R) {
+		if (L > R) return 0;
+		if (L <= l && r <= R) return tree[p].sum;
+		if (r < L || R < l) return 0;
+		return (query_sum(lson, L, R) + query_sum(rson, L, R));
+	}
+}t;
+int n, m;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1, x, v; i <= n; ++i) cin >> x >> v, t.add(1, -1e9, 1e9, x, v);
+	cin >> m;
+	while (m--) {
+		int x, y;
+		cin >> x >> y;
+		//cerr << "x: " << t.query(1, -1e9, 1e9, x, x) << endl << "y: " << t.query(1, -1e9, 1e9, y, y) << endl << "max: " << t.query(1, -1e9, 1e9, x + 1, y - 1) << endl;
+		//cerr << "number: " << t.query_sum(1, -1e9, 1e9, x, y) << endl;
+		if (t.query(1, -1e9, 1e9, x, x) >= t.query(1, -1e9, 1e9, y, y) && t.query(1, -1e9, 1e9, x + 1, y - 1) < t.query(1, -1e9, 1e9, y, y))
+			if (t.query_sum(1, -1e9, 1e9, x, y) == y - x + 1)
+				cout << "true" << endl;
+			else
+				cout << "maybe" << endl;
+		else
+			cout << "false" << endl;
+	}
+	return 0;
+}

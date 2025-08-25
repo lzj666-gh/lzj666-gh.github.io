@@ -1,0 +1,60 @@
+//  OJ: 洛谷
+//  提交ID: 225790935
+//  题目ID: T541826
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+using ll = long long;
+constexpr int N = 5e5 + 10;
+struct Edge {
+	int v, nxt;
+}edge[N << 1];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, a[N], sz[N];
+ll ans, ssz[N];
+void dfs1(int x, int fa) {
+	sz[x] = 1;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v != fa)
+			dfs1(edge[i].v, x),
+			sz[x] += sz[edge[i].v],
+			ssz[x] += ssz[edge[i].v];
+	ssz[x] += sz[x];
+}
+ll pow2(ll x) { return x * x; }
+ll sup(int x) { return n - sz[x]; }
+void dfs2(int x, int fa, ll sum) {
+	ll coef = 0;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v != fa)
+			coef -= pow2(ssz[edge[i].v] + sz[edge[i].v]);
+	coef -= pow2(sum + sup(x)); coef += pow2(ssz[x] - sz[x] + sum + n);
+	coef *= 2;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v != fa)
+			coef += pow2(sz[edge[i].v]);
+	coef += pow2(sup(x)); coef -= pow2(n);
+	ans += a[x] * coef;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v != fa)
+			dfs2(edge[i].v, x, ssz[x] - ssz[edge[i].v] - sz[x] + sum + sup(edge[i].v));
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i)
+		cin >> a[i];
+	for (int i = 1, u, v; i < n; ++i)
+		cin >> u >> v, add(u, v), add(v, u);
+	dfs1(1, 1); dfs2(1, 1, 0);
+	for (int i = 1; i <= n; ++i) ans += a[i];
+	ans /= 2;
+	ll inv = n * (n + 1ll) / 2;
+	ll g = gcd(ans, inv);
+	cout << ans / g << ' ' << inv / g << endl;
+	return 0;
+}

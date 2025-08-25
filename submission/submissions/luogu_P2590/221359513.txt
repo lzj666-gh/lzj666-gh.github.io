@@ -1,0 +1,117 @@
+//  OJ: 洛谷
+//  提交ID: 221359513
+//  题目ID: P2590
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e5 + 5, M = 2e5 + 5;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+void addedge(int u, int v) {
+	add(u, v); add(v, u);
+}
+int val[N], a[N];
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int sum, max;
+		Node(int sum = 0, int max = 0) :sum(sum), max(max) {}
+	}tree[N << 2];
+	void pushup(int p) {
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+		tree[p].max = max(tree[lc(p)].max, tree[rc(p)].max);
+	}
+	void build(int p, int l, int r) {
+		if (l == r) {
+			tree[p].sum = tree[p].max = val[l];
+			return;
+		}
+		build(lson);
+		build(rson);
+		pushup(p);
+	}
+	void add(int p, int l, int r, int x, int val) {
+		if (l == r) {
+			tree[p].max = tree[p].sum = val;
+			return;
+		}
+		if (x <= mid) add(lson, x, val);
+		else add(rson, x, val);
+		pushup(p);
+	}
+	int querysum(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].sum;
+		if (r < L || R < l) return 0;
+		return querysum(rson, L, R) + querysum(lson, L, R);
+	}
+	int querymax(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].max;
+		if (r < L || R < l) return 0;
+		return max(querymax(lson, L, R), querymax(rson, L, R));
+	}
+}t;
+int dfn[N], idk, ed[N], hvy[N], siz[N], top[N], f[N], dep[N];
+void dfs1(int x, int fa) {
+	siz[x] = 1; f[x] = fa; dep[x] = dep[fa] + 1;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs1(edge[i].v, x), siz[x] += siz[edge[i].v],
+			(siz[edge[i].v] > siz[hvy[x]]) && (hvy[x] = edge[i].v);
+}
+void dfs2(int x, int fa) {
+	dfn[x] = ++idk;
+	if (hvy[x]) top[hvy[x]] = top[x], dfs2(hvy[x], x);
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if ((edge[i].v ^ fa) && (edge[i].v ^ hvy[x]))
+			top[edge[i].v] = edge[i].v, dfs2(edge[i].v, x);
+	ed[x] = idk;
+}
+int n, m;
+int querymax(int x, int y) {
+	int ans = 0;
+	while (top[x] ^ top[y]) {
+		if (dep[top[x]] < dep[top[y]]) swap(x, y);
+		ans = max(t.querymax(1, 1, n, dfn[top[x]], dfn[x]), ans);
+		x = f[top[x]];
+	}
+	if (dep[x] > dep[y]) swap(x, y);
+	return max(ans, t.querymax(1, 1, n, dfn[x], dfn[y]));
+}
+int querysum(int x, int y) {
+	int ans = 0;
+	while (top[x] ^ top[y]) {
+		if (dep[top[x]] < dep[top[y]]) swap(x, y);
+		ans += t.querysum(1, 1, n, dfn[top[x]], dfn[x]);
+		x = f[top[x]];
+	}
+	if (dep[x] > dep[y]) swap(x, y);
+	return (ans + t.querysum(1, 1, n, dfn[x], dfn[y]));
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1, u, v; i < n; ++i) cin >> u >> v, addedge(u, v);
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	dfs1(1, 1); top[1] = 1; dfs2(1, 1);
+	for (int i = 1; i <= n; ++i) val[dfn[i]] = a[i];
+	t.build(1, 1, n);
+	cin >> m;
+	while (m--) {
+		string opt; int x, y;
+		cin >> opt >> x >> y;
+		if (opt == "CHANGE") t.add(1, 1, n, dfn[x], y);
+		if (opt == "QMAX") cout << querymax(x, y) << endl;
+		if (opt == "QSUM") cout << querysum(x, y) << endl;
+	}
+	return 0;
+}

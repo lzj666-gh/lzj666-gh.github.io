@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 226437130
+//  题目ID: P2280
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, a[6005][6005], sum[6005][6005];
+int32_t main() {
+    cin.tie(0)->sync_with_stdio(false);
+    cin >> n >> m;
+    for (int i = 1, x, y, v; i <= n; ++i)
+        cin >> x >> y >> v, a[x + 10][y + 10] += v;
+    for (int i = 1; i <= 6e3; ++i)
+        for (int j = 1; j <= 6e3; ++j)
+            sum[i][j] = sum[i - 1][j] + sum[i][j - 1] - sum[i - 1][j - 1] + a[i][j];
+    int ans = 0;
+    for (int i = m; i <= 6e3; ++i)
+        for (int j = m; j <= 6e3; ++j)
+            ans = max(ans, sum[i][j] - sum[i - m][j] - sum[i][j - m] + sum[i - m][j - m]);
+    cout << ans << endl;
+    return 0;
+}

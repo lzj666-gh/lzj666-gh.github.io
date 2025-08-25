@@ -1,0 +1,81 @@
+//  OJ: 洛谷
+//  提交ID: 225761873
+//  题目ID: T633722
+#include<bits/stdc++.h>
+using namespace std;
+string special[5]={
+	"opened florr.io",
+	"closed florr.io",
+	"comes in",
+	"goes out",
+	"in computer room"
+};
+char s[100];
+int n,m,k,class_id,belongs[110],belongt[110];
+string ss;
+map<string,int>student,teacher;
+string studentname[110],teachername[110];
+bool open[110],found[110];
+int main(){
+	cin.tie(0)->sync_with_stdio(false);
+	cin>>n>>m>>k;
+	for(int i=1;i<=m;++i){
+		cin>>ss>>class_id;studentname[i]=ss;
+		student[ss]=i;belongs[i]=class_id;
+	}
+	for(int i=1;i<=k;++i){
+		cin>>ss;teachername[i]=ss;
+		teacher[ss]=i;belongt[i]=-1;
+	}
+	class_id=1;
+	while(n--){
+		getline(cin,ss);
+		if(ss.find(special[0])!=string::npos){
+			sscanf(ss.c_str(),"%s opened florr.io",s);
+			int i=student[s];
+			open[i]=1;
+			for(int j=1;j<=k;++j)
+				if(open[i]&&belongs[i]==belongt[j])
+					found[i]=1/*,cerr<<studentname[i]<<" is found"<<endl*/;
+//			cerr<<0<<' '<<s<<' '<<student[s]<<endl;
+		}
+		if(ss.find(special[1])!=string::npos){
+			sscanf(ss.c_str(),"%s closed florr.io",s);
+			int i=student[s];
+			open[i]=0;
+			for(int j=1;j<=k;++j)
+				if(open[i]&&belongs[i]==belongt[j])
+					found[i]=1/*,cerr<<studentname[i]<<" is found"<<endl*/;
+//			cerr<<1<<' '<<s<<' '<<student[s]<<endl;
+		}
+		if(ss.find(special[2])!=string::npos){
+			sscanf(ss.c_str(),"%s came in",s);
+			int j=teacher[s];
+			belongt[j]=class_id;
+			for(int i=1;i<=m;++i)
+				if(open[i]&&belongs[i]==belongt[j])
+					found[i]=1/*,cerr<<studentname[i]<<" is found"<<endl*/;
+//			cerr<<2<<' '<<s<<' '<<teacher[s]<<endl;
+		}
+		if(ss.find(special[3])!=string::npos){
+			sscanf(ss.c_str(),"%s goes out",s);
+			int j=teacher[s];
+			belongt[j]=-1;
+			for(int i=1;i<=m;++i)
+				if(open[i]&&belongs[i]==belongt[j])
+					found[i]=1/*,cerr<<studentname[i]<<" is found"<<endl*/;
+//			cerr<<3<<' '<<s<<' '<<teacher[s]<<endl;
+		}
+		if(ss.find(special[4])!=string::npos){
+			sscanf(ss.c_str(),"in computer room %d",&class_id);
+//			cerr<<4<<' '<<class_id<<endl;
+		}
+	}
+	int cnt=0;
+	for(int i=1;i<=m;++i)
+		if(found[i])
+			cout<<studentname[i]<<endl,++cnt;
+	if(cnt==m) cout<<"bad,bad,bad IOIers!!!"<<endl;
+	else if(cnt==0) cout<<"good,good,good OIers!!!"<<endl;
+	else cout<<"ioers | OIers???"<<endl;
+}

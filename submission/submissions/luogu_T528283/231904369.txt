@@ -1,0 +1,100 @@
+//  OJ: 洛谷
+//  提交ID: 231904369
+//  题目ID: T528283
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+using ll = long long;
+ll n, m, sum;
+unordered_map<int, ll>a; 
+int main() {
+    cout << -1 << endl;
+    return 0;
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m; ll ans = 0;
+	for (int i = -n; i <= n; ++i)
+		cin >> a[i], ans += a[i],
+		sum += a[i] * i;
+	if (sum == m) {
+		cout << ans << endl;
+		return 0;
+	}
+	if (sum < m) {
+		ans = 0; m = -m; sum = 0;
+		for (int i = 1; i <= n; ++i) swap(a[i], a[-i]);
+		for (int i = -n; i <= n; ++i)
+			ans += a[i],
+			sum += a[i] * i;
+	}
+	if (sum < m) {
+		cout << -1 << endl;
+		return 0;
+	}
+	for (int i = n; i >= 1; --i) {
+		if (sum - a[i] * i <= m)
+			a[i] -= (sum - m) / i,
+			ans -= (sum - m) / i,
+			sum -= (sum - m) / i * i;
+		else
+			ans -= a[i],
+			sum -= a[i] * i,
+			a[i] = 0;
+		if (sum == m) {
+			cout << ans << endl;
+			return 0;
+		}
+	}
+	if (sum > n) {
+		cout << -1 << endl;
+		return 0;
+	}
+	sum -= m;
+	for (int i = 0; i <= n; ++i) {
+		if (a[i] && a[sum - i]) {
+			cout << ans - 2 << endl;
+			return 0;
+		}
+	}
+	for (int i = 0; i <= n; ++i) {
+		for (int j = 0; j <= n; ++j) {
+			ll a1 = a[i], a2 = a[j], a3 = a[sum - (i + j)];
+			if (a[i]-- && a[j]-- && a[sum - (i + j)]--) {
+				cout << ans - 3 << endl;
+				return 0;
+			}
+			a[i] = a1; a[j] = a2; a[sum - (i + j)] = a3;
+			a1 = a[i], a2 = a[-j], a3 = a[sum - (i - j)];
+			if (a[i]-- && a[-j]-- && a[sum - (i - j)]--) {
+				cout << ans - 3 << endl;
+				return 0;
+			}
+			a[i] = a1; a[-j] = a2; a[sum - (i - j)] = a3;
+		}
+	}
+	for (int i = 0; i <= n; ++i) {
+		for (int j = 0; j <= n; ++j) {
+			for (int k = 0; k <= n; ++k) {
+				ll a1 = a[i], a2 = a[j], a3 = a[k], a4 = a[sum - (i + j + k)];
+				if (a[i]-- && a[j]-- && a[k]-- && a[sum - (i + j + k)]--) {
+					cout << ans - 4 << endl;
+					return 0;
+				}
+				a[i] = a1; a[j] = a2; a[k] = a3; a[sum - (i + j + k)] = a4;
+				a1 = a[i], a2 = a[j], a3 = a[-k], a4 = a[sum - (i + j - k)];
+				if (a[i]-- && a[j]-- && a[-k]-- && a[sum - (i + j - k)]--) {
+					cout << ans - 4 << endl;
+					return 0;
+				}
+				a[i] = a1; a[j] = a2; a[-k] = a3; a[sum - (i + j - k)] = a4;
+				a1 = a[i], a2 = a[-j], a3 = a[-k], a4 = a[sum - (i - j - k)];
+				if (a[i]-- && a[-j]-- && a[-k]-- && a[sum - (i - j - k)]--) {
+					cout << ans - 4 << endl;
+					return 0;
+				}
+				a[i] = a1; a[-j] = a2; a[-k] = a3; a[sum - (i - j - k)] = a4;
+			}
+		}
+	}
+	cout << -1 << endl;
+	return 0;
+}

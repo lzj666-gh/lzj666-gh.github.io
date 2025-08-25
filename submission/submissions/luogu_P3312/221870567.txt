@@ -1,0 +1,87 @@
+//  OJ: 洛谷
+//  提交ID: 221870567
+//  题目ID: P3312
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e7 + 5, M = 1e5 + 5, mod = 1ll << 31;
+vector<int>prm;
+bool vis[N];
+int mu[N];
+struct Node {
+	int idx, sum;
+	Node(int idx = 0, int sum = 0) :idx(idx), sum(sum) {}
+	friend bool operator<(Node& a, Node& b) {
+		return a.sum == b.sum ? a.idx < b.idx : a.sum < b.sum;
+	}
+}d[N];
+int top;
+void prep() {
+	mu[1] = 1;
+	for (int i = 2; i <= top; ++i) {
+		if (!vis[i]) {
+			mu[i] = -1;
+			prm.push_back(i);
+		}
+		for (int& p : prm) {
+			if (p * i > top) break;
+			vis[p * i] = 1;
+			if (i % p == 0) break;
+			mu[i * p] = -mu[i];
+		}
+	}
+	for (int i = 1; i <= top; ++i) {
+		d[i].idx = i;
+		for (int j = i; j <= top; j += i)
+			d[j].sum += i;
+	}
+	sort(d + 1, d + top + 1);
+}
+struct Query {
+	int n, m, a, id;
+	friend bool operator<(const Query& a, const Query& b) {
+		return a.a < b.a;
+	}
+}q[M];
+unsigned fenw[N], ans[M];
+void add(int x, int k) {
+	k = (k + mod) % mod;
+	for (; x <= top; x += x & -x)
+		(fenw[x] += k) %= mod;
+}
+int query(int x) {
+	int ans = 0;
+	for (; x; x -= x & -x)
+		(ans += fenw[x]) %= mod;
+	return ans;
+}
+int sol(int n, int m) {
+	int ans = 0;
+	if (n > m) swap(n, m);
+	for (int l = 1, r; l <= n; l = r + 1) {
+		r = min(n / (n / l), m / (m / l));
+		ans += 1ll * (n / l) * (m / l) % mod * (query(r) - query(l - 1)) % mod;
+		ans %= mod;
+	}
+	return (ans + mod) % mod;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T, n, m, a;
+	cin >> T;
+	for (int i = 1; i <= T; ++i)
+		cin >> q[i].n >> q[i].m >> q[i].a, q[i].id = i, top = max(top, q[i].n);
+	prep();
+	sort(q + 1, q + T + 1);
+	for (int i = 1, j = 0; i <= T; ++i) {
+		while (j < top && d[j + 1].sum <= q[i].a) {
+			++j;
+			for (int k = 1; k <= top / d[j].idx; ++k)
+				if (mu[k])
+					add(k * d[j].idx, d[j].sum * mu[k] % mod);
+		}
+		ans[q[i].id] = sol(q[i].n, q[i].m);
+	}
+	for (int i = 1; i <= T; ++i) cout << ans[i] << endl;
+	return 0;
+}

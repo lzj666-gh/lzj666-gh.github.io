@@ -1,0 +1,77 @@
+//  OJ: 洛谷
+//  提交ID: 220410588
+//  题目ID: P1856
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 2e5 + 5;
+struct Line {
+	int l, r, h, add;
+	Line(int l = 0, int r = 0, int h = 0, int add = 1) :l(l), r(r), h(h), add(add) {}
+	bool operator<(const Line& other)const { return h == other.h ? add > other.add : h < other.h; }
+};
+vector<Line>l;
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+#define self p, l, r
+struct Node {
+	int ans, sum;
+	Node() :ans(0), sum(0) {}
+}tree[N << 3];
+int d[N];
+void pushup(int p, int l, int r) {
+	if (tree[p].sum > 0) tree[p].ans = d[r + 1] - d[l];
+	else tree[p].ans = tree[lc(p)].ans + tree[rc(p)].ans;
+}
+void upd(int p, int l, int r, int L, int R, int val) {
+	if (L >= d[r + 1] || d[l] >= R) return;
+	if (L <= d[l] && d[r + 1] <= R) {
+		tree[p].sum += val;
+		return pushup(self);
+	}
+	upd(lson, L, R, val);
+	upd(rson, L, R, val);
+	pushup(self);
+}
+signed main() {
+	cin.tie(nullptr)->sync_with_stdio(false);
+	int n;
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		int a, b, c, d;
+		cin >> a >> b >> c >> d;
+		l.emplace_back(a, c, b, 1);
+		l.emplace_back(a, c, d, -1);
+		::d[i - 1 << 1] = a; ::d[i - 1 << 1 | 1] = c;
+	}
+	n <<= 1;
+	sort(d, d + n);
+	int cbc = unique(d, d + n) - d - 1;
+	sort(l.begin(), l.end());
+	int ans = 0, lst = 0; n--;
+	for (int i = 0; i < l.size(); ++i)
+		upd(1, 0, cbc - 1, l[i].l, l[i].r, l[i].add),
+		ans += abs(tree[1].ans - lst), lst = tree[1].ans;
+	cin.seekg(0); l.clear(); memset(tree, 0, sizeof tree);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		int a, b, c, d;
+		cin >> a >> b >> c >> d; swap(a, b); swap(c, d);
+		l.emplace_back(a, c, b, 1);
+		l.emplace_back(a, c, d, -1);
+		::d[i - 1 << 1] = a; ::d[i - 1 << 1 | 1] = c;
+	}
+	n <<= 1;
+	sort(d, d + n);
+	cbc = unique(d, d + n) - d - 1;
+	sort(l.begin(), l.end());
+	lst = 0; n--;
+	for (int i = 0; i < l.size(); ++i)
+		upd(1, 0, cbc - 1, l[i].l, l[i].r, l[i].add),
+		ans += abs(tree[1].ans - lst), lst = tree[1].ans;
+	cout << ans << endl;
+	return 0;
+}

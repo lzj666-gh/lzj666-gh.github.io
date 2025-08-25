@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 220872458
+//  题目ID: P5459
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, l, r, a[100000 + 10];
+unordered_map<int, int>tr;
+void add(int x, int val) {
+	x += 1e10;
+	for (; x <= 2e10; x += x & -x)
+		tr[x] += val;
+}
+int query(int x) {
+	x += 1e10;
+	int ans = 0;
+	for (; x; x -= x & -x)
+		ans += tr[x];
+	return ans;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> l >> r;
+	for (int i = 1; i <= n; ++i) cin >> a[i], a[i] += a[i - 1];
+	int ans = 1;
+	for (int i = 1; i <= n; ++i) {
+		ans += query(r - a[i]) - query(l - a[i] - 1);
+		add(-a[i], 1);
+	}
+	cout << ans << endl;
+	return 0;
+}

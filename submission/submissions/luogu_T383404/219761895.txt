@@ -1,0 +1,150 @@
+//  OJ: 洛谷
+//  提交ID: 219761895
+//  题目ID: T383404
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+namespace IO {
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	inline void qread(char& IEE) { IEE = gc(); }
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	inline void qwrite(char IEE) { putc_(IEE); }
+	inline void qwrite(const char* str) { while (*str != '\0') putc_(*str++); }
+	inline void qwrite(const std::string& IEE) { qwrite(IEE.c_str()); }
+	template<class... T2> inline void qwrite(const char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class ...T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+constexpr int N = 4e6 + 10, M = 6e6 + 10;
+struct Edge {
+	int v, nxt;
+} edge[M];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v, head[u] };
+	head[u] = idx;
+}
+void addedge(int u, int v) {
+	add(u, v); add(v, u);
+}
+int T, n, a[100000 + 10];
+int mp[10000001], ids[10000001], snt;
+bool np[10000001];
+int fa[N], sz[N], dfn[N], low[N], idk;
+int siz[N], all, ans;
+vector<int> prm;
+void prep() {
+	for (int i = 2; i <= 1e7; ++i) {
+		if (!np[i]) mp[i] = i, prm.push_back(i);
+		for (const int& j : prm) {
+			if (i * j > 1e7) break;
+			np[i * j] = 1; mp[i * j] = j;
+			if (i % j == 0) break;
+		}
+	}
+	snt = 0;
+	for (int i = 2; i <= 1e7; ++i) {
+		if (!np[i]) continue;
+		int t = i / mp[i];
+		if (t > 1 && !np[t]) ids[i] = ++snt;
+	}
+}
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+void merge(int x, int y) {
+	x = find(x), y = find(y);
+	if (x == y) return;
+	if (sz[x] < sz[y]) swap(x, y);
+	sz[x] += sz[y];
+	fa[y] = x;
+}
+void tarjan(int x, int fa) {
+	dfn[x] = low[x] = ++idk;
+	siz[x] = (x <= n) ? 1 : 0;
+	int child = 0;
+	int ret = 0, sum = 0;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		int v = edge[i].v;
+		if (v == fa) continue;
+		if (!dfn[v]) {
+			child++; tarjan(v, x);
+			siz[x] += siz[v]; low[x] = min(low[x], low[v]);
+			if (low[v] >= dfn[x]) ret = max(ret, siz[v]), sum += siz[v];
+		}
+		else low[x] = min(low[x], dfn[v]);
+	}
+	if (x <= n) {
+		int now;
+		if (fa == -1)
+			if (child >= 2) now = max(ret, all - 1 - sum);
+			else now = all - 1;
+		else
+			if (ret) now = max(ret, all - 1 - sum);
+			else now = all - 1;
+		ans = min(ans, now);
+	}
+}
+signed main() {
+	prep();
+	qread(T);
+	while (T--) {
+		memset(head, 0, sizeof(int) * (n + snt + 1));
+		memset(dfn, 0, sizeof(int) * (n + snt + 1));
+		memset(low, 0, sizeof(int) * (n + snt + 1));
+		memset(siz, 0, sizeof(int) * (n + snt + 1));
+		qread(n); idx = 0;
+		for (int i = 1; i <= n + snt; ++i) fa[i] = i, sz[i] = (i <= n) ? 1 : 0;
+		for (int i = 1; i <= n; ++i) qread(a[i]);
+		for (int i = 1; i <= n; ++i) {
+			int x = a[i];
+			vector<int> d;
+			unordered_map<int, int> cnt;
+			while (x > 1) {
+				int p = mp[x], tot = 0;
+				while (x % p == 0) tot++, x /= p;
+				d.push_back(p); cnt[p] = tot;
+			}
+			for (int j = 0; j < d.size(); ++j) {
+				int p1 = d[j];
+				if (cnt[p1] >= 2) {
+					int sm = p1 * p1;
+					if (sm <= 1e7 && ids[sm]) {
+						addedge(i, n + ids[sm]);
+						merge(i, n + ids[sm]);
+					}
+				}
+				for (int k = j + 1; k < d.size(); ++k) {
+					int p2 = d[k];
+					int sm = p1 * p2;
+					if (sm > 1e7) continue;
+					if (ids[sm]) {
+						addedge(i, n + ids[sm]);
+						merge(i, n + ids[sm]);
+					}
+				}
+			}
+		}
+		int mx = 0, se = 0, mxp = -1;
+		for (int i = 1; i <= n + snt; ++i)
+			if (fa[i] == i)
+				if (sz[i] > mx) se = mx, mx = sz[i], mxp = i;
+				else if (sz[i] > se) se = sz[i];
+		if (mx == 0) {
+			qwrite("0\n");
+			continue;
+		}
+		idk = 0; ans = mx; all = mx;
+		if (mxp != -1) tarjan(mxp, -1);
+		qwrite(max(ans, se), '\n');
+	}
+	return 0;
+}

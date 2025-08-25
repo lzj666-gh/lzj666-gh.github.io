@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 222706257
+//  题目ID: P3174
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 3e5 + 5;
+struct Edge {
+	int v, nxt;
+}edge[N << 1];
+int head[N], idx, r[N];
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx; r[v]++;
+}
+int dp[N];
+void dfs(int x, int fa) {
+	int cnt = 1;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs(edge[i].v, x), ++cnt,
+			dp[x] = max(dp[x], dp[edge[i].v] - 1);
+	dp[x] += cnt;
+}
+int n, m;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v; i < n; ++i) cin >> u >> v, add(u, v), add(v, u);
+	for (int i = 1; i <= n; ++i)
+		if (r[i] == 1) {
+			dfs(i, i);
+			cout << dp[i] << endl;
+			return 0;
+		}
+	return 0;
+}

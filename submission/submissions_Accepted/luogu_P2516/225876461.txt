@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 225876461
+//  题目ID: P2516
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int mod = 1e8;
+string s1, s2;
+int dp[2][5010];
+long long len[2][5010];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> s1 >> s2;
+	int n = s1.size(), m = s2.size();
+	for (int j = 0; j <= m; ++j) dp[0][j] = 0, len[0][j] = 1;
+	for (int i = 1; i <= n; ++i) {
+		bool cur = i & 1, prev = !cur;
+		dp[cur][0] = 0; len[cur][0] = 1;
+		for (int j = 1; j <= m; ++j) {
+			len[cur][j] = 0;
+			if (s1[i - 1] == s2[j - 1]) {
+				dp[cur][j] = dp[prev][j - 1] + 1; len[cur][j] = len[prev][j - 1];
+				if (dp[cur][j] == dp[cur][j - 1]) len[cur][j] += len[cur][j - 1];
+				if (dp[cur][j] == dp[prev][j]) len[cur][j] += len[prev][j];
+			}
+			else {
+				dp[cur][j] = max(dp[prev][j], dp[cur][j - 1]);
+				if (dp[cur][j] == dp[prev][j]) len[cur][j] += len[prev][j];
+				if (dp[cur][j] == dp[cur][j - 1]) len[cur][j] += len[cur][j - 1];
+				if (dp[prev][j - 1] == dp[cur][j]) len[cur][j] -= len[prev][j - 1];
+			}
+			len[cur][j] %= mod;
+		}
+	}
+	cout << dp[n & 1][m] - 1 << endl << len[n & 1][m] << endl;
+	return 0;
+}

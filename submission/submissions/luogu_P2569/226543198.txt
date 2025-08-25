@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 226543198
+//  题目ID: P2569
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, m, w, dp[1005][2005], ap[1005], bp[1005], as[1005], bs[1005];
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	memset(dp, 0xcf, sizeof dp);
+	cin >> n >> m >> w;
+	for (int i = 1; i <= n; ++i) cin >> ap[i] >> bp[i] >> as[i] >> bs[i];
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 0; j <= as[i]; ++j) dp[i][j] = -ap[i] * j;
+		for (int j = 0; j <= m; ++j) dp[i][j] = max(dp[i][j], dp[i - 1][j]);
+		if (i <= w) continue;
+		deque<int>q;
+		for (int j = 0; j < as[i]; ++j) {
+			while (!q.empty() && dp[i - w - 1][j] + j * ap[i] > dp[i - w - 1][q.back()] + q.back() * ap[i]) q.pop_back();
+			q.push_back(j);
+		}
+		dp[i][as[i]] = max(dp[i][as[i]] + as[i] * ap[i], dp[i - w - 1][q.front()] + q.front() * ap[i]) - as[i] * ap[i];
+		for (int j = as[i] + 1; j <= m; ++j) {
+			while (!q.empty() && dp[i - w - 1][j - 1] + (j - 1) * ap[i] > dp[i - w - 1][q.back()] + q.back() * ap[i]) q.pop_back();
+			q.push_back(j);
+			if (q.front() == j - as[i]) q.pop_front();
+			dp[i][j] = max(dp[i][j] + j * ap[i], dp[i - w - 1][q.front()] + q.front() * ap[i]) - j * ap[i];
+		}
+		q.clear();
+		for (int j = 1; j <= bs[i]; ++j) {
+			while (!q.empty() && dp[i - w - 1][j] + j * bp[i] > dp[i - w - 1][q.back()] + q.back() * bp[i]) q.pop_back();
+			q.push_back(j);
+		}
+		dp[i][0] = max(dp[i][0] + 0 * bp[i], dp[i - w - 1][q.front()] + q.front() * bp[i]) - 0 * bp[i];
+		for (int j = 1; (j + bs[i]) <= m; ++j) {
+			while (!q.empty() && dp[i - w - 1][j + bs[i]] + (j + bs[i]) * bp[i] > dp[i - w - 1][q.back()] + q.back() * bp[i]) q.pop_back();
+			q.push_back(j + bs[i]);
+			if (q.front() == j) q.pop_front();
+			dp[i][j] = max(dp[i][j] + j * bp[i], dp[i - w - 1][q.front()] + q.front() * bp[i]) - j * bp[i];
+		}
+	}
+	int ans = 0;
+	for (int i = 0; i <= m; ++i) ans = max(ans, dp[n][i]);
+	cout << ans << endl;
+	return 0;
+}

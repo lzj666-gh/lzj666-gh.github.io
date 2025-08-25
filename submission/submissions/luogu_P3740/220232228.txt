@@ -1,0 +1,54 @@
+//  OJ: 洛谷
+//  提交ID: 220232228
+//  题目ID: P3740
+#include<bits/stdc++.h>
+#include<unordered_set>
+#define int long long
+using namespace std;
+constexpr int N = 1e5 + 5;
+struct Seg_Tree {
+#define lc(p) (tree[p].ls == -1 ? tree[p].ls = ++idx : tree[p].ls)
+#define rc(p) (tree[p].rs == -1 ? tree[p].rs = ++idx : tree[p].rs)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int lzy, ls, rs;
+		Node() : lzy(-1), ls(-1), rs(-1) {}
+	}tree[N << 2];
+	int idx = 1;
+	void pushdown(int p, int l, int r) {
+		if (~tree[p].lzy) {
+			tree[lc(p)].lzy = tree[p].lzy;
+			tree[rc(p)].lzy = tree[p].lzy;
+			tree[p].lzy = -1;
+		}
+	}
+	void add(int p, int l, int r, int L, int R, int val) {
+		if (L <= l && r <= R) {
+			tree[p].lzy = val;
+			return;
+		}
+		pushdown(p, l, r);
+		if (L <= mid) add(lson, L, R, val);
+		if (R > mid) add(rson, L, R, val);
+	}
+	int query(int p) {
+		static unordered_set<int> ans;
+		if (~tree[p].lzy) {
+			ans.insert(tree[p].lzy);
+			return ans.size();
+		}
+		if (tree[p].ls) query(tree[p].ls);
+		if (tree[p].rs) query(tree[p].rs);
+		return ans.size();
+	}
+}t;
+int n, m;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, a, b; i <= m; ++i) cin >> a >> b, t.add(1, 1, 1e9, a, b, i);
+	cout << t.query(1) - 1 << endl;
+	return 0;
+}

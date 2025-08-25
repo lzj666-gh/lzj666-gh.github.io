@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 227721325
+//  题目ID: P4822
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[1000 + 10];
+int head[50 + 10], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+struct Node {
+	int x, k, dis;
+	Node(int x = 0, int k = 0, int dis = 0) :x(x), k(k), dis(dis) {}
+	friend bool operator<(const Node& a, const Node& b) {
+		return a.dis > b.dis;
+	}
+	int hash() {
+		return x * 51 + k;
+	}
+};
+priority_queue<Node>q;
+int n, m, k;
+int dis[3000 + 10];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> k;
+	for (int i = 1, u, v, w; i <= m; ++i) cin >> u >> v >> w, add(u, v, w), add(v, u, w);
+	memset(dis, 0x3f, sizeof dis);
+	q.emplace(1, 0, 0);
+	dis[51] = 0; int ans = INT_MAX;
+	while (!q.empty()) {
+		Node now = q.top(); q.pop();
+		if (now.x == n)
+			ans = min(ans, now.dis);
+		for (int i = head[now.x]; i; i = edge[i].nxt) {
+			if (dis[Node(edge[i].v, now.k, 0).hash()] > dis[now.hash()] + edge[i].w)
+				dis[Node(edge[i].v, now.k, 0).hash()] = dis[now.hash()] + edge[i].w,
+				q.emplace(edge[i].v, now.k, dis[now.hash()] + edge[i].w);
+			if (now.k < k && dis[Node(edge[i].v, now.k + 1, 0).hash()] + edge[i].w / 2 > dis[now.hash()])
+				dis[Node(edge[i].v, now.k + 1, 0).hash()] = dis[now.hash()] + edge[i].w / 2,
+				q.emplace(edge[i].v, now.k + 1, dis[now.hash()] + edge[i].w / 2);
+		}
+	}
+	cout << ans << endl;
+	return 0;
+}

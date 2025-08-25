@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 228110857
+//  题目ID: U574937
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, m, a[100000 + 5];
+int32_t main() {
+//	freopen("escape.in", "r", stdin);
+//	freopen("escape.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i)cin >> a[i];
+	while (m--) {
+		int o, l, r;
+		cin >> o >> l >> r;
+		if (o == 2) { a[l] = r; continue; }
+		int k, v, ans = 0;
+		cin >> k >> v;
+		for (int i = l; i <= r; ++i)
+			if (a[i] % k != v)
+				ans += a[i];
+		cout << ans << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 220288845
+//  题目ID: P11295
+#include<bits/stdc++.h>
+#include<unordered_set>
+using namespace std;
+constexpr int N = 2e5 + 5, M = 1e6;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int dis[N], from[N];
+void bfs() {
+	memset(dis, 0x3f, sizeof dis);
+	queue<int>q;
+	q.push(1); dis[1] = 0;
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		for (int i = head[now]; i; i = edge[i].nxt)
+			if (dis[edge[i].v] > dis[now] + 1)
+				from[edge[i].v] = now, dis[edge[i].v] = dis[now] + 1,
+				q.push(edge[i].v);
+	}
+}
+int n, d, b[N], s[N], h[N];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> d;
+	for (int i = 1; i <= n; ++i) cin >> b[i];
+	for (int i = 1; i <= n; ++i) cin >> s[i];
+	for (int i = 1; i <= d; ++i) cin >> h[i];
+	for (int i = 1, u, v; i < n; ++i) cin >> u >> v, add(u, v), add(v, u);
+	bfs();
+	//for (int i = 1; i <= n; ++i) cout << from[i] << ' '; cout << endl;
+	for (int i = 1; i <= d; ++i) {
+		unordered_set<int>ans;
+		while (h[i]) {
+			if (b[h[i]])
+				b[h[i]]--, ans.insert(s[h[i]]);
+			h[i] = from[h[i]];
+		}
+		cout << ans.size() << ' ';
+	}
+	return 0;
+}

@@ -1,0 +1,64 @@
+//  OJ: 洛谷
+//  提交ID: 222720147
+//  题目ID: P3174
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 3e5 + 5;
+struct Edge {
+	int v, nxt;
+}edge[N << 1];
+int head[N], r[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx; r[v]++;
+}
+int n, m, u, v;
+namespace Hvy {
+	int f[N], g[N], ans;
+	void dfs(int x, int fa) {
+		for (int i = head[x]; i; i = edge[i].nxt)
+			if (edge[i].v ^ fa)
+				dfs(edge[i].v, x),
+				g[x] += g[edge[i].v] + 1,
+				f[x] = max(f[x], g[edge[i].v] + 1);
+		f[x] = max(f[x], n - g[x] - 1);
+	}
+	int hvy() {
+		dfs(1, 1);
+		int ret = 1;
+		for (int i = 1; i <= n; i++) if (f[ret] > f[i]) ret = i;
+		return ret;
+	}
+}
+int dp[N][2], ans[N];
+void dfs(int x, int fa) {
+	if (r[x] == 1) {
+		dp[x][0] = ans[x] = 1;
+		return;
+	}
+	int cnt = 0;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa) {
+			dfs(edge[i].v, x); ++cnt;
+			if (dp[edge[i].v][0] > dp[x][0]) {
+				dp[x][1] = dp[x][0];
+				dp[x][0] = dp[edge[i].v][0];
+			}
+			else if (dp[edge[i].v][0] > dp[x][1]) {
+				dp[x][1] = dp[edge[i].v][0];
+			}
+		}
+	ans[x] = dp[x][0] + dp[x][1] + cnt - 1;
+	dp[x][0] += cnt; dp[x][1] += cnt;
+	//cerr << x << ": " << dp[x][0] << ',' << dp[x][1] << endl;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i < n; ++i)
+		cin >> u >> v, add(u, v), add(v, u);
+	int k = Hvy::hvy();
+	dfs(k, k);
+	cout << ans[k] << endl;
+	return 0;
+}

@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 226081148
+//  题目ID: T631298
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int mod = 998244353;
+int n, m, a[10005], sum[50005], dp[2][50005];
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	a[0] = 0;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	sort(a + 1, a + n + 1);
+	for (int i = n, j = 1; i >= 1; --i, ++j)
+		for (int k = a[i] - 1; k >= a[i - 1]; --k)
+			sum[k] = j;
+	vector<tuple<int, int, int>> seg;
+	seg.push_back({ 0, a[1] - 1, n });
+	for (int i = 1; i < n; ++i) {
+		int l = a[i], r = a[i + 1] - 1;
+		if (l > r) continue;
+		seg.push_back({ l, r, n - i });
+	}
+	seg.push_back({ a[n], m, 0 });
+	memset(dp, 0x3f, sizeof dp);
+	for (int j = 1; j <= m; ++j) dp[0][j] = sum[j];
+	int fact = 1, cur = 0;
+	for (int i = 1; i < n; ++i) fact = fact * i % mod;
+	for (int i = 2; i <= n; i++) {
+		vector<deque<int>> dqs(seg.size());
+		cur ^= 1;
+		memset(dp[cur], 0x3f, sizeof dp[cur]);
+		for (int j = 0; j <= m; ++j)
+			for (int idx = 0; idx < seg.size(); ++idx) {
+				int l, r, val; tie(l, r, val) = seg[idx];
+				if (j < l) continue;
+				int L = j - r, R = j - l;
+				if (R >= 0 && R <= m) {
+					deque<int>& dq = dqs[idx];
+					while (!dq.empty() && dp[dq.back()] >= dp[R]) dq.pop_back();
+					dq.push_back(R);
+				}
+				deque<int>& dq = dqs[idx];
+				while (!dq.empty() && dq.front() < L) dq.pop_front();
+				if (!dq.empty())
+					dp[cur][j] = min(dp[cur][j], dp[cur ^ 1][dq.front()] + val);
+			}
+	}
+	cout << dp[cur][m] % mod * fact % mod << endl;
+	return 0;
+}

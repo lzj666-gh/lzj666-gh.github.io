@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 220148292
+//  题目ID: P1908
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 1e9 + 5;
+struct Seg_Tree {
+	unordered_map<int, int>d;
+	void add(int x, int k) {
+		for (; x <= N; x += x & -x)
+			d[x] += k;
+	}
+	int query(int x) {
+		int ans = 0;
+		for (; x; x -= x & -x) {
+			ans += d[x];
+		}
+		return ans;
+	}
+	int query(int x, int y) {
+		return query(y) - query(x - 1);
+	}
+}t;
+int n, a;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	int ans = 0;
+	for (int i = 1; i <= n; ++i)
+		cin >> a,
+		ans += t.query(a + 1, 1e9),
+		t.add(a, 1);
+	cout << ans << endl;
+	return 0;
+}

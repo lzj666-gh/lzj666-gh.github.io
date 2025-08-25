@@ -1,0 +1,97 @@
+//  OJ: 洛谷
+//  提交ID: 221512597
+//  题目ID: P3157
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 4e7;
+int n, m, a[100005], pos[100005];
+long long ans;
+struct Seg_Tree {
+#define lc(p) (tree[p].ls)
+#define rc(p) (tree[p].rs)
+#define mid (l + r >> 1)
+	struct Node {
+		int sum = 0, ls = 0, rs = 0;
+	}tree[N];
+	int idx = 0, root[400005];
+	void add(int& p, int l, int r, int x, int val) {
+		if (!p) p = ++idx;
+		tree[p].sum += val;
+		if (l == r) return;
+		if (x <= mid) add(lc(p), l, mid, x, val);
+		else add(rc(p), mid + 1, r, x, val);
+	}
+	int query(int p, int l, int r, int x, int y) {
+		if (!p || y < l || x > r) return 0;
+		if (x <= l && r <= y) return tree[p].sum;
+		return query(lc(p), l, mid, x, y) + query(rc(p), mid + 1, r, x, y);
+	}
+	void merge(int& p, int lp, int rp, int l, int r) {
+		if (!lp && !rp) return;
+		tree[p = ++idx].sum = tree[lp].sum + tree[rp].sum;
+		if (l == r) return;
+		merge(lc(p), lc(lp), lc(rp), l, mid);
+		merge(rc(p), rc(lp), rc(rp), mid + 1, r);
+	}
+	void build(int p, int l, int r) {
+		if (l == r) return add(root[p], 1, n, a[l], 1);
+		build(p << 1, l, mid);
+		build(p << 1 | 1, mid + 1, r);
+		merge(root[p], root[p << 1], root[p << 1 | 1], 1, n);
+	}
+	vector<int> tr;
+	void get_roots(int p, int l, int r, int ql, int qr) {
+		if (ql <= l && r <= qr) {
+			tr.push_back(root[p]);
+			return;
+		}
+		int m = mid;
+		if (ql <= m) get_roots(p << 1, l, m, ql, qr);
+		if (qr > m) get_roots(p << 1 | 1, m + 1, r, ql, qr);
+	}
+	int less(int l, int r, int k) {
+		tr.clear();
+		get_roots(1, 1, n, l, r);
+		int cnt = 0;
+		for (int& rt : tr) cnt += query(rt, 1, n, 0, k - 1);
+		return cnt;
+	}
+	int greater(int l, int r, int k) {
+		tr.clear();
+		get_roots(1, 1, n, l, r);
+		int cnt = 0;
+		for (int& rt : tr) cnt += query(rt, 1, n, k + 1, 1e8);
+		return cnt;
+	}
+	void del(int p, int l, int r, int x) {
+		add(root[p], 1, n, a[x], -1);
+		if (l == r) return;
+		if (x <= mid) del(p << 1, l, mid, x);
+		else del(p << 1 | 1, mid + 1, r, x);
+	}
+	void del(int x) {
+		del(1, 1, n, x);
+		a[x] = -1;
+	}
+	void init() {
+		cin >> n >> m;
+		for (int i = 1; i <= n; ++i) cin >> a[i], pos[a[i]] = i;
+		build(1, 1, n);
+		int ant = 0;
+		for (int i = 1; i <= n; ++i) {
+			ans += query(ant, 1, n, a[i] + 1, n);
+			add(ant, 1, n, a[i], 1);
+		}
+	}
+}t;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	t.init();
+	for (int i = 1, k; i <= m; ++i) {
+		cin >> k;
+		cout << ans << endl;
+		ans -= t.less(pos[k] + 1, n, k);
+		t.del(pos[k]);
+	}
+	return 0;
+}

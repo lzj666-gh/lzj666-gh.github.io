@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 223199178
+//  题目ID: P1131
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 6e5 + 5;
+struct Edge {
+	int v, w, nxt;
+}edge[N << 1];
+int head[N], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int dep[N], siz[N];
+void dfs(int x, int fa) {
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs(edge[i].v, x),
+			dep[x] = max(dep[x], dep[edge[i].v] + edge[i].w),
+			siz[x] += siz[edge[i].v];
+	siz[x] = max(siz[x], 1ll);
+}
+int calc(int x, int fa) {
+	int ans = 0;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			ans += calc(edge[i].v, x),
+			ans += (dep[x] - dep[edge[i].v] - edge[i].w);
+	return ans;
+}
+int s, n, x, y, z;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> s;
+	for (int i = 1; i < n; ++i) cin >> x >> y >> z, add(x, y, z), add(y, x, z);
+	dfs(s, s);
+	cout << calc(s, s) << endl;
+	return 0;
+}

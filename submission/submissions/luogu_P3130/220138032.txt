@@ -1,0 +1,95 @@
+//  OJ: 洛谷
+//  提交ID: 220138032
+//  题目ID: P3130
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e5 + 5;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int sum, min, lzy;
+		Node(int sum = 0, int min = INT_MAX, int lzy = 0) :sum(sum), min(min), lzy(lzy) {}
+	}tree[N << 2];
+	void pushup(int p) {
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+		tree[p].min = min(tree[lc(p)].min, tree[rc(p)].min);
+	}
+	void pushdown(int p, int l, int r) {
+		if (tree[p].lzy) {
+			tree[lc(p)].sum += tree[p].lzy * (mid - l + 1);
+			tree[rc(p)].sum += tree[p].lzy * (r - mid);
+			tree[lc(p)].min += tree[p].lzy;
+			tree[rc(p)].min += tree[p].lzy;
+			tree[lc(p)].lzy += tree[p].lzy;
+			tree[rc(p)].lzy += tree[p].lzy;
+			tree[p].lzy = 0;
+		}
+	}
+	void build(int p, int l, int r, vector<int>& a) {
+		tree[p].lzy = 0;
+		if (l == r) {
+			tree[p].sum = tree[p].min = a[l];
+			return;
+		}
+		build(lson, a);
+		build(rson, a);
+		pushup(p);
+	}
+	void add(int p, int l, int r, int L, int R, int val) {
+		if (L <= l && r <= R) {
+			tree[p].sum += val * (r - l + 1);
+			tree[p].min += val;
+			tree[p].lzy += val;
+			return;
+		}
+		pushdown(p, l, r);
+		if (L <= mid) add(lson, L, R, val);
+		if (R > mid) add(rson, L, R, val);
+		pushup(p);
+	}
+	int querysum(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].sum;
+		pushdown(p, l, r);
+		int res = 0;
+		if (L <= mid) res += querysum(lson, L, R);
+		if (R > mid) res += querysum(rson, L, R);
+		return res;
+	}
+	int querymin(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].min;
+		if (r < L || R < l) return INT_MAX;
+		return min(querymin(lson, L, R), querymin(rson, L, R));
+	}
+}t;
+int n, m;
+vector<int>a;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	a.resize(n + 1);
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	t.build(1, 1, n, a);
+	while (m--) {
+		char op;
+		int l, r, x;
+		cin >> op;
+		if (op == 'M') {
+			cin >> l >> r;
+			cout << t.querymin(1, 1, n, l, r) << endl;
+		}
+		else if (op == 'P') {
+			cin >> l >> r >> x;
+			t.add(1, 1, n, l, r, x);
+		}
+		else if (op == 'S') {
+			cin >> l >> r;
+			cout << t.querysum(1, 1, n, l, r) << endl;
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 226460756
+//  题目ID: P1886
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, k, a[1000000 + 5];
+template<class It, class Comp, class AnsType = typename iterator_traits<It>::value_type>
+vector<AnsType> SlidingWindow(It first, It last, size_t k, Comp comp) {
+	deque<It> q; size_t count = 0;
+	vector<AnsType> ans;
+	for (It it = first; it != last; ++it, ++count) {
+		while (!q.empty() && comp(*it, *q.back())) q.pop_back();
+		q.push_back(it);
+		if (count >= k && q.front() == it - k) q.pop_front();
+		if (count >= k - 1) ans.push_back(*q.front());
+	}
+	return ans;
+}
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> k;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (auto& p : SlidingWindow(a + 1, a + n + 1, k, less<int>()))
+		cout << p << ' ';
+	cout << endl;
+	for (auto& p : SlidingWindow(a + 1, a + n + 1, k, greater<int>()))
+		cout << p << ' ';
+	cout << endl;
+	return 0;
+}

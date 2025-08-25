@@ -1,0 +1,116 @@
+//  OJ: 洛谷
+//  提交ID: 221347022
+//  题目ID: P2146
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e5 + 5, M = 2e5 + 5;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+void addedge(int u, int v) {
+	add(u, v); add(v, u);
+}
+int val[N], a[N];
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int sum; bool full, empty;
+	}tree[N << 2];
+	void pushup(int p) {
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+	}
+	void pushdown(int p, int l, int r) {
+		if (tree[p].full) {
+			tree[lc(p)].sum = (mid - l + 1);
+			tree[rc(p)].sum = (r - mid);
+			tree[lc(p)].full = 1; tree[lc(p)].empty = 0;
+			tree[rc(p)].full = 1; tree[rc(p)].empty = 0;
+			tree[p].full = 0;
+		}
+		if (tree[p].empty) {
+			tree[lc(p)].sum = 0;
+			tree[rc(p)].sum = 0;
+			tree[lc(p)].full = 0; tree[lc(p)].empty = 1;
+			tree[rc(p)].full = 0; tree[rc(p)].empty = 1;
+			tree[p].empty = 0;
+		}
+	}
+	void full(int p, int l, int r, int L, int R) {
+		if (R < l || r < L) return;
+		if (L <= l && r <= R) {
+			tree[p].sum = (r - l + 1);
+			tree[p].full = 1; tree[p].empty = 0;
+			return;
+		}
+		pushdown(p, l, r);
+		full(lson, L, R);
+		full(rson, L, R);
+		pushup(p);
+	}
+	void empty(int p, int l, int r, int L, int R) {
+		if (R < l || r < L) return;
+		if (L <= l && r <= R) {
+			tree[p].sum = 0;
+			tree[p].full = 0; tree[p].empty = 1;
+			return;
+		}
+		pushdown(p, l, r);
+		empty(lson, L, R);
+		empty(rson, L, R);
+		pushup(p);
+	}
+	int query() { return tree[1].sum; }
+}t;
+int dfn[N], idk, ed[N], hvy[N], siz[N], top[N], f[N], dep[N];
+void dfs1(int x, int fa) {
+	siz[x] = 1; f[x] = fa; dep[x] = dep[fa] + 1;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs1(edge[i].v, x), siz[x] += siz[edge[i].v],
+			(siz[edge[i].v] > siz[hvy[x]]) && (hvy[x] = edge[i].v);
+}
+void dfs2(int x, int fa) {
+	dfn[x] = ++idk;
+	if (hvy[x]) top[hvy[x]] = top[x], dfs2(hvy[x], x);
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if ((edge[i].v ^ fa) && (edge[i].v ^ hvy[x]))
+			top[edge[i].v] = edge[i].v, dfs2(edge[i].v, x);
+	ed[x] = idk;
+}
+int n, m;
+void install(int x) {
+	while (top[x]) {
+		t.full(1, 0, n, dfn[top[x]], dfn[x]);
+		x = f[top[x]];
+	}
+	t.full(1, 0, n, 1, dfn[x]);
+}
+void uninstall(int x) {
+	t.empty(1, 0, n, dfn[x], ed[x]);
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1, x; i < n; ++i) cin >> x, add(x, i);
+	dfs1(0, 0), dfs2(0, 0);
+	cin >> m;
+	while (m--) {
+		string opt; int x;
+		cin >> opt >> x;
+		int k = t.query();
+		if (opt == "install") install(x);
+		if (opt == "uninstall") uninstall(x);
+		cout << abs(t.query() - k) << endl;
+	}
+	return 0;
+}

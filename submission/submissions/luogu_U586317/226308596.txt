@@ -1,0 +1,155 @@
+//  OJ: 洛谷
+//  提交ID: 226308596
+//  题目ID: U586317
+#include<bits/stdc++.h>
+#define sipt
+using namespace std;
+struct IO {
+#define mxsz (1 << 21)
+	char buf[mxsz], * p1, * p2;
+	char pbuf[mxsz], * pp;
+	IO() : buf(), pbuf(), p1(buf), p2(buf), pp(pbuf) {}
+	~IO() { fwrite(pbuf, 1, pp - pbuf, stdout); }
+	inline char gc() {
+		if (p1 == p2) p2 = (p1 = buf) + fread(buf, 1, mxsz, stdin);
+		return p1 == p2 ? ' ' : *p1++;
+	}
+#ifndef sipt
+	inline int read() {
+		int r = 0; char c = gc(); while (c < '0' || c>'9') c = gc();
+		while (c >= '0' && c <= '9') r = r * 10 + (c ^ 48), c = gc();
+		return r;
+	}
+#else
+	inline int read() {
+		int r = 0; char c = gc(); bool rev = 0;
+		while (c < '0' || c>'9') rev |= (c == '-'), c = gc();
+		while (c >= '0' && c <= '9') r = r * 10 + (c ^ 48), c = gc();
+		return rev ? ~r + 1 : r;
+	}
+#endif
+	inline void push(const char& c) {
+		if (pp - pbuf == mxsz) fwrite(pbuf, 1, mxsz, stdout), pp = pbuf;
+		*pp++ = c;
+	}
+	inline void write(long long x) {
+		static char sta[22]; int top = 0;
+		do sta[top++] = x % 10, x /= 10; while (x);
+		while (top) push(sta[--top] ^ 48);
+	}
+	inline void write(long long x, char opc) {
+#ifdef sopt
+		if (x < 0) push('-'), x = ~x + 1;
+#endif
+		write(x), push(opc);
+	}
+} io;
+#define int long long
+constexpr int mod = 1e9 + 9;
+struct bit {
+#define get(i, j) ((i) * 4 + (j))
+	bitset<48>data;
+	bit() :data() {}
+	bit(int a) {
+		if (a == -1) {
+			data.set();
+		}
+		else for (int i = 0; i < 12; ++i) {
+			data[get(i, a % 4)] = 1;
+			a /= 4;
+		}
+	}
+	bit operator+(const bit& other) {
+		bit ans;
+		for (int i = 0; i < 12; ++i)
+			for (int j = 0; j < 4; ++j)
+				for (int k = 0; k < 4; ++k)
+					if (data[get(i, j)] && other.data[get(i, k)])
+						ans.data[get(i, (j + k) % 4)] = 1;
+		return ans;
+	}
+	bit operator&(const bit& other) {
+		bit ans;
+		for (int i = 0; i < 12; ++i)
+			for (int j = 3, l1 = 0, l2 = 0; j >= 0; --j) {
+				l1 |= data[get(i, j)];
+				l2 |= other.data[get(i, j)];
+				ans.data[get(i, j)] = l1 && l2 && (data[get(i, j)] || other.data[get(i, j)]);
+			}
+		return ans;
+	}
+	bit operator|(const bit& other) {
+		bit ans;
+		for (int i = 0; i < 12; ++i)
+			for (int j = 0, l1 = 0, l2 = 0; j < 4; ++j) {
+				l1 |= data[get(i, j)];
+				l2 |= other.data[get(i, j)];
+				ans.data[get(i, j)] = l1 && l2 && (data[get(i, j)] || other.data[get(i, j)]);
+			}
+		return ans;
+	}
+	bool operator==(const bit& other) {
+		return data == other.data;
+	}
+}mx[500000 + 5];
+int n, m, k, op[500000 + 5];
+bool used[500000 + 5];
+void get_mx() {
+	for (int i = 1, lst = 1; i < n; ++i) {
+		if (op[i + 1] == 1) mx[lst] = mx[lst] + mx[i + 1], used[i + 1] = 1;
+		else lst = i + 1;
+	}
+	for (int i = 1, lst = 1; i < n; ++i) {
+		if (used[i + 1]) continue;
+		if (op[i + 1] == 2) mx[lst] = mx[lst] & mx[i + 1], used[i + 1] = 1;
+		else lst = i + 1;
+	}
+	for (int i = 1, lst = 1; i < n; ++i) {
+		if (used[i + 1]) continue;
+		if (op[i + 1] == 3) mx[lst] = mx[lst] | mx[i + 1], used[i + 1] = 1;
+		else lst = i + 1;
+		assert(lst == 1); // There is no "exception" in this libraby
+	}
+	memset(used, 0, sizeof 500000 + 5);
+}
+bool query(bit t) {
+	//return ((t.data | mx[1].data) == mx[1].data) && ((t.data & mn[1].data) == mn[1].data);
+
+	for (int i = 0; i < 12; ++i) {
+		int idx = 0;
+		for (int j = 0; j < 4; ++j)
+			if (t.data[get(i, j)])
+				idx = j;
+		if (!mx[1].data[get(i, idx)])
+			return 0;
+	}
+	return 1;
+}
+void print(bit a) {
+	for (int i = 0; i < 12; ++i, cerr << endl)
+		for (int j = 0; j < 4; ++j)
+			cerr << a.data[get(i, j)]; cerr << endl;
+}
+int32_t main(int32_t argc, char** argv) {
+	cin.tie(0)->sync_with_stdio(false);
+	n = io.read(); m = io.read(); k = io.read();
+	for (int i = 1, v; i <= n; ++i) {
+		v = io.read();
+		if (v == -1) mx[i] = -1;
+		else mx[i] = v;
+	}
+	for (int i = 2; i <= n; ++i) op[i] = io.read();
+	get_mx();
+	int ans1 = 0, ans2 = 1, ans3 = 0;
+	for (int i = 1, t, C; i <= k; ++i)
+		t = io.read(), C = query(t) * i,
+		ans1 += C, ans2 = ans2 * (C + i) % mod, ans3 ^= C;
+	io.write(ans1, ' '); io.write(ans2, ' '); io.write(ans3, '\n');
+	return 0;
+}
+/*
+4 2 4
+7 9 4 -1
+3 2 1
+5 7 11 13
+*/

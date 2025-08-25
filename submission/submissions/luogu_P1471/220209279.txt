@@ -1,0 +1,95 @@
+//  OJ: 洛谷
+//  提交ID: 220209279
+//  题目ID: P1471
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e6 + 5;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		double sum, sum2, lzy;
+		Node(double sum = 0, double sum2 = 0, double lzy = 0) :sum(sum), sum2(sum2), lzy(lzy) {}
+	}tree[N << 2];
+	void pushup(int p) {
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+		tree[p].sum2 = tree[lc(p)].sum2 + tree[rc(p)].sum2;
+	}
+	void pushdown(int p, int l, int r) {
+		if (tree[p].lzy != 0) {
+			tree[lc(p)].sum2 += 2 * tree[p].lzy * tree[lc(p)].sum + (mid - l + 1) * tree[p].lzy * tree[p].lzy;
+			tree[rc(p)].sum2 += 2 * tree[p].lzy * tree[rc(p)].sum + (r - mid) * tree[p].lzy * tree[p].lzy;
+			tree[lc(p)].sum += (mid - l + 1) * tree[p].lzy;
+			tree[rc(p)].sum += (r - mid) * tree[p].lzy;
+			tree[lc(p)].lzy += tree[p].lzy;
+			tree[rc(p)].lzy += tree[p].lzy;
+			tree[p].lzy = 0;
+		}
+	}
+	void build(int p, int l, int r, double *a) {
+		if (l == r) {
+			tree[p].sum = a[l];
+			tree[p].sum2 = a[l] * a[l];
+			return;
+		}
+		build(lson, a); build(rson, a);
+		pushup(p);
+	}
+	double query(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].sum;
+		pushdown(p, l, r);
+		double res = 0;
+		if (L <= mid) res += query(lson, L, R);
+		if (R > mid) res += query(rson, L, R);
+		return res;
+	}
+	double query2(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].sum2;
+		pushdown(p, l, r);
+		double res = 0;
+		if (L <= mid) res += query2(lson, L, R);
+		if (R > mid) res += query2(rson, L, R);
+		return res;
+	}
+	void add(int p, int l, int r, int L, int R, double k) {
+		if (L <= l && r <= R) {
+			tree[p].sum2 += 2 * k * tree[p].sum + (r - l + 1) * k * k;
+			tree[p].sum += (r - l + 1) * k;
+			tree[p].lzy += k;
+			return;
+		}
+		pushdown(p, l, r);
+		if (L <= mid) add(lson, L, R, k);
+		if (R > mid) add(rson, L, R, k);
+		pushup(p);
+	}
+}t;
+int n, m, opt, l, r;
+double x, a[N];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i)  cin >> a[i];
+	t.build(1, 1, n, a);
+	while (m--) {
+		cin >> opt >> l >> r;
+		if (opt == 1) {
+			cin >> x;
+			t.add(1, 1, n, l, r, x);
+			continue;
+		}
+		double k = t.query(1, 1, n, l, r) * 1.0 / (r - l + 1);
+		if (opt == 2) cout << fixed << setprecision(4) << k << endl;
+		if (opt == 3)
+			cout << fixed << setprecision(4) <<
+			(t.query2(1, 1, n, l, r) -
+				2 * k * k * (r - l + 1))
+			* 1.0 / (r - l + 1) + k * k
+			<< endl;
+	}
+	return 0;
+}

@@ -1,0 +1,68 @@
+//  OJ: 洛谷
+//  提交ID: 220705517
+//  题目ID: P2522
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 5e4 + 10;
+namespace IO {
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	inline void qread(char& IEE) { IEE = gc(); }
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	inline void qwrite(char IEE) { putc_(IEE); }
+	inline void qwrite(const char* str) { while (*str != '\0') putc_(*str++); }
+	inline void qwrite(const std::string& IEE) { qwrite(IEE.c_str()); }
+	template<class... T2> inline void qwrite(const char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class ...T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+using ll = long long;
+bool isp[N];
+vector<int>prm;
+ll mu[N];
+void prep() {
+	memset(isp, 1, sizeof isp);
+	isp[0] = isp[1] = 0;
+	mu[1] = 1;
+	for (int i = 2; i < N; ++i) {
+		if (isp[i]) prm.push_back(i), mu[i] = -1;
+		for (int j = 0; j < prm.size(); ++j) {
+			if (i * prm[j] >= N) break;
+			isp[i * prm[j]] = 0;
+			if (i % prm[j] == 0) break;
+			mu[i * prm[j]] = -mu[i];
+		}
+	}
+	for (int i = 1; i < N; ++i) mu[i] += mu[i - 1];
+}
+int k;
+ll query(int x, int y) {
+	if (x > y) swap(x, y);
+	x /= k; y /= k;
+	ll ans = 0;
+	for (int l = 1, r; l <= x; l = r + 1) {
+		r = min(x / (x / l), y / (y / l));
+		ans += (mu[r] - mu[l - 1]) * (x / l) * (y / l);
+	}
+	return ans;
+}
+signed main() {
+	prep();
+	int T;
+	qread(T);
+	while (T--) {
+		static int a, b, c, d;
+		qread(a, b, c, d, k);
+		qwrite(query(b, d) - query(a - 1, d) - query(b, c - 1) + query(a - 1, c - 1), '\n');
+	}
+	return 0;
+}

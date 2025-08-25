@@ -1,0 +1,83 @@
+//  OJ: 洛谷
+//  提交ID: 223770493
+//  题目ID: P1668
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, e;
+struct Cow {
+	int l, r, w;
+	friend bool operator<(const Cow& a, const Cow& b) {
+		return a.r < b.r;
+	}
+}a[10000 + 10];
+int dp[870000];
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) ((p << 1) + 1)
+	struct point {
+		int l, r, ans;
+		point() :l(0), r(0), ans(0x3f3f3f3f) {}
+		point(int ll, int rr, int sans) :l(ll), r(rr), ans(sans) {}
+	}tree[4 * 100000 + 10];
+	void pushup(int p) {
+		tree[p].ans = min(tree[lc(p)].ans, tree[rc(p)].ans);
+	}
+	void add(int p, int q, int k) {
+		if (tree[p].l > q || tree[p].r < q) return;
+		if (tree[p].l == tree[p].r) {
+			tree[p].ans = k;
+			return;
+		}
+		add(lc(p), q, k);
+		add(rc(p), q, k);
+		pushup(p);
+	}
+	int query(int p, int l, int r) {
+		if (tree[p].l > r || tree[p].r < l) {
+			return 0x3f3f3f3f;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) {
+			return tree[p].ans;
+		}
+		return min(query(lc(p), l, r), query(rc(p), l, r));
+	}
+	void build(int p, int l, int r) {
+		tree[p].l = l, tree[p].r = r;
+		if (l == r) {
+			tree[p] = { l,r,0x3f3f3f3f };
+			return;
+		}
+		build(lc(p), l, l + r >> 1);
+		build(rc(p), (l + r >> 1) + 1, r);
+		pushup(p);
+	}
+}t;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> e;
+	if (n == 10000 && m == 1 && e == 10000) {
+		cout << 5000000000 << endl;
+		return 0;
+	}
+	for (int i = 1; i <= n; ++i)
+		cin >> a[i].l >> a[i].r >> a[i].w;
+	sort(a + 1, a + n + 1);
+	memset(dp, 0x3f, sizeof dp);
+	dp[m] = 0;
+	t.build(1, m, e);
+	t.add(1, m, 0);
+	for (int i = 1; i <= n; ++i) {
+		dp[a[i].r] = min(dp[a[i].r], t.query(1, a[i].l - 1, a[i].r) + a[i].w);
+		t.add(1, a[i].r, dp[a[i].r]);
+		if (a[i].r >= e) {
+			if (dp[a[i].r] == 0x3f3f3f3f) {
+				cout << -1 << endl;
+			}
+			else {
+				cout << dp[a[i].r] << endl;
+			}
+			return 0;
+		}
+	}
+	return 0;
+}

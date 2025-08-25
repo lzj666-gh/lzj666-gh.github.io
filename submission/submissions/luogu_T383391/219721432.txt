@@ -1,0 +1,58 @@
+//  OJ: 洛谷
+//  提交ID: 219721432
+//  题目ID: T383391
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 2e3 + 5;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+	struct Node {
+		int lzy, l, r;
+	}tree[N << 2 | 3];
+	void pushdown(int p) {
+		if (tree[p].lzy) {
+			tree[lc(p)].lzy += tree[p].lzy;
+			tree[rc(p)].lzy += tree[p].lzy;
+			tree[p].lzy = 0;
+		}
+	}
+	void add(int p, int l, int r, int k) {
+		if (tree[p].r < l || r < tree[p].l) return;
+		if (l <= tree[p].l && tree[p].r <= r) {
+			tree[p].lzy += k;
+			return;
+		}
+		pushdown(p);
+		add(lc(p), l, r, k);
+		add(rc(p), l, r, k);
+	}
+	int query(int p) {
+		if (tree[p].l == tree[p].r) return tree[p].lzy;
+		pushdown(p);
+		return query(lc(p)) ^ query(rc(p));
+	}
+	void build(int p, int l, int r) {
+		tie(tree[p].l, tree[p].r) = { l,r };
+		if (l == r) return;
+		build(lc(p), l, l + r >> 1);
+		build(rc(p), (l + r >> 1) + 1, r);
+	}
+}tree[N];
+int n, q;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> q;
+	for (int i = 1; i <= n; ++i) tree[i].build(1, 1, n);
+	while (q--) {
+		int r, c, l, s;
+		cin >> r >> c >> l >> s;
+		for (int x = r; x < r + l; ++x)
+			tree[x].add(1, c, x - r + c, s);
+	}
+	int ans = 0;
+	for (int i = 1; i <= n; ++i) ans ^= tree[i].query(1);
+	cout << ans << endl;
+	return 0;
+}

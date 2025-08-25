@@ -1,0 +1,98 @@
+//  OJ: 洛谷
+//  提交ID: 226082993
+//  题目ID: T539609
+#include <bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int mod = 998244353;
+const int64_t inf = 1e18;
+
+int32_t main() {
+    cin.tie(0)->sync_with_stdio(false);
+    int n, m;
+    cin >> n >> m;
+    vector<int> a(n+1);
+    a[0] = 0;
+    for (int i=1; i<=n; ++i) 
+        cin >> a[i];
+    sort(a.begin()+1, a.end());
+
+    vector<int> sum(m+1, 0);
+    for (int i=n, j=1; i>=1; --i, ++j) {
+        int L_bound = a[i-1], R_bound = a[i]-1;
+        if (L_bound > R_bound) continue;
+        if (R_bound > m) R_bound = m;
+        for (int k=R_bound; k>=L_bound; --k) {
+            sum[k] = j;
+        }
+    }
+
+    vector<tuple<int, int, int>> segments;
+    if (0 <= a[1]-1) {
+        segments.push_back({0, a[1]-1, n});
+    }
+    for (int i=1; i<n; i++) {
+        int l = a[i], r = a[i+1]-1;
+        if (l>r) continue;
+        if (l>m) break;
+        if (r>m) r = m;
+        segments.push_back({l, r, n-i});
+    }
+    if (a[n] <= m) {
+        segments.push_back({a[n], m, 0});
+    }
+
+    vector<int64_t> dp(m+1, inf);
+    dp[0] = inf;
+    for (int j=1; j<=m; j++) {
+        dp[j] = sum[j];
+    }
+
+    int64_t fact = 1;
+    for (int i=1; i<n; i++) {
+        fact = fact * i % mod;
+    }
+
+    if (n >= 2) {
+        for (int i=2; i<=n; i++) {
+            vector<int64_t> next_dp(m+1, inf);
+            vector<deque<int>> dqs(segments.size());
+
+            for (int j=0; j<=m; j++) {
+                for (int idx=0; idx<segments.size(); idx++) {
+                    auto [l, r, val] = segments[idx];
+                    if (j < l) continue;
+
+                    int L_bound = j - r;
+                    int R_bound = j - l;
+
+                    if (R_bound >= 0 && R_bound <= m) {
+                        deque<int>& dq = dqs[idx];
+                        while (!dq.empty() && dp[dq.back()] >= dp[R_bound]) {
+                            dq.pop_back();
+                        }
+                        dq.push_back(R_bound);
+                    }
+
+                    deque<int>& dq = dqs[idx];
+                    while (!dq.empty() && dq.front() < L_bound) {
+                        dq.pop_front();
+                    }
+
+                    if (!dq.empty()) {
+                        int64_t candidate = dp[dq.front()] + val;
+                        if (candidate < next_dp[j]) {
+                            next_dp[j] = candidate;
+                        }
+                    }
+                }
+            }
+            dp = move(next_dp);
+        }
+    }
+
+    int64_t ans = dp[m] % mod;
+    ans = ans * fact % mod;
+    cout << ans << endl;
+    return 0;
+}

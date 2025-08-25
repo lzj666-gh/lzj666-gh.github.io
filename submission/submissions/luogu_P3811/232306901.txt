@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 232306901
+//  题目ID: P3811
+#include<bits/stdc++.h>
+using namespace std;
+int mod, n;
+using ll = long long;
+ll ifac[3000000 + 5], fac[3000000 + 5];
+ll inv(int a) {
+	int b = mod - 2, res = 1;
+	while (b) {
+		if (b & 1) res = 1ll * res * a % mod;
+		a = 1ll * a * a % mod; b >>= 1;
+	}
+	return res;
+}
+void init() {
+	fac[0] = 1;
+	for (int i = 1; i <= n; ++i)
+		fac[i] = fac[i - 1] * i % mod;
+	ifac[n] = inv(fac[n]);
+	for (int i = n - 1; i >= 0; --i)
+		ifac[i] = ifac[i + 1] * (i + 1ll) % mod;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> mod;
+	init();
+	for (int i = 1; i <= n; ++i) cout << ifac[i] * fac[i - 1] % mod << endl;
+	return 0;
+}

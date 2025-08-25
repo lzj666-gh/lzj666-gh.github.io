@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 227425682
+//  题目ID: P10837
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, t[200000 + 5], q[400000 + 5], cl[2][400000 + 5];
+vector<int>b;
+int index(int x) { return lower_bound(b.begin(), b.end(), x) - b.begin(); }
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	if (n == 1) {
+		cout << m << endl;
+		return 0;
+	}
+	for (int i = 1; i <= n; ++i)
+		cin >> t[i], b.push_back(t[i]), b.push_back(t[i] + m);
+	b.push_back(0);
+	sort(b.begin(), b.end());
+	b.erase(unique(b.begin(), b.end()), b.end());
+	int k = b.size();
+	for (int i = 1; i <= n; ++i) ++q[index(t[i])], --q[index(t[i] + m)];
+	for (int i = 1; i <= k; ++i) q[i] += q[i - 1];
+	for (int i = 1; i < k; ++i)
+		if (q[i] == 2) cl[1][i] += b[i + 1] - b[i];
+		else if (q[i] == 1) cl[0][i] += b[i + 1] - b[i];
+	for (int i = 1; i <= k; ++i) cl[0][i] += cl[0][i - 1], cl[1][i] += cl[1][i - 1];
+	int ans = 0;
+	for (int i = 1; i <= n; ++i)
+		ans = max(ans, cl[1][index(t[i] + m) - 1] - cl[1][index(t[i]) - 1] - (cl[0][index(t[i] + m) - 1] - cl[0][index(t[i]) - 1]) + m);
+	cout << ans + cl[0][k] << endl;
+	return 0;
+}

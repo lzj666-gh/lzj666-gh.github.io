@@ -1,0 +1,69 @@
+//  OJ: 洛谷
+//  提交ID: 220817113
+//  题目ID: P4735
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+struct Tree {
+	int ls, rs, sum;
+	Tree() :ls(0), rs(0), sum(0) {}
+}tree[11000000 + 5];
+int sum[600000 + 5], root[600000 + 5], idx;
+void init() {
+	root[0] = ++idx; int p = idx;
+	for (int i = 30; i >= 0; --i) tree[p].sum++, p = tree[p].rs = ++idx;
+	tree[p].sum++;
+}
+void insert(int lp, int rp, int x) {
+	//cerr << "insert " << x << " with root " << rp << endl;
+	int p1 = root[lp], p2 = root[rp];
+	for (int i = 30; i >= 0; --i) {
+		tree[p2] = tree[p1];
+		tree[p2].sum++;
+		if ((1ll << i) & x) p1 = tree[p1].ls, p2 = tree[p2].ls = ++idx;
+		else p1 = tree[p1].rs, p2 = tree[p2].rs = ++idx;
+	}
+	tree[p2].sum = tree[p1].sum + 1;
+}
+int query(int lp, int rp, int x) {
+	//cerr << "query " << x << " from " << lp << " to " << rp << endl;
+	lp--;
+	int p1 = lp < 0 ? 0 : root[lp], p2 = root[rp], ans = 0;
+	for (int i = 30; i >= 0; --i) {
+		if ((1ll << i) & x)
+			if (tree[tree[p2].rs].sum - tree[tree[p1].rs].sum)
+				p2 = tree[p2].rs, p1 = tree[p1].rs, ans += 1ll << i;
+			else
+				p2 = tree[p2].ls, p1 = tree[p1].ls;
+		else
+			if (tree[tree[p2].ls].sum - tree[tree[p1].ls].sum)
+				p2 = tree[p2].ls, p1 = tree[p1].ls, ans += 1ll << i;
+			else
+				p2 = tree[p2].rs, p1 = tree[p1].rs;
+		//cerr << i << ' ' << ans << endl;
+	}
+	return ans;
+}
+int n, m;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	init();
+	for (int i = 1; i <= n; ++i)
+		cin >> sum[i], sum[i] ^= sum[i - 1],
+		root[i] = ++idx, insert(i - 1, i, sum[i]);
+	while (m--) {
+		char opt;
+		cin >> opt;
+		if (opt == 'A') {
+			cin >> sum[++n]; sum[n] ^= sum[n - 1];
+			root[n] = ++idx, insert(n - 1, n, sum[n]);
+		}
+		else {
+			int l, r, k;
+			cin >> l >> r >> k;
+			cout << query(l - 1, r - 1, k ^ sum[n]) << endl;
+		}
+	}
+	return 0;
+}

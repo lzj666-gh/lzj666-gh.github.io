@@ -1,0 +1,73 @@
+//  OJ: 洛谷
+//  提交ID: 231893307
+//  题目ID: T528283
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+using ll = long long;
+ll n, m, a[60000 + 5], sum;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m; ll ans = 0;
+	for (int i = -n; i <= n; ++i)
+		cin >> a[i + 3000], ans += a[i + 3000],
+		sum += a[i + 3000] * i;
+	if (sum == m) {
+		cout << ans << endl;
+		return 0;
+	}
+	if (sum < m) {
+		ans = 0; m = -m; sum = 0;
+		for (int i = 1; i <= n; ++i) swap(a[i + 3000], a[-i + 3000]);
+		for (int i = -n; i <= n; ++i)
+			ans += a[i + 3000],
+			sum += a[i + 3000] * i;
+	}
+	if (sum < m) {
+		cout << -1 << endl;
+		return 0;
+	}
+	for (int i = n; i >= 1; --i) {
+		if (sum - a[i + 3000] * i <= m)
+			a[i + 3000] -= (sum - m) / i,
+			ans -= (sum - m) / i,
+			sum -= (sum - m) / i * i;
+		else
+			ans -= a[i + 3000],
+			sum -= a[i + 3000] * i,
+			a[i + 3000] = 0;
+		if (sum == m) {
+			cout << ans << endl;
+			return 0;
+		}
+	}
+	if (sum > n) {
+		cout << -1 << endl;
+		return 0;
+	}
+	sum -= m;
+	for (int i = 0; i <= n; ++i) {
+		if (a[i + 3000] && a[sum - i + 3000]) {
+			cout << ans - 2 << endl;
+			return 0;
+		}
+	}
+	for (int i = 0; i <= n; ++i) {
+		for (int j = 0; j <= n; ++j) {
+			ll a1 = a[i + 3000], a2 = a[j + 3000], a3 = a[sum - (i + j) + 3000];
+			if (a[i + 3000]-- && a[j + 3000]-- && a[sum - (i + j) + 3000]--) {
+				cout << ans - 3 << endl;
+				return 0;
+			}
+			a[i + 3000] = a1; a[j + 3000] = a2; a[sum - (i + j) + 3000] = a3;
+			a1 = a[i + 3000], a2 = a[-j + 3000], a3 = a[sum - (i - j) + 3000];
+			if (a[i + 3000]-- && a[-j + 3000]-- && a[sum - (i - j) + 3000]--) {
+				cout << ans - 3 << endl;
+				return 0;
+			}
+			a[i + 3000] = a1; a[-j + 3000] = a2; a[sum - (i - j) + 3000] = a3;
+		}
+	}
+	cout << -1 << endl;
+	return 0;
+}

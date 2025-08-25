@@ -1,0 +1,100 @@
+//  OJ: 洛谷
+//  提交ID: 228405582
+//  题目ID: T644933
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[400000 + 5];
+int head[100000 + 5], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int fa[100000 + 5][20], len[100000 + 5][20], dep[100000 + 5];
+vector<tuple<int, int, int>>special;
+bool vis[100000 + 5];
+void dfs(int x) {
+	if (vis[x]) return;
+	vis[x] = 1; dep[x] = dep[fa[x][0]] + 1;
+	for (int i = 1; i < 20; ++i) fa[x][i] = fa[fa[x][i - 1]][i - 1];
+	for (int i = 1; i < 20; ++i) len[x][i] = len[x][i - 1] + len[fa[x][i - 1]][i - 1];
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (!vis[edge[i].v])
+			fa[edge[i].v][0] = x, len[edge[i].v][0] = edge[i].w,
+			dfs(edge[i].v);
+		else if (edge[i].v != fa[x][0])
+			special.emplace_back(x, edge[i].v, edge[i].w);
+}
+int Len(int a, int b) {
+	if (dep[a] < dep[b]) swap(a, b);
+	int gap = dep[a] - dep[b];
+	int ans = 0;
+	for (int i = 0; i < 20; ++i)
+		if ((1ll << i) & gap)
+			ans += len[a][i], a = fa[a][i];
+	if (a == b) return ans;
+	for (int i = 19; i >= 0; --i)
+		if (fa[a][i] ^ fa[b][i])
+			ans += len[a][i], a = fa[a][i],
+			ans += len[b][i], b = fa[b][i];
+	return ans + len[a][0] + len[b][0];
+}
+int dis[50][100000 + 5];
+priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>q;
+void dij() {
+	int idx = 0;
+	for (auto& [u, v, w] : special) {
+		++idx; memset(dis[idx], 0x3f, sizeof dis[idx]); memset(vis, 0, sizeof vis);
+		q.emplace(dis[idx][u] = 0, u);
+		while (!q.empty()) {
+			auto [d, x] = q.top(); q.pop();
+			if (vis[x]) continue; vis[x] = 1;
+			for (int i = head[x]; i; i = edge[i].nxt)
+				if (int ww = dis[idx][x] + edge[i].w; ww < dis[idx][edge[i].v])
+					q.emplace(dis[idx][edge[i].v] = ww, edge[i].v);
+		}
+		++idx; memset(dis[idx], 0x3f, sizeof dis[idx]); memset(vis, 0, sizeof vis);
+		q.emplace(dis[idx][v] = 0, v);
+		while (!q.empty()) {
+			auto [d, x] = q.top(); q.pop();
+			if (vis[x]) continue; vis[x] = 1;
+			for (int i = head[x]; i; i = edge[i].nxt)
+				if (int ww = dis[idx][x] + edge[i].w; ww < dis[idx][edge[i].v])
+					dis[idx][edge[i].v] = ww, q.emplace(ww, edge[i].v);
+		}
+	}
+}
+int n, m;
+int32_t main(int32_t argc, char** argv) {
+	//if (argc >= 2) freopen(argv[1], "r", stdin);
+	//else freopen("shortway.in", "r", stdin);
+	//if (argc >= 3) freopen(argv[2], "w", stdout);
+	//else freopen("shortway.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v, w; i <= m; ++i) cin >> u >> v >> w, add(u, v, w), add(v, u, w);
+	fa[1][0] = 1; dfs(1);
+	for (int i = 0; i < special.size(); ++i) {
+		int u, v, w; tie(u, v, w) = special[i];
+		for (int j = i + 1; j < special.size(); ++j) {
+			int uu, vv, ww; tie(uu, vv, ww) = special[j];
+			if (u == vv && v == uu && w == ww) {
+				special.erase(special.begin() + j);
+				break;
+			}
+		}
+	}
+	//cerr << "special: "; for (auto& [u, v, w] : special) cerr << u << ' ' << v << ' ' << w << endl;
+	dij(); int q; cin >> q;
+	while (q--) {
+		int x, y; cin >> x >> y;
+		int res = Len(x, y);
+		for (int i = 0; i < special.size(); ++i)
+			res = min(res, dis[i * 2 + 1][x] + get<2>(special[i]) + dis[i * 2 + 2][y]),
+			res = min(res, dis[i * 2 + 1][y] + get<2>(special[i]) + dis[i * 2 + 2][x]);
+		cout << res << endl;
+	}
+	return 0;
+}

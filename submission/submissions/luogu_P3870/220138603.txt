@@ -1,0 +1,63 @@
+//  OJ: 洛谷
+//  提交ID: 220138603
+//  题目ID: P3870
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e5 + 5;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int sum, lzy;
+	}tree[N << 2];
+	void pushup(int p) {
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+	}
+	void pushdown(int p, int l, int r) {
+		if (tree[p].lzy) {
+			tree[lc(p)].sum = (mid - l + 1) - tree[lc(p)].sum;
+			tree[rc(p)].sum = (r - mid) - tree[rc(p)].sum;
+			tree[lc(p)].lzy ^= tree[p].lzy;
+			tree[rc(p)].lzy ^= tree[p].lzy;
+			tree[p].lzy = 0;
+		}
+	}
+	void add(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) {
+			tree[p].sum = (r - l + 1) - tree[p].sum;
+			tree[p].lzy ^= 1;
+			return;
+		}
+		pushdown(p, l, r);
+		if (L <= mid) add(lson, L, R);
+		if (R > mid) add(rson, L, R);
+		pushup(p);
+	}
+	int query(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].sum;
+		pushdown(p, l, r);
+		int res = 0;
+		if (L <= mid) res += query(lson, L, R);
+		if (R > mid) res += query(rson, L, R);
+		return res;
+	}
+}t;
+int n, m;
+vector<int>a;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	while (m--) {
+		int op, l, r;
+		cin >> op >> l >> r;
+		if (op == 0)
+			t.add(1, 1, n, l, r);
+		else
+			cout << t.query(1, 1, n, l, r) << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 224797807
+//  题目ID: T633937
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int mod = 1e7 + 9;
+string s;
+int main() {
+    cin.tie(0)->sync_with_stdio(false);
+    cin >> s;
+    long long pre = 0, tot = count(s.begin(), s.end(), 'c');
+    long long ans = 0;
+    for (char& c : s) {
+        if (c == 'c') pre++;
+        if (c == 'y') ans += pre * (tot - pre) % mod, ans %= mod;
+    }
+    cout << 0 << endl;
+    return 0;
+}

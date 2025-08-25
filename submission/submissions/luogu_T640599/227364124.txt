@@ -1,0 +1,291 @@
+//  OJ: 洛谷
+//  提交ID: 227364124
+//  题目ID: T640599
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <cstdlib>
+#include <cstring>
+#include <map>
+using namespace std;
+
+const long long mod = 9982443353LL;
+
+namespace dg {
+    struct TP { long long N; int Q, on, md, ql; };
+    const TP tps[21] = {
+        {10, 10, 0, 0, 0}, { 100, 100, 1, 0, 0 }, {100, 100, 1, 0, 0}, {100, 100, 1, 0, 0}, {100, 100, 1, 0, 0},
+        {10000, 1000, 1, 0, 0}, {10000, 1000, 1, 0, 0}, {10000, 1000, 1, 1, 0}, {10000, 1000, 1, 1, 0},
+        {10000000, 100000, 0, 0, 10000}, {10000000, 100000, 0, 0, 10000}, {10000000, 100000, 0, 0, 10000}, {10000000, 100000, 0, 0, 10000},
+        {10000000, 100000, 0, 1, 10000}, {10000000, 100000, 0, 1, 10000}, {10000000, 100000, 0, 1, 10000}, {10000000, 100000, 0, 1, 10000},
+        {1000000000, 100000, 1, 0, 10000}, {1000000000, 100000, 1, 0, 10000}, {1000000000, 100000, 1, 1, 10000}, {1000000000, 100000, 1, 1, 10000}
+    };
+    uint64_t s0, s1;
+    int tid, st, ct, opc, qc, cop;
+    long long Nv, Qv, onv, mdv, cl, cr, last_l;
+    void data_init(int id, int sd) {
+        s0 = 0x8a5cd789635d2dffULL ^ (sd + 1);
+        s1 = 0x121fd2155c472f96ULL ^ (sd + 1);
+        if (!s0 && !s1) s0 = 1;
+        tid = id; st = ct = opc = qc = 0;
+        Nv = tps[tid].N;
+        Qv = tps[tid].Q;
+        onv = tps[tid].on;
+        mdv = tps[tid].md;
+    }
+    uint64_t xrand() {
+        uint64_t x = s0, y = s1;
+        s0 = y; x ^= x << 23;
+        s1 = x ^ y ^ (x >> 17) ^ (y >> 26);
+        return s1 + y;
+    }
+    long long nxt(long long a, long long b) {
+        if (a > b) return a;
+        if (a == b) return a;
+        uint64_t r = xrand();
+        return a + r % (b - a + 1);
+    }
+    void gen_interval(long long& l, long long& r) {
+        if (xrand() % 100 < 70) {
+            l = 1;
+            r = Nv;
+            return;
+        }
+        long long min_len = min(1000000LL, Nv / 10);
+        if (min_len < 10000) min_len = 10000;
+        if (min_len > Nv) min_len = Nv;
+        long long len = nxt(min_len, Nv);
+        l = nxt(1, Nv - len + 1);
+        r = l + len - 1;
+    }
+    long long next_int() {
+        if (st == 0) {
+            if (ct == 0) { ct++; return Nv; }
+            if (ct == 1) { ct++; return Qv; }
+            if (ct == 2) { ct++; return onv; }
+            st = 1; ct = 0; return mdv;
+        }
+        if (st == 1) {
+            if (opc >= Qv) {
+                st = 2;
+                return mdv ? (qc ? nxt(1, qc) : 0) : 0;
+            }
+            if (ct == 0) {
+                if (tps[tid].ql > 0 && qc >= tps[tid].ql) cop = 1;
+                else if (opc > Qv * 0.8) cop = (xrand() % 100 < 90) ? 2 : 1;
+                else if (opc > Qv * 0.6) cop = (xrand() % 100 < 60) ? 2 : 1;
+                else cop = (xrand() % 100 < 20) ? 2 : 1;
+                ct = 1;
+                return cop;
+            }
+            if (ct == 1) {
+                gen_interval(cl, cr);
+                last_l = cl;
+                last_l = max(1LL, min(Nv, last_l));
+                ct = 2;
+                return last_l;
+            }
+            long long r_val = cr;
+            r_val = max(1LL, min(Nv, r_val));
+            r_val = max(last_l, r_val);
+            if (cop == 2) qc++;
+            ct = 0; opc++;
+            return r_val;
+        }
+        return 0;
+    }
+}
+
+long long exgcd(long long a, long long b, long long &x, long long &y) {
+    if (b == 0) {
+        x = 1; y = 0;
+        return a;
+    }
+    long long g = exgcd(b, a % b, y, x);
+    y -= a / b * x;
+    return g;
+}
+
+long long mod_inv(long long a, long long mod_val) {
+    long long x, y;
+    long long g = exgcd(a, mod_val, x, y);
+    if (g != 1) return -1;
+    return (x % mod_val + mod_val) % mod_val;
+}
+
+class DynamicSegmentTree {
+public:
+    struct Node {
+        int lch, rch;
+        long long sum;
+        Node() : lch(0), rch(0), sum(0) {}
+    };
+    vector<Node> tree;
+    long long N_val;
+    int root;
+    int node_count;
+
+    DynamicSegmentTree(long long N_val) : N_val(N_val), root(0), node_count(0) {
+        tree.clear();
+        tree.push_back(Node());
+    }
+
+    void add(long long pos, long long val) {
+        root = add(root, 1, N_val, pos, val);
+    }
+
+    long long query(long long ql, long long qr) {
+        return query(root, 1, N_val, ql, qr);
+    }
+
+private:
+    int add(int rt, long long l, long long r, long long pos, long long val) {
+        if (rt == 0) {
+            rt = ++node_count;
+            tree.push_back(Node());
+            tree[rt].lch = 0;
+            tree[rt].rch = 0;
+            tree[rt].sum = 0;
+        }
+        tree[rt].sum += val;
+        if (l == r) {
+            return rt;
+        }
+        long long mid = (l + r) >> 1;
+        if (pos <= mid) {
+            int new_lch = add(tree[rt].lch, l, mid, pos, val);
+            tree[rt].lch = new_lch;
+        } else {
+            int new_rch = add(tree[rt].rch, mid+1, r, pos, val);
+            tree[rt].rch = new_rch;
+        }
+        return rt;
+    }
+
+    long long query(int rt, long long l, long long r, long long ql, long long qr) {
+        if (rt == 0) return 0;
+        if (ql <= l && r <= qr) {
+            return tree[rt].sum;
+        }
+        long long mid = (l + r) >> 1;
+        long long res = 0;
+        if (ql <= mid) {
+            res += query(tree[rt].lch, l, mid, ql, qr);
+        }
+        if (qr > mid) {
+            res += query(tree[rt].rch, mid+1, r, ql, qr);
+        }
+        return res;
+    }
+};
+
+int main() {
+    int test_id, seed;
+    cin >> test_id >> seed;
+    dg::data_init(test_id, seed);
+
+    long long N = dg::next_int();
+    long long Q = dg::next_int();
+    long long online = dg::next_int();
+    long long mode = dg::next_int();
+
+    long long last_ans = 3279;
+    vector<long long> ans_list;
+
+    priority_queue<pair<long long, long long>, vector<pair<long long, long long>>, greater<pair<long long, long long>>> min_heap;
+
+    DynamicSegmentTree seg_tree(N);
+
+    for (int i = 0; i < Q; i++) {
+        long long op = dg::next_int();
+        long long l = dg::next_int();
+        long long r = dg::next_int();
+
+        if (online && i > 0) {
+            l = l ^ last_ans;
+            r = r ^ last_ans;
+        }
+
+        l = l % N + 1;
+        r = r % N + 1;
+        if (l > r) swap(l, r);
+
+        if (op == 1) {
+            min_heap.push(make_pair(l, r));
+        } else if (op == 2) {
+            while (!min_heap.empty() && min_heap.top().first <= l) {
+                auto p = min_heap.top();
+                min_heap.pop();
+                seg_tree.add(p.second, 1);
+            }
+            long long count = seg_tree.query(r, N);
+            last_ans = count;
+            ans_list.push_back(count);
+        }
+    }
+
+    long long K_val = 0;
+    if (mode == 1) {
+        K_val = dg::next_int();
+    }
+
+    if (mode == 0) {
+        long long total_ans = 0;
+        int L = ans_list.size();
+        for (int i = 0; i < L; i++) {
+            long long xor_val = 0;
+            for (int j = i; j < L; j++) {
+                xor_val ^= ans_list[j];
+                total_ans = (total_ans + xor_val) % mod;
+            }
+        }
+        cout << total_ans % mod << endl;
+    } else if (mode == 1) {
+        long long total_ans = 0;
+        int L = ans_list.size();
+        const int max_n = 10001;
+        vector<long long> fact(max_n + 1);
+        fact[0] = 1;
+        for (int i = 1; i <= max_n; i++) {
+            fact[i] = fact[i - 1] * i % mod;
+        }
+
+        for (long long k = 1; k <= min(K_val, static_cast<long long>(L - 1)); k++) {
+            long long l_index = min(k, static_cast<long long>(L - 1 - k));
+            long long r_index = max(k, static_cast<long long>(L - 1 - k));
+            if (l_index < 0) continue;
+            long long len_interval = r_index - l_index + 1;
+            long long T = fact[len_interval + 1];
+            long long S = 0;
+
+            for (long long i = l_index; i <= r_index; i++) {
+                long long d1 = r_index + 1 - i;
+                long long d2 = i - l_index;
+                long long d3 = r_index - i;
+                long long sign = (d3 % 2 == 0) ? 1 : -1;
+                long long deno = d1 % mod;
+                deno = deno * fact[d2] % mod;
+                deno = deno * fact[d3] % mod;
+
+                long long inv_deno = mod_inv(deno, mod);
+                if (inv_deno == -1) {
+                    inv_deno = 0;
+                }
+
+                long long term = ans_list[i] % mod;
+                term = term * sign % mod;
+                term = term * inv_deno % mod;
+                S = (S + term) % mod;
+            }
+            S = (S % mod + mod) % mod;
+            long long f_x = T * S % mod;
+            long long term_k = f_x * len_interval % mod;
+            total_ans = (total_ans + term_k) % mod;
+        }
+        total_ans = (total_ans % mod + mod) % mod;
+        cout << total_ans << endl;
+    }
+
+    return 0;
+}

@@ -1,0 +1,62 @@
+//  OJ: 洛谷
+//  提交ID: 221307783
+//  题目ID: P3813
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int mod = 1e9 + 7, N = 10 + 2;
+int h, w, m, n, l[2][N][2], V[N];
+int poww(int a, int b) {
+	int res = 1;
+	while (b) {
+		if (b & 1) (res *= a) %= mod;
+		(a *= a) %= mod; b >>= 1;
+	}
+	return res;
+}
+int mn[N << 1][N << 1], n1, n2;
+vector<int>v[2];
+int solve() {
+	int ans = 1;
+	for (int i = 0; i < n1 - 1; ++i) for (int j = 0; j < n2 - 1; ++j) mn[i][j] = m;
+	for (int i = 1; i <= n; ++i) {
+		for (int j = l[0][i][0]; j < l[0][i][1]; ++j)
+			for (int k = l[1][i][0]; k < l[1][i][1]; ++k)
+				mn[j][k] = min(mn[j][k], V[i]);
+	}
+	for (int i = 0; i + 1 < n1; ++i)
+		for (int j = 0; j + 1 < n2; ++j)
+			ans *= poww(mn[i][j], (v[0][i + 1] - v[0][i]) * (v[1][j + 1] - v[1][j])),
+			ans %= mod;
+	return ans;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(0);
+	int T;
+	cin >> T;
+	while (T--) {
+		v[0].clear(); v[1].clear();
+		cin >> h >> w >> m >> n;
+		for (int i = 1; i <= n; ++i)
+			cin >> l[0][i][0] >> l[1][i][0] >> l[0][i][1] >> l[1][i][1] >> V[i],
+			l[0][i][1]++, l[1][i][1]++,
+			v[0].push_back(l[0][i][0]), v[0].push_back(l[0][i][1]),
+			v[1].push_back(l[1][i][0]), v[1].push_back(l[1][i][1]);
+		v[0].push_back(1); v[0].push_back(h + 1); v[1].push_back(1); v[1].push_back(w + 1);
+		sort(v[0].begin(), v[0].end()); v[0].erase(unique(v[0].begin(), v[0].end()), v[0].end()); n1 = v[0].size();
+		sort(v[1].begin(), v[1].end()); v[1].erase(unique(v[1].begin(), v[1].end()), v[1].end()); n2 = v[1].size();
+		for (int i = 1; i <= n; ++i)
+			l[0][i][0] = lower_bound(v[0].begin(), v[0].end(), l[0][i][0]) - v[0].begin(),
+			l[0][i][1] = lower_bound(v[0].begin(), v[0].end(), l[0][i][1]) - v[0].begin(),
+			l[1][i][0] = lower_bound(v[1].begin(), v[1].end(), l[1][i][0]) - v[1].begin(),
+			l[1][i][1] = lower_bound(v[1].begin(), v[1].end(), l[1][i][1]) - v[1].begin();
+		int ans = 0;
+		for (int i = 0, lim = 1 << n; i < lim; ++i) {
+			int cnt = 0;
+			for (int j = 0; j < n; ++j) if (i & (1 << j)) V[j + 1]--, cnt++;
+			ans += (cnt & 1 ? -1 : 1) * solve();
+			for (int j = 0; j < n; ++j) if (i & (1 << j)) V[j + 1]++;
+		}
+		cout << ans << endl;
+	}
+	return 0;
+}

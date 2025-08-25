@@ -1,0 +1,53 @@
+//  OJ: 洛谷
+//  提交ID: 221834498
+//  题目ID: T624664
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 2e7 + 5, mod = 1e8 + 9;
+using ll = long long;
+vector<int>prm;
+bool vis[N];
+int h[N];
+void prep() {
+	h[1] = 1;
+	for (int i = 2; i < N; ++i) {
+		if (!vis[i]) {
+			prm.push_back(i);
+			h[i] = (i - ll(i * i)) % mod;
+		}
+		for (int& p : prm) {
+			if (p * i >= N) break;
+			vis[p * i] = 1;
+			if (i % p == 0) {
+				h[i * p] = ll(h[i]) * p % mod;
+				break;
+			}
+			h[i * p] = ll(h[p]) * h[i] % mod;
+		}
+	}
+	for (int i = 1; i < N; ++i) (h[i] += h[i - 1]) %= mod;
+}
+int C2(int a) {
+	return (ll)a * (a + 1) / 2 % mod;
+}
+int sol(int n, int m) {
+	int ans = 0;
+	if (n > m) swap(n, m);
+	for (int l = 1, r; l <= n; l = r + 1) {
+		r = min(n / (n / l), m / (m / l));
+		ans += 1ll * C2(n / l) * C2(m / l) % mod * (h[r] - h[l - 1]) % mod;
+		ans %= mod;
+	}
+	return (ans + mod) % mod;
+}
+signed main() {
+	prep();
+	cin.tie(0)->sync_with_stdio(false);
+	int T, n, m;
+	cin >> T;
+	while (T--) {
+		cin >> n >> m;
+		cout << sol(n, m) << endl;
+	}
+	return 0;
+}

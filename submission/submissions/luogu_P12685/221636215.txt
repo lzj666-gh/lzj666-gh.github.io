@@ -1,0 +1,114 @@
+//  OJ: 洛谷
+//  提交ID: 221636215
+//  题目ID: P12685
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 8000000;
+int n, m, a[200005];
+long long ans;
+class Fenwick_Seg {
+#define lc(p) (tree[p].ls)
+#define rc(p) (tree[p].rs)
+#define mid (l + r >> 1)
+private:
+    struct Node {
+        int sum = 0, ls = 0, rs = 0;
+    } tree[N];
+    int idx = 1, fenw[200005];
+    stack<int> trash;
+    inline int newnode() {
+        if (trash.empty()) return ++idx;
+        int k = trash.top();
+        trash.pop();
+        return k;
+    }
+    void add(int& p, int l, int r, int x, int val) {
+        if (!p) p = newnode();
+        tree[p].sum += val;
+        if (l == r) return;
+        if (x <= mid) add(lc(p), l, mid, x, val);
+        else add(rc(p), mid + 1, r, x, val);
+        if (!tree[p].sum) {
+            trash.push(p);
+            p = 0;
+        }
+    }
+    int querysum(int p, int l, int r, int x, int y) {
+        if (!p || y < l || x > r) return 0;
+        if (x <= l && r <= y) return tree[p].sum;
+        return querysum(lc(p), l, mid, x, y) + querysum(rc(p), mid + 1, r, x, y);
+    }
+public:
+    void add(int pos, int old_val, int new_val) {
+        for (int i = pos; i <= n; i += i & -i) {
+            if (old_val) add(fenw[i], 1, n, old_val, -1);
+            add(fenw[i], 1, n, new_val, 1);
+        }
+    }
+    int query(int idx, int k) {
+        int ret = 0;
+        for (int i = idx; i; i -= i & -i)
+            if (fenw[i])
+                ret += querysum(fenw[i], 1, n, 1, k - 1),
+                ret -= querysum(fenw[i], 1, n, k + 1, n);
+        return ret;
+    }
+    int clac(int l, int r, int k) {
+        if (l > r) return 0;
+        return query(r, k) - query(l - 1, k);
+    }
+    void build() {
+        for (int i = 1; i <= n; i++) add(i, 0, a[i]);
+    }
+#undef mid
+}t;
+int idx = 1, tree[800005], ls[800005], rs[800005];
+void add(int& p, int l, int r, int x, int val) {
+    if (!p) p = idx++;
+    tree[p] += val;
+    if (l == r) return;
+    int mid = (l + r) >> 1;
+    if (x <= mid) add(ls[p], l, mid, x, val);
+    else add(rs[p], mid + 1, r, x, val);
+};
+int querysum(int p, int l, int r, int x, int y) {
+    if (!p || y < l || x > r) return 0;
+    if (x <= l && r <= y) return tree[p];
+    int mid = (l + r) >> 1;
+    return querysum(ls[p], l, mid, x, y) + querysum(rs[p], mid + 1, r, x, y);
+};
+signed main() {
+    cin.tie(0)->sync_with_stdio(false);
+    cin >> n;
+    vector<int> b;
+    for (int i = 1; i <= n; ++i) {
+        cin >> a[i];
+        b.push_back(a[i]);
+    }
+    sort(b.begin(), b.end());
+    b.erase(unique(b.begin(), b.end()), b.end());
+    for (int i = 1; i <= n; ++i) a[i] = lower_bound(b.begin(), b.end(), a[i]) - b.begin() + 1;
+    cin >> m;
+    t.build();
+    int root = 0;
+    for (int i = 1; i <= n; ++i) {
+        ans += querysum(root, 1, n, a[i] + 1, n);
+        add(root, 1, n, a[i], 1);
+    }
+    cout << ans << endl;
+    for (int i = 1, x, y; i <= m; ++i) {
+        cin >> x >> y;
+        if (x > y) swap(x, y);
+        if (y > x + 1) {
+            ans -= t.clac(x + 1, y - 1, a[x]);
+            ans += t.clac(x + 1, y - 1, a[y]);
+        }
+        if (a[x] > a[y]) ans--;
+        if (a[y] > a[x]) ans++;
+        t.add(x, a[x], a[y]);
+        t.add(y, a[y], a[x]);
+        swap(a[x], a[y]);
+        cout << ans << endl;
+    }
+    return 0;
+}

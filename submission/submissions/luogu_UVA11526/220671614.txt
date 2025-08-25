@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 220671614
+//  题目ID: UVA11526
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+ll clac(ll x) {
+	ll ans = 0;
+	for (ll l = 1, r; l <= x; l = r + 1) {
+		r = min(x, x / (x / l));
+		ans += 1ll * (x / l) * (r - l + 1);
+	}
+	return ans;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T, x;
+	cin >> T;
+	while (T--) cin >> x, cout << clac(x) << endl;
+	return 0;
+}

@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 227704774
+//  题目ID: P1113
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[1000000 + 5];
+int head[10000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, t[10000 + 5], tim[10000 + 5], r[10000 + 5];
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n; queue<int>q;
+	for (int i = 1; i <= n; ++i) {
+		int idx = 0, k = 0; cin >> idx >> t[idx];
+		while (cin >> k && k) add(k, idx), r[idx]++;
+		if (!r[idx]) q.push(idx);
+	}
+	int ans = 0;
+	while (!q.empty()) {
+		int now = q.front(); q.pop(); ans = max(ans, tim[now] + t[now]);
+		for (int i = head[now]; i; i = edge[i].nxt)
+			tim[edge[i].v] = max(tim[edge[i].v], tim[now] + t[now]),
+			!(--r[edge[i].v]) && (q.emplace(edge[i].v), 1);
+	}
+	cout << ans << endl;
+	return 0;
+}

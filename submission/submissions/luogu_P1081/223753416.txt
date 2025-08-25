@@ -1,0 +1,114 @@
+//  OJ: 洛谷
+//  提交ID: 223753416
+//  题目ID: P1081
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e5 + 10, LOG = 20;
+int n, m, h[N], x0, s, x, nxt[N][LOG + 1];
+int nextA[N], nextB[N];
+int distA[N], distB[N];
+int da[N][LOG + 1], db[N][LOG + 1];
+int ds[2];
+struct Node {
+	int id, h;
+	bool operator<(const Node& t) const { return h < t.h; }
+};
+void getdis(int s, int x) {
+	ds[0] = ds[1] = 0;
+	int cur = s;
+	for (int i = LOG; i >= 0; i--) {
+		if (nxt[cur][i] && da[cur][i] + db[cur][i] <= x) {
+			x -= da[cur][i] + db[cur][i];
+			ds[0] += da[cur][i];
+			ds[1] += db[cur][i];
+			cur = nxt[cur][i];
+		}
+	}
+	if (nextA[cur] && distA[cur] <= x) {
+		ds[0] += distA[cur];
+		x -= distA[cur];
+		if (nextB[nextA[cur]] && distB[nextA[cur]] <= x) {
+			ds[1] += distB[nextA[cur]];
+		}
+	}
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; i++) cin >> h[i]; set<Node> st;
+	for (int i = n; i >= 1; i--) {
+		vector<Node> cand;
+		auto it = st.lower_bound({ 0, h[i] });
+		if (it != st.end()) {
+			cand.push_back(*it);
+			if (next(it) != st.end()) {
+				auto it1 = next(it);
+				cand.push_back(*it1);
+			}
+		}
+		if (it != st.begin()) {
+			auto it2 = prev(it);
+			cand.push_back(*it2);
+			if (it2 != st.begin()) {
+				auto it3 = prev(it2);
+				cand.push_back(*it3);
+			}
+		}
+		sort(cand.begin(), cand.end(), [&](const Node& a, const Node& b) {
+			int da = abs(a.h - h[i]), db = abs(b.h - h[i]);
+			return da == db ? a.h < b.h : da < db;
+			});
+		if (cand.size() > 0) {
+			nextB[i] = cand[0].id;
+			distB[i] = abs(h[cand[0].id] - h[i]);
+		}
+		if (cand.size() > 1) {
+			nextA[i] = cand[1].id;
+			distA[i] = abs(h[cand[1].id] - h[i]);
+		}
+		st.insert({ i, h[i] });
+	}
+
+	for (int i = 1; i <= n; i++) {
+		if (nextA[i] && nextB[nextA[i]]) {
+			nxt[i][0] = nextB[nextA[i]];
+			da[i][0] = distA[i];
+			db[i][0] = distB[nextA[i]];
+		}
+	}
+	for (int j = 1; j <= LOG; j++) {
+		for (int i = 1; i <= n; i++) {
+			int k = nxt[i][j - 1];
+			if (k) {
+				nxt[i][j] = nxt[k][j - 1];
+				da[i][j] = da[i][j - 1] + da[k][j - 1];
+				db[i][j] = db[i][j - 1] + db[k][j - 1];
+			}
+		}
+	}
+	cin >> x0;
+	int ans = 0, minA = 0, minB = 0;
+	for (int i = 1; i <= n; i++) {
+		getdis(i, x0);
+		int a = ds[0], b = ds[1];
+		if (b == 0) {
+			if (minB == 0)
+				if (ans == 0 || h[i] > h[ans]) ans = i;
+		}
+		else
+			if (minB == 0)
+				ans = i, minA = a, minB = b;
+			else
+				if (a * minB < minA * b)
+					ans = i, minA = a, minB = b;
+				else if (a * minB == minA * b)
+					if (h[i] > h[ans]) ans = i;
+	}
+	cout << ans << endl;
+	cin >> m;
+	while (m--)
+		cin >> s >> x, getdis(s, x),
+		cout << ds[0] << ' ' << ds[1] << endl;
+	return 0;
+}

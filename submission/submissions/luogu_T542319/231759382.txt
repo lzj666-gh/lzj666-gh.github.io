@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 231759382
+//  题目ID: T542319
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+using ll = long long;
+constexpr int mod = 998244353;
+ll n, a[200000 + 5], cnt[70][2][200000 + 5];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 0; j < 64; ++j) {
+			ll k = a[i] - (1ll << j) + 1, sp = 1ll << (j + 1), stp = 1ll << j;
+			if (k <= 0) continue;
+			ll t = k / sp; cnt[j][1][i] += stp * t; k -= sp * t;
+			cnt[j][1][i] += min(k, stp);
+		}
+		for (int j = 0; j < 64; ++j) cnt[j][0][i] = (a[i] - (cnt[j][1][i] %= mod) + 1) % mod;
+	}
+	ll ans = 0;
+	for (int i = 0; i < 64; ++i) {
+		ll k1 = cnt[i][0][1], k2 = cnt[i][1][1];
+		for (int j = 2; j <= n; ++j)
+			tie(k1, k2) = make_tuple((k1 * cnt[i][0][j] % mod + k2 * cnt[i][1][j] % mod) % mod, (k2 * cnt[i][0][j] % mod + k1 * cnt[i][1][j] % mod) % mod);
+		ans = (ans + (1ll << i) % mod * k2 % mod) % mod;
+		continue;
+		for (int k = 0, lim = 1ll << n; k < lim; ++k) {
+			ll t = 1; bool cbc = 0;
+			for (int j = 1; j <= n; ++j)
+				if (k & (1ll << j - 1))
+					t = t * cnt[i][1][j] % mod, cbc ^= 1;
+				else
+					t = t * cnt[i][0][j] % mod;
+			if (cbc) ans = (ans + (1ll << i) % mod * t % mod) % mod;
+		}
+	}
+	cout << (ans + mod) % mod << endl;
+	return 0;
+}

@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 226440123
+//  题目ID: P1638
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, m, a[10000000 + 5], cnt[10000000 + 5], tot;
+tuple<int, int, int>ans;
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	int l = 1, r = 0;
+	while (tot < m) {
+		cnt[a[++r]]++;
+		if (cnt[a[r]] == 1) tot++;
+		// cerr << "add " << a[r] << endl;
+	}
+	ans = make_tuple(r - l + 1, l, r);
+	for (; r <= n; ++r) {
+		while (cnt[a[l]] > 1) cnt[a[l]]--, l++;
+		// cerr << "new line " << l << ' ' << r << endl;
+		ans = min(ans, make_tuple(r - l + 1, l, r));
+	}
+	int k;
+	tie(k, l, r) = ans;
+	cout << l << ' ' << r << endl;
+	return 0;
+}

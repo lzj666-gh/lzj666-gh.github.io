@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 220288543
+//  题目ID: P11296
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int h, n, p[10000 + 10], sum[10000 + 10], t;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> h >> n;
+	int k = 0;
+	for (int i = 1; i <= n; ++i) {
+		cin >> p[i];
+		sum[i] = sum[i - 1] + p[i];
+		t = max(t, sum[i]);
+		k += p[i];
+		if (k < 0) k = 0;
+		if (k >= h) {
+			cout << 0 << ' ' << i << endl;
+			return 0;
+		}
+	}
+	if (sum[n] <= 0) {
+		cout << "-1 -1" << endl;
+		return 0;
+	}
+	int l = (h - t - k) / sum[n];
+	if (k + l * sum[n] + k < h) l++;
+	cout << l + 1 << ' ';
+	for (int now = k + l * sum[n], i = 1; i <= n; ++i)
+		if (now + sum[i] >= h){
+			cout << i - 1 << endl;
+			return 0;
+		}
+	return 0;
+}

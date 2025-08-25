@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 225903580
+//  题目ID: P2051
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int mod = 9999973, inv2 = (mod + 1) / 2;
+int dp[105][105][105], n, m;
+int C2(int x) { return x * (x - 1) % mod * inv2 % mod; }
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	dp[0][0][0] = 1;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 0; j <= m; ++j)
+			for (int k = 0, t = m - j; k <= t; ++k) {
+				dp[i][j][k] = dp[i - 1][j][k];
+				if (k >= 1) dp[i][j][k] += dp[i - 1][j + 1][k - 1] * (j + 1) % mod + dp[i - 1][j][k - 1] * j % mod * (t - k + 1) % mod;
+				if (k >= 2) dp[i][j][k] += dp[i - 1][j + 2][k - 2] * C2(j + 2);
+				if (j >= 1) dp[i][j][k] += dp[i - 1][j - 1][k] * (t - k + 1);
+				if (j >= 2) dp[i][j][k] += dp[i - 1][j - 2][k] * C2(t - k + 2);
+				dp[i][j][k] %= mod;
+			}
+	int ans = 0;
+	for (int i = 0; i <= m; ++i)
+		for (int j = 0; j <= m; ++j)
+			(ans += dp[n][i][j]) %= mod;
+	cout << ans << endl;
+	return 0;
+}

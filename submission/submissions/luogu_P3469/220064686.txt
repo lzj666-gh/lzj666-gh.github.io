@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 220064686
+//  题目ID: P3469
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 1e5 + 5, M = 1e6 + 10;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, m;
+long long ans[N];
+int dfn[N], low[N], idk, siz[N];
+stack<int>stk;
+void tarjan(int x) {
+	long long sum = 0;
+	dfn[x] = low[x] = ++idk; stk.push(x);
+	int chd = siz[x]++;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		int v = edge[i].v;
+		if (!dfn[v]) {
+			tarjan(v);
+			siz[x] += siz[v];
+			low[x] = min(low[x], low[v]);
+			if (low[v] >= dfn[x]) {
+				chd++; sum += siz[v];
+				ans[x] += siz[v] * (n - siz[v]);
+			}
+		}
+		else
+			low[x] = min(low[x], dfn[v]);
+	}
+	if (chd > (x == 1)) ans[x] += n - 1 + (n - sum - 1) * (sum + 1);
+	else ans[x] = (n - 1) * 2;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, a, b; i <= m; ++i) cin >> a >> b, add(a, b), add(b, a);
+	tarjan(1);
+	for (int i = 1; i <= n; ++i)
+		cout << ans[i] << endl;
+	return 0;
+}

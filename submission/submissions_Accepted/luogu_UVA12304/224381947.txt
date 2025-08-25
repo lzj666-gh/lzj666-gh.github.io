@@ -1,0 +1,294 @@
+//  OJ: 洛谷
+//  提交ID: 224381947
+//  题目ID: UVA12304
+#include<bits/stdc++.h>
+using namespace std;
+constexpr double eps = 1e-9;
+class Vector2D {
+public:
+	double x, y;
+	Vector2D(double x = 0.0, double y = 0.0) : x(x), y(y) {}
+	Vector2D operator+(const Vector2D& other) const {
+		return Vector2D(x + other.x, y + other.y);
+	}
+	Vector2D operator-(const Vector2D& other) const {
+		return Vector2D(x - other.x, y - other.y);
+	}
+	double operator*(const Vector2D& other) const {
+		return x * other.x + y * other.y;
+	}
+	Vector2D operator*(double scalar) const {
+		return Vector2D(x * scalar, y * scalar);
+	}
+	Vector2D operator/(double scalar) const {
+		return Vector2D(x / scalar, y / scalar);
+	}
+	Vector2D operator-() const {
+		return Vector2D(-x, -y);
+	}
+	bool operator==(const Vector2D& other) const {
+		return (abs(x - other.x) < eps) && (abs(y - other.y) < eps);
+	}
+	bool operator!=(const Vector2D& other) const {
+		return !(*this == other);
+	}
+	double magnitude() const {
+		return sqrt(x * x + y * y);
+	}
+	friend ostream& operator<<(ostream& os, const Vector2D& v) {
+		os << "<" << v.x << "," << v.y << ">";
+		return os;
+	}
+	friend Vector2D operator*(double scalar, const Vector2D& vec) {
+		return vec * scalar;
+	}
+};
+class Point2D {
+public:
+	double x, y;
+	Point2D(double x = 0.0, double y = 0.0) : x(x), y(y) {}
+	Point2D operator+(const Vector2D& vec) const {
+		return Point2D(x + vec.x, y + vec.y);
+	}
+	Point2D operator-(const Vector2D& vec) const {
+		return Point2D(x - vec.x, y - vec.y);
+	}
+	Vector2D operator-(const Point2D& other) const {
+		return Vector2D(x - other.x, y - other.y);
+	}
+	bool operator==(const Point2D& other) const {
+		return (abs(x - other.x) < eps) && (abs(y - other.y) < eps);
+	}
+	bool operator!=(const Point2D& other) const {
+		return !(*this == other);
+	}
+	double distanceTo(const Point2D& other) const {
+		double dx = x - other.x;
+		double dy = y - other.y;
+		return sqrt(dx * dx + dy * dy);
+	}
+	friend ostream& operator<<(ostream& os, const Point2D& p) {
+		os << "(" << p.x << "," << p.y << ")";
+		return os;
+	}
+};
+string opt[6] = {
+	"CircumscribedCircle",
+	"InscribedCircle",
+	"TangentLineThroughPoint",
+	"CircleThroughAPointAndTangentToALineWithRadius",
+	"CircleTangentToTwoLinesWithRadius",
+	"CircleTangentToTwoDisjointCirclesWithRadius" },
+	op;
+Point2D circumcenter(const Point2D& A, const Point2D& B, const Point2D& C) {
+	Point2D AB_mid((A.x + B.x) / 2.0, (A.y + B.y) / 2.0);
+	Point2D AC_mid((A.x + C.x) / 2.0, (A.y + C.y) / 2.0);
+	double ab_dx = B.x - A.x, ab_dy = B.y - A.y, ac_dx = C.x - A.x, ac_dy = C.y - A.y;
+	double a1 = ab_dx, b1 = ab_dy, c1 = ab_dx * AB_mid.x + ab_dy * AB_mid.y;
+	double a2 = ac_dx, b2 = ac_dy, c2 = ac_dx * AC_mid.x + ac_dy * AC_mid.y;
+	double det = a1 * b2 - a2 * b1;
+	if (abs(det) < eps) {
+		throw invalid_argument("Three-point collinearity and cannot form a triangle");
+	}
+	double center_x = (c1 * b2 - c2 * b1) / det;
+	double center_y = (a1 * c2 - a2 * c1) / det;
+	return Point2D(center_x, center_y);
+}
+Point2D incenter(const Point2D& A, const Point2D& B, const Point2D& C) {
+	double a = B.distanceTo(C), b = A.distanceTo(C), c = A.distanceTo(B);
+	if (a < eps || b < eps || c < eps) {
+		throw invalid_argument("Three points are collinear or coincident and cannot form a triangle");
+	}
+	double sum = a + b + c;
+	double incenter_x = (a * A.x + b * B.x + c * C.x) / sum;
+	double incenter_y = (a * A.y + b * B.y + c * C.y) / sum;
+	return Point2D(incenter_x, incenter_y);
+}
+double distanceToLine(const Point2D& P, const Point2D& A, const Point2D& B) {
+	double A_coeff = A.y - B.y;
+	double B_coeff = B.x - A.x;
+	double C_coeff = A.x * B.y - B.x * A.y;
+	return abs(A_coeff * P.x + B_coeff * P.y + C_coeff) / sqrt(A_coeff * A_coeff + B_coeff * B_coeff);
+}
+vector<Point2D> circleIntersections(const Point2D& c1, double r1, const Point2D& c2, double r2) {
+	vector<Point2D> intersections;
+	double d = c1.distanceTo(c2);
+	if (d < eps)
+		if (abs(r1 - r2) < eps)
+			throw invalid_argument("Concentric circles with equal radii and an infinite number of intersections");
+		else return intersections;
+	if (d > r1 + r2 + eps) return intersections;
+	if (d < abs(r1 - r2) - eps) return intersections;
+	double dx = (c2.x - c1.x) / d;
+	double dy = (c2.y - c1.y) / d;
+	double a = (r1 * r1 - r2 * r2 + d * d) / (2 * d);
+	double h = sqrt(r1 * r1 - a * a);
+	Point2D mid(c1.x + a * dx, c1.y + a * dy);
+	double perp_dx = -dy;
+	double perp_dy = dx;
+	if (h < eps) intersections.push_back(mid);
+	else {
+		intersections.push_back(Point2D(
+			mid.x + h * perp_dx,
+			mid.y + h * perp_dy
+		));
+		intersections.push_back(Point2D(
+			mid.x - h * perp_dx,
+			mid.y - h * perp_dy
+		));
+	}
+	return intersections;
+}
+vector<Point2D> circleLineIntersections(const Point2D& center, double radius, const Point2D& lineP1, const Point2D& lineP2) {
+	vector<Point2D> intersections;
+	Vector2D dir = lineP2 - lineP1;
+	Vector2D diff = lineP1 - center;
+	double a = dir.x * dir.x + dir.y * dir.y;
+	double b = 2 * (diff.x * dir.x + diff.y * dir.y);
+	double c = diff.x * diff.x + diff.y * diff.y - radius * radius;
+	double discriminant = b * b - 4 * a * c;
+	if (abs(a) < eps) {
+		if (abs(c) < eps)
+			throw invalid_argument("The line degenerates into a point and on a circle, there are infinitely many intersections");
+		return intersections;
+	}
+	if (discriminant < -eps) {
+		return intersections;
+	}
+	else if (abs(discriminant) < eps) {
+		double t = -b / (2 * a);
+		intersections.push_back(lineP1 + dir * t);
+	}
+	else {
+		double sqrtDiscriminant = sqrt(discriminant);
+		double t1 = (-b + sqrtDiscriminant) / (2 * a);
+		double t2 = (-b - sqrtDiscriminant) / (2 * a);
+		intersections.push_back(lineP1 + dir * t1);
+		intersections.push_back(lineP1 + dir * t2);
+	}
+	return intersections;
+}
+Point2D LineIntersection(const Point2D& Line1p1, const Point2D& Line1p2, const Point2D& Line2p1, const Point2D& Line2p2) {
+	double A1 = Line1p2.y - Line1p1.y;
+	double B1 = Line1p1.x - Line1p2.x;
+	double C1 = A1 * Line1p1.x + B1 * Line1p1.y;
+	double A2 = Line2p2.y - Line2p1.y;
+	double B2 = Line2p1.x - Line2p2.x;
+	double C2 = A2 * Line2p1.x + B2 * Line2p1.y;
+	double D = A1 * B2 - A2 * B1;
+	if (fabs(D) < eps) return Point2D(NAN, NAN);
+	double x = (B2 * C1 - B1 * C2) / D;
+	double y = (A1 * C2 - A2 * C1) / D;
+	return Point2D(x, y);
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cout << fixed << setprecision(6);
+	while (cin >> op) {
+		if (op == opt[0]) {
+			double x1, y1, x2, y2, x3, y3;
+			cin >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
+			Point2D p1(x1, y1), p2(x2, y2), p3(x3, y3);
+			try {
+				Point2D mid = circumcenter(p1, p2, p3);
+				cout << '(' << mid.x << ',' << mid.y << ',' << mid.distanceTo(p1) << ')' << endl;
+			}
+			catch (const invalid_argument& e) {
+				cout << "No solution" << endl;
+			}
+		}
+		else if (op == opt[1]) {
+			double x1, y1, x2, y2, x3, y3;
+			cin >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
+			Point2D p1(x1, y1), p2(x2, y2), p3(x3, y3);
+			try {
+				Point2D mid = incenter(p1, p2, p3);
+				double radius = distanceToLine(mid, p1, p2);
+				cout << '(' << mid.x << ',' << mid.y << ',' << radius << ')' << endl;
+			}
+			catch (const invalid_argument& e) {
+				cout << "No solution" << endl;
+			}
+		}
+		else if (op == opt[2]) {
+			double xc, yc, r, xp, yp;
+			cin >> xc >> yc >> r >> xp >> yp;
+			Point2D c(xc, yc), p(xp, yp);
+			Point2D mid = c + 0.5 * (p - c);
+			vector<double>anss;
+			for (const auto& k : circleIntersections(c, r, mid, 0.5 * p.distanceTo(c))) {
+				double dx = k.x - p.x, dy = k.y - p.y, ans;
+				if (abs(dx) <= eps) ans = 0;
+				else ans = 180 * (atan(dy / dx) / acos(-1));
+				anss.push_back(ans < 0 ? ans + 180 : ans);
+			}
+			sort(anss.begin(), anss.end());
+			cout << '['; bool flg = 0;
+			for (const auto& k : anss) {
+				if (flg) cout << ',';
+				else flg = 1;
+				cout << k;
+			}
+			cout << ']' << endl;
+		}
+		else if (op == opt[3]) {
+			double x1, y1, x2, y2, xp, yp, r;
+			cin >> xp >> yp >> x1 >> y1 >> x2 >> y2 >> r;
+			Point2D p1(x1, y1), p2(x2, y2), p(xp, yp);
+			Vector2D mint = p2 - p1; swap(mint.x, mint.y); mint.x = -mint.x;
+			vector<Point2D>ans;
+			double dx = (mint.x / mint.magnitude()) * r, dy = (mint.y / mint.magnitude()) * r;
+			Vector2D det(dx, dy);
+			for (const auto& k : circleLineIntersections(p, r, p1 - det, p2 - det)) ans.push_back(k);
+			for (const auto& k : circleLineIntersections(p, r, p1 + det, p2 + det)) ans.push_back(k);
+			sort(ans.begin(), ans.end(), [](const Point2D& a, const Point2D& b)->bool {return a.x == b.x ? a.y < b.y : a.x < b.x; });
+			cout << '['; bool flg = 0;
+			for (const auto& k : ans) {
+				if (flg) cout << ',';
+				else flg = 1;
+				cout << k;
+			}
+			cout << ']' << endl;
+		}
+		else if (op == opt[4]) {
+			double x1, y1, x2, y2, x3, y3, x4, y4, r;
+			cin >> x1 >> y1 >> x2 >> y2 >> x3 >> y3 >> x4 >> y4 >> r;
+			Point2D p1(x1, y1), p2(x2, y2), p3(x3, y3), p4(x4, y4);
+			vector<Point2D>ans;
+			Vector2D mint = p2 - p1; swap(mint.x, mint.y); mint.x = -mint.x;
+			double dx = (mint.x / mint.magnitude()) * r, dy = (mint.y / mint.magnitude()) * r;
+			Vector2D det12(dx, dy);
+			mint = p4 - p3; swap(mint.x, mint.y); mint.x = -mint.x;
+			dx = (mint.x / mint.magnitude()) * r, dy = (mint.y / mint.magnitude()) * r;
+			Vector2D det34(dx, dy);
+			ans.push_back(LineIntersection(p1 - det12, p2 - det12, p3 - det34, p4 - det34));
+			ans.push_back(LineIntersection(p1 + det12, p2 + det12, p3 - det34, p4 - det34));
+			ans.push_back(LineIntersection(p1 - det12, p2 - det12, p3 + det34, p4 + det34));
+			ans.push_back(LineIntersection(p1 + det12, p2 + det12, p3 + det34, p4 + det34));
+			sort(ans.begin(), ans.end(), [](const Point2D& a, const Point2D& b)->bool {return a.x == b.x ? a.y < b.y : a.x < b.x; });
+			cout << '['; bool flg = 0;
+			for (const auto& k : ans) {
+				if (flg) cout << ',';
+				else flg = 1;
+				cout << k;
+			}
+			cout << ']' << endl;
+		}
+		else if (op == opt[5]) {
+			double x1, y1, r1, r2, x2, y2, r;
+			cin >> x1 >> y1 >> r1 >> x2 >> y2 >> r2 >> r;
+			vector<Point2D>ans;
+			for (const auto& k : circleIntersections(Point2D(x1, y1), r1 + r, Point2D(x2, y2), r2 + r))
+				ans.push_back(k);
+			sort(ans.begin(), ans.end(), [](const Point2D& a, const Point2D& b)->bool {return a.x == b.x ? a.y < b.y : a.x < b.x; });
+			cout << '['; bool flg = 0;
+			for (const auto& k : ans) {
+				if (flg) cout << ',';
+				else flg = 1;
+				cout << k;
+			}
+			cout << ']' << endl;
+		}
+	}
+	return 0;
+}

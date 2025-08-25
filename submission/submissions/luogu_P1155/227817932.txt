@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 227817932
+//  题目ID: P1155
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 1000 + 5;
+int n, p[N], v[N], col[N];
+struct Edge {
+	int v, nxt;
+}edge[N * N];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+void dfs(int x) {
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (col[edge[i].v] == -1)
+			col[edge[i].v] = col[x] ^ 1, dfs(edge[i].v);
+		else if (col[edge[i].v] != (col[x] ^ 1))
+			cout << 0 << endl, exit(0);
+}
+int pos = 1;
+stack<int>st[2];
+bool pop(int id) {
+	if (!st[id].empty() && st[id].top() == pos) {
+		st[id].pop(); cout << char(98 + id * 2) << ' ';
+		return ++pos;
+	}
+	return 0;
+}
+void push(int cur, int id) {
+	if (id == 1) while (pop(0));
+	while (!st[id].empty() && st[id].top() < cur)
+		if (!pop(id))
+			pop(id ^ 1);
+	if (id == 1) while (pop(0));
+	st[id].push(cur); cout << char(97 + id * 2) << ' ';
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> p[i]; v[n + 1] = n + 1;
+	for (int i = n; i >= 1; --i) v[i] = min(v[i + 1], p[i]);
+	for (int i = 1; i <= n; ++i)
+		for (int j = i + 1; j <= n; ++j)
+			if (v[j + 1] < p[i] && p[i] < p[j])
+				add(i, j), add(j, i);
+	memset(col, -1, sizeof col);
+	for (int i = 1; i <= n; ++i)
+		if (col[i] == -1) 
+			col[i] = 0, dfs(i);
+	for (int i = 1; i <= n; ++i) push(p[i], col[i]);
+	bool cur = 0; do while (pop(cur)); while (pop(cur ^= 1));
+	return 0;
+}

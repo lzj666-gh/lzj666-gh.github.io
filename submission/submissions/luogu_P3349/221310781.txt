@@ -1,0 +1,67 @@
+//  OJ: 洛谷
+//  提交ID: 221310781
+//  题目ID: P3349
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+namespace Tree {
+	struct Edge {
+		int v, nxt;
+	}edge[40];
+	int head[18], idx;
+	void add(int u, int v) {
+		edge[++idx] = { v,head[u] };
+		head[u] = idx;
+	}
+	void addedge(int u, int v) {
+		add(u, v); add(v, u);
+	}
+}
+namespace Graph {
+	struct Edge {
+		int v, nxt;
+	}edge[400];
+	int head[18], idx;
+	void add(int u, int v) {
+		edge[++idx] = { v,head[u] };
+		head[u] = idx;
+	}
+	void addedge(int u, int v) {
+		add(u, v); add(v, u);
+	}
+}
+int n, m, dp[18][18];
+bool t[18];
+void dfs(int u, int fa) {
+	for (int i = 1; i <= n; ++i) dp[u][i] = 1;
+	for (int i = Tree::head[u]; i; i = Tree::edge[i].nxt) {
+		int v = Tree::edge[i].v;
+		if (v == fa) continue;
+		dfs(v, u);
+		for (int j = 1; j <= n; ++j) {
+			int s = 0;
+			if (t[j])
+				for (int l = Graph::head[j]; l; l = Graph::edge[l].nxt) {
+					int k = Graph::edge[l].v;
+					if (t[k]) s += dp[v][k];
+				}
+			dp[u][j] *= s;
+		}
+	}
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v; i <= m; ++i) cin >> u >> v, Graph::addedge(u, v);
+	for (int i = 1, u, v; i < n; ++i) cin >> u >> v, Tree::addedge(u, v);
+	int ans = 0;
+	for (int i = 0, lim = (1 << n); i < lim; ++i) {
+		int cnt = 0;
+		for (int j = 0; j < n; ++j) cnt += t[j + 1] = i & (1 << j);
+		dfs(1, 0);
+		if ((n - cnt) & 1) for (int j = 1; j <= n; ++j) ans -= dp[1][j];
+		else for (int j = 1; j <= n; ++j) ans += dp[1][j];
+	}
+	cout << ans << endl;
+	return 0;
+}

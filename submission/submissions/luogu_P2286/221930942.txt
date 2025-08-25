@@ -1,0 +1,189 @@
+//  OJ: 洛谷
+//  提交ID: 221930942
+//  题目ID: P2286
+#include<bits/stdc++.h>
+using namespace std;
+struct Splay {
+#define ls son[0]
+#define rs son[1]
+    struct iterator {
+        iterator* son[2], * fa;
+        int sum, cnt, val;
+        iterator() :son(), fa(), sum(), cnt(), val() {}
+    };
+    using it = iterator*;
+    it root, now;
+    void pushup(it p) {
+        p->sum = p->cnt;
+        if (p->ls) p->sum += p->ls->sum;
+        if (p->rs) p->sum += p->rs->sum;
+    }
+    it newnode(int x) {
+        now = new iterator;
+        now->ls = now->rs = now->fa = nullptr;
+        now->val = x; now->cnt = now->sum = 1;
+        return now;
+    }
+    void rotate(it p) {
+        bool mode = p->fa->rs == p;
+        it fp = p->fa, ffp = fp->fa, s = p->son[!mode];
+        assert(fp);
+        assert(ffp == fp->fa);
+        if (s) s->fa = fp;
+        fp->son[mode] = s;
+        p->son[!mode] = fp;
+        fp->fa = p;
+        if (ffp) ffp->son[fp == ffp->rs] = p;
+        p->fa = ffp;
+        pushup(fp); pushup(p);
+    }
+    void splay(it p, it fa = nullptr) {
+        while (p->fa != fa) {
+            it fp = p->fa;
+            it ffp = fp->fa;
+            if (ffp != fa) {
+                if ((ffp->ls == fp) == (fp->ls == p)) {
+                    rotate(fp);
+                }
+                else {
+                    rotate(p);
+                }
+            }
+            else {
+                rotate(p);
+            }
+        }
+        if (!fa) root = p;
+    }
+    int kth(it p, int k) {
+        if (!p) return -1;
+        int L = p->ls ? p->ls->sum : 0;
+        if (k <= L) return kth(p->ls, k);
+        else if (k <= L + p->cnt) return p->val;
+        else return kth(p->rs, k - L - p->cnt);
+    }
+    int kth(int k) {
+        return kth(root, k);
+    }
+    void insert(it& p, it fa, int x) {
+        if (p == nullptr) {
+            p = newnode(x);
+            p->fa = fa;
+            splay(p);
+            return;
+        }
+        p->sum++;
+        if (p->val == x) {
+            p->cnt++;
+            splay(p);
+            return;
+        }
+        insert(p->son[x > p->val], p, x);
+    }
+    void ins(int x) {
+        insert(root, nullptr, x);
+    }
+    it pre(it p) {
+        if (!p->ls) return nullptr;
+        p = p->ls;
+        while (p->rs) p = p->rs;
+        return p;
+    }
+    it nxt(it p) {
+        if (!p->rs) return nullptr;
+        p = p->rs;
+        while (p->ls) p = p->ls;
+        return p;
+    }
+    void del(int x) {
+        ins(x);
+        root->cnt--; root->sum--;
+        if (root->cnt > 1) return;
+        it dst = root;
+        if (!root->ls) {
+            root = root->rs;
+            if (root) root->fa = nullptr;
+        }
+        else if (!root->rs) {
+            root = root->ls;
+            if (root) root->fa = nullptr;
+        }
+        else {
+            it l = pre(root), r = nxt(root);
+            splay(l);
+            splay(r, l);
+            dst = r->ls;
+            r->ls = nullptr;
+            pushup(r); pushup(l);
+        }
+        delete dst;
+    }
+    int rank(int x) {
+        ins(x);
+        int ans = root->ls ? root->ls->sum : 0;
+        del(x);
+        return ans;
+    }
+    int pre(int x) {
+        ins(x);
+        it tmp = pre(root);
+        int ans = tmp ? tmp->val : INT_MIN;
+        if (tmp) splay(tmp);
+        del(x);
+        return ans;
+    }
+    int nxt(int x) {
+        ins(x);
+        it tmp = nxt(root);
+        int ans = tmp ? tmp->val : INT_MAX;
+        if (tmp) splay(tmp);
+        del(x);
+        return ans;
+    }
+    void debug(it p) {
+        if (!p) return;
+        debug(p->ls);
+        for (int t = 1; t <= p->cnt; ++t) cerr << p->val << ' ';
+        debug(p->rs);
+    }
+}t;
+signed main() {
+    cin.tie(0)->sync_with_stdio(false);
+    int n, opt, x;
+    cin >> n;
+    while (n--) {
+        cin >> opt >> x;
+        if (opt == 1) t.ins(x);
+        if (opt == 2) t.del(x);
+        if (opt == 3) cout << t.rank(x) + 1 << endl;
+        if (opt == 4) cout << t.kth(x) << endl;
+        if (opt == 5) cout << t.pre(x) << endl;
+        if (opt == 6) cout << t.nxt(x) << endl;
+        //t.debug(t.root); cerr << endl;
+    }
+    return 0;
+}
+// 临渊羡鱼，空存想望。
+/*
+20
+1 964673
+5 968705
+4 1
+3 964673
+5 965257
+1 915269
+1 53283
+3 964673
+3 53283
+3 53283
+1 162641
+5 973984
+1 948119
+2 915269
+2 53283
+6 959161
+1 531821
+1 967521
+2 531821
+1 343410
+*/

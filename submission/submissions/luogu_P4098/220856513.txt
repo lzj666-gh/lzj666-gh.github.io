@@ -1,0 +1,85 @@
+//  OJ: 洛谷
+//  提交ID: 220856513
+//  题目ID: P4098
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+struct Tree {
+	int son[2], sum;
+}tree[3000000 + 5];
+int root[3000000 + 5], idx;
+int n, a[500000 + 10];
+void insert(int l, int r, int x) {
+	//cerr << "insert from " << l << " to " << r << " with value " << x << endl;
+	int lp = root[l], rp = root[r];
+	for (int i = 30; i >= 0; --i) {
+		tree[rp] = tree[lp]; tree[rp].sum++;
+		tree[rp].son[!!((1ll << i) & x)] = ++idx;
+		lp = tree[lp].son[!!((1ll << i) & x)];
+		rp = tree[rp].son[!!((1ll << i) & x)];
+	}
+	tree[rp].sum++;
+}
+int query(int l, int r, int x) {
+	if (l < 1) l = 1; if (r > n) r = n;
+	//cerr << "query from " << l << " to " << r << " with value " << x << endl;
+	int lp = root[l - 1], rp = root[r], ans = 0;
+	for (int i = 30; i >= 0; --i) {
+		if (tree[tree[rp].son[!((1ll << i) & x)]].sum - tree[tree[lp].son[!((1ll << i) & x)]].sum > 0)
+			lp = tree[lp].son[!((1ll << i) & x)], rp = tree[rp].son[!((1ll << i) & x)],
+			ans += 1ll << i;
+		else
+			lp = tree[lp].son[!!((1ll << i) & x)], rp = tree[rp].son[!!((1ll << i) & x)];
+	}
+	return ans;
+}
+int frt[500000 + 10][2], bck[500000 + 10][2];
+struct Node {
+	int idx;
+	Node(int idx = 0) :idx(idx) {}
+	friend bool operator<(const Node& q, const Node& p) {
+		return a[q.idx] > a[p.idx];
+	}
+};
+set<Node>s1, s2;
+signed main() {
+//	freopen("alo.in", "r", stdin);
+//	freopen("alo.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		cin >> a[i];
+		frt[i][0] = frt[i][1] = -1, bck[i][0] = bck[i][1] = n + 2;
+		root[i] = ++idx; insert(i - 1, i, a[i]);
+	}
+	for (int i = 1; i <= n; ++i) {
+		for (; !s2.empty(); s2.erase(s2.begin())) {
+			if (a[s2.begin()->idx] < a[i]) bck[s2.begin()->idx][1] = i - 1;
+			else break;
+		}
+		for (; !s1.empty(); s1.erase(s1.begin())) {
+			if (a[s1.begin()->idx] < a[i]) bck[s1.begin()->idx][0] = i - 1, s2.insert(*s1.begin());
+			else break;
+		}
+		s1.insert(i);
+	}
+	s1.clear(); s2.clear();
+	for (int i = n; i >= 1; --i) {
+		for (; !s2.empty(); s2.erase(s2.begin())) {
+			if (a[s2.begin()->idx] < a[i]) frt[s2.begin()->idx][1] = i + 1;
+			else break;
+		}
+		for (; !s1.empty(); s1.erase(s1.begin())) {
+			if (a[s1.begin()->idx] < a[i]) frt[s1.begin()->idx][0] = i + 1, s2.insert(*s1.begin());
+			else break;
+		}
+		s1.insert(i);
+	}
+	int ans = 0;
+	for (int i = 1; i <= n; ++i) {
+		if (frt[i][0] != -1) ans = max(ans, query(frt[i][1], bck[i][0], a[i]));
+		if (bck[i][0] != n + 2) ans = max(ans, query(frt[i][0], bck[i][1], a[i]));
+	}
+	cout << ans << endl;
+	return 0;
+}

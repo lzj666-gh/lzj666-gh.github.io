@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 224789803
+//  题目ID: T633937
+const readline = require('readline');
+const mod = 10000009;
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+rl.once('line', (s) => {
+    // 移除可能的回车换行符
+    s = s.trim();
+    
+    let total_c = 0;
+    // 统计整个字符串中小写 'c' 的数量
+    for (let i = 0; i < s.length; i++) {
+        if (s[i] === 'c') {
+            total_c++;
+        }
+    }
+    
+    let left_c = 0;  // 记录当前位置左侧的 'c' 数量
+    let ans = 0;     // 记录最终答案
+    
+    // 遍历字符串，计算每个 'y' 对应的子序列数量
+    for (let i = 0; i < s.length; i++) {
+        const char = s[i];
+        if (char === 'c') {
+            left_c++;
+        } else if (char === 'y') {
+            const right_c = total_c - left_c;
+            ans += left_c * right_c;
+        }
+    }
+    
+    console.log(ans % mod);
+    rl.close();
+});

@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 228109445
+//  题目ID: T598750
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int col[257][65537], n, m, t;
+int sum[65537];
+int32_t main() {
+//	freopen("block.in", "r", stdin);
+//	freopen("block.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> t;
+	int a = sqrt(n), b = sqrt(m);
+	for (int i = 1, c = 1; i <= a; ++i)
+		for (int j = 1; j <= b; ++j, ++c)
+			for (int p = (i - 1) * a + 1; p <= i * a; ++p)
+				for (int q = (j - 1) * b + 1; q <= j * b; ++q)
+					col[p][q] = c, sum[c]++;
+	while (t--) {
+		int opt, x, y; char k;
+		cin >> opt;
+		if (opt == 1) {
+			cin >> x >> y >> k;
+			int color = col[x][y];
+			int dx = 0, dy = 0;
+			if (k == 'L') dy = -1; if (k == 'R') dy = 1;
+			if (k == 'U') dx = -1; if (k == 'D') dx = 1;
+			int fx = x, fy = y;
+			while (color == col[fx][fy] && (1 <= fx && fx <= n && 1 <= fy && fy <= m))
+				fx += dx, fy += dy, cerr << fx << ' ' << fy << endl;
+			if (1 <= fx && fx <= n && 1 <= fy && fy <= m)
+				while (color == col[x][y] && (1 <= x && x <= n && 1 <= y && y <= m))
+					sum[col[x][y]]--, sum[col[x][y] = col[fx][fy]]++, x += dx, y += dy;
+		}
+		else
+			cin >> x, cout << sum[x] << endl;
+	}
+	return 0;
+}

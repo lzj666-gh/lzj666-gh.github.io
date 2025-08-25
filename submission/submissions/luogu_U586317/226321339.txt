@@ -1,0 +1,170 @@
+//  OJ: 洛谷
+//  提交ID: 226321339
+//  题目ID: U586317
+#include <bits/stdc++.h>
+#define sipt
+using namespace std;
+constexpr int mod = 1e9 + 9;
+struct IO {
+#define mxsz (1 << 21)
+    char buf[mxsz], * p1, * p2;
+    char pbuf[mxsz], * pp;
+    IO() : buf(), pbuf(), p1(buf), p2(buf), pp(pbuf) {}
+    ~IO() { fwrite(pbuf, 1, pp - pbuf, stdout); }
+    inline char gc() {
+        if (p1 == p2) p2 = (p1 = buf) + fread(buf, 1, mxsz, stdin);
+        return p1 == p2 ? ' ' : *p1++;
+    }
+#ifndef sipt
+    inline int read() {
+        int r = 0; char c = gc(); while (c < '0' || c>'9') c = gc();
+        while (c >= '0' && c <= '9') r = r * 10 + (c ^ 48), c = gc();
+        return r;
+    }
+#else
+    inline int read() {
+        int r = 0; char c = gc(); bool rev = 0;
+        while (c < '0' || c>'9') rev |= (c == '-'), c = gc();
+        while (c >= '0' && c <= '9') r = r * 10 + (c ^ 48), c = gc();
+        return rev ? ~r + 1 : r;
+    }
+#endif
+    inline void push(const char& c) {
+        if (pp - pbuf == mxsz) fwrite(pbuf, 1, mxsz, stdout), pp = pbuf;
+        *pp++ = c;
+    }
+    inline void write(long long x) {
+        static char sta[22]; int top = 0;
+        do sta[top++] = x % 10, x /= 10; while (x);
+        while (top) push(sta[--top] ^ 48);
+    }
+    inline void write(long long x, char opc) {
+#ifdef sopt
+        if (x < 0) push('-'), x = ~x + 1;
+#endif
+        write(x), push(opc);
+    }
+} io;
+
+int32_t main(int32_t argc, char** argv) {
+    // if (argc >= 2) freopen(argv[1], "r", stdin);
+    // else freopen("cyber.in", "r", stdin);
+    // if (argc >= 3) freopen(argv[2], "w", stdout);
+    // else freopen("cyber.out", "w", stdout);
+    cin.tie(0)->sync_with_stdio(false);
+    int n = io.read(), m = io.read(), k = io.read();
+    vector<int> v(n);
+    for (int i = 0; i < n; ++i) v[i] = io.read();
+    vector<int> op_arr;
+    for (int i = 0; i < n - 1; ++i) op_arr.push_back(io.read());
+    vector<int> t_list(k);
+    for (int i = 0; i < k; ++i) t_list[i] = io.read();
+    
+    vector<int> L_final(m, 0), R_final(m, 0);
+    for (int d = 0; d < m; ++d) {
+        vector<int> tokens_L, tokens_R;
+        vector<int> ops_after;
+        int cur_sum = 0;
+        bool cur_has_wild = false;
+        for (int i = 0; i < n; ++i) {
+            if (v[i] == -1) {
+                cur_has_wild = true;
+            } else {
+                int digit_val = (v[i] >> (2 * d)) & 3;
+                cur_sum = (cur_sum + digit_val) % 4;
+            }
+            if (i == n - 1) {
+                if (cur_has_wild) {
+                    tokens_L.push_back(0);
+                    tokens_R.push_back(3);
+                } else {
+                    tokens_L.push_back(cur_sum);
+                    tokens_R.push_back(cur_sum);
+                }
+            } else {
+                if (op_arr[i] != 1) {
+                    if (cur_has_wild) {
+                        tokens_L.push_back(0);
+                        tokens_R.push_back(3);
+                    } else {
+                        tokens_L.push_back(cur_sum);
+                        tokens_R.push_back(cur_sum);
+                    }
+                    ops_after.push_back(op_arr[i]);
+                    cur_sum = 0;
+                    cur_has_wild = false;
+                }
+            }
+        }
+        vector< pair<int, int> > groups2;
+        if (tokens_L.empty()) {
+            L_final[d] = 0;
+            R_final[d] = 3;
+        } else {
+            vector< pair<int, int> > current_group;
+            current_group.push_back(make_pair(tokens_L[0], tokens_R[0]));
+            for (int i = 0; i < ops_after.size(); ++i) {
+                if (ops_after[i] == 2) {
+                    current_group.push_back(make_pair(tokens_L[i + 1], tokens_R[i + 1]));
+                } else {
+                    int L_min = current_group[0].first;
+                    int R_min = current_group[0].second;
+                    for (int j = 1; j < current_group.size(); ++j) {
+                        if (current_group[j].first < L_min) L_min = current_group[j].first;
+                        if (current_group[j].second < R_min) R_min = current_group[j].second;
+                    }
+                    groups2.push_back(make_pair(L_min, R_min));
+                    current_group.clear();
+                    current_group.push_back(make_pair(tokens_L[i + 1], tokens_R[i + 1]));
+                }
+            }
+            int L_min = current_group[0].first;
+            int R_min = current_group[0].second;
+            for (int j = 1; j < current_group.size(); ++j) {
+                if (current_group[j].first < L_min) L_min = current_group[j].first;
+                if (current_group[j].second < R_min) R_min = current_group[j].second;
+            }
+            groups2.push_back(make_pair(L_min, R_min));
+            if (groups2.empty()) {
+                L_final[d] = 0;
+                R_final[d] = 3;
+            } else {
+                int L_max = groups2[0].first;
+                int R_max = groups2[0].second;
+                for (int j = 1; j < groups2.size(); ++j) {
+                    if (groups2[j].first > L_max) L_max = groups2[j].first;
+                    if (groups2[j].second > R_max) R_max = groups2[j].second;
+                }
+                L_final[d] = L_max;
+                R_final[d] = R_max;
+            }
+        }
+    }
+    long long ans1 = 0;
+    long long ans2 = 1;
+    long long ans3 = 0;
+    for (int i = 0; i < k; ++i) {
+        int t_val = t_list[i];
+        bool valid = true;
+        for (int d = 0; d < m; ++d) {
+            int digit_val = (t_val >> (2 * d)) & 3;
+            if (digit_val < L_final[d] || digit_val > R_final[d]) {
+                valid = false;
+                break;
+            }
+        }
+        long long term = 0;
+        if (valid) {
+            term = i + 1;
+            ans1 += term;
+            ans2 = (ans2 * (2 * (i + 1) % mod) % mod;
+        } else {
+            ans2 = (ans2 * (i + 1)) % mod;
+        }
+        ans3 ^= term;
+    }
+    io.write(ans1, ' ');
+    io.write(ans2, ' ');
+    io.write(ans3, '\n');
+    return 0;
+}

@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 226565595
+//  题目ID: P5322
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, m, s, dp[105][20005], a[105][105];
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> s >> n >> m;
+	for (int i = 1; i <= s; ++i)
+		for (int j = 1; j <= n; ++j)
+			cin >> a[j][i], a[j][i] *= 2;
+	for (int i = 1; i <= n; ++i) sort(a[i] + 1, a[i] + s + 1);
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 0; j <= m; ++j) {
+			for (int k = 0; k <= j; ++k) {
+				dp[i][j] = max(dp[i][j], dp[i - 1][k] + (lower_bound(a[i] + 1, a[i] + s + 1, j - k) - a[i] - 1) * i);
+			}
+		}
+	}
+	cout << dp[n][m] << endl;
+	return 0;
+}
