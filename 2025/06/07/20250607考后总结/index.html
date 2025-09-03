@@ -16,19 +16,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
-    <meta name="description" content="总览 本次考试共拿 85 分，比一等线低了 41 分。其中，分数组成为 50 + 35 + 0 + 0，T1 符合预期，T2 超出预期，T3 显著低于预期，T4 符合预期。 T1 开考后我先浏览了一遍所有的题目，其中，T1 由于是二维三角加，所以认为可能有特殊性质，考虑了一下三角差分，但是没有想到一个特别好的差分方法，所以暂时跳过了，转头回来时完全忘记了差分，所以区间加，一次查询我选择">
+    <meta name="description" content="总览 本次考试共拿 $85$ 分，比一等线低了 $41$ 分。其中，分数组成为 $50+35+0+0$，T1 符合预期，T2 超出预期，T3 显著低于预期，T4 符合预期。 T1 开考后我先浏览了一遍所有的题目，其中，T1 由于是二维三角加，所以认为可能有特殊性质，考虑了一下三角差分，但是没有想到一个特别好的差分方法，所以暂时跳过了，转头回来时完全忘记了差分，所以区间加，一次查询我选择了线段树，最">
 <meta property="og:type" content="article">
 <meta property="og:title" content="20250607考后总结">
 <meta property="og:url" content="https://lzj-blog.top/2025/06/07/20250607%E8%80%83%E5%90%8E%E6%80%BB%E7%BB%93/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
-<meta property="og:description" content="总览 本次考试共拿 85 分，比一等线低了 41 分。其中，分数组成为 50 + 35 + 0 + 0，T1 符合预期，T2 超出预期，T3 显著低于预期，T4 符合预期。 T1 开考后我先浏览了一遍所有的题目，其中，T1 由于是二维三角加，所以认为可能有特殊性质，考虑了一下三角差分，但是没有想到一个特别好的差分方法，所以暂时跳过了，转头回来时完全忘记了差分，所以区间加，一次查询我选择">
+<meta property="og:site_name" content="starfallen">
+<meta property="og:description" content="总览 本次考试共拿 $85$ 分，比一等线低了 $41$ 分。其中，分数组成为 $50+35+0+0$，T1 符合预期，T2 超出预期，T3 显著低于预期，T4 符合预期。 T1 开考后我先浏览了一遍所有的题目，其中，T1 由于是二维三角加，所以认为可能有特殊性质，考虑了一下三角差分，但是没有想到一个特别好的差分方法，所以暂时跳过了，转头回来时完全忘记了差分，所以区间加，一次查询我选择了线段树，最">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-07T07:58:37.000Z">
 <meta property="article:modified_time" content="2025-06-09T07:54:04.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="总结">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -36,7 +36,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>20250607考后总结 - lzj&#39;blog</title>
+  <title>20250607考后总结 - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -109,7 +109,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -142,18 +142,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -255,6 +243,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -270,7 +263,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          708 字
+          712 字
         
       </span>
     
@@ -320,45 +313,32 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">20250607考后总结</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-06-09T15:54:04+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
                 <h2 id="总览">总览</h2>
-<p>本次考试共拿 <span class="math inline">85</span> 分，比一等线低了
-<span class="math inline">41</span> 分。其中，分数组成为 <span
-class="math inline">50 + 35 + 0 + 0</span>，T1 符合预期，T2 超出预期，T3
-显著低于预期，T4 符合预期。</p>
-<h2 id="t1">T1</h2>
-<p>开考后我先浏览了一遍所有的题目，其中，T1
-由于是二维三角加，所以认为可能有特殊性质，考虑了一下三角差分，但是没有想到一个特别好的差分方法，所以暂时跳过了，转头回来时完全忘记了差分，所以区间加，一次查询我选择了线段树，最后获得了
-<span class="math inline">50</span> 分。</p>
-<p>最后看题解实际上直接每行差分就可以拿到 <span
-class="math inline">90</span>
-分及以上（只能说签到题还是太签到了），但是我却脑子不知道怎么了，二维三角差分一看题解就懂了，而且还可以先横着差分再斜着差分，也可以过。</p>
+<p>本次考试共拿 $85$ 分，比一等线低了 $41$ 分。其中，分数组成为 $50+35+0+0$，T1 符合预期，T2 超出预期，T3 显著低于预期，T4 符合预期。</p>
+<h2 id="T1">T1</h2>
+<p>开考后我先浏览了一遍所有的题目，其中，T1 由于是二维三角加，所以认为可能有特殊性质，考虑了一下三角差分，但是没有想到一个特别好的差分方法，所以暂时跳过了，转头回来时完全忘记了差分，所以区间加，一次查询我选择了线段树，最后获得了 $50$ 分。</p>
+<p>最后看题解实际上直接每行差分就可以拿到 $90$ 分及以上（只能说签到题还是太签到了），但是我却脑子不知道怎么了，二维三角差分一看题解就懂了，而且还可以先横着差分再斜着差分，也可以过。</p>
 <p>签到题没有拿到本该拿到的分。</p>
-<h2 id="t2">T2</h2>
-<p>思维题，需要观察到<strong>保留 <span
-class="math inline"><em>S</em></span> 中所有是 <span
-class="math inline"><em>b</em><sub><em>i</em></sub></span>
-倍数的数字，或者保留 <span class="math inline"><em>S</em></span>
-中所有不是 <span
-class="math inline"><em>b</em><sub><em>i</em></sub></span>
-倍数的数字</strong>可以在每次操作后将原集合分为不交的两部分，所以可以使用类似二叉树的结构维护（没想到），又需要观察到当
-<span class="math inline"><em>m</em> &gt; 2 × log <em>n</em></span>
-时答案既不可能大于 <span
-class="math inline">0</span>（因为先手每次至少可以让集合大小减半，使得最后一个数也不剩），又不可能小于
-<span
-class="math inline">0</span>。但是我的思路与之十分不同，因为我看到当
-<span class="math inline"><em>m</em></span> 很大时，答案几乎都是 <span
-class="math inline">0</span>，而答案比较小时，贪心又可以过，于是我相信出题人的数据可能随机的比较多，于是就写了一个只看当前一步的贪心，最终拿了
-<span class="math inline">35</span> 分。</p>
+<h2 id="T2">T2</h2>
+<p>思维题，需要观察到<strong>保留 $S$ 中所有是 $b_i$ 倍数的数字，或者保留 $S$ 中所有不是 $b_i$ 倍数的数字</strong>可以在每次操作后将原集合分为不交的两部分，所以可以使用类似二叉树的结构维护（没想到），又需要观察到当 $m&gt;2\times\log n$ 时答案既不可能大于 $0$（因为先手每次至少可以让集合大小减半，使得最后一个数也不剩），又不可能小于 $0$。但是我的思路与之十分不同，因为我看到当 $m$ 很大时，答案几乎都是 $0$，而答案比较小时，贪心又可以过，于是我相信出题人的数据可能随机的比较多，于是就写了一个只看当前一步的贪心，最终拿了 $35$ 分。</p>
 <p>总结：观察力不够。</p>
-<h2 id="t3">T3</h2>
-<p>赛时磕的最久的一道题，观察到了可以把它转化到图论，但是我观察到两个数有连边的条件是
-<span class="math inline">gcd </span>
-是合数我就想到点双，后来在代码写完后发现了一个非常简单的错误（<code>6 10 15</code>），就不知道怎么办了，一直考虑优化点双，但是实际上可以从半素数的角度考虑，直接求割点就完事了。</p>
+<h2 id="T3">T3</h2>
+<p>赛时磕的最久的一道题，观察到了可以把它转化到图论，但是我观察到两个数有连边的条件是 $\gcd$ 是合数我就想到点双，后来在代码写完后发现了一个非常简单的错误（<code>6 10 15</code>），就不知道怎么办了，一直考虑优化点双，但是实际上可以从半素数的角度考虑，直接求割点就完事了。</p>
 <p>还有，我发现分解有些慢，而且还不好处理，于是就预处理了欧拉筛，这与题解也不谋而合。总结：除了半素数，其他都考虑到了，就是说我的观察能力还不够。</p>
-<h2 id="t4">T4</h2>
+<h2 id="T4">T4</h2>
 <p>首先，第一步是转化题意，将答案分成两部分进行计算，但是实际上真正困难的点在于求跨过某点的数量，而我考场上也是卡在了这一步。</p>
 <p>然后看不懂题解了。</p>
 <p>咕。</p>
@@ -393,7 +373,7 @@ class="math inline">0</span>，而答案比较小时，贪心又可以过，于�
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -438,29 +418,6 @@ class="math inline">0</span>，而答案比较小时，贪心又可以过，于�
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2025/07/09/%E8%AE%A1%E6%95%B0%E7%B1%BB-DP/" title="计数类 DP">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">计数类 DP</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2025/05/20/%E9%A2%98%E8%A7%A3%EF%BC%9A%E3%80%90%E6%A8%A1%E6%9D%BF%E3%80%91%E9%A2%84%E6%B5%81%E6%8E%A8%E8%BF%9B/" title="题解：【模板】预流推进">
-                        <span class="hidden-mobile">题解：【模板】预流推进</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -682,6 +639,33 @@ class="math inline">0</span>，而答案比较小时，贪心又可以过，于�
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

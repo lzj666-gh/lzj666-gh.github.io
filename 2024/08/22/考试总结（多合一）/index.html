@@ -16,19 +16,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="考试总结（多合一）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="考试总结（多合一）">
 <meta property="og:url" content="https://lzj-blog.top/2024/08/22/%E8%80%83%E8%AF%95%E6%80%BB%E7%BB%93%EF%BC%88%E5%A4%9A%E5%90%88%E4%B8%80%EF%BC%89/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="考试总结（多合一）">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-08-22T09:08:20.000Z">
 <meta property="article:modified_time" content="2025-05-08T06:30:28.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="总结">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -36,7 +36,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>考试总结（多合一） - lzj&#39;blog</title>
+  <title>考试总结（多合一） - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -109,7 +109,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -142,18 +142,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -255,6 +243,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -320,78 +313,68 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">考试总结（多合一）</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-08T14:30:28+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
-                <h2 id="section">0821</h2>
+                <h2 id="0821">0821</h2>
 <h3 id="总览">总览</h3>
 <p>212pts，还行（吗？）。还是挂了不少分的，主要是因为一些口胡的结论马上就用（当然，考试要结束时用绝对没问题），导致我本来可以拿到的一些分就在这样的情况下白白的丢掉了。</p>
 <p>一句话：缺乏严谨的思考。</p>
-<h3 id="t1">T1</h3>
-<p><span
-class="math display">96<em>p</em><em>t</em><em>s</em> = 24 × <em>A</em><em>C</em> + 1 × <em>M</em><em>L</em><em>E</em></span></p>
-<p>一道最短路+字符串的题。当时的想法一下子就是 <span
-class="math inline"><em>D</em><em>i</em><em>j</em><em>k</em><em>s</em><em>t</em><em>r</em><em>a</em></span>，推了一下发现可行，于是马上写了起来，但是再分析一下就会发现确实会
-<span
-class="math inline"><em>M</em><em>L</em><em>E</em></span>，救不回来的那种，主要原因是字符串太占空间了，结果题解用的是拆点+贪心，很大程度上解决了字符串的占空间问题。</p>
+<h3 id="T1">T1</h3>
+<p>$$96pts=24 \times AC+1 \times MLE$$</p>
+<p>一道最短路+字符串的题。当时的想法一下子就是 $Dijkstra$，推了一下发现可行，于是马上写了起来，但是再分析一下就会发现确实会 $MLE$，救不回来的那种，主要原因是字符串太占空间了，结果题解用的是拆点+贪心，很大程度上解决了字符串的占空间问题。</p>
 <p>总结：不要拿着看时间复杂度，可行性就开写，也要看空间复杂度。</p>
-<h3 id="t2">T2</h3>
-<p><span
-class="math display">40<em>p</em><em>t</em><em>s</em> = 10 × <em>A</em><em>C</em> + 9 × <em>T</em><em>L</em><em>E</em> + 6 × <em>R</em><em>E</em></span></p>
+<h3 id="T2">T2</h3>
+<p>$$40pts=10 \times AC + 9 \times TLE + 6 \times RE$$</p>
 <p>一道数学，和欧拉函数有关。事实证明，我连暴力分52pts都没拿满。最终也是需要一些数学证明才能做出来，还需要一些迭代函数的知识，只能以后再补一下数学了。</p>
-<h3 id="t3">T3</h3>
-<p><span
-class="math display">24<em>p</em><em>t</em><em>s</em> = 6 × <em>A</em><em>C</em> + 19 × <em>W</em><em>A</em></span></p>
+<h3 id="T3">T3</h3>
+<p>$$24pts=6 \times AC+19 \times WA$$</p>
 <p>明明是一个01背包的问题，结果被我乱瞪成了贪心，而且单纯的01背包还不行，还得针对多重背包进行二进制优化，感觉不像我考试的时候写得出来的。</p>
-<h3 id="t4">T4</h3>
-<p><span
-class="math display">52<em>p</em><em>t</em><em>s</em> = 13 × <em>A</em><em>C</em> + 12 × <em>T</em><em>L</em><em>E</em></span></p>
+<h3 id="T4">T4</h3>
+<p>$$52pts=13 \times AC+12\times TLE$$</p>
 <p>字符串操作题，开始以为是trie树，后来看了一下感觉能用rope做（大雾），但是string的常数小，而且好写，所以最后还是用了string骗到了暴力分，正解是FHQ-Treap，还是位置平衡树（出题人编的，用平衡树维护序列，怎么会有人想着用这种奇奇怪怪的东西），好吧，对数据结构理解实在不清晰。</p>
-<h2 id="section-1">0822</h2>
-<h3 id="t1-1">T1</h3>
-<p><span
-class="math display">100<em>p</em><em>t</em><em>s</em></span></p>
+<h2 id="0822">0822</h2>
+<h3 id="T1-2">T1</h3>
+<p>$$100pts$$</p>
 <p>实在是水，就一个建图，跑最长路，或者DP，实在水。</p>
 <blockquote>
 <p>出题意图：送分。</p>
-<p><span class="math inline">$\\\normalsize\tag*{\color{grey}\text{——by
-题解}} \ $</span></p>
+<p>$\\normalsize\tag*{\color{grey}\text{——by 题解}} \ $</p>
 </blockquote>
-<h3 id="t2-1">T2</h3>
-<p><span
-class="math display">5<em>p</em><em>t</em><em>s</em> = 1 × <em>A</em><em>C</em> + 13 × <em>W</em><em>A</em> + 6 × <em>T</em><em>L</em><em>E</em></span></p>
+<h3 id="T2-2">T2</h3>
+<p>$$5pts=1\times AC+13\times WA+6\times TLE$$</p>
 <p>事实证明，我确实能想到正解，但只有一部分。</p>
 <blockquote>
 <p>这种暴力更新的方法，最坏复杂度可能是平方的。我们对非树边按照权值从小到大排序。先处理权值小的，再处理权值大的。这样如果某个边的权值已经被修改过，那么后面的更新就不用重复修改了。</p>
 </blockquote>
 <p>就在题解想着怎么在这里优化时，我：rand()不就好了。成功获得基本全WA的好成绩。</p>
 <p>其实我代码在这里改成题解的优化就能A了。</p>
-<h3 id="t3-1">T3</h3>
-<p><span
-class="math display">51<em>p</em><em>t</em><em>s</em> = 17 × <em>A</em><em>C</em> + 13 × <em>R</em><em>E</em></span></p>
-<p>这是最不应该的一题，本来考场上已经想好了正解，结果打的时候发现会MLE，其实数据卡不满，数组开理论极限的<span
-class="math inline">$\frac{1}{4}$</span>就能过的，我脑瘫了。</p>
-<p>还有就是其实这样改后我是<span
-class="math inline">92<em>p</em><em>t</em><em>s</em></span>，还有<span
-class="math inline">8<em>p</em><em>t</em><em>s</em></span>是有一个数组名写错了，但是两个数组内的元素本就同源，所以还是可以拿到那么多分。</p>
+<h3 id="T3-2">T3</h3>
+<p>$$51pts=17\times AC+13\times RE$$</p>
+<p>这是最不应该的一题，本来考场上已经想好了正解，结果打的时候发现会MLE，其实数据卡不满，数组开理论极限的$\frac{1}{4}$就能过的，我脑瘫了。</p>
+<p>还有就是其实这样改后我是$92pts$，还有$8pts$是有一个数组名写错了，但是两个数组内的元素本就同源，所以还是可以拿到那么多分。</p>
 <p>我的赛时AC啊~~~~~~~~~~~~~</p>
-<h3 id="t4-1">T4</h3>
-<p><span
-class="math display">20<em>p</em><em>t</em><em>s</em> = <em>特</em><em>殊</em><em>性</em><em>质</em></span></p>
+<h3 id="T4-2">T4</h3>
+<p>$$20pts=特殊性质$$</p>
 <p>题解好抽象，先用一颗线段树维护[l,r]的影响，再用单调栈维护a[r]对线段树的影响，写不出来，听都差点没听懂，差评。</p>
 <h3 id="总结">总结</h3>
 <p>这次考试基本全是不该丢的分和不该丢的分，还加上听都听不懂的题解和差一点想出的正解，最想打死自己的一集。</p>
-<h2 id="section-2">0824</h2>
-<h2 id="section-3">0827</h2>
-<h2 id="section-4">0828</h2>
-<h3 id="总览-1">总览</h3>
-<p>最让我没想到的是这次考试考了珂朵莉树，而且我看出来了后还写挂了，最后连暴力分都没拿到，还是只能说明我的代码实现能力太差了。最后只有
-T1 拿了
-100pts，其他同学都打的暴力，最后分比我高（笑死，我咋这么菜），最后还是说明不要哦拿到题目上来知道正解就开始打，还是估计一下自己能不能打出来再说。</p>
-<p>还有就是这套题是 LBY 出的，只能说题面 8
-个锅是什么鬼，实在是看不下去，不比某个 CBC，虽然没给形式化题意，而题面
-PDF 有 13 页，但是他的题面里没有表意不清的地方。最后这场比赛我也是拿了
-100pts 就没了</p>
+<h2 id="0824">0824</h2>
+<h2 id="0827">0827</h2>
+<h2 id="0828">0828</h2>
+<h3 id="总览-2">总览</h3>
+<p>最让我没想到的是这次考试考了珂朵莉树，而且我看出来了后还写挂了，最后连暴力分都没拿到，还是只能说明我的代码实现能力太差了。最后只有 T1 拿了 100pts，其他同学都打的暴力，最后分比我高（笑死，我咋这么菜），最后还是说明不要哦拿到题目上来知道正解就开始打，还是估计一下自己能不能打出来再说。</p>
+<p>还有就是这套题是 LBY 出的，只能说题面 8 个锅是什么鬼，实在是看不下去，不比某个 CBC，虽然没给形式化题意，而题面 PDF 有 13 页，但是他的题面里没有表意不清的地方。最后这场比赛我也是拿了 100pts 就没了</p>
 
                 
               </div>
@@ -423,7 +406,7 @@ PDF 有 13 页，但是他的题面里没有表意不清的地方。最后这场
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -468,29 +451,6 @@ PDF 有 13 页，但是他的题面里没有表意不清的地方。最后这场
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2024/08/24/CSP-J%E8%86%9C%E4%BD%A0%E8%B5%9B%E6%80%BB%E7%BB%93/" title="CSP-J膜你赛总结">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">CSP-J膜你赛总结</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2024/08/20/%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" title="算法总结">
-                        <span class="hidden-mobile">算法总结</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -712,6 +672,33 @@ PDF 有 13 页，但是他的题面里没有表意不清的地方。最后这场
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

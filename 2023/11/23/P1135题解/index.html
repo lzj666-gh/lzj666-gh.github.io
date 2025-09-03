@@ -16,19 +16,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="P1135题解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="P1135题解">
 <meta property="og:url" content="https://lzj-blog.top/2023/11/23/P1135%E9%A2%98%E8%A7%A3/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="P1135题解">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-11-23T05:49:34.000Z">
 <meta property="article:modified_time" content="2025-05-08T06:35:00.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="题解">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -36,7 +36,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>P1135题解 - lzj&#39;blog</title>
+  <title>P1135题解 - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -109,7 +109,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -142,18 +142,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -255,6 +243,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -320,26 +313,32 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">P1135题解</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-08T14:35:00+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
                 <h2 id="做法">做法</h2>
 <p>本题使用 BFS 来做是又快又简单的。</p>
 <h2 id="实现">实现</h2>
-<p>BFS
-广度优先搜索是使用队列（queue，先进先出）来实现，整个过程也可以看做一个倒立的树形：</p>
-<ol type="1">
+<p>BFS 广度优先搜索是使用队列（queue，先进先出）来实现，整个过程也可以看做一个倒立的树形：</p>
+<ol>
 <li>把根节点放到队列的末尾。</li>
-<li>每次从队列的头部取出一个元素，查看这个元素所有的下一级元素，把它们放到队列的末尾
-(不需要排序，因为默认每次增加权重相同)。并把这个元素记为它下一级元素的前驱。</li>
+<li>每次从队列的头部取出一个元素，查看这个元素所有的下一级元素，把它们放到队列的末尾 (不需要排序，因为默认每次增加权重相同)。并把这个元素记为它下一级元素的前驱。</li>
 <li>找到所要找的元素时结束程序。</li>
 <li>如果遍历整个树还没有找到，结束程序。</li>
 </ol>
-<p>最坏情况 <span
-class="math inline"><em>Θ</em>(<em>n</em>)</span>。</p>
+<p>最坏情况 $\Theta(n)$。</p>
 <h2 id="代码">代码</h2>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> maxn 200+10</span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">int</span> n,k[maxn],a,b,bb[maxn];<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">node</span>&#123;<br>	<span class="hljs-type">int</span> k,step;<br>	<span class="hljs-built_in">node</span>(<span class="hljs-type">int</span> kk,<span class="hljs-type">int</span> st)&#123;<br>		k=kk;step=st;<br>	&#125;<br>&#125;;<br>queue&lt;node&gt; q;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">bool</span> <span class="hljs-title">p</span><span class="hljs-params">(<span class="hljs-type">int</span> dx)</span></span>&#123;<br>	<span class="hljs-keyword">return</span> dx&lt;=n&amp;&amp;dx&gt;=<span class="hljs-number">1</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">bfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y)</span></span>&#123;<br>	<span class="hljs-type">int</span> dx;<br>	<span class="hljs-keyword">if</span>(x==y) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	q.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">node</span>(x,<span class="hljs-number">0</span>));<br>	bb[x]=<span class="hljs-literal">true</span>;<br>	<span class="hljs-keyword">while</span>(!q.<span class="hljs-built_in">empty</span>())&#123;<br>		node no=q.<span class="hljs-built_in">front</span>();<br>		q.<span class="hljs-built_in">pop</span>();<br>		dx=no.k+k[no.k];<br>		<span class="hljs-keyword">if</span>(<span class="hljs-built_in">p</span>(dx)&amp;&amp;bb[dx]==<span class="hljs-literal">false</span>)&#123;<br>			bb[dx]=<span class="hljs-literal">true</span>;<br>			q.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">node</span>(dx,no.step<span class="hljs-number">+1</span>));<br>			<span class="hljs-keyword">if</span>(dx==y) <span class="hljs-keyword">return</span> no.step<span class="hljs-number">+1</span>;<br>		&#125;<br>		dx=no.k-k[no.k];<br>		<span class="hljs-keyword">if</span>(<span class="hljs-built_in">p</span>(dx)&amp;&amp;bb[dx]==<span class="hljs-literal">false</span>)&#123;<br>			bb[dx]=<span class="hljs-literal">true</span>;<br>			q.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">node</span>(dx,no.step<span class="hljs-number">+1</span>));<br>			<span class="hljs-keyword">if</span>(dx==y) <span class="hljs-keyword">return</span> no.step<span class="hljs-number">+1</span>;<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>	std::ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);cout.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);<br>	cin&gt;&gt;n&gt;&gt;a&gt;&gt;b;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++) cin&gt;&gt;k[i];<br>	cout&lt;&lt;<span class="hljs-built_in">bfs</span>(a,b)&lt;&lt;endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
                 
               </div>
             
@@ -370,7 +369,7 @@ class="math inline"><em>Θ</em>(<em>n</em>)</span>。</p>
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -415,29 +414,6 @@ class="math inline"><em>Θ</em>(<em>n</em>)</span>。</p>
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2023/11/23/CF1842B%20%E9%A2%98%E8%A7%A3/" title="CF1842B 题解">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">CF1842B 题解</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2023/11/21/CF1023B%20Pair%20of%20Toys%20%E9%A2%98%E8%A7%A3/" title="CF1023B Pair of Toys 题解">
-                        <span class="hidden-mobile">CF1023B Pair of Toys 题解</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -659,6 +635,33 @@ class="math inline"><em>Θ</em>(<em>n</em>)</span>。</p>
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

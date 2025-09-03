@@ -16,29 +16,33 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="莫队简介">
 <meta property="og:type" content="article">
 <meta property="og:title" content="莫队">
 <meta property="og:url" content="https://lzj-blog.top/2024/11/16/%E8%8E%AB%E9%98%9F/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="莫队简介">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/3jfltbx2.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/ikv2t9ol.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/9nhd21j8.png">
 <meta property="article:published_time" content="2024-11-16T09:06:00.000Z">
 <meta property="article:modified_time" content="2025-07-01T02:07:28.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="讲题">
 <meta property="article:tag" content="莫队">
 <meta property="article:tag" content="骗分">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.luogu.com.cn/upload/image_hosting/3jfltbx2.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>莫队 - lzj&#39;blog</title>
+  <title>莫队 - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -111,7 +115,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -144,18 +148,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -257,6 +249,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -322,271 +319,141 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">莫队</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-07-01T10:07:28+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
-                <h2 id="配套资料">配套资料（？）</h2>
-<p>题单：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/training/664944#information"
-class="uri">https://www.luogu.com.cn/training/664944#information</a></p>
+                <h2 id="配套资料（？）">配套资料（？）</h2>
+<p>题单：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/training/664944#information">https://www.luogu.com.cn/training/664944#information</a></p>
 <p>参考代码：<a href="/paste/929v6j2g">/paste/929v6j2g</a></p>
 <h2 id="来源">来源</h2>
-<p>话说，彼时的 OI 界 RMQ 问题并起，而我们的暴力却不能骗到太多分，于是
-CF
-高手圈内流行起了一种快速处理离线问题的算法，并由莫涛整理，这种算法便被称之为莫队。后人便在此基础上加以拓展，统称为莫队算法。</p>
+<p>话说，彼时的 OI 界 RMQ 问题并起，而我们的暴力却不能骗到太多分，于是 CF 高手圈内流行起了一种快速处理离线问题的算法，并由莫涛整理，这种算法便被称之为莫队。后人便在此基础上加以拓展，统称为莫队算法。</p>
 <h2 id="普通莫队">普通莫队</h2>
 <h3 id="应用范围">应用范围</h3>
-<p>假设 <span class="math inline"><em>n</em>, <em>m</em></span>
-同阶，那么对于序列上的区间询问问题，如果从 <span
-class="math inline">[<em>l</em>, <em>r</em>]</span> 的答案能够 <span
-class="math inline"><em>O</em>(1)</span> 扩展到 <span
-class="math inline">[<em>l</em> − 1, <em>r</em>], [<em>l</em> + 1, <em>r</em>], [<em>l</em>, <em>r</em> + 1], [<em>l</em>, <em>r</em> − 1]</span>（即与
-<span class="math inline">[<em>l</em>, <em>r</em>]</span>
-相邻的区间）的答案，那么莫队可以在 <span
-class="math inline">$O(n\sqrt{n})$</span>
-的复杂度内求出所有询问的答案。</p>
+<p>假设 $n,m$ 同阶，那么对于序列上的区间询问问题，如果从 $[l,r]$ 的答案能够 $O(1)$ 扩展到 $[l-1,r],[l+1,r],[l,r+1],[l,r-1]$（即与 $[l,r]$ 相邻的区间）的答案，那么莫队可以在 $O(n\sqrt{n})$ 的复杂度内求出所有询问的答案。</p>
 <h3 id="原理">原理</h3>
-<p>双指针<del>左右横跳</del>跳跃。</p>
-<p><img
-src="https://cdn.luogu.com.cn/upload/image_hosting/3jfltbx2.png" srcset="/img/loading.gif" lazyload /></p>
+<p>双指针<s>左右横跳</s>跳跃。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/3jfltbx2.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>以这张图为例，我们要在 Q1 和 Q2 两个询问间转移，怎么转移呢？</p>
 <p>假设我们已经求出了 Q1 的答案，我们只需要干 2 步。</p>
-<ol type="1">
+<ol>
 <li>左指针右移，求出 Q3 的答案。（删除操作）</li>
 <li>右指针右移，求出 Q2 的答案。（增加操作）</li>
 </ol>
 <p>那么如何从 Q2 求到 Q1 呢？</p>
 <p>还是如此。</p>
-<ol type="1">
+<ol>
 <li>右指针左移，求出 Q3 的答案。（删除操作）</li>
 <li>左指针左移，求出 Q1 的答案。（增加操作）</li>
 </ol>
-<p>于是，我们将 1 操作成为加入操作，2
-操作称为删除操作，莫队中的加入和删除操作是解决问题的核心，一般来说加入和删除操作的时间复杂度得小，大多数情况下得确保它是
-<span class="math inline"><em>O</em>(1)</span> 的。</p>
+<p>于是，我们将 1 操作成为加入操作，2 操作称为删除操作，莫队中的加入和删除操作是解决问题的核心，一般来说加入和删除操作的时间复杂度得小，大多数情况下得确保它是 $O(1)$ 的。</p>
 <p>具体怎么实现呢？我们来看一道例题。</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3901"
-class="uri">https://www.luogu.com.cn/problem/P3901</a></p>
-<p>只看怎么实现加入和删除操作的话，我们可以观察到值域只有 <span
-class="math inline">10<sup>5</sup></span>，考虑用一个桶来维护，再维护一个出现次数超过
-<span class="math inline">1</span> 次的数的个数就行了。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3901">https://www.luogu.com.cn/problem/P3901</a></p>
+<p>只看怎么实现加入和删除操作的话，我们可以观察到值域只有 $10^5$，考虑用一个桶来维护，再维护一个出现次数超过 $1$ 次的数的个数就行了。</p>
 <p>代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">int</span> vis[<span class="hljs-number">100000</span> + <span class="hljs-number">10</span>], a[<span class="hljs-number">100000</span> + <span class="hljs-number">10</span>], sum;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ins</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>&#123;<br>	<span class="hljs-keyword">if</span> (vis[a[x]] == <span class="hljs-number">1</span>)<br>		sum++;<br>	vis[a[x]]++;<br>&#125;<br><span class="hljs-comment">//加入操作</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">del</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>&#123;<br>	vis[a[x]]--;<br>	<span class="hljs-keyword">if</span> (vis[a[x]] == <span class="hljs-number">1</span>)<br>		sum--;<br>&#125;<br><span class="hljs-comment">//删除操作</span><br></code></pre></td></tr></table></figure>
 <p>那么这样，我们就可以做出这道题了……（吗？）</p>
-<p>不对啊，这样暴力跳，很明显会被卡到 <span
-class="math inline"><em>O</em>(<em>n</em><sup>2</sup>)</span> 啊？</p>
-<p><img
-src="https://cdn.luogu.com.cn/upload/image_hosting/ikv2t9ol.png" srcset="/img/loading.gif" lazyload /></p>
-<p><del>莫队算法伪掉了，不用学了。</del></p>
-<p>再对着这个图看一眼，诶，我们发现从 Q1 到 Q3 到 Q5
-等等的转移其实代价很小，所以我们自然的想到一个技巧：重排询问！</p>
-<p>所以到底怎么弄呢，我们可以考虑把所有查询区间按左端点排序，从而使左指针最多移动
-<span class="math inline"><em>O</em>(<em>n</em>)</span>
-次。但这样的话右端点又是无序的，右指针又让整体复杂度打回原形。看上去，这个复杂度已经不能再优化了。</p>
+<p>不对啊，这样暴力跳，很明显会被卡到 $O(n^2)$ 啊？</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/ikv2t9ol.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><s>莫队算法伪掉了，不用学了。</s></p>
+<p>再对着这个图看一眼，诶，我们发现从 Q1 到 Q3 到 Q5 等等的转移其实代价很小，所以我们自然的想到一个技巧：重排询问！</p>
+<p>所以到底怎么弄呢，我们可以考虑把所有查询区间按左端点排序，从而使左指针最多移动 $O(n)$ 次。但这样的话右端点又是无序的，右指针又让整体复杂度打回原形。看上去，这个复杂度已经不能再优化了。</p>
 <p>于是，一个非常神奇的点出现了，莫队的重排询问机制。</p>
-<p>先说怎么做，首先我们先这 <span class="math inline"><em>n</em></span>
-个点顺序平均分成 <span class="math inline">$\sqrt{n}$</span>
-个块，然后询问间排序时以左端点所在的块编号为第一关键字，右端点为第二关键字。</p>
+<p>先说怎么做，首先我们先这 $n$ 个点顺序平均分成 $\sqrt{n}$ 个块，然后询问间排序时以左端点所在的块编号为第一关键字，右端点为第二关键字。</p>
 <p>嗯？这样就能优化了吗？</p>
-<p>证：令每一块中 <span class="math inline"><em>L</em></span> 的最大值为
-<span class="math inline">$\max_1,\max_2,\max_3, \cdots ,
-\max_{\lceil\sqrt{n}\rceil}$</span>。</p>
-<p>由第一次排序可知，<span class="math inline">$\max_1 \le \max_2 \le
-\cdots \le \max_{\lceil\sqrt{n}\rceil}$</span>。</p>
-<p>显然，对于每一块暴力求出第一个询问的时间复杂度为 <span
-class="math inline"><em>O</em>(<em>n</em>)</span>。</p>
-<p>考虑最坏的情况，在每一块中，<span
-class="math inline"><em>R</em></span> 的最大值均为 <span
-class="math inline"><em>n</em></span>，每次修改操作均要将 <span
-class="math inline"><em>L</em></span> 由 <span
-class="math inline">max<sub><em>i</em> − 1</sub></span> 修改至 <span
-class="math inline">max<sub><em>i</em></sub></span> 或由 <span
-class="math inline">max<sub><em>i</em></sub></span> 修改至 <span
-class="math inline">max<sub><em>i</em> − 1</sub></span>。</p>
-<p>考虑 <span class="math inline"><em>R</em></span>：因为 <span
-class="math inline"><em>R</em></span>
-在块中已经排好序，所以在同一块修改完它的时间复杂度为 <span
-class="math inline"><em>O</em>(<em>n</em>)</span>。对于所有块就是 <span
-class="math inline">$O(n\sqrt{n})$</span>。</p>
-<p>重点分析 <span
-class="math inline"><em>L</em></span>：因为每一次改变的时间复杂度都是
-<span
-class="math inline"><em>O</em>(max<sub><em>i</em></sub> − max<sub><em>i</em> − 1</sub>)</span>
-的，所以在同一块中时间复杂度为 <span
-class="math inline">$O(\sqrt{n}\times(\max_i-\max_{i-1}))$</span>。</p>
-<p>将每一块 <span class="math inline"><em>L</em></span>
-的时间复杂度合在一起，可以得到：</p>
-<p>对于 <span class="math inline"><em>L</em></span> 的总时间复杂度为</p>
-<p><span class="math display">$$
-\begin{aligned}
-&amp;
-O(\sqrt{n}(\max{}_1-1)+\sqrt{n}(\max{}_2-\max{}_1)+\sqrt{n}(\max{}_3-\max{}_2)+\cdots+\sqrt{n}(\max{}_{\lceil\sqrt{n}\rceil}-\max{}_{\lceil\sqrt{n}\rceil-1))}
-\\
-= \phantom{} &amp;
-O(\sqrt{n}\times(\max{}_1-1+\max{}_2-\max{}_1+\max{}_3-\max{}_2+\cdots+\max{}_{\lceil\sqrt{n}\rceil-1}-\max{}_{\lceil\sqrt{n}\rceil-2}+\max{}_{\lceil\sqrt{n}\rceil}-\max{}_{\lceil\sqrt{n}\rceil-1)})
-\\
-= \phantom{} &amp; O(\sqrt{n}\times(\max{}_{\lceil\sqrt{n}\rceil-1}))\\
-\end{aligned}
-$$</span> （裂项求和）</p>
-<p>由题可知 <span
-class="math inline">$\max_{\lceil\sqrt{n}\rceil}$</span> 最大为 <span
-class="math inline"><em>n</em></span>，所以 <span
-class="math inline"><em>L</em></span> 的总时间复杂度最坏情况下为 <span
-class="math inline">$O(n\sqrt{n})$</span>。</p>
-<p>于是就得出了总时间复杂度 <span
-class="math inline">$O(n\sqrt{n}+n\sqrt{n}+n\log{n})=O(n\sqrt{n})$</span>。</p>
-<p>但是对于 <span class="math inline"><em>m</em></span> 的其他取值，如
-<span
-class="math inline"><em>m</em> &lt; <em>n</em></span>，分块方式需要改变才能变的更优。</p>
+<p>证：令每一块中 $L$ 的最大值为 $\max_1,\max_2,\max_3, \cdots , \max_{\lceil\sqrt{n}\rceil}$。</p>
+<p>由第一次排序可知，$\max_1 \le \max_2 \le \cdots \le \max_{\lceil\sqrt{n}\rceil}$。</p>
+<p>显然，对于每一块暴力求出第一个询问的时间复杂度为 $O(n)$。</p>
+<p>考虑最坏的情况，在每一块中，$R$ 的最大值均为 $n$，每次修改操作均要将 $L$ 由 $\max_{i - 1}$ 修改至 $\max_i$ 或由 $\max_i$ 修改至 $\max_{i - 1}$。</p>
+<p>考虑 $R$：因为 $R$ 在块中已经排好序，所以在同一块修改完它的时间复杂度为 $O(n)$。对于所有块就是 $O(n\sqrt{n})$。</p>
+<p>重点分析 $L$：因为每一次改变的时间复杂度都是 $O(\max_i-\max_{i-1})$ 的，所以在同一块中时间复杂度为 $O(\sqrt{n}\times(\max_i-\max_{i-1}))$。</p>
+<p>将每一块 $L$ 的时间复杂度合在一起，可以得到：</p>
+<p>对于 $L$ 的总时间复杂度为</p>
+<p>$$<br>
+\begin{aligned}<br>
+&amp; O(\sqrt{n}(\max{}_1-1)+\sqrt{n}(\max{}_2-\max{}_1)+\sqrt{n}(\max{}<em>3-\max{}<em>2)+\cdots+\sqrt{n}(\max{}</em>{\lceil\sqrt{n}\rceil}-\max{}</em>{\lceil\sqrt{n}\rceil-1))} \<br>
+= \phantom{} &amp; O(\sqrt{n}\times(\max{}<em>1-1+\max{}<em>2-\max{}<em>1+\max{}<em>3-\max{}<em>2+\cdots+\max{}</em>{\lceil\sqrt{n}\rceil-1}-\max{}</em>{\lceil\sqrt{n}\rceil-2}+\max{}</em>{\lceil\sqrt{n}\rceil}-\max{}</em>{\lceil\sqrt{n}\rceil-1)}) \<br>
+= \phantom{} &amp; O(\sqrt{n}\times(\max{}</em>{\lceil\sqrt{n}\rceil-1}))\<br>
+\end{aligned}<br>
+$$<br>
+（裂项求和）</p>
+<p>由题可知 $\max_{\lceil\sqrt{n}\rceil}$ 最大为 $n$，所以 $L$ 的总时间复杂度最坏情况下为 $O(n\sqrt{n})$。</p>
+<p>于是就得出了总时间复杂度 $O(n\sqrt{n}+n\sqrt{n}+n\log{n})=O(n\sqrt{n})$。</p>
+<p>但是对于 $m$ 的其他取值，如 $m&lt;n$，分块方式需要改变才能变的更优。</p>
 <p>怎么分块呢？</p>
-<p>我们设块长度为 <span
-class="math inline"><em>S</em></span>，那么对于任意多个在同一块内的询问，挪动的距离就是
-<span class="math inline"><em>n</em></span>，一共</p>
-<p><span class="math inline">$\displaystyle \frac{n}{S}$</span>
-个块，移动的总次数就是 <span class="math inline">$\displaystyle
-\frac{n^2}{S}$</span>，移动可能跨越块，所以还要加上一个 <span
-class="math inline"><em>m</em><em>S</em></span> 的复杂度，总复杂度为
-<span class="math inline">$\displaystyle
-O\left(\frac{n^2}{S}+mS\right)$</span>，我们要让这个值尽量小，那么就要将这两个项尽量相等，发现
-<span class="math inline"><em>S</em></span> 取 <span
-class="math inline">$\displaystyle \frac{n}{\sqrt{m}}$</span>
-是最优的，此时复杂度为</p>
-<p><span class="math display">$$
-O\left(\frac{n^2}{\displaystyle
-\frac{n}{\sqrt{m}}}+m\left(\frac{n}{\sqrt{m}}\right)\right)=O(n\sqrt{m})。
-$$</span></p>
-<p>事实上，如果块长度的设定不准确，则莫队的时间复杂度会受到很大影响。例如，如果
-<span class="math inline"><em>m</em></span> 与 <span
-class="math inline">$\sqrt n$</span> 同阶，并且块长误设为 <span
-class="math inline">$\sqrt
-n$</span>，则可以很容易构造出一组数据使其时间复杂度为 <span
-class="math inline">$O(n \sqrt n)$</span> 而不是正确的 <span
-class="math inline"><em>O</em>(<em>n</em>)</span>。</p>
+<p>我们设块长度为 $S$，那么对于任意多个在同一块内的询问，挪动的距离就是 $n$，一共</p>
+<p>$\displaystyle \frac{n}{S}$ 个块，移动的总次数就是 $\displaystyle \frac{n^2}{S}$，移动可能跨越块，所以还要加上一个 $mS$ 的复杂度，总复杂度为 $\displaystyle O\left(\frac{n^2}{S}+mS\right)$，我们要让这个值尽量小，那么就要将这两个项尽量相等，发现 $S$ 取 $\displaystyle \frac{n}{\sqrt{m}}$ 是最优的，此时复杂度为</p>
+<p>$$<br>
+O\left(\frac{n^2}{\displaystyle \frac{n}{\sqrt{m}}}+m\left(\frac{n}{\sqrt{m}}\right)\right)=O(n\sqrt{m})。<br>
+$$</p>
+<p>事实上，如果块长度的设定不准确，则莫队的时间复杂度会受到很大影响。例如，如果 $m$ 与 $\sqrt n$ 同阶，并且块长误设为 $\sqrt n$，则可以很容易构造出一组数据使其时间复杂度为 $O(n \sqrt n)$ 而不是正确的 $O(n)$。</p>
 <p>那么这样，我们就可以做出这道题了吧。</p>
 <h3 id="例题">例题</h3>
-<h4 id="httpswww.luogu.com.cnproblemp1494"><a
-target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1494"
-class="uri">https://www.luogu.com.cn/problem/P1494</a></h4>
-<p>考虑如何实现加入和删除，观察到实际取到两只相同颜色袜子的方案数就是
-<span class="math inline">$\displaystyle \sum_{i=1}^{n} (cnt_i-1) \times
-cnt_i$</span>，每次加入删除只有一个对应颜色的出现次数被修改了，考虑维护一个答案
-<span class="math inline"><em>s</em><em>u</em><em>m</em></span>
-先减去原来的 <span
-class="math inline">(<em>c</em><em>n</em><em>t</em><sub><em>i</em></sub> − 1) × <em>c</em><em>n</em><em>t</em><sub><em>i</em></sub></span>
-，再令 <span
-class="math inline"><em>c</em><em>n</em><em>t</em><sub><em>i</em></sub> ← <em>c</em><em>n</em><em>t</em><sub><em>i</em></sub> ± 1</span>，重新累加贡献就行了。</p>
+<h4 id="https-www-luogu-com-cn-problem-P1494"><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1494">https://www.luogu.com.cn/problem/P1494</a></h4>
+<p>考虑如何实现加入和删除，观察到实际取到两只相同颜色袜子的方案数就是 $\displaystyle \sum_{i=1}^{n} (cnt_i-1) \times cnt_i$，每次加入删除只有一个对应颜色的出现次数被修改了，考虑维护一个答案 $sum$ 先减去原来的 $(cnt_i-1) \times cnt_i$ ，再令 $cnt_i \gets cnt_i \pm 1$，重新累加贡献就行了。</p>
 <h3 id="局限性">局限性</h3>
 <p>只能离线，不能带修之类的；只能处理区间问题；必须得答案支持加入和删除可以小时间复杂度实现。</p>
 <h2 id="带修莫队">带修莫队</h2>
 <p>普通莫队是不能带修改的。</p>
-<p>我们可以强行让它可以修改，就像 <span
-class="math inline"><code>DP</code></span> 一样，可以强行加上一维
-<strong>时间维</strong>, 表示这次操作的时间。</p>
+<p>我们可以强行让它可以修改，就像 $\texttt{DP}$ 一样，可以强行加上一维 <strong>时间维</strong>, 表示这次操作的时间。</p>
 <p>时间维表示经历的修改次数。</p>
-<p>即把询问 <span class="math inline">[<em>l</em>, <em>r</em>]</span>
-变成 <span
-class="math inline">[<em>l</em>, <em>r</em>, time]</span>。</p>
-<p>那么我们的坐标也可以在时间维上移动，即 <span
-class="math inline">[<em>l</em>, <em>r</em>, time]</span>
-多了一维可以移动的方向，可以变成：</p>
-<p><span class="math display">$$
-[l-1,r,\text{time}]\\
-[l+1,r,\text{time}]\\
-[l,r-1,\text{time}]\\
-[l,r+1,\text{time}]\\
-[l,r,\text{time}-1]\\
-[l,r,\text{time}+1]
-$$</span></p>
-<p>这样的转移也是 <span class="math inline"><em>O</em>(1)</span>
-的，但是我们排序又多了一个关键字，再搞搞就行了。</p>
+<p>即把询问 $[l,r]$ 变成 $[l,r,\text{time}]$。</p>
+<p>那么我们的坐标也可以在时间维上移动，即 $[l,r,\text{time}]$ 多了一维可以移动的方向，可以变成：</p>
+<p>$$<br>
+[l-1,r,\text{time}]\<br>
+[l+1,r,\text{time}]\<br>
+[l,r-1,\text{time}]\<br>
+[l,r+1,\text{time}]\<br>
+[l,r,\text{time}-1]\<br>
+[l,r,\text{time}+1]<br>
+$$</p>
+<p>这样的转移也是 $O(1)$ 的，但是我们排序又多了一个关键字，再搞搞就行了。</p>
 <p>但是这样的话块的大小也需要重新调整。</p>
-<p>通过一通我不懂的证明，当块长取 <span
-class="math inline">$\dfrac{\sqrt[3]{n^{2}}\sqrt[3]{t}}{\sqrt[3]{m}}$</span>
-时有最优时间复杂度 <span
-class="math inline">$O\left(\sqrt[3]{n^{2}}\sqrt[3]{m^{2}}\sqrt[3]{t}\right)$</span>。</p>
-<p>常说的 <span
-class="math inline">$O\left(n^{\frac{5}{3}}\right)$</span> 便是把 <span
-class="math inline"><em>n</em>, <em>m</em>, <em>t</em></span>
-当做同数量级的时间复杂度。</p>
-<p>实际操作中还是推荐设定 <span
-class="math inline">$n^{\frac{2}{3}}$</span> 为块长。</p>
-<h3 id="例题-1">例题</h3>
-<h4 id="httpswww.luogu.com.cnproblemp1903"><a
-target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1903"
-class="uri">https://www.luogu.com.cn/problem/P1903</a></h4>
-<p>就和 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3901"
-class="uri">https://www.luogu.com.cn/problem/P3901</a>
-很像吧（甚至数字都一样），只需要加一维时间就行了嘛。</p>
-<h3 id="局限性-1">局限性</h3>
-<p>只能单修，只比暴力优化了一个 <span
-class="math inline">$n^{\frac{1}{3}}$</span>，但是毕竟优化了。本质上还是离线。</p>
+<p>通过一通我不懂的证明，当块长取 $\dfrac{\sqrt[3]{n^{2}}\sqrt[3]{t}}{\sqrt[3]{m}}$ 时有最优时间复杂度 $O\left(\sqrt[3]{n^{2}}\sqrt[3]{m^{2}}\sqrt[3]{t}\right)$。</p>
+<p>常说的 $O\left(n^{\frac{5}{3}}\right)$ 便是把 $n,m,t$ 当做同数量级的时间复杂度。</p>
+<p>实际操作中还是推荐设定 $n^{\frac{2}{3}}$ 为块长。</p>
+<h3 id="例题-2">例题</h3>
+<h4 id="https-www-luogu-com-cn-problem-P1903"><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1903">https://www.luogu.com.cn/problem/P1903</a></h4>
+<p>就和 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3901">https://www.luogu.com.cn/problem/P3901</a> 很像吧（甚至数字都一样），只需要加一维时间就行了嘛。</p>
+<h3 id="局限性-2">局限性</h3>
+<p>只能单修，只比暴力优化了一个 $n^{\frac{1}{3}}$，但是毕竟优化了。本质上还是离线。</p>
 <h2 id="回滚莫队">回滚莫队</h2>
-<p>有些题目在区间转移时，可能会出现增加或者删除无法实现的问题。在只有增加不可实现或者只有删除不可实现的时候，就可以使用回滚莫队在
-<span class="math inline">$O(n \sqrt m)$</span>
-的时间内解决问题。回滚莫队的核心思想就是：既然只能实现一个操作，那么就只使用一个操作，剩下的交给回滚解决。</p>
-<p>观察一道例题：<a
-target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_joisc2014_c"
-class="uri">https://www.luogu.com.cn/problem/AT_joisc2014_c</a></p>
-<p>形式化：给你一个长度为 <span class="math inline"><em>n</em></span>
-的数组 <span class="math inline"><em>A</em></span> 和 <span
-class="math inline"><em>m</em></span> 个询问 <span
-class="math inline">(1 ≤ <em>n</em>, <em>m</em> ≤ 10<sup>5</sup>)</span>，每次询问一个区间
-<span class="math inline">[<em>L</em>, <em>R</em>]</span>
-内<strong>重要度</strong>最大的数字，要求：输出其<strong>重要度</strong>。一个数字
-<span class="math inline"><em>i</em></span>
-<strong>重要度</strong>的定义为 <span
-class="math inline"><em>i</em></span> 乘上 <span
-class="math inline"><em>i</em></span> 在区间内出现的次数。</p>
+<p>有些题目在区间转移时，可能会出现增加或者删除无法实现的问题。在只有增加不可实现或者只有删除不可实现的时候，就可以使用回滚莫队在 $O(n \sqrt m)$ 的时间内解决问题。回滚莫队的核心思想就是：既然只能实现一个操作，那么就只使用一个操作，剩下的交给回滚解决。</p>
+<p>观察一道例题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_joisc2014_c">https://www.luogu.com.cn/problem/AT_joisc2014_c</a></p>
+<p>形式化：给你一个长度为 $n$ 的数组 $A$ 和 $m$ 个询问 $(1 \leq n, m \leq 10^5)$，每次询问一个区间 $[L, R]$ 内<strong>重要度</strong>最大的数字，要求：输出其<strong>重要度</strong>。一个数字 $i$ <strong>重要度</strong>的定义为 $i$ 乘上 $i$ 在区间内出现的次数。</p>
 <p>在这个问题中，在增加的过程中更新答案是很好实现的，但是在删除的过程中更新答案是不好实现的。因为如果增加会影响答案，那么新答案必定是刚刚增加的数字的重要度，而如果删除过后区间重要度最大的数字改变，我们很难确定新的重要度最大的数字是哪一个。</p>
-<p>于是使用回滚莫队，我们想普通莫队一样分块，排序，并设块的大小为 <span
-class="math inline"><em>b</em></span>。</p>
-<p>对于每堆左端点在同一个块内的询问，我们分别进行考虑，这时的莫队区间的左端点初始化为这个块的右端点加
-<span class="math inline">1</span>,
-将莫队区间的右端点初始化为这个块的右端点。</p>
-<p>对于左右端点在同一个块中的询问，我们直接暴力扫描回答即可（这个显然是
-<span class="math inline"><em>O</em>(<em>b</em>)</span> 的）。</p>
-<p>对于这堆询问中的每一个询问，不断扩展右端点直至莫队区间的右端点等于询问的右端点，因为右端点是排过序的，所以右端点的移动是
-<span class="math inline"><em>O</em>(<em>n</em>)</span> 的。</p>
+<p>于是使用回滚莫队，我们想普通莫队一样分块，排序，并设块的大小为 $b$。</p>
+<p>对于每堆左端点在同一个块内的询问，我们分别进行考虑，这时的莫队区间的左端点初始化为这个块的右端点加 $1$, 将莫队区间的右端点初始化为这个块的右端点。</p>
+<p>对于左右端点在同一个块中的询问，我们直接暴力扫描回答即可（这个显然是 $O(b)$ 的）。</p>
+<p>对于这堆询问中的每一个询问，不断扩展右端点直至莫队区间的右端点等于询问的右端点，因为右端点是排过序的，所以右端点的移动是 $O(n)$ 的。</p>
 <p>然后定义一个操作<strong>撤销</strong>，具体的，在这道题中指在桶中减去出现次数，而不管答案是否改变。</p>
 <p>每次暴力向左找，不断扩展莫队区间的左端点直至莫队区间的左端点等于询问的左端点。</p>
 <p>回答询问（记录答案）。</p>
-<p><strong>撤销</strong>莫队区间左端点的改动，使莫队区间的左端点回滚到这个块的右端点加
-<span class="math inline">1</span>。</p>
-<p><img
-src="https://cdn.luogu.com.cn/upload/image_hosting/9nhd21j8.png" srcset="/img/loading.gif" lazyload /></p>
+<p><strong>撤销</strong>莫队区间左端点的改动，使莫队区间的左端点回滚到这个块的右端点加 $1$。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/9nhd21j8.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>具体来分析吧。</p>
 <p>对于 1 号询问，由于就是在块内，所以暴力处理。</p>
-<p>对于 2 号询问，莫队区间先是右端点从 2 扩展到 3，然后左端点扩展到
-1，记录答案，左端点重新回到 3。</p>
-<p>对于 3 号询问，莫队区间先是右端点从 3 扩展到 5，然后左端点从 3 来到
-1，记录答案，左端点重新回到 3。</p>
-<p>对于 4 号询问，莫队区间先是右端点从 5 扩展到 8，然后左端点从 3 来到
-0，记录答案，左端点重新回到 3。</p>
-<p>对于 5 号询问，莫队区间先是右端点从 8 扩展到 10，然后左端点从 3 来到
-2，记录答案，左端点重新回到 3。</p>
-<p>时间复杂度是 <span
-class="math inline">$O(mb+\frac{n^2}{b})$</span>，取 <span
-class="math inline">$b=\frac{n}{\sqrt{m}}$</span> 最优，时间复杂度为
-<span class="math inline">$O(n\sqrt{m})$</span>。</p>
-<h3 id="局限性-2">局限性</h3>
+<p>对于 2 号询问，莫队区间先是右端点从 2 扩展到 3，然后左端点扩展到 1，记录答案，左端点重新回到 3。</p>
+<p>对于 3 号询问，莫队区间先是右端点从 3 扩展到 5，然后左端点从 3 来到 1，记录答案，左端点重新回到 3。</p>
+<p>对于 4 号询问，莫队区间先是右端点从 5 扩展到 8，然后左端点从 3 来到 0，记录答案，左端点重新回到 3。</p>
+<p>对于 5 号询问，莫队区间先是右端点从 8 扩展到 10，然后左端点从 3 来到 2，记录答案，左端点重新回到 3。</p>
+<p>时间复杂度是 $O(mb+\frac{n^2}{b})$，取 $b=\frac{n}{\sqrt{m}}$ 最优，时间复杂度为 $O(n\sqrt{m})$。</p>
+<h3 id="局限性-3">局限性</h3>
 <p>只能是可以支持一个操作的，并且答案得可以快速覆盖。</p>
 <h2 id="树上莫队">树上莫队</h2>
 <p>这年头，啥数据结构都上得上个树，莫队也不例外。</p>
 <p>但是莫队都是处理区间问题的啊，咋上树？</p>
-<p>例题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4074"
-class="uri">https://www.luogu.com.cn/problem/P4074</a></p>
-<p>形式化一小下，给你一棵树，树上第 <span
-class="math inline"><em>i</em></span> 个点颜色为 <span
-class="math inline"><em>c</em><sub><em>i</em></sub></span>，每次询问一条路径
-<span
-class="math inline"><em>u</em><sub><em>i</em></sub>, <em>v</em><sub><em>i</em></sub></span>,
-求这条路径上的 <span class="math inline">$\displaystyle
-\sum_{c}val_c\sum_{i=1}^{cnt_c}w_i$</span> 其中：<span
-class="math inline"><em>v</em><em>a</em><em>l</em></span>
-表示该颜色的价值，<span
-class="math inline"><em>c</em><em>n</em><em>t</em></span>
-表示颜色出现的次数，<span class="math inline"><em>w</em></span>
-表示该颜色出现 <span class="math inline"><em>i</em></span>
-次后的价值。</p>
+<p>例题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4074">https://www.luogu.com.cn/problem/P4074</a></p>
+<p>形式化一小下，给你一棵树，树上第 $i$ 个点颜色为 $c_i$，每次询问一条路径 $u_i,v_i$, 求这条路径上的 $\displaystyle \sum_{c}val_c\sum_{i=1}^{cnt_c}w_i$ 其中：$val$ 表示该颜色的价值，$cnt$ 表示颜色出现的次数，$w$ 表示该颜色出现 $i$ 次后的价值。</p>
 <p>咋做？我不会啊。</p>
 <p>我们考虑把树上的修改，查询换到序列上，于是我们就想到了一个……（未完待续）</p>
 
@@ -624,7 +491,7 @@ class="math inline"><em>c</em><em>n</em><em>t</em></span>
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -669,29 +536,6 @@ class="math inline"><em>c</em><em>n</em><em>t</em></span>
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2024/11/19/S%20%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93%EF%BC%88%EF%BC%9F%EF%BC%89/" title="S 知识点总结（？）">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">S 知识点总结（？）</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2024/11/12/%E4%BA%8C%E9%A1%B9%E5%BC%8F%E5%AE%9A%E7%90%86/" title="二项式定理">
-                        <span class="hidden-mobile">二项式定理</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -913,6 +757,33 @@ class="math inline"><em>c</em><em>n</em><em>t</em></span>
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

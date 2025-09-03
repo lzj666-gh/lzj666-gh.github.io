@@ -16,19 +16,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="普及算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="只因础算法总结">
 <meta property="og:url" content="https://lzj-blog.top/2023/08/15/%E5%8F%AA%E5%9B%A0%E7%A1%80%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="普及算法">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-08-15T05:02:00.000Z">
 <meta property="article:modified_time" content="2025-05-09T09:20:08.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -36,7 +36,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>只因础算法总结 - lzj&#39;blog</title>
+  <title>只因础算法总结 - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -109,7 +109,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -142,18 +142,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -255,6 +243,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -270,7 +263,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          642 字
+          655 字
         
       </span>
     
@@ -320,52 +313,63 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">只因础算法总结</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-09T17:20:08+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
-                <h2 id="中分二分"><del>中分</del>二分</h2>
+                <h2 id="中分二分"><s>中分</s>二分</h2>
 <p>二分查找模板</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> maxn 1000000+10</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> f_u(a,b) for(register int i=a;i&lt;=b;++i)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> f_d(a,b) for(register int i=a;i&gt;=b;--i)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> F_u(a,b) for(register int j=a;j&lt;=b;++j)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> F_d(a,b) for(register int j=a;j&gt;=b;--j)</span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">int</span> <span class="hljs-title">read</span><span class="hljs-params">()</span></span>&#123;<span class="hljs-keyword">register</span> <span class="hljs-type">char</span> c=<span class="hljs-built_in">getchar</span>();<span class="hljs-keyword">register</span> <span class="hljs-type">int</span> x=<span class="hljs-number">0</span>,s=<span class="hljs-number">1</span>; <span class="hljs-keyword">while</span>(c&lt;<span class="hljs-string">&#x27;0&#x27;</span>||c&gt;<span class="hljs-string">&#x27;9&#x27;</span>)&#123;<span class="hljs-keyword">if</span>(c==<span class="hljs-string">&#x27;-&#x27;</span>)s=<span class="hljs-number">-1</span>;c=<span class="hljs-built_in">getchar</span>();&#125;<span class="hljs-keyword">while</span>(c&gt;=<span class="hljs-string">&#x27;0&#x27;</span>&amp;&amp;c&lt;=<span class="hljs-string">&#x27;9&#x27;</span>)&#123;x=(x&lt;&lt;<span class="hljs-number">3</span>)+(x&lt;&lt;<span class="hljs-number">1</span>)+(c^<span class="hljs-number">48</span>);c=<span class="hljs-built_in">getchar</span>();&#125;<span class="hljs-keyword">return</span> x*s;&#125;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">write</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>&#123;<span class="hljs-keyword">if</span>(x&lt;<span class="hljs-number">0</span>)<span class="hljs-built_in">putchar</span>(<span class="hljs-string">&#x27;-&#x27;</span>),x=-x;<span class="hljs-keyword">if</span>(x&gt;<span class="hljs-number">9</span>)<span class="hljs-built_in">write</span>(x/<span class="hljs-number">10</span>);<span class="hljs-built_in">putchar</span>(x%<span class="hljs-number">10</span>+<span class="hljs-string">&#x27;0&#x27;</span>);&#125;<br><span class="hljs-type">int</span> n,m,a[maxn];<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">zhong_fen</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span></span>&#123;<br>	<span class="hljs-keyword">register</span> <span class="hljs-type">int</span> l=<span class="hljs-number">1</span>,r=n,mid;<br>	<span class="hljs-keyword">while</span>(l&lt;r)&#123;<br>		mid=(l+r)/<span class="hljs-number">2</span>;<br>		<span class="hljs-keyword">if</span>(a[mid]&gt;=k)&#123;<br>			r=mid;<br>		&#125;<br>		<span class="hljs-keyword">else</span>&#123;<br>			l=mid<span class="hljs-number">+1</span>;<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">if</span>(a[l]!=k) <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>	<span class="hljs-keyword">return</span> l;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br><span class="hljs-comment">//	ios_base::sync_with_stdio(false);</span><br>	n=<span class="hljs-built_in">read</span>(),m=<span class="hljs-built_in">read</span>();<br>	<span class="hljs-built_in">f_u</span>(<span class="hljs-number">1</span>,n) a[i]=<span class="hljs-built_in">read</span>();<br>	<span class="hljs-built_in">f_u</span>(<span class="hljs-number">1</span>,m)&#123;<br>		<span class="hljs-keyword">register</span> <span class="hljs-type">int</span> tmp=<span class="hljs-built_in">read</span>();<br>		cout&lt;&lt;<span class="hljs-built_in">zhong_fen</span>(tmp)&lt;&lt;<span class="hljs-string">&#x27; &#x27;</span>;<br>	&#125; <br>	cout&lt;&lt;endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h2 id="贪心">贪心</h2>
 <h2 id="快速幂">快速幂</h2>
-<h3 id="主要就是靠ak-aa-p-的这个定理">主要就是靠$a^k =a<sup>a</sup> p
-$的这个定理</h3>
-<h1 id="colorred排序类"><span
-class="math inline"><em>排</em><em>序</em><em>类</em></span></h1>
+<h3 id="主要就是靠-a-k-a-frac-k-2-times-a-frac-k-2-pmod-p-的这个定理">主要就是靠$a^k =a^\frac{k}{2}\times a^\frac{k}{2} \pmod p  $的这个定理</h3>
+<h1>$\color{red}排序类$</h1>
 <h2 id="归并排序">归并排序</h2>
-<h3
-id="算法思想使用多次分解来使多个子问题有序再合并多个有序子序列">算法思想：使用多次分解来使多个子问题有序，再合并多个有序子序列</h3>
-<h3 id="用处多用于求逆序对">用处：多用于求逆序对</h3>
-<h3 id="实现">实现：</h3>
+<h3 id="算法思想：使用多次分解来使多个子问题有序，再合并多个有序子序列">算法思想：使用多次分解来使多个子问题有序，再合并多个有序子序列</h3>
+<h3 id="用处：多用于求逆序对">用处：多用于求逆序对</h3>
+<h3 id="实现：">实现：</h3>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> maxn 100000+10</span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">long</span> <span class="hljs-type">long</span> b[maxn],n,ans=<span class="hljs-number">0</span>;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">merge_sort</span><span class="hljs-params">(<span class="hljs-type">int</span> l,<span class="hljs-type">int</span> r)</span></span>&#123;<br>	<span class="hljs-keyword">if</span>(l&gt;=r) <span class="hljs-keyword">return</span>;<br>	<span class="hljs-type">int</span> mid=(l+r)&gt;&gt;<span class="hljs-number">1</span>;<br>	<span class="hljs-built_in">merge_sort</span>(l,mid);<br>	<span class="hljs-built_in">merge_sort</span>(mid<span class="hljs-number">+1</span>,r);<br>	<span class="hljs-type">int</span> i=l,j=mid<span class="hljs-number">+1</span>,k=l,tmp[maxn];<br>	<span class="hljs-keyword">while</span>(i&lt;=mid&amp;&amp;j&lt;=r)<br>		<span class="hljs-keyword">if</span>(b[i]&lt;=b[j])tmp[k++]=b[i++];<br>		<span class="hljs-keyword">else</span> tmp[k++]=b[j++],ans+=mid-i<span class="hljs-number">+1</span>;<br>	<span class="hljs-keyword">while</span>(i&lt;=mid)tmp[k++]=b[i++];<br>	<span class="hljs-keyword">while</span>(j&lt;=r)tmp[k++]=b[j++];<br>	<span class="hljs-keyword">for</span>(i=l;i&lt;=r;i++)b[i]=tmp[i];<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>	ios_base::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>	cin&gt;&gt;n;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++) cin&gt;&gt;b[i];<br>	<span class="hljs-built_in">merge_sort</span>(<span class="hljs-number">1</span>,n);<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++) cout&lt;&lt;b[i]&lt;&lt;<span class="hljs-string">&#x27; &#x27;</span>;<br>	cout&lt;&lt;endl&lt;&lt;ans&lt;&lt;endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125; <br></code></pre></td></tr></table></figure>
-<h4
-id="答案第一行为排序好的数第二行为逆序对个数">答案第一行为排序好的数，第二行为逆序对个数</h4>
-<h1 id="colorgreen树与图"><span
-class="math inline"><em>树</em><em>与</em><em>图</em></span></h1>
+<h4 id="答案第一行为排序好的数，第二行为逆序对个数">答案第一行为排序好的数，第二行为逆序对个数</h4>
+<h1>$\color{green}树与图$</h1>
 <h2 id="树">树</h2>
-<h3
-id="树是一种连通图且每一个节点都只有一个前驱">树是一种连通图，且每一个节点都只有一个前驱</h3>
-<h3 id="存储方法">存储方法：</h3>
-<ol type="1">
-<li><p>用一维数组存储每个节点的前驱</p></li>
-<li><p>用二维数组存储后继</p></li>
-<li><p>用结构体存储前驱和后继</p></li>
-<li><p>用其他奇奇怪怪的方法</p></li>
+<h3 id="树是一种连通图，且每一个节点都只有一个前驱">树是一种连通图，且每一个节点都只有一个前驱</h3>
+<h3 id="存储方法：">存储方法：</h3>
+<ol>
+<li>
+<p>用一维数组存储每个节点的前驱</p>
+</li>
+<li>
+<p>用二维数组存储后继</p>
+</li>
+<li>
+<p>用结构体存储前驱和后继</p>
+</li>
+<li>
+<p>用其他奇奇怪怪的方法</p>
+</li>
 </ol>
 <h2 id="图">图</h2>
-<h3
-id="图是由带或不带边权的边连接多个节点的结构">图是由带（或不带）边权的边连接多个节点的结构</h3>
-<h3
-id="最小生成树去掉一些边使图由n-1条边链接成一个联通的新图">最小生成树：去掉一些边，使图由n-1条边链接成一个联通的新图</h3>
-<h4
-id="方法排序遍历判断是否为同集并查集">方法：排序，遍历，判断是否为同集，并查集</h4>
-<h3
-id="最短路从一个点到另一个点的通过边权最小的路径">最短路：从一个点到另一个点的通过边权最小的路径</h3>
-<h4 id="方法">方法：</h4>
-<ol type="1">
-<li><p>floyd:三层循环枚举中转点，起点，终点<span
-class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span></p></li>
-<li><p>dijkstra:</p></li>
+<h3 id="图是由带（或不带）边权的边连接多个节点的结构">图是由带（或不带）边权的边连接多个节点的结构</h3>
+<h3 id="最小生成树：去掉一些边，使图由n-1条边链接成一个联通的新图">最小生成树：去掉一些边，使图由n-1条边链接成一个联通的新图</h3>
+<h4 id="方法：排序，遍历，判断是否为同集，并查集">方法：排序，遍历，判断是否为同集，并查集</h4>
+<h3 id="最短路：从一个点到另一个点的通过边权最小的路径">最短路：从一个点到另一个点的通过边权最小的路径</h3>
+<h4 id="方法：">方法：</h4>
+<ol>
+<li>
+<p>floyd:三层循环枚举中转点，起点，终点$O(n^3)$</p>
+</li>
+<li>
+<p>dijkstra:</p>
+</li>
 <li></li>
 </ol>
 
@@ -399,7 +403,7 @@ class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span></p></li>
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -444,29 +448,6 @@ class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span></p></li>
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2023/08/21/%E9%94%99%E5%9B%A0%E6%80%BB%E7%BB%93/" title="错因总结">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">错因总结</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2023/07/18/P3945%20%E4%B8%89%E4%BD%93%E9%97%AE%E9%A2%98/" title="P3945 三体问题">
-                        <span class="hidden-mobile">P3945 三体问题</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -688,6 +669,33 @@ class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span></p></li>
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

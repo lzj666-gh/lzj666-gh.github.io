@@ -16,19 +16,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="0713 总结">
 <meta property="og:type" content="article">
 <meta property="og:title" content="0713 总结">
 <meta property="og:url" content="https://lzj-blog.top/2024/07/13/0713%20%E6%80%BB%E7%BB%93/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="0713 总结">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-07-13T08:36:34.000Z">
 <meta property="article:modified_time" content="2025-05-08T06:41:22.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="总结">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -36,7 +36,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>0713 总结 - lzj&#39;blog</title>
+  <title>0713 总结 - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -109,7 +109,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -142,18 +142,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -255,6 +243,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -270,7 +263,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          881 字
+          895 字
         
       </span>
     
@@ -320,91 +313,58 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">0713 总结</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-08T14:41:22+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
-                <h1 id="题目">题目</h1>
+                <h1>题目</h1>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/T476189">T1</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4170">T2</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2569">T3</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4360">T4</a></li>
 </ul>
-<h1 id="问题分析">问题分析</h1>
-<h2 id="t1">T1</h2>
-<p>一道黄题。<span class="math inline"><em>水</em><em>题</em></span></p>
-<p>第一眼就是一个一维
-DP，再推一下式子可以发现这道题数组都不用开，几个变量就解决了，最终耗时10min。</p>
-<p><span
-class="math display">100<em>p</em><em>t</em><em>s</em></span></p>
-<h2 id="t2">T2</h2>
-<p>在考场上先看的数据范围，发现是 <span
-class="math inline">1 ≤ <em>n</em> ≤ 50</span>，就开始思考 <span
-class="math inline"><em>O</em>(<em>n</em><sup>4</sup>)</span>
-的做法，然后就先表示了一个 DP 数组 <span
-class="math inline"><em>d</em><em>p</em>[<em>i</em>][<em>j</em>]</span>
-表示 <span class="math inline">[<em>i</em>, <em>j</em>]</span>
-区间内的最少涂色次数，然后思考状态转移。</p>
-<p>随后我发现了一种状态转移的方法，在 <span
-class="math inline"><em>s</em>[<em>i</em>] =  = <em>s</em>[<em>j</em>]</span>
-的情况下，可以在左右两边找到最长的 <span
-class="math inline"><em>s</em>[<em>i</em>]</span>，然后将 <span
-class="math inline"><em>d</em><em>p</em>[<em>i</em>][<em>j</em>]</span>
-用 <span
-class="math inline"><em>d</em><em>p</em>[<em>p</em>1][<em>p</em>2]</span>
-更新。这种做法是 <span
-class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span> 的。</p>
+<h1>问题分析</h1>
+<h2 id="T1">T1</h2>
+<p>一道黄题。$\color{white}{水题}$</p>
+<p>第一眼就是一个一维 DP，再推一下式子可以发现这道题数组都不用开，几个变量就解决了，最终耗时10min。</p>
+<p>$$100pts$$</p>
+<h2 id="T2">T2</h2>
+<p>在考场上先看的数据范围，发现是 $1\le n\le 50$，就开始思考 $O(n^4)$ 的做法，然后就先表示了一个 DP 数组 $dp[i][j]$ 表示 $[i,j]$ 区间内的最少涂色次数，然后思考状态转移。</p>
+<p>随后我发现了一种状态转移的方法，在 $s[i] == s[j]$ 的情况下，可以在左右两边找到最长的 $s[i]$，然后将 $dp[i][j]$ 用 $dp[p1][p2]$ 更新。这种做法是 $O(n^3)$ 的。</p>
 <p>代码长这样：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">if</span>(s[i]==s[j])&#123;<br>	<span class="hljs-type">int</span> p1=i<span class="hljs-number">+1</span>,p2=j<span class="hljs-number">-1</span>;<br>	<span class="hljs-keyword">while</span>(p1&lt;=j&amp;&amp;p2&gt;=i&amp;&amp;(s[p1]==s[p1<span class="hljs-number">-1</span>]||s[p2]==s[p2<span class="hljs-number">+1</span>]))&#123;<br>		<span class="hljs-keyword">if</span>(s[p1]==s[p1<span class="hljs-number">-1</span>]) p1++;<br>		<span class="hljs-keyword">if</span>(s[p2]==s[p2<span class="hljs-number">+1</span>]) p2--;<br>	&#125;<br>	dp[i][j]=dp[p1][p2]<span class="hljs-number">+1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>但是考场上并没有举出反例证明这是错的，其实反例非常好构造
-<code>AAQWQAACBCAA</code> 就是一个，这是没有考虑
-<code>AA***AA***AA</code> 的贡献造成的。</p>
+<p>但是考场上并没有举出反例证明这是错的，其实反例非常好构造 <code>AAQWQAACBCAA</code> 就是一个，这是没有考虑 <code>AA***AA***AA</code> 的贡献造成的。</p>
 <p>实际上这样推就行：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">dp[i][j]=<span class="hljs-built_in">min</span>(dp[i<span class="hljs-number">+1</span>][j],dp[i][j<span class="hljs-number">-1</span>]);<br></code></pre></td></tr></table></figure>
-<p><span
-class="math display"><em>O</em>(<em>n</em><sup>2</sup>)</span></p>
+<p>$$O(n^2)$$</p>
 <p>以后一定要多模几组样例。</p>
-<p><span
-class="math display">100<em>p</em><em>t</em><em>s</em>− &gt; 70<em>p</em><em>t</em><em>s</em>（<em>洛</em><em>谷</em>）/40<em>p</em><em>t</em><em>s</em>（<em>本</em><em>地</em>）</span></p>
-<h2 id="t3">T3</h2>
-<p>因为是 DP 专练，所以<del>肯定不打 DP 啊</del>必然是想着怎样 DP
-的。</p>
-<p>模拟了一下二维
-DP，发现式子十分好推，只不过转移时代码又臭又长，只能作罢。</p>
-<p>接着打了一个 DFS，发现 DFS
-下来非常好写，于是观察了一下时间复杂度，发现要炸，赶紧想怎么优化。</p>
-<p>发现 BFS 的板子跟 DFS 差不多，于是打了一个
-BFS，再进行了一下优化，算了一下时间复杂度和常数，发现是 <span
-class="math inline"><em>O</em>(<em>能</em><em>过</em>)</span>，于是开开心心交上去了，其实算一算空间复杂度就知道要炸，而且本来的代码是能过的，但是我竟然<strong>把数组开小了！！！</strong>。</p>
-<p>就是挺智障的一个错，本来能得 <span
-class="math inline">60<em>p</em><em>t</em><em>s</em></span> 的现在只能得
-<span class="math inline">40<em>p</em><em>t</em><em>s</em></span>
-了。</p>
-<p><span
-class="math display">100<em>p</em><em>t</em><em>s</em>（<em>预</em><em>期</em>）− &gt; 60<em>p</em><em>t</em><em>s</em>（<em>实</em><em>际</em>）− &gt; 40<em>p</em><em>t</em><em>s</em>（<em>脑</em><em>瘫</em>）</span></p>
-<h2 id="t4">T4</h2>
+<p>$$100pts-&gt;70pts（洛谷）/40pts（本地）$$</p>
+<h2 id="T3">T3</h2>
+<p>因为是 DP 专练，所以<s>肯定不打 DP 啊</s>必然是想着怎样 DP 的。</p>
+<p>模拟了一下二维 DP，发现式子十分好推，只不过转移时代码又臭又长，只能作罢。</p>
+<p>接着打了一个 DFS，发现 DFS 下来非常好写，于是观察了一下时间复杂度，发现要炸，赶紧想怎么优化。</p>
+<p>发现 BFS 的板子跟 DFS 差不多，于是打了一个 BFS，再进行了一下优化，算了一下时间复杂度和常数，发现是 $O(能过)$，于是开开心心交上去了，其实算一算空间复杂度就知道要炸，而且本来的代码是能过的，但是我竟然<strong>把数组开小了！！！</strong>。</p>
+<p>就是挺智障的一个错，本来能得 $60pts$ 的现在只能得 $40pts$ 了。</p>
+<p>$$100pts（预期）-&gt;60pts（实际）-&gt;40pts（脑瘫）$$</p>
+<h2 id="T4">T4</h2>
 <p>考场上其实是想好了怎么递推的，递推式其实也非常好想，然后再写出来就会发现其实是一道斜率优化板子题。</p>
-<p>但是观察数据范围可以发现 <span
-class="math inline">2 ≤ <em>n</em> ≤ 20000</span>，感觉 <span
-class="math inline"><em>O</em>(<em>n</em><sup>2</sup>)</span>
-也可以过，于是就将循环展开了 <span class="math inline">16</span>
-次，因为 <span class="math inline">log<sub>2</sub>20000</span> 其实也就
-<span class="math inline">15</span> 的样子。</p>
-<p>果然，展开了以后进行一下模拟，发现极限数据也就 <span
-class="math inline">200<em>m</em><em>s</em></span>
-左右的样子，最后交上去经过最终的重测时间也就是斜率优化的 <span
-class="math inline">2</span>
-倍左右，成功节省下来了不知道干什么用的时间。</p>
-<p><span
-class="math display">100<em>p</em><em>t</em><em>s</em></span></p>
+<p>但是观察数据范围可以发现 $2 \le n \le 20000$，感觉 $O(n^2)$ 也可以过，于是就将循环展开了 $16$ 次，因为 $\log_2 20000$ 其实也就 $15$ 的样子。</p>
+<p>果然，展开了以后进行一下模拟，发现极限数据也就 $200ms$ 左右的样子，最后交上去经过最终的重测时间也就是斜率优化的 $2$ 倍左右，成功节省下来了不知道干什么用的时间。</p>
+<p>$$100pts$$</p>
 <h2 id="总结">总结</h2>
-<p>这次考试我有很多地方就是有很多脑瘫的错误，最后检查代码是也没有检查出来，本来预计大概可以
-AK 的，最终也只拿了 <span
-class="math inline">280<em>p</em><em>t</em><em>s</em>(<em>r</em><em>a</em><em>n</em><em>k</em> 3<sup><em>r</em><em>d</em></sup>)</span>，有点可惜。</p>
+<p>这次考试我有很多地方就是有很多脑瘫的错误，最后检查代码是也没有检查出来，本来预计大概可以 AK 的，最终也只拿了 $280pts(rank\ 3^{rd})$，有点可惜。</p>
 <p>再次审视了我考场上的注释，发现我绝大部分的错误原因都在考场上想到了，但为什么我没改出来啊！！！！</p>
-<p>教训就是除了要分析时间复杂度还要分析空间复杂度，还有就是要对自己的递推式再三审视，考虑所有情况，检查是也要仔细一点，不要再像某些
-T3 一样把数组开小了。<span
-class="math inline"><em>总</em><em>而</em><em>言</em><em>之</em>，<em>菜</em><em>就</em><em>多</em><em>练</em></span></p>
+<p>教训就是除了要分析时间复杂度还要分析空间复杂度，还有就是要对自己的递推式再三审视，考虑所有情况，检查是也要仔细一点，不要再像某些 T3 一样把数组开小了。$\color{white}{总而言之，菜就多练}$</p>
 
                 
               </div>
@@ -436,7 +396,7 @@ class="math inline"><em>总</em><em>而</em><em>言</em><em>之</em>，<em>菜</
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -481,29 +441,6 @@ class="math inline"><em>总</em><em>而</em><em>言</em><em>之</em>，<em>菜</
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2024/08/20/%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" title="算法总结">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">算法总结</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2024/06/28/CF292B%20Network%20Topology/" title="CF292B Network Topology">
-                        <span class="hidden-mobile">CF292B Network Topology</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -725,6 +662,33 @@ class="math inline"><em>总</em><em>而</em><em>言</em><em>之</em>，<em>菜</
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

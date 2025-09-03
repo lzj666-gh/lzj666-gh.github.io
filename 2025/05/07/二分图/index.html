@@ -16,21 +16,21 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="二分图最大匹配（匈牙利，网络流）；二分图最大权匹配（KM）；二分图完备匹配（Hall定理）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二分图">
 <meta property="og:url" content="https://lzj-blog.top/2025/05/07/%E4%BA%8C%E5%88%86%E5%9B%BE/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="二分图最大匹配（匈牙利，网络流）；二分图最大权匹配（KM）；二分图完备匹配（Hall定理）">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzj-blog.top/2025/05/07/%E4%BA%8C%E5%88%86%E5%9B%BE/1.png">
 <meta property="og:image" content="https://lzj-blog.top/2025/05/07/%E4%BA%8C%E5%88%86%E5%9B%BE/2.png">
 <meta property="article:published_time" content="2025-05-07T08:23:20.000Z">
 <meta property="article:modified_time" content="2025-05-14T06:58:16.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="图论">
 <meta name="twitter:card" content="summary_large_image">
@@ -40,7 +40,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>二分图 - lzj&#39;blog</title>
+  <title>二分图 - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -113,7 +113,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -146,18 +146,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -259,6 +247,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -274,7 +267,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.3k 字
+          2.4k 字
         
       </span>
     
@@ -324,22 +317,23 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">二分图</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-14T14:58:16+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
                 <h2 id="二分图最大匹配">二分图最大匹配</h2>
 <blockquote>
 <p>任意两条边没有公共端点的边的集合被称为图的一组匹配。</p>
-<p>二分图又称作二部图，是图论中的一种特殊模型。 设 <span
-class="math inline"><em>G</em> = (<em>V</em>, <em>E</em>)</span>
-是一个无向图，如果顶点 <span class="math inline"><em>V</em></span>
-可分割为两个互不相交的子集 <span
-class="math inline">(<em>A</em>, <em>B</em>)</span>，并且图中的每条边
-<span class="math inline">(<em>i</em>, <em>j</em>)</span>
-所关联的两个顶点 <span class="math inline"><em>i</em></span> 和 <span
-class="math inline"><em>j</em></span> 分别属于这两个不同的顶点集 <span
-class="math inline">(<em>i</em> ∈ <em>A</em>, <em>j</em> ∈ <em>B</em>)</span>，则称图
-<span class="math inline"><em>G</em></span> 为一个二分图。</p>
+<p>二分图又称作二部图，是图论中的一种特殊模型。 设 $G=(V,E)$ 是一个无向图，如果顶点 $V$ 可分割为两个互不相交的子集 $(A,B)$，并且图中的每条边 $(i,j)$ 所关联的两个顶点 $i$ 和 $j$ 分别属于这两个不同的顶点集 $(i \in A,j \in B)$，则称图 $G$ 为一个二分图。</p>
 <p>在二分图中，包含边数最多的一组匹配被称为二分图的最大匹配。</p>
 </blockquote>
 <h3 id="匈牙利算法">匈牙利算法</h3>
@@ -349,148 +343,79 @@ class="math inline">(<em>i</em> ∈ <em>A</em>, <em>j</em> ∈ <em>B</
 <p>但是取反这种事情还是太抽象了，我们有没有更加形象的理解。</p>
 <p>我们发现，一条增广路的样子实际上就是对于每个已经匹配上的左部点，我们让他换了一个人，而对于唯一的一个没有匹配上的左部点，我们把他连接到了一个右部点上。</p>
 <p>举个例子，现在我们匹配好了这样一个图。</p>
-<p><img src="1.png" srcset="/img/loading.gif" lazyload alt="原来的匹配" style="zoom:150%;" /></p>
-<p>现在我们找到了这样一条增广路：<span
-class="math inline"><em>C</em> → 1 → <em>A</em> → 3</span>，那么我们将他匹配状态全部取反得到下面这张图。</p>
-<p><img src="2.png" srcset="/img/loading.gif" lazyload alt="新的匹配" style="zoom:150%;" /></p>
-<p>看的出来，这就是可行的一种算法，他的时间复杂度是 <span
-class="math inline"><em>O</em>(<em>n</em><em>m</em>)</span>。</p>
+<img src="1.png" srcset="/img/loading.gif" lazyload alt="原来的匹配" style="zoom:150%;" />
+<p>现在我们找到了这样一条增广路：$C\to 1\to A\to 3$，那么我们将他匹配状态全部取反得到下面这张图。</p>
+<img src="2.png" srcset="/img/loading.gif" lazyload alt="新的匹配" style="zoom:150%;" />
+<p>看的出来，这就是可行的一种算法，他的时间复杂度是 $O(nm)$。</p>
 <p>代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">int</span> n,m,e,u,v,belong[<span class="hljs-number">500</span><span class="hljs-number">+10</span>];<br>vector&lt;<span class="hljs-type">int</span>&gt;may[<span class="hljs-number">500</span><span class="hljs-number">+10</span>];<br><span class="hljs-type">bool</span> now[<span class="hljs-number">500</span><span class="hljs-number">+10</span>];<br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">chg</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>&#123;<br>	<span class="hljs-keyword">if</span>(now[x]) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	now[x]=<span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i:may[x])&#123;<br>		<span class="hljs-keyword">if</span>(!belong[i])&#123;<br>			belong[i]=x;<br>			<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>		&#125;<br>		<span class="hljs-keyword">if</span>(<span class="hljs-built_in">chg</span>(belong[i]))&#123;<br>			belong[i]=x;<br>			<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>	ios_base::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>	cin&gt;&gt;n&gt;&gt;m&gt;&gt;e;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=e;++i)&#123;<br>		cin&gt;&gt;u&gt;&gt;v;<br>		may[u].<span class="hljs-built_in">push_back</span>(v);<br>	&#125;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;++i)&#123;<br>		<span class="hljs-built_in">sort</span>(may[i].<span class="hljs-built_in">begin</span>(),may[i].<span class="hljs-built_in">end</span>());<br>		may[i].<span class="hljs-built_in">erase</span>(<span class="hljs-built_in">unique</span>(may[i].<span class="hljs-built_in">begin</span>(),may[i].<span class="hljs-built_in">end</span>()),may[i].<span class="hljs-built_in">end</span>());<br>	&#125;<br>	<span class="hljs-type">int</span> ans=<span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;++i)&#123;<br>		<span class="hljs-built_in">memset</span>(now,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span> now);<br>		<span class="hljs-keyword">if</span>(<span class="hljs-built_in">chg</span>(i)) ans++;<br>	&#125;<br>	cout&lt;&lt;ans&lt;&lt;endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h3 id="网络流">网络流</h3>
-<p>直接新建虚拟源点，向所有左部点连边，原图上每条边容量为 <span
-class="math inline">1</span>，右部点向虚拟汇点连边，最大流即为答案。</p>
-<p>时间复杂度 <span class="math inline">$O(nm^\frac{1}{2})$</span>。</p>
+<p>直接新建虚拟源点，向所有左部点连边，原图上每条边容量为 $1$，右部点向虚拟汇点连边，最大流即为答案。</p>
+<p>时间复杂度 $O(nm^\frac{1}{2})$。</p>
 <p>代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Edge</span> &#123;<br>	<span class="hljs-type">int</span> v, w, nxt;<br>&#125;edge[<span class="hljs-number">2500000</span> + <span class="hljs-number">10</span>];<br><span class="hljs-type">int</span> head[<span class="hljs-number">12000</span> + <span class="hljs-number">10</span>], idx = <span class="hljs-number">1</span>;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> v, <span class="hljs-type">int</span> w)</span> </span>&#123;<br>	edge[++idx] = &#123; v,w,head[u] &#125;;<br>	head[u] = idx;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">addedge</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> v, <span class="hljs-type">int</span> w)</span> </span>&#123;<br>	<span class="hljs-built_in">add</span>(u, v, w); <span class="hljs-built_in">add</span>(v, u, <span class="hljs-number">0</span>);<br>&#125;<br><span class="hljs-type">int</span> h[<span class="hljs-number">12000</span> + <span class="hljs-number">10</span>], more[<span class="hljs-number">12000</span> + <span class="hljs-number">10</span>], g[<span class="hljs-number">12000</span> + <span class="hljs-number">10</span>];<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">_</span> &#123; <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>&#123; <span class="hljs-keyword">return</span> h[a] &lt; h[b]; &#125; &#125;;<br>priority_queue&lt;<span class="hljs-type">int</span>, vector&lt;<span class="hljs-type">int</span>&gt;, _&gt; pq;<br><span class="hljs-type">bool</span> vis[<span class="hljs-number">12000</span> + <span class="hljs-number">10</span>];<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">bfs</span><span class="hljs-params">(<span class="hljs-type">int</span> t)</span> </span>&#123;<br>	<span class="hljs-built_in">memset</span>(h, <span class="hljs-number">0x3f</span>, <span class="hljs-keyword">sizeof</span> h);<br>	queue&lt;<span class="hljs-type">int</span>&gt;q; h[t] = <span class="hljs-number">0</span>; q.<span class="hljs-built_in">push</span>(t);<br>	<span class="hljs-keyword">while</span> (!q.<span class="hljs-built_in">empty</span>()) &#123;<br>		<span class="hljs-type">int</span> now = q.<span class="hljs-built_in">front</span>(); q.<span class="hljs-built_in">pop</span>();<br>		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = head[now]; i; i = edge[i].nxt)<br>			<span class="hljs-keyword">if</span> (edge[i ^ <span class="hljs-number">1</span>].w &amp;&amp; h[edge[i].v] &gt; h[now] + <span class="hljs-number">1</span>)<br>				h[edge[i].v] = h[now] + <span class="hljs-number">1</span>, q.<span class="hljs-built_in">push</span>(edge[i].v);<br>	&#125;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">push</span><span class="hljs-params">(<span class="hljs-type">int</span> now, <span class="hljs-type">int</span> s, <span class="hljs-type">int</span> t)</span> </span>&#123;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = head[now]; i; i = edge[i].nxt) &#123;<br>		<span class="hljs-keyword">if</span> (edge[i].w &amp;&amp; h[edge[i].v] + <span class="hljs-number">1</span> == h[now]) &#123;<br>			<span class="hljs-type">int</span> flow = <span class="hljs-built_in">min</span>(more[now], edge[i].w);<br>			more[edge[i].v] += flow; more[now] -= flow;<br>			edge[i].w -= flow; edge[i ^ <span class="hljs-number">1</span>].w += flow;<br>			<span class="hljs-keyword">if</span> (edge[i].v != s &amp;&amp; edge[i].v != t &amp;&amp; !vis[edge[i].v])<br>				vis[edge[i].v] = <span class="hljs-number">1</span>, pq.<span class="hljs-built_in">push</span>(edge[i].v);<br>			<span class="hljs-keyword">if</span> (more[now] == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;<br>		&#125;<br>	&#125;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">relabel</span><span class="hljs-params">(<span class="hljs-type">int</span> now)</span> </span>&#123;<br>	h[now] = INT_MAX;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = head[now]; i; i = edge[i].nxt)<br>		<span class="hljs-keyword">if</span> (edge[i].w &amp;&amp; h[edge[i].v] + <span class="hljs-number">1</span> &lt; h[now])<br>			h[now] = h[edge[i].v] + <span class="hljs-number">1</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">hlpp</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> s, <span class="hljs-type">int</span> t)</span> </span>&#123;<br>	<span class="hljs-built_in">bfs</span>(t);<br>	<span class="hljs-keyword">if</span> (h[s] == <span class="hljs-number">0x3f3f3f3f</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	h[s] = n;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; ++i) <span class="hljs-keyword">if</span> (h[i] ^ <span class="hljs-number">0x3f3f3f3f</span>) g[h[i]]++;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = head[s]; i; i = edge[i].nxt)<br>		<span class="hljs-keyword">if</span> (<span class="hljs-type">int</span> w = edge[i].w; w)<br>			edge[i].w -= w, edge[i ^ <span class="hljs-number">1</span>].w += w, more[s] -= w, more[edge[i].v] += w,<br>			edge[i].v != s &amp;&amp; edge[i].v != t &amp;&amp; !vis[edge[i].v] ? vis[edge[i].v] = <span class="hljs-number">1</span>, pq.<span class="hljs-built_in">push</span>(edge[i].v) : <span class="hljs-built_in">void</span>();<br>	<span class="hljs-keyword">while</span> (!pq.<span class="hljs-built_in">empty</span>()) &#123;<br>		<span class="hljs-type">int</span> now = pq.<span class="hljs-built_in">top</span>(); pq.<span class="hljs-built_in">pop</span>(); vis[now] = <span class="hljs-number">0</span>; <span class="hljs-built_in">push</span>(now, s, t);<br>		<span class="hljs-keyword">if</span> (more[now])<br>			<span class="hljs-keyword">if</span> ((h[now] ^ <span class="hljs-number">0x3f3f3f3f</span>)) &#123;<br>				<span class="hljs-keyword">if</span> (!--g[h[now]])<br>					<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)<br>						<span class="hljs-keyword">if</span> (i != s &amp;&amp; i != t &amp;&amp; h[i] &gt; h[now] &amp;&amp; h[i] &lt; n + <span class="hljs-number">1</span>)<br>							h[i] = n + <span class="hljs-number">1</span>;<br>				<span class="hljs-built_in">relabel</span>(now); ++g[h[now]], pq.<span class="hljs-built_in">push</span>(now), vis[now] = <span class="hljs-number">1</span>;<br>			&#125;<br>	&#125;<br>	<span class="hljs-keyword">return</span> more[t];<br>&#125;<br><span class="hljs-type">int</span> n, m, e, s, t;<br><span class="hljs-function"><span class="hljs-type">signed</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>	cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>)-&gt;<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>	cin &gt;&gt; n &gt;&gt; m &gt;&gt; e; s = n + m + <span class="hljs-number">1</span>; t = n + m + <span class="hljs-number">2</span>;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>, u, v; i &lt;= e; ++i)<br>		cin &gt;&gt; u &gt;&gt; v, <span class="hljs-built_in">addedge</span>(u, n + v, <span class="hljs-number">1</span>);<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; ++i) <span class="hljs-built_in">addedge</span>(s, i, <span class="hljs-number">1</span>);<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; ++i) <span class="hljs-built_in">addedge</span>(i + n, t, <span class="hljs-number">1</span>);<br>	cout &lt;&lt; <span class="hljs-built_in">hlpp</span>(n + m + <span class="hljs-number">2</span>, s, t) &lt;&lt; endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h2 id="二分图最大权匹配">二分图最大权匹配</h2>
-<p>这里我们使用 <strong>KM</strong> 算法解决
-<strong>二分图最大权完美匹配</strong>
-的问题，而我们将一个普通二分图补点补成相等，然后我们将不存在的边权重设为
-<span class="math inline">0</span>，这种情况下，问题就转换成求
-<strong>最大权完美匹配问题</strong>，从而能应用 <strong>KM</strong>
-算法求解。</p>
-<p>现在，我们给每一个点一个点值，定义为 <span
-class="math inline"><em>l</em>(<em>i</em>)</span>，并且定义这个点值满足以下性质：</p>
+<p>这里我们使用 <strong>KM</strong> 算法解决 <strong>二分图最大权完美匹配</strong> 的问题，而我们将一个普通二分图补点补成相等，然后我们将不存在的边权重设为 $0$，这种情况下，问题就转换成求 <strong>最大权完美匹配问题</strong>，从而能应用 <strong>KM</strong> 算法求解。</p>
+<p>现在，我们给每一个点一个点值，定义为 $l(i)$，并且定义这个点值满足以下性质：</p>
 <ul>
-<li><span class="math inline"><em>l</em>(<em>i</em>) ≥ 0</span></li>
-<li><span
-class="math inline"><em>l</em>(<em>u</em>) + <em>l</em>(<em>v</em>) ≥ <em>w</em>(<em>u</em>, <em>v</em>)</span></li>
+<li>$l(i)\ge 0$</li>
+<li>$l(u)+l(v)\ge w(u,v)$</li>
 </ul>
-<p>现在，我们定义一个 <strong>相等子图</strong>
-为在一组可行顶标下原图的子图，包含所有点但只包含满足 <span
-class="math inline"><em>w</em>(<em>u</em>, <em>v</em>) = <em>l</em>(<em>u</em>) + <em>l</em>(<em>v</em>)</span>
-的边 <span class="math inline">(<em>u</em>, <em>v</em>)</span>。</p>
+<p>现在，我们定义一个 <strong>相等子图</strong> 为在一组可行顶标下原图的子图，包含所有点但只包含满足 $w(u,v) = l(u) + l(v)$ 的边 $(u,v)$。</p>
 <p>首先，我们发现，对于某组可行顶标，如果其相等子图存在完美匹配，那么，该匹配就是原二分图的最大权完美匹配。</p>
-<p>如何证明？我们发现，相等子图的完美匹配边权之和就等于它的顶标之和，而原图中的完美匹配边权和不会大于顶标之和。<del>至是，工程已毕，言尽于此。</del></p>
+<p>如何证明？我们发现，相等子图的完美匹配边权之和就等于它的顶标之和，而原图中的完美匹配边权和不会大于顶标之和。<s>至是，工程已毕，言尽于此。</s></p>
 <p>于是，我们就直接调整顶标，直到相等子图是完美匹配就行了。</p>
-<p>我们在这里定义 <strong>交错树</strong>
-为在匈牙利算法中，从一个节点寻找然后匹配失败所遍历的树。</p>
+<p>我们在这里定义 <strong>交错树</strong> 为在匈牙利算法中，从一个节点寻找然后匹配失败所遍历的树。</p>
 <p>假设，我们现在已经有一组可行顶标了，我们想要扩大相等子图。</p>
 <p>首先，我们先在相等子图中跑匈牙利，但是我们一定会遇到匹配不上的情况，这时我们就可以考虑修改顶标。</p>
-<p>令 <span class="math inline"><em>S</em></span>，<span
-class="math inline"><em>T</em></span> 表示在交错树中的点，<span
-class="math inline"><em>S</em><sup>′</sup></span>，<span
-class="math inline"><em>T</em><sup>′</sup></span>
-表示不在交错树中的点。</p>
+<p>令 $S$，$T$ 表示在交错树中的点，$S’$，$T’$ 表示不在交错树中的点。</p>
 <p>在相等子图中：</p>
 <ul>
-<li><span class="math inline"><em>S</em> → <em>T</em><sup>′</sup></span>
-的边不存在，否则交错树会增长。</li>
-<li><span class="math inline"><em>S</em><sup>′</sup> → <em>T</em></span>
-一定是非匹配边，否则他就属于 <span
-class="math inline"><em>S</em></span>。</li>
+<li>$S\to T’$ 的边不存在，否则交错树会增长。</li>
+<li>$S’\to T$ 一定是非匹配边，否则他就属于 $S$。</li>
 </ul>
-<p>假设给 <span class="math inline"><em>S</em></span> 中的顶标 <span
-class="math inline">−<em>Δ</em></span>，给 T 中的顶标 <span
-class="math inline">+<em>Δ</em></span>，可以发现：</p>
+<p>假设给 $S$ 中的顶标 $-\Delta$，给 T 中的顶标 $+\Delta$，可以发现：</p>
 <ul>
-<li><span class="math inline"><em>S</em> → <em>T</em></span>
-边依然存在相等子图中。</li>
-<li><span
-class="math inline"><em>S</em><sup>′</sup> → <em>T</em><sup>′</sup></span>
-没变化。</li>
-<li><span class="math inline"><em>S</em> → <em>T</em><sup>′</sup></span>
-中的 <span
-class="math inline"><em>l</em>(<em>x</em>) + <em>l</em>(<em>y</em>)</span>
-有所减少，可能加入相等子图。</li>
-<li><span class="math inline"><em>S</em><sup>′</sup> → <em>T</em></span>
-中的 <span
-class="math inline"><em>l</em>(<em>x</em>) + <em>l</em>(<em>y</em>)</span>
-会增加，所以不可能加入相等子图。</li>
+<li>$S\to T$ 边依然存在相等子图中。</li>
+<li>$S’\to T’$ 没变化。</li>
+<li>$S\to T’$ 中的 $l(x) + l(y)$ 有所减少，可能加入相等子图。</li>
+<li>$S’\to T$ 中的 $l(x) + l(y)$ 会增加，所以不可能加入相等子图。</li>
 </ul>
-<p>所以这个 <span class="math inline"><em>Δ</em></span>
-值的选择，显然得是 <span
-class="math inline"><em>S</em> → <em>T</em><sup>′</sup></span>
-当中最小的边权， <span
-class="math display"><em>Δ</em> = min {<em>l</em>(<em>u</em>) + <em>l</em>(<em>v</em>) − <em>w</em>(<em>u</em>, <em>v</em>)|<em>u</em> ∈ <em>S</em>, <em>v</em> ∈ <em>T</em><sup>′</sup>}。</span>
-当一条新的边 <span class="math inline">(<em>u</em>, <em>v</em>)</span>
-加入相等子图后有两种情况：</p>
+<p>所以这个 $\Delta$ 值的选择，显然得是 $S\to T’$ 当中最小的边权，<br>
+$$<br>
+\Delta = \min { l(u) + l(v) - w(u,v) | u\in{S} , v\in{T’} }。<br>
+$$<br>
+当一条新的边 $(u,v)$ 加入相等子图后有两种情况：</p>
 <ul>
-<li><span class="math inline"><em>v</em></span>
-是未匹配点，则找到增广路</li>
-<li><span class="math inline"><em>v</em></span> 和 <span
-class="math inline"><em>S</em><sup>′</sup></span> 中的点已经匹配</li>
+<li>$v$ 是未匹配点，则找到增广路</li>
+<li>$v$ 和 $S’$ 中的点已经匹配</li>
 </ul>
-<p>这样至多修改 <span class="math inline"><em>n</em></span>
-次顶标后，就可以找到增广路。</p>
+<p>这样至多修改 $n$ 次顶标后，就可以找到增广路。</p>
 <p>但是这样时间复杂度还不够优，于是我们发现每次修改顶标的时候，交错树中的边不会离开相等子图，所以我们直接维护这棵树。</p>
-<p>我们对 <span class="math inline"><em>T</em></span> 中的每个点 <span
-class="math inline"><em>v</em></span> 维护 <span
-class="math display"><em>s</em><em>l</em><em>a</em><em>c</em><em>k</em>(<em>v</em>) = min {<em>l</em><em>x</em>(<em>u</em>) + <em>l</em><em>y</em>(<em>v</em>) − <em>w</em>(<em>u</em>, <em>v</em>)|<em>u</em> ∈ <em>S</em>}</span>
-所以可以在 <span class="math inline"><em>O</em>(<em>n</em>)</span>
-算出顶标修改值 <span class="math inline"><em>Δ</em></span> <span
-class="math display"><em>Δ</em> = min {<em>s</em><em>l</em><em>a</em><em>c</em><em>k</em>(<em>v</em>)|<em>v</em> ∈ <em>T</em><sup>′</sup>}</span>
-交错树新增一个点进入 <span class="math inline"><em>S</em></span>
-的时候需要 <span class="math inline"><em>O</em>(<em>n</em>)</span> 更新
-<span
-class="math inline"><em>s</em><em>l</em><em>a</em><em>c</em><em>k</em>(<em>v</em>)</span>。修改顶标需要
-<span class="math inline"><em>O</em>(<em>n</em>)</span> 给每个 <span
-class="math inline"><em>s</em><em>l</em><em>a</em><em>c</em><em>k</em>(<em>v</em>)</span>
-减去 <span
-class="math inline"><em>Δ</em></span>。只要交错树找到一个未匹配点，就找到增广路。</p>
-<p>一开始枚举 <span class="math inline"><em>n</em></span>
-个点找增广路，为了找增广路需要延伸 <span
-class="math inline"><em>n</em></span> 次交错树，每次延伸需要 <span
-class="math inline"><em>n</em></span> 次维护，共 <span
-class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span>。</p>
+<p>我们对 $T$ 中的每个点 $v$ 维护<br>
+$$<br>
+slack(v) = \min { lx(u) + ly(v) - w(u,v) | u\in{S} }<br>
+$$<br>
+所以可以在 $O(n)$ 算出顶标修改值 $\Delta$<br>
+$$<br>
+\Delta = \min { slack(v) | v\in{T’} }<br>
+$$<br>
+交错树新增一个点进入 $S$ 的时候需要 $O(n)$ 更新 $slack(v)$。修改顶标需要 $O(n)$ 给每个 $slack(v)$ 减去 $\Delta$。只要交错树找到一个未匹配点，就找到增广路。</p>
+<p>一开始枚举 $n$ 个点找增广路，为了找增广路需要延伸 $n$ 次交错树，每次延伸需要 $n$ 次维护，共 $O(n^3)$。</p>
 <h2 id="二分图完备匹配">二分图完备匹配</h2>
-<p>Hall 定理：二分图存在 <strong>完备匹配</strong>
-的充要条件是对于左部点的大小为 <span
-class="math inline"><em>k</em></span> 的任意子集 <span
-class="math inline"><em>S</em></span>，这些点在右部连到的点集（也被称为
-<span class="math inline"><em>S</em></span> 的邻域，记为 <span
-class="math inline"><em>N</em>(<em>S</em>)</span>）大小不小于 <span
-class="math inline"><em>k</em></span>。</p>
+<p>Hall 定理：二分图存在 <strong>完备匹配</strong> 的充要条件是对于左部点的大小为 $k$ 的任意子集 $S$，这些点在右部连到的点集（也被称为 $S$ 的邻域，记为 $N(S)$）大小不小于 $k$。</p>
 <p>必要性：显然</p>
-<p>充分性：<del>也显然</del></p>
-<p>考虑归纳，我们发现在 <span class="math inline"><em>n</em> = 1</span>
-时显然成立，而在 <span class="math inline"><em>n</em> ≠ 1</span>
-时，我们分两种情况讨论：<span
-class="math inline"><em>N</em>(<em>S</em>) &gt; <em>k</em></span> 和
-<span
-class="math inline"><em>N</em>(<em>S</em>) = <em>k</em></span>。</p>
+<p>充分性：<s>也显然</s></p>
+<p>考虑归纳，我们发现在 $n=1$ 时显然成立，而在 $n\not =1$ 时，我们分两种情况讨论：$N(S)&gt;k$ 和 $N(S)=k$。</p>
 <ul>
-<li><span
-class="math inline"><em>N</em>(<em>S</em>) &gt; <em>k</em></span>
-时，随便一个左部点匹配一个右部点，之后将它们去掉。不难发现剩下的图依旧满足霍尔定理的条件但此时左部点只剩下
-<span class="math inline"><em>n</em> − 1</span> 个。</li>
-<li><span class="math inline"><em>N</em>(<em>S</em>) = <em>k</em></span>
-时，这 <span class="math inline"><em>k</em></span>
-对可以互相匹配，去掉以后满足霍尔定理。</li>
+<li>$N(S)&gt;k$ 时，随便一个左部点匹配一个右部点，之后将它们去掉。不难发现剩下的图依旧满足霍尔定理的条件但此时左部点只剩下 $n-1$ 个。</li>
+<li>$N(S)=k$ 时，这 $k$ 对可以互相匹配，去掉以后满足霍尔定理。</li>
 </ul>
 <p>推论：</p>
 <ul>
-<li>最多可以有 <span class="math inline"><em>a</em></span>
-个左部点没有匹配上的情况等价于 <span
-class="math inline"><em>N</em>(<em>S</em>) ≥ <em>k</em> − <em>a</em></span>。</li>
-<li>一个左部点必须匹配 <span class="math inline"><em>a</em></span>
-个右部点等价于 <span
-class="math inline"><em>N</em>(<em>S</em>) ≥ <em>a</em> × <em>k</em></span>。</li>
-<li>每个左部点要匹配 <span
-class="math inline"><em>r</em>(<em>i</em>)</span> 个右部点：<span
-class="math inline">$N(S)\ge \displaystyle \sum_{i\isin S}
-r(i)$</span>。</li>
+<li>最多可以有 $a$ 个左部点没有匹配上的情况等价于 $N(S)\ge k-a$。</li>
+<li>一个左部点必须匹配 $a$ 个右部点等价于 $N(S)\ge a\times k$。</li>
+<li>每个左部点要匹配 $r(i)$ 个右部点：$N(S)\ge \displaystyle \sum_{i\isin S} r(i)$。</li>
 </ul>
 
                 
@@ -525,7 +450,7 @@ r(i)$</span>。</li>
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -570,29 +495,6 @@ r(i)$</span>。</li>
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2025/05/12/%E6%9C%80%E5%B0%8F%E6%A0%91%E5%BD%A2%E5%9B%BE/" title="最小树形图">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">最小树形图</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2025/05/06/%E7%BD%91%E7%BB%9C%E6%B5%81/" title="网络流">
-                        <span class="hidden-mobile">网络流</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -814,6 +716,33 @@ r(i)$</span>。</li>
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

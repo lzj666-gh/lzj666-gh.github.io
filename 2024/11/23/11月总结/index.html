@@ -16,19 +16,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="11月总结">
 <meta property="og:type" content="article">
 <meta property="og:title" content="11月总结">
 <meta property="og:url" content="https://lzj-blog.top/2024/11/23/11%E6%9C%88%E6%80%BB%E7%BB%93/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="11月总结">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-23T06:36:34.000Z">
 <meta property="article:modified_time" content="2025-05-08T06:41:36.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="总结">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -36,7 +36,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>11月总结 - lzj&#39;blog</title>
+  <title>11月总结 - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -109,7 +109,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -142,18 +142,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -255,6 +243,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -270,7 +263,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          453 字
+          454 字
         
       </span>
     
@@ -320,37 +313,27 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">11月总结</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-08T14:41:36+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
-                <h1 id="noip模拟">1123noip模拟</h1>
-<h2 id="t1">T1</h2>
-<p>这场 noip 模拟其实不难，但是在 T1
-上我花了太多时间，推完式子后还接着验证，发现错了，等等等等，一直循环，最终
-bug de
-完了，但是发现我程序的时间用的太久了，样例2都用了十几秒，于是想到了分段打表。其实当时是我程序中的一处筛数字因数时把
-<code>i*i&lt;=n</code> 打的是 <code>i&lt;=n</code>，所以从感性理解应该是
-<span class="math inline">$O(\sqrt{n})$</span> 的，实际是 <span
-class="math inline"><em>O</em>(<em>n</em>)</span>
-的，分段打表用的时间也太长了，两个小时才打完数据范围的 <span
-class="math inline">$\frac{1}{5}$</span>，而修改后却只用不到一分钟。</p>
-<p>实际上正解用的是线性筛求最小约数，从而在 <span
-class="math inline"><em>O</em>(log <em>n</em>)</span>
-的时间内分解了质因数。数学板块理解还是不够深。</p>
-<h2 id="t2">T2</h2>
-<p>一道 DP。赛时思考过
-DP，但是观察到过于巨大的空间，优化无果，而放弃，况且当时思考的 DP 只能拿
-90pts（加特殊性质），于是认为本题正解并不是
-DP。实际本题观察到DP数组虽然下标分别开大会炸，但实际上每个测试点内都只会有用到一个最大大小固定的矩阵，所以可以使用手动三维压一维的方法解决。</p>
-<h2 id="t3">T3</h2>
-<p>这是一道 RMQ
-问题。最终的正解是值域分块，而我第一眼看到的时候就没想到往值域方向去考虑。其实这道题提醒的挺明显了（<span
-class="math inline">$ans=\sum_{i=1}^{n}(\lfloor\frac{y}{a_i}\rfloor+y\bmod
-a_i)$</span>），看一眼就可以想到除法分块，在 <span
-class="math inline"><em>a</em><sub><em>i</em></sub></span>
-较小的时候直接暴力即可，而在 <span
-class="math inline"><em>a</em><sub><em>i</em></sub></span>
-较大时可以观察到贡献是一块一块加的，于是使用值域分块。教训就是</p>
+                <h1>1123noip模拟</h1>
+<h2 id="T1">T1</h2>
+<p>这场 noip 模拟其实不难，但是在 T1 上我花了太多时间，推完式子后还接着验证，发现错了，等等等等，一直循环，最终 bug de 完了，但是发现我程序的时间用的太久了，样例2都用了十几秒，于是想到了分段打表。其实当时是我程序中的一处筛数字因数时把 <code>i*i&lt;=n</code> 打的是 <code>i&lt;=n</code>，所以从感性理解应该是 $O(\sqrt{n})$ 的，实际是 $O(n)$ 的，分段打表用的时间也太长了，两个小时才打完数据范围的 $\frac{1}{5}$，而修改后却只用不到一分钟。</p>
+<p>实际上正解用的是线性筛求最小约数，从而在 $O(\log{n})$ 的时间内分解了质因数。数学板块理解还是不够深。</p>
+<h2 id="T2">T2</h2>
+<p>一道 DP。赛时思考过 DP，但是观察到过于巨大的空间，优化无果，而放弃，况且当时思考的 DP 只能拿 90pts（加特殊性质），于是认为本题正解并不是 DP。实际本题观察到DP数组虽然下标分别开大会炸，但实际上每个测试点内都只会有用到一个最大大小固定的矩阵，所以可以使用手动三维压一维的方法解决。</p>
+<h2 id="T3">T3</h2>
+<p>这是一道 RMQ 问题。最终的正解是值域分块，而我第一眼看到的时候就没想到往值域方向去考虑。其实这道题提醒的挺明显了（$ans=\sum_{i=1}^{n}(\lfloor\frac{y}{a_i}\rfloor+y\bmod a_i)$），看一眼就可以想到除法分块，在 $a_i$ 较小的时候直接暴力即可，而在 $a_i$ 较大时可以观察到贡献是一块一块加的，于是使用值域分块。教训就是</p>
 
                 
               </div>
@@ -382,7 +365,7 @@ class="math inline"><em>a</em><sub><em>i</em></sub></span>
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -427,29 +410,6 @@ class="math inline"><em>a</em><sub><em>i</em></sub></span>
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2025/01/16/%E7%AE%97%E6%B3%9524.12-25.1/" title="算法24.12-25.1">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">算法24.12-25.1</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2024/11/19/S%20%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93%EF%BC%88%EF%BC%9F%EF%BC%89/" title="S 知识点总结（？）">
-                        <span class="hidden-mobile">S 知识点总结（？）</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -671,6 +631,33 @@ class="math inline"><em>a</em><sub><em>i</em></sub></span>
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

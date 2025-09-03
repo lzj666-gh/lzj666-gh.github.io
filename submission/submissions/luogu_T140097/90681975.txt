@@ -1,8 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 90681975
-//  题目ID: T140097
-#include<iostream>
-using namespace std;
-int main(){
-    cout<<11111*11111;
-}

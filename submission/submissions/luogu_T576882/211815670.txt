@@ -1,9 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 211815670
-//  题目ID: T576882
-#include<bits/stdc++.h>
-using namespace std;
-int main(){
-	cout<<"MASTERORCHEATER";
-	return 0;
-}

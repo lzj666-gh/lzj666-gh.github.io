@@ -16,19 +16,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="10月总结">
 <meta property="og:type" content="article">
 <meta property="og:title" content="10月总结">
 <meta property="og:url" content="https://lzj-blog.top/2024/10/02/10%E6%9C%88%E6%80%BB%E7%BB%93/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="10月总结">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-10-02T12:35:34.000Z">
 <meta property="article:modified_time" content="2025-05-08T06:41:44.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="总结">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -36,7 +36,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>10月总结 - lzj&#39;blog</title>
+  <title>10月总结 - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -109,7 +109,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -142,18 +142,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -255,6 +243,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -281,7 +274,7 @@
         
         
         
-          22 分钟
+          23 分钟
         
       </span>
     
@@ -320,220 +313,155 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">10月总结</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-08T14:41:44+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
-                <h1 id="section">1002</h1>
+                <h1>1002</h1>
 <h2 id="总览">总览</h2>
 <ul>
-<li><p>T1
-在考试时想出来了正解，但是因为调和级数的时间复杂度证明而放弃了（<span
-class="math inline">$\operatorname{f}(i)=\sum_{i=1}^{n}\dfrac{1}{i}$</span>
-其实就约等于 <span
-class="math inline"><em>O</em>(ln <em>n</em>)</span>）。</p></li>
-<li><p>T2 也是在考试时想出来了正解，但没证明出正确性。</p></li>
-<li><p>T3
-有点正解思路，但不多，<strong>硬控我1h30min</strong>。</p></li>
-<li><p>T4 读了题，但仅限于读懂了题。</p></li>
+<li>
+<p>T1 在考试时想出来了正解，但是因为调和级数的时间复杂度证明而放弃了（$\operatorname{f}(i)=\sum_{i=1}^{n}\dfrac{1}{i}$ 其实就约等于 $O(\ln{n})$）。</p>
+</li>
+<li>
+<p>T2 也是在考试时想出来了正解，但没证明出正确性。</p>
+</li>
+<li>
+<p>T3 有点正解思路，但不多，<strong>硬控我1h30min</strong>。</p>
+</li>
+<li>
+<p>T4 读了题，但仅限于读懂了题。</p>
+</li>
 </ul>
 <blockquote>
 <p>出题人并没有想在第一天毒瘤大家的意思。</p>
 <p>出题人认为的题目难度排序大概1≪2≈4&lt;3。</p>
-<p>总体来看，本场比赛的100+难度会略高于CSP-S，略低于
+<p>总体来看，本场比赛的100+难度会略高于CSP-S，略低于<br>
 NOIP，但是并没有大家想象地那样难度恐怖。</p>
 <p>——by 出题人</p>
 </blockquote>
-<h2 id="t1">T1</h2>
-<p>和正解思路几乎一样。但是考场上花了两个多小时终于思考出了正解但却因为调和级数的证明误当作了
-<span class="math inline"><em>O</em>(<em>n</em>)</span>
-，而放弃了正解而使用了一种时间复杂度为 <span
-class="math inline"><em>O</em>(<em>n</em><sup><em>n</em></sup>) ∼ <em>O</em>(<em>n</em> × log (<em>n</em>))</span>
-的神奇代码获得了 50pts 的嚎成绩。</p>
-<h2 id="t2">T2</h2>
-<p>一上来就想到了正解思路，赛后复盘可能是因为我做过（虽然我自己都不记得我做过）。但是我看
-T3 好像更可做+正确性没证，所以先去磕 T3 去了。</p>
-<h2 id="t3">T3</h2>
-<p>全场唯一真坑，看似简单小模拟+容斥，实际细节剧多，情况剧难想，硬控我
-T1 50pts + T2 100pts 由此我得到一个非常重要的教训：<strong><span
-class="math inline">$\large{\texttt{一定不要因为一道题看起来简单就去做，一定一定要先做有把握的题。}}$</span></strong></p>
-<h2 id="t4">T4</h2>
+<h2 id="T1">T1</h2>
+<p>和正解思路几乎一样。但是考场上花了两个多小时终于思考出了正解但却因为调和级数的证明误当作了 $O(n)$ ，而放弃了正解而使用了一种时间复杂度为 $O(n^n) \sim O(n \times \log(n))$ 的神奇代码获得了 50pts 的嚎成绩。</p>
+<h2 id="T2">T2</h2>
+<p>一上来就想到了正解思路，赛后复盘可能是因为我做过（虽然我自己都不记得我做过）。但是我看 T3 好像更可做+正确性没证，所以先去磕 T3 去了。</p>
+<h2 id="T3">T3</h2>
+<p>全场唯一真坑，看似简单小模拟+容斥，实际细节剧多，情况剧难想，硬控我 T1 50pts + T2 100pts 由此我得到一个非常重要的教训：<strong>$\large{\texttt{一定不要因为一道题看起来简单就去做，一定一定要先做有把握的题。}}$</strong></p>
+<h2 id="T4">T4</h2>
 <p>没啥好说的，题目读懂了，暴力都打不出来，只能说一点正解思路都摸不着。看了正解也无话可说，一点也碰不到。</p>
-<h1 id="section-1">1003</h1>
-<h2 id="t1-1">T1</h2>
-<p>我会暴力！使用 dfs 枚举所有路径依次求值。时间复杂度 <span
-class="math inline"><em>O</em>((<sub><em>n</em> − 1</sub><sup><em>n</em> + <em>m</em> − 2</sup>))</span>，期望得分
-30，实际得分 0，死因： <code>freopen("grid2.in","r",stdin)</code>。</p>
-<p>考场上思考到了 DP，但是感觉不会转移，赛后看了一下
-std，感觉考场上推得出来，但是先去做 T4 了。</p>
-<h2 id="t2-1">T2</h2>
-<p>我会枚举！枚举四个点依次判断是否是正交矩形，时间复杂度 <span
-class="math inline"><em>O</em>(<em>n</em><sup>4</sup>)</span>，期望得分
-16。</p>
-<p>我会优化！枚举左上角和右下角，判断剩下两个点是否存在即可，时间复杂度
-<span
-class="math inline"><em>O</em>(<em>n</em><sup>2</sup>)</span>，期望得分
-32。</p>
-<p>考虑 <span
-class="math inline"><em>x</em><sub><em>i</em></sub> ≤ 2</span>
-的情况，即只有两行。那么我们只需要选择两列 <span
-class="math inline">(<em>x</em>, <em>y</em>)</span>，满足这两列在第一行和第二行都有点。求出第一行和第二行都有点的列数
-<span class="math inline"><em>m</em></span>，输出 <span
-class="math inline">(<sub>2</sub><sup><em>m</em></sup>)</span>
-即可。期望得分 40。</p>
-<p>考虑 <span
-class="math inline"><em>x</em><sub><em>i</em></sub> ≤ 500</span>
-的情况，我们可以直接枚举每两行，用上方的方法计算贡献。使用 bitset
-求交时间复杂度为 <span
-class="math inline">$O(x^{2}_{i}\dfrac{n}{w})$</span>。期望得分
-64，实际得分 0，理论得分 92，死因：<code>//define ONLINE</code>。</p>
+<h1>1003</h1>
+<h2 id="T1-2">T1</h2>
+<p>我会暴力！使用 dfs 枚举所有路径依次求值。时间复杂度 $O( (^{n+m−2}_{n−1}) )$，期望得分 30，实际得分 0，死因： <code>freopen(&quot;grid2.in&quot;,&quot;r&quot;,stdin)</code>。</p>
+<p>考场上思考到了 DP，但是感觉不会转移，赛后看了一下 std，感觉考场上推得出来，但是先去做 T4 了。</p>
+<h2 id="T2-2">T2</h2>
+<p>我会枚举！枚举四个点依次判断是否是正交矩形，时间复杂度 $O(n^4)$，期望得分 16。</p>
+<p>我会优化！枚举左上角和右下角，判断剩下两个点是否存在即可，时间复杂度 $O(n^2)$，期望得分 32。</p>
+<p>考虑 $x_i \le 2$ 的情况，即只有两行。那么我们只需要选择两列 $(x,y)$，满足这两列在第一行和第二行都有点。求出第一行和第二行都有点的列数 $m$，输出 $(^{m}_{2})$ 即可。期望得分 40。</p>
+<p>考虑 $x_i \le 500$ 的情况，我们可以直接枚举每两行，用上方的方法计算贡献。使用 bitset 求交时间复杂度为 $O(x^{2}_{i}\dfrac{n}{w})$。期望得分 64，实际得分 0，理论得分 92，死因：<code>//define ONLINE</code>。</p>
 <p>好消息：这道题出题人数据水了。</p>
 <p>坏消息：这道题我<strong>又</strong>没加 <code>freopen</code>。</p>
 <p>正解倒是想得通，但是考场上肯定不能推出来，有这时间不如去打 T1。</p>
 <p>教训放最后。</p>
-<h2 id="t3-1">T3</h2>
-<p>我会枚举！枚举杯子之间的转移关系并模拟，时间复杂度<span
-class="math inline"><em>O</em>(<em>n</em> × (<em>n</em> − 1)<sup><em>n</em></sup>)</span>，期望得分16。</p>
-<p>我会失之交臂！如果你推了下一个做法中的任意性质，可以写一个优一点的爆搜，期望得分
-24。</p>
-<p>实际得分
-16，性质推出来了，但是解法伪了（这也是我考试时<strong>唯一</strong>得分的题）。</p>
-<p>正解是在 DP 的基础上优化，我在考试的时候想到了
-DP，但是因为我太蒻了，所以时间复杂度相较于暴搜没区别，就没写，而且最后的线段树优化我写了也不一定调得出来，有这时间不如写
-T1。</p>
-<h2 id="t4-1">T4</h2>
+<h2 id="T3-2">T3</h2>
+<p>我会枚举！枚举杯子之间的转移关系并模拟，时间复杂度$O(n \times (n−1)^n)$，期望得分16。</p>
+<p>我会失之交臂！如果你推了下一个做法中的任意性质，可以写一个优一点的爆搜，期望得分 24。</p>
+<p>实际得分 16，性质推出来了，但是解法伪了（这也是我考试时<strong>唯一</strong>得分的题）。</p>
+<p>正解是在 DP 的基础上优化，我在考试的时候想到了 DP，但是因为我太蒻了，所以时间复杂度相较于暴搜没区别，就没写，而且最后的线段树优化我写了也不一定调得出来，有这时间不如写 T1。</p>
+<h2 id="T4-2">T4</h2>
 <p>推导出了子问题：</p>
-<p>有 <span class="math inline"><em>n</em></span> 种球，第 <span
-class="math inline"><em>i</em></span> 种球有 <span
-class="math inline"><em>a</em><sub><em>i</em></sub></span>
-个，每种球是相同的。对于 <span
-class="math inline"><em>m</em> = 1 ∼ ∑<em>a</em><sub><em>i</em></sub></span>求出将这些球放入
-<span class="math inline"><em>m</em></span>
-个不同的盒子中，且每个盒子非空的方案数。</p>
-<p>我会 DP！暴力 DP <span
-class="math inline"><em>f</em><sub><em>i</em>, <em>j</em></sub></span>
-为前 <span class="math inline"><em>x</em></span> 种球放 <span
-class="math inline"><em>y</em></span>
-个盒子的方案数。时间复杂度视实现可能为 <span
-class="math inline"><em>O</em>(<em>D</em><sup>3</sup>) ∼ <em>O</em>(<em>D</em><sup>4</sup>)</span>，结合算法3期望得分
-65，实际得分 5，原因：写挂了。</p>
+<p>有 $n$ 种球，第 $i$ 种球有 $a_i$ 个，每种球是相同的。对于 $m = 1 \sim \sum a_i$求出将这些球放入 $m$ 个不同的盒子中，且每个盒子非空的方案数。</p>
+<p>我会 DP！暴力 DP $f_{i,j}$ 为前 $x$ 种球放 $y$ 个盒子的方案数。时间复杂度视实现可能为 $O(D^3)\sim O(D^4)$，结合算法3期望得分 65，实际得分 5，原因：写挂了。</p>
 <p>这题没啥说的，二项式定理没学。</p>
 <h2 id="总结">总结</h2>
-<p><strong><span
-class="math inline">$\large{\texttt{一定要检查freopen！！！！！！！！！！！}}$</span></strong></p>
-<h1 id="section-2">1004</h1>
-<h2 id="t1-2">T1</h2>
+<p><strong>$\large{\texttt{一定要检查freopen！！！！！！！！！！！}}$</strong></p>
+<h1>1004</h1>
+<h2 id="T1-3">T1</h2>
 <p>语文题，一眼秒了，和正解基本没区别。</p>
-<h2 id="t2-2">T2</h2>
-<p>最亏的一集，先是推式子推出来个大概，然后两个下标搞反了，于是看样例不过就以为贪心思路错了，最后草草打了个暴力交了上去，还把
-<code>freopen</code> 打错了，一分没拿。</p>
-<p><strong><span
-class="math inline">$\color{red}{\large{\texttt{一定要检查freopen！！！！！！！！！！！}}}$</span></strong></p>
-<p><strong><span
-class="math inline">$\color{red}{\large{\texttt{一定不要因为样例不过就怀疑思路，万一是你写挂了呢。}}}$</span></strong></p>
-<h2 id="t3-2">T3</h2>
+<h2 id="T2-3">T2</h2>
+<p>最亏的一集，先是推式子推出来个大概，然后两个下标搞反了，于是看样例不过就以为贪心思路错了，最后草草打了个暴力交了上去，还把 <code>freopen</code> 打错了，一分没拿。</p>
+<p><strong>$\color{red}{\large{\texttt{一定要检查freopen！！！！！！！！！！！}}}$</strong></p>
+<p><strong>$\color{red}{\large{\texttt{一定不要因为样例不过就怀疑思路，万一是你写挂了呢。}}}$</strong></p>
+<h2 id="T3-3">T3</h2>
 <p>题解看不懂，知识点超纲。</p>
-<h2 id="t4-2">T4</h2>
+<h2 id="T4-3">T4</h2>
 <p>考场上就看出了线段树+下传操作做法，但是写挂了，但是造数据的人没卡掉我，但是交到原数据上挂了，总而言之，谁能想到一遍过了大样例还能挂啊。</p>
-<h2 id="总览-1">总览</h2>
+<h2 id="总览-2">总览</h2>
 <p>分数：240pts/160pts</p>
 <p>这次考得还行（？），但是还有很大进步空间和很多需要总结的地方，<strong>希望下次不要再挂分了</strong>。</p>
-<h1 id="section-3">1005</h1>
-<h2 id="t1-3">T1</h2>
-<p>一时间脑瘫了，竟然推了 1.5h
-的式子，最后才发现特殊性质，缝缝补补我的代码也是终于 100pts 了。</p>
+<h1>1005</h1>
+<h2 id="T1-4">T1</h2>
+<p>一时间脑瘫了，竟然推了 1.5h 的式子，最后才发现特殊性质，缝缝补补我的代码也是终于 100pts 了。</p>
 <p>exp. 100pts/100pts real.</p>
-<h2 id="t2-3">T2</h2>
-<p>没时间做了，随眼看了一下，就打了个 <span
-class="math inline"><em>O</em>(<em>n</em><em>m</em>log <em>m</em>)</span>
-的全源最短路上去，也是奔着部分分去的。</p>
+<h2 id="T2-4">T2</h2>
+<p>没时间做了，随眼看了一下，就打了个 $O(nm\log m)$ 的全源最短路上去，也是奔着部分分去的。</p>
 <p>exp. 70pts/70pts real.</p>
-<h2 id="t3-3">T3</h2>
-<p>简单题，其实我已经离正解非常接近了，其实就是要用倍增，但是要用时间换空间，我没换，因为我怕我的大常数写法过不去，所以只能不换。最后不知道为什么全
-WA 了，重构一下就 A 了。</p>
+<h2 id="T3-4">T3</h2>
+<p>简单题，其实我已经离正解非常接近了，其实就是要用倍增，但是要用时间换空间，我没换，因为我怕我的大常数写法过不去，所以只能不换。最后不知道为什么全 WA 了，重构一下就 A 了。</p>
 <p>exp. 70pts/0pts real.</p>
-<h2 id="t4-3">T4</h2>
+<h2 id="T4-4">T4</h2>
 <p>一眼丁真，鉴定为**数据结构题。思路好想，代码好写，好评。《n=10的大样例》，差评。</p>
 <p>exp. 100pts/100pts real.</p>
-<h1 id="section-4">1013</h1>
-<h2 id="t1-4">T1</h2>
-<p>考试时先把 T1 的暴力打出来就去开其他题了，而看完 T3 后感觉比
-本题更有可做性，就先去做 T3 了，但是决策性错误，按理来说应该先做 T1
-的。</p>
-<p>教训：<span class="math inline">$\color{red}{\large{\texttt{T1、T2
-几乎永远比 T3、T4 可做}}}$</span></p>
-<h2 id="t2-4">T2</h2>
-<p>不会，但是在考场上想到了二分图最大匹配（？），很明显这个思路是错误的，但是我当时想赶紧骗分，骗完了赶紧先把所有题给开了，就写了个没有正确性的骗分上去，最后也是成功拿到了
-0pts。</p>
-<h2 id="t3-4">T3</h2>
-<p>思路接近正解，但终归有本质区别。再次重申：T1、T2 永远比 T3、T4
-可做，千万以后别舍弃 T1 去做 T3
-了，不值得啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊。</p>
-<h2 id="t4-4">T4</h2>
-<p>不会，骗分都不会。考后发现可以用四项式定理骗分，但是还是有可能推错，有这个时间
-T1 早做出来了。</p>
-<h2 id="总结-1">总结</h2>
-<p>为什么我要先做 T3 啊！</p>
-<p>以后一定要先磕 T1、T2，不要看着 T3、T4
-可做就跑，分数倍率都一样，不如花更少的时间拿更多的分。</p>
-<h1 id="section-5">1015</h1>
-<h2 id="t1-5">T1</h2>
-<p>简单贪心，不过 SPJ 和数据好像水了，输出 <code>I AK IOI</code>
-都能过。</p>
-<h2 id="t2-5">T2</h2>
-<p>双向搜索，但是我没想到怎么做，所以只打了暴力，暴力还写挂了，得益于这场比赛的《超大大样例》，我没发现问题，痛失
-40pts。以后看到全部分数据范围是部分分的两倍的时候就要考虑双向搜索了，搜索还是不过关。</p>
-<h2 id="t3-5">T3</h2>
-<p>本身考场上没思路，得分也符合预期，看题解总结了一条我认为对我今后的做题思路应该有重大影响的结论：正解基本都是由部分分改进得来的，观察了最近几天的题，发现确实如此。</p>
-<h2 id="t4-5">T4</h2>
-<p>又是不看题的一天。它题面里有两个模数，把模 p 的值累加再模 <span
-class="math inline">10<sup>9</sup> + 7</span>。</p>
-<p>以为只有一直模 p 的我：啊？！</p>
-<p>最后算出来的答案一直与正确答案模 p 同余，痛失 100pts，我的解法还比
-std 更加复杂。</p>
+<h1>1013</h1>
+<h2 id="T1-5">T1</h2>
+<p>考试时先把 T1 的暴力打出来就去开其他题了，而看完 T3 后感觉比 本题更有可做性，就先去做 T3 了，但是决策性错误，按理来说应该先做 T1 的。</p>
+<p>教训：$\color{red}{\large{\texttt{T1、T2 几乎永远比 T3、T4 可做}}}$</p>
+<h2 id="T2-5">T2</h2>
+<p>不会，但是在考场上想到了二分图最大匹配（？），很明显这个思路是错误的，但是我当时想赶紧骗分，骗完了赶紧先把所有题给开了，就写了个没有正确性的骗分上去，最后也是成功拿到了 0pts。</p>
+<h2 id="T3-5">T3</h2>
+<p>思路接近正解，但终归有本质区别。再次重申：T1、T2 永远比 T3、T4 可做，千万以后别舍弃 T1 去做 T3 了，不值得啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊。</p>
+<h2 id="T4-5">T4</h2>
+<p>不会，骗分都不会。考后发现可以用四项式定理骗分，但是还是有可能推错，有这个时间 T1 早做出来了。</p>
 <h2 id="总结-2">总结</h2>
+<p>为什么我要先做 T3 啊！</p>
+<p>以后一定要先磕 T1、T2，不要看着 T3、T4 可做就跑，分数倍率都一样，不如花更少的时间拿更多的分。</p>
+<h1>1015</h1>
+<h2 id="T1-6">T1</h2>
+<p>简单贪心，不过 SPJ 和数据好像水了，输出 <code>I AK IOI</code> 都能过。</p>
+<h2 id="T2-6">T2</h2>
+<p>双向搜索，但是我没想到怎么做，所以只打了暴力，暴力还写挂了，得益于这场比赛的《超大大样例》，我没发现问题，痛失 40pts。以后看到全部分数据范围是部分分的两倍的时候就要考虑双向搜索了，搜索还是不过关。</p>
+<h2 id="T3-6">T3</h2>
+<p>本身考场上没思路，得分也符合预期，看题解总结了一条我认为对我今后的做题思路应该有重大影响的结论：正解基本都是由部分分改进得来的，观察了最近几天的题，发现确实如此。</p>
+<h2 id="T4-6">T4</h2>
+<p>又是不看题的一天。它题面里有两个模数，把模 p 的值累加再模 $10^9 + 7$。</p>
+<p>以为只有一直模 p 的我：啊？！</p>
+<p>最后算出来的答案一直与正确答案模 p 同余，痛失 100pts，我的解法还比 std 更加复杂。</p>
+<h2 id="总结-3">总结</h2>
 <p>读题！对拍！不要拿到半路就开跑！沉下心来！</p>
-<h1 id="总结前-4-场">总结（前 4 场）</h1>
-<p>这次出的最大的锅就是 <span
-class="math inline">$\color{red}{\large{\texttt{freopen}}}$</span>，前四场比赛我起码因为这个**错误丢了
-250pts，还有就是我感觉我离 NOIP
-难度的很多题的正解思路都很接近，但是就是不敢去写/写挂了。最后再提一句。</p>
-<h2 id="colorredlargetexttt一定要检查freopen"><strong><span
-class="math inline">$\color{red}{\large{\texttt{一定要检查freopen！！！！！！！！！！！}}}$</span></strong></h2>
-<h1 id="section-6">241019 &amp; 250419</h1>
-<p>时隔刚好 <span class="math inline">6</span>
-个月整，我们又再次考了同一套题，我的总分由原来的 <span
-class="math inline">2 + 80 + 0 + 12 = 94</span> 变为了 <span
-class="math inline">92 + 80 + 68 + 14 = 254</span>，涨了 <span
-class="math inline">254 − 94 = 160</span> 分。</p>
-<h2 id="t1-6">T1</h2>
-<p><span
-class="math display">2<em>p</em><em>t</em><em>s</em> → 92<em>p</em><em>t</em><em>s</em></span></p>
-<p>观摩了一下第一次考试写的代码，真就一坨。除了知道一个二分答案以外什么都没有了，而且检查的逻辑也有很大的问题，但是起码知道
-<span
-class="math inline"><em>l</em> = −1, <em>r</em> = <em>n</em></span>，而这一次我直接
-<span
-class="math inline"><em>l</em> = 0, <em>r</em> = <em>n</em></span>，成功挂掉
-<span class="math inline">8<em>p</em><em>t</em><em>s</em></span>。</p>
-<p>防爆零题目，你甚至可以看到
-<code>if (edge[i].c &lt;= mid &amp;&amp; edge[i + 1].c &gt; mid)</code>
-拿 <span
-class="math inline">2<em>p</em><em>t</em><em>s</em></span>。</p>
-<h2 id="t2-6">T2</h2>
-<p><span
-class="math display">0 → 68<em>p</em><em>t</em><em>s</em></span></p>
-<p>打的暴力。基本没有变化，唯一的区别就是现在会了 LCT，想了一下用 LCT
-维护似乎可做，于是就想着 LCT
-太麻烦了，就打了个暴力走人，实际上可以使用线段树维护，并不需要 LCT
-这种高级数据结构。我好像在学习新算法以后就想着新算法了，但是一些用简单算法可以做的题目就被复杂化了，就反而会让得分降低。</p>
-<h2 id="t3-6">T3</h2>
-<p><span
-class="math display">12<em>p</em><em>t</em><em>s</em> → 14<em>p</em><em>t</em><em>s</em></span></p>
+<h1>总结（前 4 场）</h1>
+<p>这次出的最大的锅就是 $\color{red}{\large{\texttt{freopen}}}$，前四场比赛我起码因为这个**错误丢了 250pts，还有就是我感觉我离 NOIP 难度的很多题的正解思路都很接近，但是就是不敢去写/写挂了。最后再提一句。</p>
+<h2 id="color-red-large-texttt-一定要检查freopen！！！！！！！！！！！"><strong>$\color{red}{\large{\texttt{一定要检查freopen！！！！！！！！！！！}}}$</strong></h2>
+<h1>241019 &amp; 250419</h1>
+<p>时隔刚好 $6$ 个月整，我们又再次考了同一套题，我的总分由原来的 $2+80+0+12=94$ 变为了 $92+80+68+14=254$，涨了 $254-94=160$ 分。</p>
+<h2 id="T1-7">T1</h2>
+<p>$$<br>
+2pts \to 92pts<br>
+$$</p>
+<p>观摩了一下第一次考试写的代码，真就一坨。除了知道一个二分答案以外什么都没有了，而且检查的逻辑也有很大的问题，但是起码知道 $l=-1,r=n$，而这一次我直接 $l=0,r=n$，成功挂掉 $8pts$。</p>
+<p>防爆零题目，你甚至可以看到 <code>if (edge[i].c &lt;= mid &amp;&amp; edge[i + 1].c &gt; mid)</code> 拿 $2pts$。</p>
+<h2 id="T2-7">T2</h2>
+<p>$$<br>
+0 \to 68pts<br>
+$$</p>
+<p>打的暴力。基本没有变化，唯一的区别就是现在会了 LCT，想了一下用 LCT 维护似乎可做，于是就想着 LCT 太麻烦了，就打了个暴力走人，实际上可以使用线段树维护，并不需要 LCT 这种高级数据结构。我好像在学习新算法以后就想着新算法了，但是一些用简单算法可以做的题目就被复杂化了，就反而会让得分降低。</p>
+<h2 id="T3-7">T3</h2>
+<p>$$<br>
+12pts \to 14pts<br>
+$$</p>
 <p>都是贪心，没什么本质区别，但是世界上应该用 DP 的。</p>
-<p>题解需要用的性质我都推出来了，唯一的区别就只是我<del>观察</del>臆想出的单调性，虽然我也不知道我是怎么想出来的，但是确实我脑子一抽就搞了个所谓的性质。</p>
+<p>题解需要用的性质我都推出来了，唯一的区别就只是我<s>观察</s>臆想出的单调性，虽然我也不知道我是怎么想出来的，但是确实我脑子一抽就搞了个所谓的性质。</p>
 <p>以后一定要证明！！！</p>
-<h2 id="t4-6">T4</h2>
-<p><span
-class="math display">80<em>p</em><em>t</em><em>s</em> → 80<em>p</em><em>t</em><em>s</em></span></p>
+<h2 id="T4-7">T4</h2>
+<p>$$<br>
+80pts \to 80pts<br>
+$$</p>
 <p>结果一成不变，但是我这次在考场上想出了完整思路，而且没写出来。</p>
 <p>还好我先写了一个暴力。</p>
 
@@ -567,7 +495,7 @@ class="math display">80<em>p</em><em>t</em><em>s</em> → 80<em>p</em><em>t<
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -612,29 +540,6 @@ class="math display">80<em>p</em><em>t</em><em>s</em> → 80<em>p</em><em>t<
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2024/10/25/%E5%A4%8D%E8%B5%9B%E5%89%8D%E6%A8%A1%E6%9D%BF%E8%80%83%E5%90%8E%E6%80%BB%E7%BB%93/" title="复赛前模板考后总结">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">复赛前模板考后总结</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2024/08/26/%E9%A2%98%E8%A7%A3%EF%BC%9ACF523C%20Name%20Quest/" title="题解：CF523C Name Quest">
-                        <span class="hidden-mobile">题解：CF523C Name Quest</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -856,6 +761,33 @@ class="math display">80<em>p</em><em>t</em><em>s</em> → 80<em>p</em><em>t<
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

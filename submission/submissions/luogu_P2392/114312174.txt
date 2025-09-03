@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 114312174
+//  题目ID: P2392
+#include<bits/stdc++.h>
+using namespace std;
+int zuo,you,minn,ans;
+int s[5];
+int a[20+10][5+5];
+void dfs(int x,int y){
+	if(x>s[y]){
+		minn=min(minn,max(zuo,you));
+		return;
+	}
+	zuo+=a[x][y];
+	dfs(x+1,y);
+	zuo-=a[x][y];
+	
+	you+=a[x][y];
+	dfs(x+1,y);
+	you-=a[x][y];
+}
+int main(){
+	cin>>s[1]>>s[2]>>s[3]>>s[4];
+	for(int i=1;i<=4;i++){
+		zuo=you=0;
+		minn=INT_MAX-114514;
+		for(int j=1;j<=s[i];j++) cin>>a[j][i];
+		dfs(1,i);
+		ans+=minn;
+	}
+	cout<<ans;
+	return 0;
+}

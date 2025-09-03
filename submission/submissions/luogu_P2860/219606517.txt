@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 219606517
+//  题目ID: P2860
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int u, v, nxt;
+}edge[1000000 + 10];
+int head[100000 + 10], idx = 1, a[100000 + 10];
+void add(int u, int v) {
+	edge[++idx] = { u,v,head[u] };
+	head[u] = idx;
+}
+int n, m, scc[100000 + 10], dfn[100000 + 10], low[100000 + 10], cnt, idk;
+struct EDGE {
+	int u, v;
+	EDGE(int u = 0, int v = 0) :u(min(u, v)), v(max(u, v)) {}
+	friend bool operator==(const EDGE& a, const EDGE& b) {
+		return a.u == b.u && a.v == b.v;
+	}
+	friend bool operator<(const EDGE& a, const EDGE& b) {
+		return tie(a.u, a.v) < tie(b.u, b.v);
+	}
+};
+vector<EDGE>ans;
+void tarjan(int x, int in) {
+	dfn[x] = low[x] = ++idk;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (!dfn[edge[i].v]) {
+			tarjan(edge[i].v, i),
+				low[x] = min(low[x], low[edge[i].v]);
+			if (low[edge[i].v] > dfn[x]) {
+				ans.push_back(EDGE(x, edge[i].v));
+			}
+		}
+		else if (in ^ 1 ^ i)
+			low[x] = min(low[x], dfn[edge[i].v]);
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v; i <= m; ++i)
+		cin >> u >> v, add(u, v), add(v, u);
+	for (int i = 1; i <= n; ++i) if (!dfn[i]) tarjan(i, 0);
+	sort(ans.begin(), ans.end());
+	ans.erase(unique(ans.begin(), ans.end()), ans.end());
+	cout << (ans.size() + 1) / 2 << endl;
+	return 0;
+}

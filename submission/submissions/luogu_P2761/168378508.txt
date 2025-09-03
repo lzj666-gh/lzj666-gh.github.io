@@ -1,0 +1,70 @@
+//  OJ: 洛谷
+//  提交ID: 168378508
+//  题目ID: P2761
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+	int v,w,nxt;
+}edge[(1<<20)*100+10];
+struct Upd{
+	int f1,f2,b1,b2,w;
+}p[100+10];
+int head[(1<<20)+10],idx;
+void add(int u,int v,int w){
+	edge[++idx]={v,w,head[u]};
+	head[u]=idx;
+}
+struct Node{
+	int first,second;
+	friend bool operator<(const Node&a,const Node&b){
+		return a.first>b.first;
+	}
+};
+int n,m,s,dis[(1<<20)+10];
+priority_queue<Node>q;
+bool vis[(1<<20)+10];
+void dij(){
+	memset(dis,0x3f,sizeof dis);
+	dis[s]=0;
+	q.push({0,s});
+	while(!q.empty()){
+		Node p=q.top();q.pop();
+		if(vis[p.second]) continue;
+		vis[p.second]=1;
+		for(int i=head[p.second];i;i=edge[i].nxt){
+			if(dis[edge[i].v]>dis[p.second]+edge[i].w){
+				dis[edge[i].v]=dis[p.second]+edge[i].w;
+				q.push({dis[p.second]+edge[i].w,edge[i].v});
+			}
+		}
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=m;++i){
+		cin>>p[i].w;
+		for(int j=1;j<=n;++j){
+			char tmp;cin>>tmp;
+			if(tmp=='+') p[i].b1|=(1<<j-1);
+			if(tmp=='-') p[i].b2|=(1<<j-1);
+		}
+		for(int j=1;j<=n;++j){
+			char tmp;cin>>tmp;
+			if(tmp=='+') p[i].f2|=(1<<j-1);
+			if(tmp=='-') p[i].f1|=(1<<j-1);
+		}
+	}
+	s=1<<n;s--;
+	for(int x=0;x<(1<<n);++x){
+		for(int i=1;i<=m;++i){
+			if((x&p[i].b1)==p[i].b1&&(x&p[i].b2)==0){
+				int y=((x|p[i].f1)|p[i].f2)^p[i].f1;
+				add(x,y,p[i].w),add(y,x,p[i].w);
+			}
+		}
+	}
+	dij();
+	cout<<(dis[0]==dis[(1<<20)+9]?0:dis[0])<<endl;
+	return 0;
+}

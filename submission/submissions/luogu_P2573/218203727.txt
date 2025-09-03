@@ -1,0 +1,54 @@
+//  OJ: 洛谷
+//  提交ID: 218203727
+//  题目ID: P2573
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 1e5 + 10, M = 2e6 + 10;
+using ll = long long;
+struct Edge {
+	int v, w, nxt;
+}edge[M];
+int head[N], tot;
+void add(int u, int v, int w) {
+	edge[++tot] = { v,w,head[u] };
+	head[u] = tot;
+}
+struct Node {
+	int h, dis, id;
+	friend bool operator <(const Node& a, const Node& b) {
+		return a.h == b.h ? a.dis > b.dis:a.h < b.h;
+	}
+};
+priority_queue<Node> q;
+int cnt, h[N], d[N];
+ll ans;
+bool vis[N];
+void prim(int s) {
+	memset(d, 0x3f, sizeof d);
+	d[s] = 0;
+	q.push({ h[s],0,s });
+	while (!q.empty()) {
+		int now = q.top().id;
+		q.pop();
+		if (vis[now])continue;
+		vis[now] = 1;
+		cnt++, ans += d[now];
+		for (int i = head[now]; i; i = edge[i].nxt) 
+			if (d[edge[i].v] > edge[i].w)
+				d[edge[i].v] = edge[i].w, q.push({ h[edge[i].v], d[edge[i].v], edge[i].v });
+	}
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m;
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) cin >> h[i];
+	for (int i = 1, u, v, w; i <= m; i++) {
+		cin >> u >> v >> w;
+		if (h[u] >= h[v]) add(u, v, w);
+		if (h[v] >= h[u]) add(v, u, w);
+	}
+	prim(1);
+	cout << cnt << ' ' << ans << endl;
+	return 0;
+}

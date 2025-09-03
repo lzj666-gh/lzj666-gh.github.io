@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 115384493
+//  题目ID: P2235
+# 在这里写上你的代码 :-)
+def fun (x):
+#    print(x)
+    if x==1:
+        return 1
+    elif x==3:
+        return 3
+    elif x%2==0:
+        return fun(int(x/2))
+    elif x%4==1:
+        return 2*fun(int((x-1)/2+1))-fun(int((x-1)/4))
+    else :
+        return 3*fun(int((x-3)/2+1))-2*fun(int((x-3)/4))
+m=int(input())
+cnt=0
+for i in range(m):
+#    print("range:",'','')
+#    print(i)
+    if fun(i+1)==i+1:
+        cnt=cnt+1
+print(cnt)

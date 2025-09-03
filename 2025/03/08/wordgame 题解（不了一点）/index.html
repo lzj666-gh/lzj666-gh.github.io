@@ -16,19 +16,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="wordgame 题解（不了一点）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="wordgame 题解（不了一点）">
 <meta property="og:url" content="https://lzj-blog.top/2025/03/08/wordgame%20%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%8D%E4%BA%86%E4%B8%80%E7%82%B9%EF%BC%89/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="wordgame 题解（不了一点）">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-03-08T04:49:00.000Z">
 <meta property="article:modified_time" content="2025-05-08T06:33:32.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="题解">
 <meta property="article:tag" content="自己出的题">
 <meta name="twitter:card" content="summary_large_image">
@@ -37,7 +37,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>wordgame 题解（不了一点） - lzj&#39;blog</title>
+  <title>wordgame 题解（不了一点） - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -110,7 +110,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -143,18 +143,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -256,6 +244,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -321,104 +314,104 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">wordgame 题解（不了一点）</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-08T14:33:32+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
-                <h3 id="题目文字游戏wordgame">题目：文字游戏（wordgame）</h3>
+                <h3 id="题目：文字游戏（wordgame）">题目：文字游戏（wordgame）</h3>
 <h4 id="题目描述"><strong>题目描述</strong></h4>
-<p>在文字游戏中，共有 <span class="math inline"><em>n</em></span>
-种卡牌，每种卡牌上有一个字符串。每轮可以选择不超过 <span
-class="math inline"><em>m</em></span>
-张卡牌。权值的计算方式为所有选中的字符串长度之和减去它们的最长公共前缀（LCP）长度乘以卡牌数量。求所有合法出牌方式的权值之和模
-<span class="math inline">10<sup>9</sup> + 7</span>。</p>
+<p>在文字游戏中，共有 $n$ 种卡牌，每种卡牌上有一个字符串。每轮可以选择不超过 $m$ 张卡牌。权值的计算方式为所有选中的字符串长度之和减去它们的最长公共前缀（LCP）长度乘以卡牌数量。求所有合法出牌方式的权值之和模 $10^9+7$。</p>
 <h4 id="输入格式"><strong>输入格式</strong></h4>
 <ul>
-<li>第一行：<span class="math inline"><em>n</em></span> 和 <span
-class="math inline"><em>m</em></span>。</li>
-<li>接下来 <span class="math inline"><em>n</em></span>
-行：每行一个字符串。</li>
-<li>最后一行：<span class="math inline"><em>n</em></span>
-个整数，表示每种卡牌的数量 <span
-class="math inline"><em>v</em><sub><em>i</em></sub></span>。</li>
+<li>第一行：$n$ 和 $m$。</li>
+<li>接下来 $n$ 行：每行一个字符串。</li>
+<li>最后一行：$n$ 个整数，表示每种卡牌的数量 $v_i$。</li>
 </ul>
 <h4 id="输出格式"><strong>输出格式</strong></h4>
-<p>输出权值之和模 <span
-class="math inline">10<sup>9</sup> + 7</span>。</p>
-<hr />
+<p>输出权值之和模 $10^9+7$。</p>
+<hr>
 <h3 id="题目分析"><strong>题目分析</strong></h3>
-<ol type="1">
-<li><strong>权值计算</strong>：权值 <span
-class="math inline"><em>V</em><sub><em>s</em></sub></span> 分为两部分：
+<ol>
+<li>
+<p><strong>权值计算</strong>：权值 $V_s$ 分为两部分：</p>
 <ul>
-<li>总长度之和 <span
-class="math inline"><em>A</em></span>：所有选中字符串的长度之和。</li>
-<li>LCP 总贡献 <span
-class="math inline"><em>B</em></span>：所有组合的最长公共前缀长度的总和。
-最终答案为 <span
-class="math inline"><em>A</em> − <em>B</em></span>。</li>
-</ul></li>
-<li><strong>关键难点</strong>：
+<li>总长度之和 $A$：所有选中字符串的长度之和。</li>
+<li>LCP 总贡献 $B$：所有组合的最长公共前缀长度的总和。<br>
+最终答案为 $A - B$。</li>
+</ul>
+</li>
+<li>
+<p><strong>关键难点</strong>：</p>
 <ul>
 <li>高效计算所有可能的组合，避免枚举。</li>
 <li>利用数据结构（Trie）高效统计 LCP 的贡献。</li>
-</ul></li>
+</ul>
+</li>
 </ol>
-<hr />
+<hr>
 <h3 id="解题思路"><strong>解题思路</strong></h3>
-<h4 id="总长度之和-a-的计算"><strong>总长度之和 <span
-class="math inline"><em>A</em></span> 的计算</strong></h4>
+<h4 id="总长度之和-A-的计算"><strong>总长度之和 $A$ 的计算</strong></h4>
 <ul>
-<li><strong>生成函数</strong>：每个字符串的生成函数为 <span
-class="math inline">$\sum_{k=0}^m C(v_i, k)x^k$</span>，表示选 <span
-class="math inline"><em>k</em></span> 张该卡的方式数。</li>
+<li><strong>生成函数</strong>：每个字符串的生成函数为 $\sum_{k=0}^m C(v_i, k)x^k$，表示选 $k$ 张该卡的方式数。</li>
 <li><strong>多项式乘法</strong>：所有字符串的生成函数相乘，得到总组合数。</li>
 <li><strong>贡献计算</strong>：对于每个字符串，计算其在所有组合中的出现次数总和，乘以长度。</li>
 </ul>
-<h4 id="lcp-贡献-b-的计算"><strong>LCP 贡献 <span
-class="math inline"><em>B</em></span> 的计算</strong></h4>
+<h4 id="LCP-贡献-B-的计算"><strong>LCP 贡献 $B$ 的计算</strong></h4>
 <ul>
 <li><strong>Trie 树</strong>：构建 Trie 树，每个节点代表一个前缀。</li>
 <li><strong>动态规划</strong>：后序遍历 Trie，计算每个节点的组合数：
 <ul>
 <li>节点的组合数 = 所有子节点组合数的乘积 × 当前节点的组合数。</li>
 <li>贡献为：<code>节点深度 × (当前组合数 - 子节点组合数之和)</code>。</li>
-</ul></li>
 </ul>
-<hr />
+</li>
+</ul>
+<hr>
 <h3 id="实现细节"><strong>实现细节</strong></h3>
-<ol type="1">
-<li><strong>生成函数乘法与除法</strong>：
+<ol>
+<li>
+<p><strong>生成函数乘法与除法</strong>：</p>
 <ul>
 <li>预处理每个字符串的生成函数。</li>
 <li>计算总生成函数后，通过递推求排除某个字符串后的生成函数，避免重复计算。</li>
-</ul></li>
-<li><strong>Trie 树优化</strong>：
+</ul>
+</li>
+<li>
+<p><strong>Trie 树优化</strong>：</p>
 <ul>
 <li>使用数组存储子节点，加速访问。</li>
 <li>后序遍历合并子节点的动态规划数组。</li>
-</ul></li>
-<li><strong>组合数计算</strong>：
+</ul>
+</li>
+<li>
+<p><strong>组合数计算</strong>：</p>
 <ul>
 <li>使用预计算的阶乘逆元加速组合数计算。</li>
-</ul></li>
+</ul>
+</li>
 </ol>
-<hr />
+<hr>
 <h3 id="易错点"><strong>易错点</strong></h3>
-<ol type="1">
+<ol>
 <li><strong>模运算处理</strong>：减法后需确保结果非负。</li>
 <li><strong>生成函数除法</strong>：递推计算时需正确处理多项式逆元。</li>
-<li><strong>Trie
-节点合并</strong>：子节点的组合数需正确卷积到父节点。</li>
+<li><strong>Trie 节点合并</strong>：子节点的组合数需正确卷积到父节点。</li>
 </ol>
-<hr />
+<hr>
 <h3 id="完整代码"><strong>完整代码</strong></h3>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unordered_map&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;memory&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> MOD = <span class="hljs-number">1e9</span> + <span class="hljs-number">7</span>;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXM = <span class="hljs-number">5</span>;<br><br><span class="hljs-type">int</span> fact_inv[MAXM + <span class="hljs-number">1</span>] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">500000004</span>, <span class="hljs-number">166666668</span>, <span class="hljs-number">41666667</span>, <span class="hljs-number">808333339</span>&#125;;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">TrieNode</span> &#123;<br>    TrieNode* children[<span class="hljs-number">26</span>];<br>    <span class="hljs-type">int</span> depth;<br>    vector&lt;<span class="hljs-type">int</span>&gt; a;<br>    vector&lt;<span class="hljs-type">int</span>&gt; dp;<br><br>    <span class="hljs-built_in">TrieNode</span>(<span class="hljs-type">int</span> d, <span class="hljs-type">int</span> m) : <span class="hljs-built_in">depth</span>(d), <span class="hljs-built_in">a</span>(m + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>), <span class="hljs-built_in">dp</span>(m + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-built_in">memset</span>(children, <span class="hljs-number">0</span>, <span class="hljs-built_in">sizeof</span>(children));<br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">comb</span><span class="hljs-params">(<span class="hljs-type">int</span> v, <span class="hljs-type">int</span> k)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (k == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    <span class="hljs-type">long</span> <span class="hljs-type">long</span> res = <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; k; ++i) &#123;<br>        res = res * (v - i) % MOD;<br>    &#125;<br>    <span class="hljs-keyword">return</span> res * fact_inv[k] % MOD;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">insertTrie</span><span class="hljs-params">(TrieNode* root, <span class="hljs-type">const</span> string&amp; s, <span class="hljs-type">const</span> vector&lt;<span class="hljs-type">int</span>&gt;&amp; poly)</span> </span>&#123;<br>    TrieNode* node = root;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s) &#123;<br>        <span class="hljs-type">int</span> idx = c - <span class="hljs-string">&#x27;a&#x27;</span>;<br>        <span class="hljs-keyword">if</span> (!node-&gt;children[idx]) &#123;<br>            node-&gt;children[idx] = <span class="hljs-keyword">new</span> <span class="hljs-built_in">TrieNode</span>(node-&gt;depth + <span class="hljs-number">1</span>, root-&gt;dp.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>);<br>        &#125;<br>        node = node-&gt;children[idx];<br>    &#125;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k &lt; poly.<span class="hljs-built_in">size</span>(); ++k) &#123;<br>        node-&gt;a[k] = (node-&gt;a[k] + poly[k]) % MOD;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">computeDp</span><span class="hljs-params">(TrieNode* node, <span class="hljs-type">int</span> m, <span class="hljs-type">int</span>&amp; B)</span> </span>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; ++i) &#123;<br>        <span class="hljs-keyword">if</span> (node-&gt;children[i]) &#123;<br>            <span class="hljs-built_in">computeDp</span>(node-&gt;children[i], m, B);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-built_in">fill</span>(node-&gt;dp.<span class="hljs-built_in">begin</span>(), node-&gt;dp.<span class="hljs-built_in">end</span>(), <span class="hljs-number">0</span>);<br>    node-&gt;dp[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; ++i) &#123;<br>        <span class="hljs-keyword">if</span> (!node-&gt;children[i]) <span class="hljs-keyword">continue</span>;<br>        TrieNode* child = node-&gt;children[i];<br>        <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">tmp</span><span class="hljs-params">(m + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)</span></span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> a = <span class="hljs-number">0</span>; a &lt;= m; ++a) &#123;<br>            <span class="hljs-keyword">if</span> (node-&gt;dp[a] == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> b = <span class="hljs-number">0</span>; b &lt;= m - a; ++b) &#123;<br>                tmp[a + b] = (tmp[a + b] + <span class="hljs-number">1LL</span> * node-&gt;dp[a] * child-&gt;dp[b]) % MOD;<br>            &#125;<br>        &#125;<br>        node-&gt;dp = tmp;<br>    &#125;<br><br>    vector&lt;<span class="hljs-type">int</span>&gt; new_dp = node-&gt;dp;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = m; k &gt;= <span class="hljs-number">0</span>; --k) &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> a = <span class="hljs-number">1</span>; a &lt;= <span class="hljs-built_in">min</span>(k, (<span class="hljs-type">int</span>)node-&gt;a.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>); ++a) &#123;<br>            new_dp[k] = (new_dp[k] + <span class="hljs-number">1LL</span> * new_dp[k - a] * node-&gt;a[a]) % MOD;<br>        &#125;<br>    &#125;<br>    node-&gt;dp.<span class="hljs-built_in">swap</span>(new_dp);<br><br>    <span class="hljs-type">int</span> sumk = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">1</span>; k &lt;= m; ++k) &#123;<br>        sumk = (sumk + <span class="hljs-number">1LL</span> * k * node-&gt;dp[k]) % MOD;<br>    &#125;<br><br>    <span class="hljs-type">int</span> sum_child = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; ++i) &#123;<br>        <span class="hljs-keyword">if</span> (!node-&gt;children[i]) <span class="hljs-keyword">continue</span>;<br>        TrieNode* child = node-&gt;children[i];<br>        <span class="hljs-type">int</span> sk = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">1</span>; k &lt;= m; ++k) &#123;<br>            sk = (sk + <span class="hljs-number">1LL</span> * k * child-&gt;dp[k]) % MOD;<br>        &#125;<br>        sum_child = (sum_child + sk) % MOD;<br>    &#125;<br><br>    <span class="hljs-type">int</span> contrib = (<span class="hljs-number">1LL</span> * node-&gt;depth * ((sumk - sum_child + MOD) % MOD)) % MOD;<br>    B = (B + contrib) % MOD;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);<br><br>    <span class="hljs-type">int</span> n, m;<br>    cin &gt;&gt; n &gt;&gt; m;<br><br>    <span class="hljs-function">vector&lt;string&gt; <span class="hljs-title">s</span><span class="hljs-params">(n)</span></span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) &#123;<br>        cin &gt;&gt; s[i];<br>    &#125;<br><br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">v</span><span class="hljs-params">(n)</span></span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) &#123;<br>        cin &gt;&gt; v[i];<br>    &#125;<br><br>    unordered_map&lt;string, <span class="hljs-type">int</span>&gt; sum_v_map;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) &#123;<br>        <span class="hljs-keyword">if</span> (v[i] &gt; <span class="hljs-number">0</span>) &#123;<br>            sum_v_map[s[i]] = (sum_v_map[s[i]] + v[i]) % MOD;<br>        &#125;<br>    &#125;<br><br>    vector&lt;pair&lt;string, <span class="hljs-type">int</span>&gt;&gt; unique_strings;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; p : sum_v_map) &#123;<br>        unique_strings.<span class="hljs-built_in">emplace_back</span>(p.first, p.second);<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (unique_strings.<span class="hljs-built_in">empty</span>()) &#123;<br>        cout &lt;&lt; <span class="hljs-string">&quot;0\n&quot;</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br><br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">coeff_total</span><span class="hljs-params">(m + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)</span></span>;<br>    coeff_total[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;<br>    vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; polys;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; p : unique_strings) &#123;<br>        <span class="hljs-type">int</span> current_v = p.second;<br>        <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">poly</span><span class="hljs-params">(m + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)</span></span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k &lt;= m; ++k) &#123;<br>            poly[k] = <span class="hljs-built_in">comb</span>(current_v, k);<br>        &#125;<br>        polys.<span class="hljs-built_in">push_back</span>(poly);<br><br>        <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">new_coeff</span><span class="hljs-params">(m + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)</span></span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> a = <span class="hljs-number">0</span>; a &lt;= m; ++a) &#123;<br>            <span class="hljs-keyword">if</span> (coeff_total[a] == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> b = <span class="hljs-number">0</span>; b &lt;= m - a; ++b) &#123;<br>                new_coeff[a + b] = (new_coeff[a + b] + <span class="hljs-number">1LL</span> * coeff_total[a] * poly[b]) % MOD;<br>            &#125;<br>        &#125;<br>        coeff_total = new_coeff;<br>    &#125;<br><br>    <span class="hljs-type">int</span> A = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> idx = <span class="hljs-number">0</span>; idx &lt; unique_strings.<span class="hljs-built_in">size</span>(); ++idx) &#123;<br>        <span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; p = unique_strings[idx];<br>        <span class="hljs-type">const</span> string&amp; str = p.first;<br>        <span class="hljs-type">int</span> len_s = str.<span class="hljs-built_in">size</span>();<br>        <span class="hljs-type">const</span> vector&lt;<span class="hljs-type">int</span>&gt;&amp; poly = polys[idx];<br><br>        <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">coeff_rest</span><span class="hljs-params">(m + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)</span></span>;<br>        coeff_rest[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">1</span>; k &lt;= m; ++k) &#123;<br>            <span class="hljs-type">long</span> <span class="hljs-type">long</span> val = coeff_total[k];<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> t = <span class="hljs-number">1</span>; t &lt;= <span class="hljs-built_in">min</span>(k, m); ++t) &#123;<br>                val -= <span class="hljs-number">1LL</span> * coeff_rest[k - t] * poly[t] % MOD;<br>                <span class="hljs-keyword">if</span> (val &lt; <span class="hljs-number">0</span>) val += MOD;<br>            &#125;<br>            coeff_rest[k] = val % MOD;<br>        &#125;<br><br>        <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">prefix</span><span class="hljs-params">(m + <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)</span></span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k &lt;= m; ++k) &#123;<br>            prefix[k + <span class="hljs-number">1</span>] = (prefix[k] + coeff_rest[k]) % MOD;<br>        &#125;<br><br>        <span class="hljs-type">long</span> <span class="hljs-type">long</span> sum = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">1</span>; k &lt;= m; ++k) &#123;<br>            <span class="hljs-type">int</span> max_other = m - k;<br>            <span class="hljs-keyword">if</span> (max_other &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;<br>            sum = (sum + <span class="hljs-number">1LL</span> * poly[k] * k % MOD * prefix[max_other + <span class="hljs-number">1</span>] % MOD) % MOD;<br>        &#125;<br>        A = (A + <span class="hljs-number">1LL</span> * len_s * sum % MOD) % MOD;<br>    &#125;<br><br>    <span class="hljs-function">TrieNode <span class="hljs-title">root</span><span class="hljs-params">(<span class="hljs-number">0</span>, m)</span></span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; unique_strings.<span class="hljs-built_in">size</span>(); ++i) &#123;<br>        <span class="hljs-built_in">insertTrie</span>(&amp;root, unique_strings[i].first, polys[i]);<br>    &#125;<br><br>    <span class="hljs-type">int</span> B = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">computeDp</span>(&amp;root, m, B);<br><br>    <span class="hljs-type">int</span> ans = (A - B + MOD) % MOD;<br>    cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-<hr />
+<hr>
 <h3 id="总结"><strong>总结</strong></h3>
-<p>通过生成函数和 Trie
-树的结合，高效处理了大规模组合计数与公共前缀统计问题，确保时间复杂度在
-<span
-class="math inline"><em>O</em>(sumlen ⋅ <em>m</em><sup>2</sup>)</span>，适用于题目给定的数据范围。</p>
+<p>通过生成函数和 Trie 树的结合，高效处理了大规模组合计数与公共前缀统计问题，确保时间复杂度在 $O(\text{sumlen} \cdot m^2)$，适用于题目给定的数据范围。</p>
 
                 
               </div>
@@ -452,7 +445,7 @@ class="math inline"><em>O</em>(sumlen ⋅ <em>m</em><sup>2</sup>)</span>，�
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -497,29 +490,6 @@ class="math inline"><em>O</em>(sumlen ⋅ <em>m</em><sup>2</sup>)</span>，�
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2025/03/14/2025%20%E6%98%A5%E5%AD%A3%E6%95%B0%E8%AE%BA/" title="2025 春季数论">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">2025 春季数论</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2025/03/05/%E6%9D%9C%E6%95%99%E7%AD%9B/" title="杜教筛">
-                        <span class="hidden-mobile">杜教筛</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -741,6 +711,33 @@ class="math inline"><em>O</em>(sumlen ⋅ <em>m</em><sup>2</sup>)</span>，�
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

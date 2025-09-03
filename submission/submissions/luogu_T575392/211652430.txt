@@ -1,8 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 211652430
-//  题目ID: T575392
-#include<bits/stdc++.h>
-using namespace std;
-int main(){
-    puts("actually there is something behind the end of this program...\nbtw you dont need to reverse or to pwn it lol");
-}

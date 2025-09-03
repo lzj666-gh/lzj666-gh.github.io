@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 158400401
+//  题目ID: P1908
+#include<bits/stdc++.h>
+#define lb(x) (x & ~x + 1)
+typedef long long ll;
+using namespace std;
+ll a[500000 + 10], s[500000 + 10], n, ans;
+ll query(ll x) {
+	ll ans = 0;
+	for (; x; x -= lb(x)) {
+		ans += s[x];
+	}
+	return ans;
+}
+void add(int x, ll k) {
+	for (; x <= n; x += lb(x)) {
+		s[x] += k;
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		cin >> a[i];
+	}
+	for (int i = n; i >= 1; --i) {
+		int x = 1, y = a[i] - 1;
+		ans += query(a[i] - 1);
+		add(a[i], 1);
+	}
+	cout << ans << endl;
+	return 0;
+}

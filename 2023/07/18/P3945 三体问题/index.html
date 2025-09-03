@@ -16,19 +16,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="P3945 三体问题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="P3945 三体问题">
 <meta property="og:url" content="https://lzj-blog.top/2023/07/18/P3945%20%E4%B8%89%E4%BD%93%E9%97%AE%E9%A2%98/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="P3945 三体问题">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-07-18T12:16:34.000Z">
 <meta property="article:modified_time" content="2025-05-08T06:34:46.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="题解">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -36,7 +36,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>P3945 三体问题 - lzj&#39;blog</title>
+  <title>P3945 三体问题 - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -109,7 +109,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -142,18 +142,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -255,6 +243,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -270,7 +263,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          946 字
+          948 字
         
       </span>
     
@@ -320,43 +313,34 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">P3945 三体问题</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-08T14:34:46+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
                 <p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3945">题目传送门</a></p>
-<h3 id="题目注意事项">题目注意事项：</h3>
-<p>本题万有引力常数 <span class="math inline"><em>G</em></span> 取 <span
-class="math inline">6.67408 × 10<sup>−11</sup></span>。</p>
-<h3 id="做这道题所需的知识">做这道题所需的知识：</h3>
-<h4 id="距离公式">1：距离公式</h4>
-<p>在三维空间内有两个点，设第一个点的坐标为 <span
-class="math inline">(<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>, <em>z</em><sub>1</sub>)</span>，第二个点的坐标为
-<span
-class="math inline">(<em>x</em><sub>2</sub>, <em>y</em><sub>2</sub>, <em>z</em><sub>2</sub>)</span>，那两点之间的距离
-distance 为：</p>
-<p><span
-class="math inline">$\operatorname{distance}=\sqrt{(x_2-x_1)^2+(y_2-y_1)^2+(z_2-z_1)^2}$</span>。</p>
-<h4 id="算加速度的">2：算加速度的</h4>
-<p>设 <span class="math inline"><em>F</em></span> 表示力的大小，<span
-class="math inline"><em>M</em><sub>1</sub>, <em>M</em><sub>2</sub></span>
-表示两个物体的质量，<span class="math inline"><em>r</em></span>
-表示两个物体之间的距离，<span class="math inline"><em>G</em></span>
-是万有引力常数，有 <span class="math inline">$F=G \times \dfrac{M_1
-\times M_2}{r^2}$</span>。</p>
-<p>而且还有设 <span class="math inline"><em>F</em></span>
-表示力的大小，<span class="math inline"><em>M</em></span>
-表示物体的质量，<span class="math inline"><em>a</em></span> 表示加速度
-<span
-class="math inline"><em>F</em> = <em>M</em> × <em>a</em></span>。</p>
-<p>联立可得 <span class="math inline">$M·a=G \times \dfrac{M_1 \times
-M_2}{r^2}$</span>。</p>
-<p>化简可得 <span class="math inline">$a=G \times
-\dfrac{M}{r^2}$</span>。</p>
-<h4 id="匀变速直线运动的公式">3：匀变速直线运动的公式</h4>
-<p>位移公式 <span
-class="math inline">$x=v_0t+\frac{1}{2}at^2$</span>。</p>
-<p>速度公式 <span
-class="math inline"><em>v</em> = <em>a</em><em>t</em></span>。</p>
+<h3 id="题目注意事项：">题目注意事项：</h3>
+<p>本题万有引力常数 $G$ 取 $6.67408 \times 10^{-11}$。</p>
+<h3 id="做这道题所需的知识：">做这道题所需的知识：</h3>
+<h4 id="1：距离公式">1：距离公式</h4>
+<p>在三维空间内有两个点，设第一个点的坐标为 $(x_1,y_1,z_1)$，第二个点的坐标为 $(x_2,y_2,z_2)$，那两点之间的距离 distance 为：</p>
+<p>$\operatorname{distance}=\sqrt{(x_2-x_1)^2+(y_2-y_1)^2+(z_2-z_1)^2}$。</p>
+<h4 id="2：算加速度的">2：算加速度的</h4>
+<p>设 $F$ 表示力的大小，$M_1,M_2$ 表示两个物体的质量，$r$ 表示两个物体之间的距离，$G$ 是万有引力常数，有 $F=G \times \dfrac{M_1 \times M_2}{r^2}$。</p>
+<p>而且还有设 $F$ 表示力的大小，$M$ 表示物体的质量，$a$ 表示加速度 $F=M \times a$。</p>
+<p>联立可得 $M·a=G \times \dfrac{M_1 \times M_2}{r^2}$。</p>
+<p>化简可得 $a=G \times \dfrac{M}{r^2}$。</p>
+<h4 id="3：匀变速直线运动的公式">3：匀变速直线运动的公式</h4>
+<p>位移公式 $x=v_0t+\frac{1}{2}at^2$。</p>
+<p>速度公式 $v=at$。</p>
 <h3 id="然后就可以开始构思代码了">然后就可以开始构思代码了</h3>
 <p>先定义一个结构体来存天体。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">stars</span>&#123;<br>	<span class="hljs-type">long</span> <span class="hljs-type">double</span> x,y,z;<span class="hljs-comment">//位置 </span><br>	<span class="hljs-type">long</span> <span class="hljs-type">double</span> xv,yv,zv;<span class="hljs-comment">//三个方向上的速度</span><br>	<span class="hljs-type">long</span> <span class="hljs-type">double</span> nowx,nowy,nowz;<span class="hljs-comment">//现在的速度改变量 </span><br>	<span class="hljs-type">long</span> <span class="hljs-type">double</span> changex,changey,changez;<span class="hljs-comment">//计算时的改变量</span><br>	<span class="hljs-type">long</span> <span class="hljs-type">double</span> tmp;<br>	<span class="hljs-type">long</span> <span class="hljs-type">double</span> mass;<span class="hljs-comment">//质量 </span><br>&#125;m[MAXN];<br></code></pre></td></tr></table></figure>
@@ -368,7 +352,6 @@ class="math inline"><em>v</em> = <em>a</em><em>t</em></span>。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">cout&lt;&lt;fixed&lt;&lt;<span class="hljs-built_in">setprecision</span>(<span class="hljs-number">12</span>);<br></code></pre></td></tr></table></figure>
 <p>最后就是完整代码。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> G 6.67408e-11</span><br><span class="hljs-comment">//重力加速度 </span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-type">const</span> <span class="hljs-type">long</span> <span class="hljs-type">double</span> t0=<span class="hljs-number">0.01</span>;<span class="hljs-comment">//单位时间 </span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN=<span class="hljs-number">30</span><span class="hljs-number">+10</span>;<span class="hljs-comment">//最大值 </span><br><br><span class="hljs-type">int</span> n;<span class="hljs-comment">//天体个数 </span><br><span class="hljs-type">long</span> <span class="hljs-type">double</span> tt;<span class="hljs-comment">//时间 </span><br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">stars</span>&#123;<br>	<span class="hljs-type">long</span> <span class="hljs-type">double</span> x,y,z;<span class="hljs-comment">//位置 </span><br>	<span class="hljs-type">long</span> <span class="hljs-type">double</span> xv,yv,zv;<span class="hljs-comment">//三个方向上的速度</span><br>	<span class="hljs-type">long</span> <span class="hljs-type">double</span> nowx,nowy,nowz;<span class="hljs-comment">//现在的速度改变量 </span><br>	<span class="hljs-type">long</span> <span class="hljs-type">double</span> changex,changey,changez;<span class="hljs-comment">//计算时的改变量</span><br>	<span class="hljs-type">long</span> <span class="hljs-type">double</span> tmp;<br>	<span class="hljs-type">long</span> <span class="hljs-type">double</span> mass;<span class="hljs-comment">//质量 </span><br>&#125;m[MAXN];<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>	cin&gt;&gt;n&gt;&gt;tt;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>		cin&gt;&gt;m[i].x&gt;&gt;m[i].y&gt;&gt;m[i].z;<span class="hljs-comment">//现在的位置 </span><br>		cin&gt;&gt;m[i].mass;<span class="hljs-comment">//质量 </span><br>		cin&gt;&gt;m[i].xv&gt;&gt;m[i].yv&gt;&gt;m[i].zv;<br>	&#125;<br>	<span class="hljs-keyword">while</span>(tt&gt;<span class="hljs-number">0</span>)&#123;<br>		tt-=t0;<br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>			m[i].nowx=m[i].nowy=m[i].nowz=<span class="hljs-number">0</span>;<br>			<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++)&#123;<br>				<span class="hljs-keyword">if</span>(i!=j)&#123;<br>					m[i].changex=m[j].x-m[i].x; m[i].changey=m[j].y-m[i].y; m[i].changez=m[j].z-m[i].z;<br>					<span class="hljs-comment">//三个方向上的改变量 </span><br>					m[i].tmp=<span class="hljs-built_in">sqrt</span>(m[i].changex*m[i].changex + m[i].changey*m[i].changey + m[i].changez*m[i].changez);<br>					<br>					m[i].nowx += m[j].mass*G/(m[i].tmp*m[i].tmp)<span class="hljs-comment">/*距离*/</span> * m[i].changex/(m[i].tmp);<br>					m[i].nowy += m[j].mass*G/(m[i].tmp*m[i].tmp)<span class="hljs-comment">/*距离*/</span> * m[i].changey/(m[i].tmp);<br>					m[i].nowz += m[j].mass*G/(m[i].tmp*m[i].tmp)<span class="hljs-comment">/*距离*/</span> * m[i].changez/(m[i].tmp);<br>					<span class="hljs-comment">//引力和距离平方成反比,再乘一个change/tmp</span><br>				&#125;<br>			&#125;<br>		&#125;<br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>			m[i].x+=t0*(m[i].xv+=t0*m[i].nowx);<br>			m[i].y+=t0*(m[i].yv+=t0*m[i].nowy);<br>			m[i].z+=t0*(m[i].zv+=t0*m[i].nowz);<br>			<span class="hljs-comment">//单位时间内的改变量 </span><br>		&#125;<br>	&#125;<br>	cout&lt;&lt;fixed&lt;&lt;<span class="hljs-built_in">setprecision</span>(<span class="hljs-number">12</span>);<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++) cout&lt;&lt;m[i].x&lt;&lt;<span class="hljs-string">&#x27; &#x27;</span>&lt;&lt;m[i].y&lt;&lt;<span class="hljs-string">&#x27; &#x27;</span>&lt;&lt;m[i].z&lt;&lt;endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
                 
               </div>
             
@@ -399,7 +382,7 @@ class="math inline"><em>v</em> = <em>a</em><em>t</em></span>。</p>
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -444,29 +427,6 @@ class="math inline"><em>v</em> = <em>a</em><em>t</em></span>。</p>
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2023/08/15/%E5%8F%AA%E5%9B%A0%E7%A1%80%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" title="只因础算法总结">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">只因础算法总结</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2023/07/06/%E8%83%8C%E5%8C%85%E6%80%BB%E7%BB%93/" title="背包总结">
-                        <span class="hidden-mobile">背包总结</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -688,6 +648,33 @@ class="math inline"><em>v</em> = <em>a</em><em>t</em></span>。</p>
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

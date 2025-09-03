@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 167694227
+//  题目ID: P2016
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[3000 + 10];
+int idx, head[1500 + 10];
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, d1[1500 + 10], d2[1500 + 10], r[1500 + 10];
+void dfs(int k, int fa) {
+	d1[k]=0;
+	d2[k]=1;
+	for (int i = head[k]; i; i = edge[i].nxt) {
+		if (edge[i].v == fa) continue;
+		dfs(edge[i].v, k);
+		d1[k] += d2[edge[i].v];
+		d2[k] += min(d1[edge[i].v], d2[edge[i].v]);
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		int x, y, k;
+		cin >> x >> k;
+		for (int j = 1; j <= k; ++j) {
+			cin >> y;
+			add(x, y);
+			add(y, x);
+		}
+	}
+	dfs(0, -1);
+	cout << min(d1[0], d2[0]) << endl;
+	return 0;
+}
+//P2016

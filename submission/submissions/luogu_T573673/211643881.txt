@@ -1,8 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 211643881
-//  题目ID: T573673
-#include<bits/stdc++.h>
-using namespace std;
-int main(){
-    cout<<"29d45ada4bc2212f11a03e20e3070c8e"<<endl;
-}

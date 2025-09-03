@@ -1,0 +1,58 @@
+//  OJ: 洛谷
+//  提交ID: 211320752
+//  题目ID: P1919
+#define _USE_MATH_DEFINES
+#include <bits/stdc++.h>
+using namespace std;
+typedef complex<double> w;
+template<int rev>
+void FFT(w* f, int n) {
+    if (n == 1) return;
+    int len = n / 2;
+    static w cur[1 << 21];
+    for (int i = 0; i < n; ++i) cur[i] = f[i];
+    for (int i = 0; i < n; ++i)
+        if (i & 1)
+            f[len + i / 2] = cur[i];
+        else
+            f[i / 2] = cur[i];
+    w* g1 = f, * g2 = f + len;
+    FFT<rev>(g1, len); FFT<rev>(g2, len);
+    w I(1, 0), stp(cos(2 * M_PI / n), sin(2 * M_PI * rev / n));
+    for (int k = 0; k < len; ++k) {
+        w t = I * g2[k];
+        cur[k] = g1[k] + t;
+        cur[k + len] = g1[k] - t;
+        I *= stp;
+    }
+    for (int i = 0; i < n; ++i) f[i] = cur[i];
+}
+string multiply(const string& a, const string& b) {
+    int n = a.size(), m = b.size();
+    int t = 1 << (int)ceil(log2(n + m));
+    vector<w> f(t), g(t);
+    for (int i = 0; i < n; ++i) f[i] = w(a[n - 1 - i] - '0', 0);
+    for (int i = 0; i < m; ++i) g[i] = w(b[m - 1 - i] - '0', 0);
+    FFT<1>(f.data(), t);
+    FFT<1>(g.data(), t);
+    for (int i = 0; i < t; ++i) f[i] *= g[i];
+    FFT<-1>(f.data(), t);
+    for (int i = 0; i < t; ++i) f[i] /= t;
+    vector<int> res(t);
+    for (int i = 0; i < t; ++i) res[i] = int(f[i].real() + 0.5);
+    for (int i = 0; i < t - 1; ++i) {
+        res[i + 1] += res[i] / 10;
+        res[i] %= 10;
+    }
+    while (res.size() > 1 && res.back() == 0) res.pop_back();
+    string ans;
+    for (auto it = res.rbegin(); it != res.rend(); ++it) ans += *it;
+    return ans;
+}
+int main() {
+    cin.tie(0)->sync_with_stdio(false);
+    string a, b;
+    cin >> a >> b;
+    cout << multiply(a, b);
+    return 0;
+}

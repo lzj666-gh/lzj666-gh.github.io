@@ -1,6 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 110700826
-//  题目ID: T211861
-s=input()
-r=eval(s)
-print(r)

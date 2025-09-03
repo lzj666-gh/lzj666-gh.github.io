@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 101790248
+//  题目ID: P2678
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn=500010;
+int l,n,m,a[maxn],ans;
+bool pd(int x) {
+	int tot=0,wz=0;
+	for(int i=0; i<n-1; i++) {
+		if (a[i]-wz<x) {
+			tot++;
+		} else {
+			wz=a[i];
+		}
+	}
+	if(l>=a[n-1]){
+		tot++;
+	}
+	return tot<=m;
+}
+
+int main() {
+	scanf("%d%d%d",&l,&n,&m);
+	for (int i=1; i<=n; i++){
+		scanf("%d",&a[i]);
+	}
+	a[n+1]=l;
+/*	for(int i=1;i<=n+1;i++){
+		cout<<a[i]<<" ";
+	}
+	cout<<endl;*/
+	int begin=1,end=l,mid;
+	while(begin<=end) {
+//		cout<<begin<<" "<<mid<<" "<<end<<endl;
+		mid=(begin+end)/2;
+		if(pd(mid)) {
+			ans=mid;
+			begin=mid+1;
+		} 
+		else{
+			end=mid-1;
+		}
+//		cout<<begin<<" "<<mid<<" "<<end<<" "<<ans<<endl;
+	}
+	cout<<ans<<endl;
+	return 0;
+}

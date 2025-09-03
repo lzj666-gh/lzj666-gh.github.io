@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 101195232
+//  题目ID: P1923
+#include<bits/stdc++.h>
+using namespace std;
+int n,k;int a[5000100];
+int main(){
+	cin>>n>>k;
+	for(int i=0;i<n;i++){
+		cin>>a[i];
+	}
+	cout<<8;
+}

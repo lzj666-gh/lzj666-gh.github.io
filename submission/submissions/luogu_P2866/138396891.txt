@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 138396891
+//  题目ID: P2866
+#include<bits/stdc++.h>
+using namespace std;
+int n,h[80000+10],ans;
+vector<pair<int,int>>s;
+int erfen(int fd){
+	int r=s.size()-1;
+	while(r>=0&&s[r].first<fd) --r;
+	return r;
+}
+int main(){
+//	freopen("hair.in","r",stdin);
+//	freopen("hair.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i) cin>>h[i];
+	for(int i=n;i>=1;--i){
+		if(s.size()){
+			int k=erfen(h[i]);
+// 			cout<<i<<' '<<k<<' '<<s[k].first<<' '<<s[k].second<<endl;
+			if(h[i]>s.front().first) ans+=n-i;
+			else ans+=s[k].second-i-1;
+			cout<<'s'<<':';
+			for(pair<int,int> l:s) cout<<l.second<<' ';
+			cout<<endl;
+			cout<<"ans: "<<ans<<endl;
+			while(s.size()&&s.back().first<h[i]) s.pop_back();
+			s.push_back(make_pair(h[i],i));
+		}
+		else{
+			s.push_back(make_pair(h[i],i)); 
+		} 
+	}
+	cout<<ans<<endl;
+	return 0;
+}

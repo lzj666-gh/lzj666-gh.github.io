@@ -16,19 +16,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="错因总结">
 <meta property="og:type" content="article">
 <meta property="og:title" content="错因总结">
 <meta property="og:url" content="https://lzj-blog.top/2023/08/21/%E9%94%99%E5%9B%A0%E6%80%BB%E7%BB%93/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="错因总结">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-08-21T10:50:34.000Z">
 <meta property="article:modified_time" content="2025-05-08T06:31:30.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="总结">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -36,7 +36,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>错因总结 - lzj&#39;blog</title>
+  <title>错因总结 - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -109,7 +109,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -142,18 +142,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -255,6 +243,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -320,109 +313,85 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">错因总结</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-08T14:31:30+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
-                <h3 id="p1530-usaco2.4-分数化小数-fractions-to-decimals">P1530
-[USACO2.4] 分数化小数 Fractions to Decimals</h3>
-<p>由于用double会爆精，我们只好进行手动的除法模拟。有些答案的长度超过了<span
-class="math inline">10<sup>7</sup></span>，所以不能用数组模拟，因为int类型数组开<span
-class="math inline">10<sup>8</sup></span>会爆空间
-。所以我们得用字符串模拟存储除法答案（因为字符是比int省空间的）。</p>
+                <h3 id="P1530-USACO2-4-分数化小数-Fractions-to-Decimals">P1530 [USACO2.4] 分数化小数 Fractions to Decimals</h3>
+<p>由于用double会爆精，我们只好进行手动的除法模拟。有些答案的长度超过了$10^7$，所以不能用数组模拟，因为int类型数组开$10^8$会爆空间 。所以我们得用字符串模拟存储除法答案（因为字符是比int省空间的）。</p>
 <p>如果有余数与之前的相同，那么之前余数作为被除数算出的商的位置直到算出这个余数的商的位置就是这个小数的循环节</p>
-<p><span
-class="math inline"><em>W</em><em>a</em><em>r</em><em>n</em><em>i</em><em>n</em><em>g</em>:</span>注意76个字符换一行，不要忘记记上整数部分、小数点和小括号！</p>
-<h3 id="p1209-usaco1.3-修理牛棚-barn-repair">P1209 [USACO1.3] 修理牛棚
-Barn Repair</h3>
-<p>我们考虑，如果第一头牛在<span
-class="math inline"><em>a</em><sub>1</sub></span>,最后一头牛在<span
-class="math inline"><em>a</em><sub><em>c</em></sub></span>。我们先考虑，把这个这一段放置一整个木板，显然这是最不优秀的方法。因为我们只用了一个木板。我们考虑这一段内，有些两头牛之间的一段牛棚都没有牛，那么我们把原先的一整个木板拆成两个，就可以使得这一个没有牛的区间不放木板，从而节省了长度。所以就相当于，每多一块木板，就能使得区间内一段没有牛的部分，可以不覆盖木板。我们就对所有没有牛的区间排一个序，然后优先去删掉较大的，删m-1个即可。</p>
+<p>$\color{red}Warning:$注意76个字符换一行，不要忘记记上整数部分、小数点和小括号！</p>
+<h3 id="P1209-USACO1-3-修理牛棚-Barn-Repair">P1209 [USACO1.3] 修理牛棚 Barn Repair</h3>
+<p>我们考虑，如果第一头牛在$a_1$,最后一头牛在$a_c$。我们先考虑，把这个这一段放置一整个木板，显然这是最不优秀的方法。因为我们只用了一个木板。我们考虑这一段内，有些两头牛之间的一段牛棚都没有牛，那么我们把原先的一整个木板拆成两个，就可以使得这一个没有牛的区间不放木板，从而节省了长度。所以就相当于，每多一块木板，就能使得区间内一段没有牛的部分，可以不覆盖木板。我们就对所有没有牛的区间排一个序，然后优先去删掉较大的，删m-1个即可。</p>
 <p>但是注意题目中输入的a数组可能无序，需要排序后使用</p>
-<h3 id="p2845-usaco15dec-switching-on-the-lights-s">P2845 [USACO15DEC]
-Switching on the Lights S</h3>
+<h3 id="P2845-USACO15DEC-Switching-on-the-Lights-S">P2845 [USACO15DEC] Switching on the Lights S</h3>
 <p>BFS，使用普通队列，但是扩展能向着那走的区域，而只有队列全部都不能到达的时候才退出</p>
-<h3 id="p2851-usaco06dec-the-fewest-coins-g">P2851 [USACO06DEC] The
-Fewest Coins G</h3>
+<h3 id="P2851-USACO06DEC-The-Fewest-Coins-G">P2851 [USACO06DEC] The Fewest Coins G</h3>
 <p>形式化题意：怎样拼凑出两段线段，且它们的长度之差等于T</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: center;">Jone：</th>
-<th style="text-align: center;">多重背包</th>
+<th style="text-align:center">Jone：</th>
+<th style="text-align:center">多重背包</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;">老板：</td>
-<td style="text-align: center;">完全背包</td>
+<td style="text-align:center">老板：</td>
+<td style="text-align:center">完全背包</td>
 </tr>
 </tbody>
 </table>
-<p>两个人分别做到<span
-class="math inline"><em>t</em> + <em>V</em><sub><em>m</em><em>a</em><em>x</em></sub><sup>2</sup></span>就行了</p>
-<hr />
-<h3 id="p1215-usaco1.4-母亲的牛奶-mothers-milk">P1215 [USACO1.4]
-母亲的牛奶 Mother’s Milk</h3>
-<p>暴力DFS
-因为牛奶的总量是不变的，所以可以用a,b中的牛奶量做状态，初始状态是(0,0)，每次只能有6种选择，a倒b，a倒c，b倒a，b倒c，c倒a，c倒b。用一个数组<span
-class="math inline"><em>v</em><em>i</em><em>s</em><sub><em>i</em>, <em>j</em></sub></span>判重，<span
-class="math inline"><em>s</em><sub><em>i</em></sub></span>记录c中所有可能值（<span
-class="math inline"><em>s</em><sub><em>i</em></sub></span>=true表示c中可能出现i），如果当前状态是(0,x)，那么<span
-class="math inline"><em>s</em><sub><em>m</em><em>c</em> − <em>x</em></sub></span>=true，最后输出s中所有true的就可以了。
-用<span
-class="math inline"><em>v</em><em>i</em><em>s</em><sub><em>i</em>, <em>j</em>, <em>k</em></sub></span>也行，也就是说三维的也行。</p>
-<h3 id="p2771-usaco16jan-build-gates-s">P2771 [USACO16JAN] Build Gates
-S</h3>
+<p>两个人分别做到$t+V_{max}^{2}$就行了</p>
+<hr>
+<h3 id="P1215-USACO1-4-母亲的牛奶-Mother’s-Milk">P1215 [USACO1.4] 母亲的牛奶 Mother’s Milk</h3>
+<p>暴力DFS 因为牛奶的总量是不变的，所以可以用a,b中的牛奶量做状态，初始状态是(0,0)，每次只能有6种选择，a倒b，a倒c，b倒a，b倒c，c倒a，c倒b。用一个数组$vis_{i,j}$判重，$s_i$记录c中所有可能值（$s_i$=true表示c中可能出现i），如果当前状态是(0,x)，那么$s_{mc-x}$=true，最后输出s中所有true的就可以了。 用$vis_{i,j,k}$也行，也就是说三维的也行。</p>
+<h3 id="P2771-USACO16JAN-Build-Gates-S">P2771 [USACO16JAN] Build Gates S</h3>
 <p>DFS暴力标记找有多少个联通块，再将数量减一就行了</p>
-<h3 id="p2296-noip2014-提高组-寻找道路">P2296 [NOIP2014 提高组]
-寻找道路</h3>
-<ol type="1">
+<h3 id="P2296-NOIP2014-提高组-寻找道路">P2296 [NOIP2014 提高组] 寻找道路</h3>
+<ol>
 <li>读入数据，并建立正向和反向边。</li>
 <li>从终点反向BFS，求出所有的自己可以到达终点的点。</li>
 <li>对每个点判断是否满足自己指向的节点都可以到达终点。</li>
 <li>从起点正向BFS，只经过自己指向的节点都可以到达终点，求出最短路径。</li>
 </ol>
-<h3 id="p2340-usaco03fall-cow-exhibition-g">P2340 [USACO03FALL] Cow
-Exhibition G</h3>
-<p><span
-class="math inline"><em>d</em><em>p</em><sub><em>i</em>, <em>j</em></sub></span>表示前i只奶牛中，总智商为j时情商的最大值</p>
-<p>第i只奶牛不参加会展：<span
-class="math inline"><em>d</em><em>p</em><sub><em>i</em> − 1, <em>j</em></sub></span></p>
-<p>第i只奶牛参加会展：<span
-class="math inline"><em>d</em><em>p</em><sub><em>i</em> − 1, <em>j</em> − <em>a</em><sub><em>i</em></sub>.<em>i</em><em>q</em></sub> + <em>a</em><sub><em>i</em></sub>.<em>e</em><em>q</em></span></p>
-<p><span
-class="math inline"><em>d</em><em>p</em><sub><em>i</em>, <em>j</em></sub></span>=max(<span
-class="math inline"><em>d</em><em>p</em><sub><em>i</em> − 1, <em>j</em></sub></span>,
-<span
-class="math inline"><em>d</em><em>p</em><sub><em>i</em> − 1, <em>j</em> − <em>a</em><sub><em>i</em></sub>.<em>i</em><em>q</em></sub> + <em>a</em><sub><em>i</em></sub>.<em>e</em><em>q</em></span>)</p>
-<hr />
-<h3 id="p5116-usaco18dec-mixing-milk-b">P5116 [USACO18DEC] Mixing Milk
-B</h3>
-<p><code>inline in(int &amp;a,int &amp;b,int top_b)</code> -&gt;
-<code>inline in(int &amp;a,int &amp;b,int top_b)</code></p>
+<h3 id="P2340-USACO03FALL-Cow-Exhibition-G">P2340 [USACO03FALL] Cow Exhibition G</h3>
+<p>$dp_{i,j}$表示前i只奶牛中，总智商为j时情商的最大值</p>
+<p>第i只奶牛不参加会展：$dp_{i-1,j}$</p>
+<p>第i只奶牛参加会展：$dp_{i−1,j−a_i.iq}+a_i.eq$</p>
+<p>$dp_{i,j}$=max($dp_{i-1,j}$, $dp_{i−1,j−a_i.iq}+a_i.eq$)</p>
+<hr>
+<h3 id="P5116-USACO18DEC-Mixing-Milk-B">P5116 [USACO18DEC] Mixing Milk B</h3>
+<p><code>inline in(int &amp;a,int &amp;b,int top_b)</code> -&gt; <code>inline in(int &amp;a,int &amp;b,int top_b)</code></p>
 <p>100pts-&gt;0pts!</p>
-<h3 id="p5119-usaco18dec-convention-s">P5119 [USACO18DEC] Convention
-S</h3>
+<h3 id="P5119-USACO18DEC-Convention-S">P5119 [USACO18DEC] Convention S</h3>
 <p>漏掉了<code>t[i]-last_run&gt;k</code>，就100pts-&gt;20pts</p>
-<h3 id="p5121-usaco18dec-mooyo-mooyo-s">P5121 [USACO18DEC] Mooyo Mooyo
-S</h3>
+<h3 id="P5121-USACO18DEC-Mooyo-Mooyo-S">P5121 [USACO18DEC] Mooyo Mooyo S</h3>
 <p><code>bool vis2[100+100][10+100];</code>-&gt;<code>bool vis2[1000+100][10+10];</code></p>
 <p>100pts-&gt;0pts</p>
-<h3 id="p3115-usaco15jan-cow-routing-s">P3115 [USACO15JAN] Cow Routing
-S</h3>
+<h3 id="P3115-USACO15JAN-Cow-Routing-S">P3115 [USACO15JAN] Cow Routing S</h3>
 <p>SPFA模板+卡常</p>
-<hr />
+<hr>
 <p>……………………………………………tnnd，不想写了………………………………………</p>
-<hr />
-<h3 id="p5660-csp-j2019-数字游戏">P5660 [CSP-J2019] 数字游戏</h3>
+<hr>
+<h3 id="P5660-CSP-J2019-数字游戏">P5660 [CSP-J2019] 数字游戏</h3>
 <p>不会有人还错这道题吧……</p>
-<h3 id="p5661-csp-j-2019-公交换乘">P5661 [CSP-J 2019] 公交换乘</h3>
+<h3 id="P5661-CSP-J-2019-公交换乘">P5661 [CSP-J 2019] 公交换乘</h3>
 <p>暴力小模拟</p>
-<h3 id="p5662-csp-j2019-纪念品">P5662 [CSP-J2019] 纪念品</h3>
+<h3 id="P5662-CSP-J2019-纪念品">P5662 [CSP-J2019] 纪念品</h3>
 <p>把今天手里的钱当做背包的容量，</p>
 <p>把商品明天的价格减今天的价格当成它的价值,</p>
 <p>每一天结束后把总钱数加上今天赚的钱，直接写背包模板即可。</p>
-<h3 id="p5663-csp-j2019-加工零件">P5663 [CSP-J2019] 加工零件</h3>
+<h3 id="P5663-CSP-J2019-加工零件">P5663 [CSP-J2019] 加工零件</h3>
 <p>这道题的时限并不紧，并且dijkstra细节太多，bfs实现的最短路就行了</p>
 <p>我们要对每个点求一遍奇数路径，和偶数路径（要特判0）。</p>
 
@@ -456,7 +425,7 @@ S</h3>
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -501,29 +470,6 @@ S</h3>
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2023/10/13/%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/" title="模板总结">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">模板总结</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2023/08/15/%E5%8F%AA%E5%9B%A0%E7%A1%80%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" title="只因础算法总结">
-                        <span class="hidden-mobile">只因础算法总结</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -745,6 +691,33 @@ S</h3>
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

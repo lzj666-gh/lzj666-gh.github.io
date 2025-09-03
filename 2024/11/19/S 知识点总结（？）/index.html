@@ -16,19 +16,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="S 知识点总结（？）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="S 知识点总结（？）">
 <meta property="og:url" content="https://lzj-blog.top/2024/11/19/S%20%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93%EF%BC%88%EF%BC%9F%EF%BC%89/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="S 知识点总结（？）">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-19T08:50:34.000Z">
 <meta property="article:modified_time" content="2025-05-08T06:34:00.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="总结">
 <meta name="twitter:card" content="summary_large_image">
@@ -37,7 +37,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>S 知识点总结（？） - lzj&#39;blog</title>
+  <title>S 知识点总结（？） - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -110,7 +110,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -143,18 +143,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -256,6 +244,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -321,170 +314,97 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">S 知识点总结（？）</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-08T14:34:00+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
-                <h1 id="威尔逊定理">威尔逊定理</h1>
+                <h1>威尔逊定理</h1>
 <h2 id="定理">定理</h2>
-<p><span
-class="math display">(<em>p</em> − 1)! ≡ −1 (mod  <em>p</em>)</span></p>
+<p>$$<br>
+(p-1)! \equiv -1 \pmod p<br>
+$$</p>
 <h2 id="证明">证明</h2>
-<p>集合的差：<span class="math inline">$A \setminus B = \{x |x \isin A
-\land x \not \isin B \}$</span>。</p>
-<p><span class="math inline">$\overline{x}$</span> 表示模 <span
-class="math inline"><em>p</em></span> 余 <span
-class="math inline"><em>x</em></span> 的数组成的集合。</p>
-<p>当 <span class="math inline"><em>p</em> = 2</span>
-时，命题显然成立。</p>
-<p>以下设 <span class="math inline"><em>p</em> ≥ 3</span>，此时我们要证
-<span class="math inline"><strong>Z</strong><sub><em>p</em></sub></span>
-中所有非零元素的积为 <span
-class="math inline">$\overline{-1}$</span>。</p>
-<p>我们知道 <span
-class="math inline"><strong>Z</strong><sub><em>p</em></sub></span>
-中所有非零元素 <span class="math inline"><em>a</em></span> 都有逆元
-<span class="math inline"><em>a</em><sup>−1</sup></span>，于是 <span
-class="math inline"><strong>Z</strong><sub><em>p</em></sub></span>
-中彼此互逆的元素乘积为 <span
-class="math inline">$\overline{1}$</span>。</p>
-<p>但是要注意 <span class="math inline"><em>a</em></span> 和 <span
-class="math inline"><em>a</em><sup>−1</sup></span> 可能相等。若 <span
-class="math inline"><em>a</em> = <em>a</em><sup>−1</sup></span>，则
-<span
-class="math inline"><em>a</em><sup>2</sup> ≡ 1 (mod  <em>p</em>)</span>，即</p>
-<p><span
-class="math display">0 ≡ <em>a</em><sup>2</sup> − 1 ≡ (<em>a</em> + 1)(<em>a</em> − 1) (mod  <em>p</em>)</span></p>
-<p>从而 <span
-class="math inline"><em>a</em> ≡ 1 (mod  <em>p</em>)</span> 或 <span
-class="math inline"><em>a</em> ≡ −1 (mod  <em>p</em>)</span>。</p>
-<p>这说明 <span class="math inline">$\mathbf{Z}_p \setminus
-\{\overline{0},\overline{1},\overline{-1}\}$</span> 中所有元素的乘积为
-<span class="math inline">$\overline{1}$</span>, 进而 <span
-class="math inline"><strong>Z</strong><sub><em>p</em></sub></span>
-中所有非零元素的积为 <span
-class="math inline">$\overline{-1}$</span>。</p>
+<p>集合的差：$A \setminus B = {x |x \isin A \land x \not \isin B }$。</p>
+<p>$\overline{x}$ 表示模 $p$ 余 $x$ 的数组成的集合。</p>
+<p>当 $p=2$ 时，命题显然成立。</p>
+<p>以下设 $p\geq 3$，此时我们要证 $\mathbf{Z}_p$ 中所有非零元素的积为 $\overline{-1}$。</p>
+<p>我们知道 $\mathbf{Z}_p$ 中所有非零元素 $a$ 都有逆元 $a^{-1}$，于是 $\mathbf{Z}_p$ 中彼此互逆的元素乘积为 $\overline{1}$。</p>
+<p>但是要注意 $a$ 和 $a^{-1}$ 可能相等。若 $a=a^{-1}$，则 $a^2\equiv 1\pmod p$，即</p>
+<p>$$<br>
+0\equiv a^2-1\equiv (a+1)(a-1)\pmod p<br>
+$$</p>
+<p>从而 $a\equiv 1\pmod p$ 或 $a\equiv -1\pmod p$。</p>
+<p>这说明 $\mathbf{Z}_p \setminus {\overline{0},\overline{1},\overline{-1}}$ 中所有元素的乘积为 $\overline{1}$, 进而 $\mathbf{Z}_p$ 中所有非零元素的积为 $\overline{-1}$。</p>
 <h2 id="应用">应用</h2>
 <h3 id="阶乘与素数">阶乘与素数</h3>
-<p>在某些情况下，有必要考虑以某个素数 <span
-class="math inline"><em>p</em></span>
-为模的公式，包含分子和分母中的阶乘，就像在二项式系数公式中遇到的那样。</p>
-<p>只有当阶乘同时出现在分数的分子和分母中时，这个问题才有意义。否则，后续项
-<span class="math inline"><em>p</em>!</span>
-将减少为零。但在分数中，因子 <span class="math inline"><em>p</em></span>
-可以抵消，结果将是非零。</p>
-<p>因此，要计算 <span
-class="math inline"><em>n</em>! mod  <em>p</em></span>，而不考虑阶乘中出现因数
-<span
-class="math inline"><em>p</em></span>。写下素因子分解，去掉所有因子
-<span class="math inline"><em>p</em></span>，并计算乘积模。</p>
-<p>用 <span
-class="math inline">(<em>n</em>!)<sub><em>p</em></sub></span>
-表示这个修改的因子。例如：</p>
-<p><span class="math display">$$
-(7!)_p \equiv 1 \cdot 2 \cdot \underbrace{1}_{3} \cdot 4 \cdot 5
-\underbrace{2}_{6} \cdot 7 \equiv 2 \bmod 3
-$$</span></p>
+<p>在某些情况下，有必要考虑以某个素数 $p$ 为模的公式，包含分子和分母中的阶乘，就像在二项式系数公式中遇到的那样。</p>
+<p>只有当阶乘同时出现在分数的分子和分母中时，这个问题才有意义。否则，后续项 $p!$ 将减少为零。但在分数中，因子 $p$ 可以抵消，结果将是非零。</p>
+<p>因此，要计算 $n! \bmod p$，而不考虑阶乘中出现因数 $p$。写下素因子分解，去掉所有因子 $p$，并计算乘积模。</p>
+<p>用 $(n!)_p$ 表示这个修改的因子。例如：</p>
+<p>$$<br>
+(7!)<em>p \equiv 1 \cdot 2 \cdot \underbrace{1}</em>{3} \cdot 4 \cdot 5 \underbrace{2}_{6} \cdot 7 \equiv 2 \bmod 3<br>
+$$</p>
 <p>这种修正的阶乘，可用于快速计算各种带取模和组合数的公式的值（吗？）。</p>
 <h3 id="计算余数的算法">计算余数的算法</h3>
-<p>计算上述去掉因子 <span class="math inline"><em>p</em></span> 的阶乘模
-<span class="math inline"><em>p</em></span> 的余数。</p>
-<p><span class="math display">$$
-\begin{aligned}
-(n!)_p &amp;= 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p-2) \cdot (p-1)
-\cdot \underbrace{1}_{p} \cdot (p+1) \cdot (p+2) \cdot \ldots \cdot
-(2p-1) \cdot \underbrace{2}_{2p} \\\
-&amp;\quad \cdot (2p+1) \cdot \ldots \cdot (p^2-1) \cdot
-\underbrace{1}_{p^2} \cdot (p^2 +1) \cdot \ldots \cdot n \pmod{p} \\\\
-&amp;= 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p-2) \cdot (p-1) \cdot
-\underbrace{1}_{p} \cdot 1 \cdot 2 \cdot \ldots \cdot (p-1) \cdot
-\underbrace{2}_{2p} \cdot 1 \cdot 2 \\\
-&amp;\quad \cdot \ldots \cdot (p-1) \cdot \underbrace{1}_{p^2} \cdot 1
-\cdot 2 \cdot \ldots \cdot (n \bmod p) \pmod{p}
-\end{aligned}
-$$</span></p>
+<p>计算上述去掉因子 $p$ 的阶乘模 $p$ 的余数。</p>
+<p>$$<br>
+\begin{aligned}<br>
+(n!)<em>p &amp;= 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p-2) \cdot (p-1) \cdot \underbrace{1}</em>{p} \cdot (p+1) \cdot (p+2) \cdot \ldots \cdot (2p-1) \cdot \underbrace{2}<em>{2p} \<br>
+&amp;\quad \cdot (2p+1) \cdot \ldots \cdot (p^2-1) \cdot \underbrace{1}</em>{p^2} \cdot (p^2 +1) \cdot \ldots \cdot n \pmod{p} \\<br>
+&amp;= 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p-2) \cdot (p-1) \cdot \underbrace{1}<em>{p} \cdot 1 \cdot 2 \cdot \ldots \cdot (p-1) \cdot \underbrace{2}</em>{2p} \cdot 1 \cdot 2 \<br>
+&amp;\quad \cdot \ldots \cdot (p-1) \cdot \underbrace{1}_{p^2} \cdot 1 \cdot 2 \cdot \ldots \cdot (n \bmod p) \pmod{p}<br>
+\end{aligned}<br>
+$$</p>
 <p>可以清楚地看到，除了最后一个块外，阶乘被划分为几个长度相同的块。</p>
-<p><span class="math display">$$
-\begin{aligned}
-(n!)_p&amp;= \underbrace{1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p-2)
-\cdot (p-1) \cdot 1}_{1\text{st}} \cdot \underbrace{1 \cdot 2 \cdot 3
-\cdot \ldots \cdot (p-2) \cdot (p-1) \cdot 2}_{2\text{nd}} \cdot \ldots
-\\\\
-&amp; \cdot \underbrace{1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p-2) \cdot
-(p-1) \cdot 1}_{p\text{th}} \cdot \ldots \cdot \quad \underbrace{1 \cdot
-2 \cdot \cdot \ldots \cdot (n \bmod p)}_{\text{tail}} \pmod{p}.
-\end{aligned}
-$$</span></p>
-<p>块的主要部分 <span
-class="math inline">(<em>p</em> − 1)! mod <em>p</em></span>
-很容易计算，可以应用 Wilson 定理：</p>
-<p><span
-class="math display">(<em>p</em> − 1)! ≡ −1 (mod  <em>p</em>)</span></p>
-<p>总共有 <span class="math inline">$\lfloor \frac{n}{p} \rfloor$</span>
-个块，因此需要将 <span class="math inline">$\lfloor \frac{n}{p}
-\rfloor$</span> 写到 <span class="math inline">−1</span>
-的指数上。可以注意到结果在 <span class="math inline">−1</span> 和 <span
-class="math inline">1</span>
-之间切换，因此只需要查看指数的奇偶性，如果是奇数，则乘以 <span
-class="math inline">−1</span>。除了使用乘法，也可以从结果中减去 <span
-class="math inline"><em>p</em></span>。</p>
-<p>最后一个部分块的值可以在 <span
-class="math inline"><em>O</em>(<em>p</em>)</span>
-的时间复杂度单独计算。</p>
+<p>$$<br>
+\begin{aligned}<br>
+(n!)<em>p&amp;= \underbrace{1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p-2) \cdot (p-1) \cdot 1}</em>{1\text{st}} \cdot \underbrace{1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p-2) \cdot (p-1) \cdot 2}<em>{2\text{nd}} \cdot \ldots \\<br>
+&amp; \cdot \underbrace{1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p-2) \cdot (p-1) \cdot 1}</em>{p\text{th}} \cdot \ldots \cdot \quad \underbrace{1 \cdot 2 \cdot \cdot \ldots \cdot (n \bmod p)}_{\text{tail}} \pmod{p}.<br>
+\end{aligned}<br>
+$$</p>
+<p>块的主要部分 $(p-1)!\ \mathrm{mod}\ p$ 很容易计算，可以应用 Wilson 定理：</p>
+<p>$$<br>
+(p-1)!\equiv -1\pmod p<br>
+$$</p>
+<p>总共有 $\lfloor \frac{n}{p} \rfloor$ 个块，因此需要将 $\lfloor \frac{n}{p} \rfloor$ 写到 $-1$ 的指数上。可以注意到结果在 $-1$ 和 $1$ 之间切换，因此只需要查看指数的奇偶性，如果是奇数，则乘以 $-1$。除了使用乘法，也可以从结果中减去 $p$。</p>
+<p>最后一个部分块的值可以在 $O(p)$ 的时间复杂度单独计算。</p>
 <p>这只留下每个块的最后一个元素。如果隐藏已处理的元素，可以看到以下模式：</p>
-<p><span class="math display">$$
-(n!)_p = \underbrace{ \ldots \cdot 1 } \cdot \underbrace{ \ldots \cdot
-2} \cdot \ldots \cdot \underbrace{ \ldots \cdot (p-1)} \cdot
-\underbrace{ \ldots \cdot 1 } \cdot \underbrace{ \ldots \cdot 1} \cdot
-\underbrace{ \ldots \cdot 2} \cdots
-$$</span></p>
+<p>$$<br>
+(n!)_p = \underbrace{ \ldots \cdot 1 } \cdot \underbrace{ \ldots \cdot 2} \cdot \ldots \cdot \underbrace{ \ldots \cdot (p-1)} \cdot \underbrace{ \ldots \cdot 1 } \cdot \underbrace{ \ldots \cdot 1} \cdot \underbrace{ \ldots \cdot 2} \cdots<br>
+$$</p>
 <p>这也是一个修正的阶乘，只是维数小得多。它是：</p>
-<p><span class="math display">$$
-\left(\left\lfloor \frac{n}{p} \right\rfloor !\right)_p
-$$</span></p>
-<p>因此，在计算修改的阶乘 <span
-class="math inline">(<em>n</em>!)<sub><em>p</em></sub></span> 中，执行了
-<span class="math inline"><em>O</em>(<em>p</em>)</span>
-个操作，剩下的是计算 <span class="math inline">$(\lfloor \frac{n}{p}
-\rfloor !)_p$</span>，于是有了递归，递归深度为 <span
-class="math inline"><em>O</em>(log<sub><em>p</em></sub><em>n</em>)</span>，因此算法的总时间复杂度为
-<span
-class="math inline"><em>O</em>(<em>p</em>log<sub><em>p</em></sub><em>n</em>)</span>.</p>
-<p>如果预先计算阶乘 <span
-class="math inline">0!, 1!, 2!, …, (<em>p</em> − 1)!</span> 模 <span
-class="math inline"><em>p</em></span>，那么时间复杂度为 <span
-class="math inline"><em>O</em>(log<sub><em>p</em></sub><em>n</em>)</span>.</p>
-<h1 id="section">？</h1>
+<p>$$<br>
+\left(\left\lfloor \frac{n}{p} \right\rfloor !\right)_p<br>
+$$</p>
+<p>因此，在计算修改的阶乘 $(n!)_p$ 中，执行了 $O(p)$ 个操作，剩下的是计算 $(\lfloor \frac{n}{p} \rfloor !)_p$，于是有了递归，递归深度为 $O(\log_p n)$，因此算法的总时间复杂度为 $O(p \log_p n)$.</p>
+<p>如果预先计算阶乘 $0!, 1!, 2!, \dots, (p-1)!$ 模 $p$，那么时间复杂度为 $O(\log_p n)$.</p>
+<h1>？</h1>
 <h2 id="错排列">错排列</h2>
 <h3 id="问题">问题</h3>
-<p>设 <span class="math inline"><em>a</em></span> 是 <span
-class="math inline">1</span> 到 <span
-class="math inline"><em>n</em></span> 的一个全排列，求满足 <span
-class="math inline">$\forall i \isin [1,n] ,a_i \not = i$</span>
-的排列数量。</p>
+<p>设 $a$ 是 $1$ 到 $n$ 的一个全排列，求满足 $\forall i \isin [1,n] ,a_i \not = i$ 的排列数量。</p>
 <h3 id="解法">解法</h3>
-<p>正难则反，求 <span class="math inline">$\exists i \isin [1,n] ,a_i =
-i$</span> 的排列数。</p>
-<p>于是令一个排列的相等的地方为 <span
-class="math inline"><em>p</em></span>，大小为 <span
-class="math inline"><em>k</em></span>（<span
-class="math inline">$\forall i \isin
-[1,k],a_{p_i}=p_{i}$</span>），显然，它对答案的贡献为 <span
-class="math inline">(<em>n</em> − <em>k</em>)!</span>，观察到 <span
-class="math inline"><em>p</em></span>
-中具体有哪些元素我们并不关心，我们只关心它有多少元素，可以得出答案为：</p>
-<p><span class="math display">$$
-\sum_{i=0}^{n}(-1)^i\operatorname{C}^i_n(n-i)!=\sum_{i=0}^{n}(-1)^i\frac{n!}{i!}
-$$</span></p>
+<p>正难则反，求 $\exists i \isin [1,n] ,a_i = i$ 的排列数。</p>
+<p>于是令一个排列的相等的地方为 $p$，大小为 $k$（$\forall i \isin [1,k],a_{p_i}=p_{i}$），显然，它对答案的贡献为 $(n-k)!$，观察到 $p$ 中具体有哪些元素我们并不关心，我们只关心它有多少元素，可以得出答案为：</p>
+<p>$$<br>
+\sum_{i=0}^{n}(-1)^i\operatorname{C}^i_n(n-i)!=\sum_{i=0}^{n}(-1)^i\frac{n!}{i!}<br>
+$$</p>
 <h2 id="圆排列">圆排列</h2>
-<h3 id="问题-1">问题</h3>
-<p>从 <span class="math inline"><em>n</em></span> 个不同元素中取出 <span
-class="math inline"><em>m</em></span>
-个元素，不分首尾的围成一个圆的排列叫做圆排列，求其方案个数。</p>
-<h3 id="解法-1">解法</h3>
-<h2 id="笛卡尔树没听到讲">笛卡尔树（没听到讲）</h2>
+<h3 id="问题-2">问题</h3>
+<p>从 $n$ 个不同元素中取出 $m$ 个元素，不分首尾的围成一个圆的排列叫做圆排列，求其方案个数。</p>
+<h3 id="解法-2">解法</h3>
+<h2 id="笛卡尔树（没听到讲）">笛卡尔树（没听到讲）</h2>
 <h2 id="多重集的排列组合">多重集的排列组合</h2>
-<h1 id="严格次小生成树">严格次小生成树</h1>
-<h1 id="树套树">树套树</h1>
+<h1>严格次小生成树</h1>
+<h1>树套树</h1>
 
                 
               </div>
@@ -518,7 +438,7 @@ class="math inline"><em>m</em></span>
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -563,29 +483,6 @@ class="math inline"><em>m</em></span>
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2024/11/23/11%E6%9C%88%E6%80%BB%E7%BB%93/" title="11月总结">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">11月总结</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2024/11/16/%E8%8E%AB%E9%98%9F/" title="莫队">
-                        <span class="hidden-mobile">莫队</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -807,6 +704,33 @@ class="math inline"><em>m</em></span>
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

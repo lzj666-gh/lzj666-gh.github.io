@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 105607285
+//  题目ID: P2036
+#include<bits/stdc++.h>
+using namespace std;
+int s[15],b[15],n,mi=0x7f7f7f7f;
+bool a[15],o;
+void dfs(int k){
+	for(int i=1;i<=n;i++){
+		if(a[i]) o=true;
+	}
+	if(k==n+1&&o){
+//		cout<<1<<endl;
+		int ss=1,sb=0;
+		for(int i=1;i<=n;i++){
+			if(a[i]){
+				ss*=s[i];
+				sb+=b[i];
+			}
+		}
+		mi=min(abs(ss-sb),mi);
+		o=false;
+		return;
+	}
+	a[k]=true;
+	dfs(k+1);
+	a[k]=false;
+	dfs(k+1);
+}
+int main(){
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++){
+		scanf("%d%d",&s[i],&b[i]);
+	}
+	printf("%d",mi);
+}

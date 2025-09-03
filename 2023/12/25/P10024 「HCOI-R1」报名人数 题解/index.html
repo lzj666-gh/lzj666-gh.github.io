@@ -16,19 +16,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="lzj">
+  <meta name="author" content="starfallen">
   <meta name="keywords" content="">
   
     <meta name="description" content="P10024 「HCOI-R1」报名人数 题解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="P10024 「HCOI-R1」报名人数 题解">
 <meta property="og:url" content="https://lzj-blog.top/2023/12/25/P10024%20%E3%80%8CHCOI-R1%E3%80%8D%E6%8A%A5%E5%90%8D%E4%BA%BA%E6%95%B0%20%E9%A2%98%E8%A7%A3/index.html">
-<meta property="og:site_name" content="lzj&#39;blog">
+<meta property="og:site_name" content="starfallen">
 <meta property="og:description" content="P10024 「HCOI-R1」报名人数 题解">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-12-25T05:19:34.000Z">
 <meta property="article:modified_time" content="2025-05-08T06:34:30.000Z">
-<meta property="article:author" content="lzj">
+<meta property="article:author" content="starfallen">
 <meta property="article:tag" content="题解">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -36,7 +36,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>P10024 「HCOI-R1」报名人数 题解 - lzj&#39;blog</title>
+  <title>P10024 「HCOI-R1」报名人数 题解 - starfallen</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -109,7 +109,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>lzj&#39;blog</strong>
+      <strong>starfallen</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -142,18 +142,6 @@
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/cbcoj/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>cbcoj</span>
               </a>
             </li>
           
@@ -255,6 +243,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -320,33 +313,32 @@
           <article class="post-content mx-auto">
             <h1 id="seo-header">P10024 「HCOI-R1」报名人数 题解</h1>
             
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-08T14:34:30+08:00
+                  
+                  
+
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
                 <p>话说你谷主题库的题目编号都有 5 位数了（震惊）</p>
 <h2 id="形式化题意">形式化题意</h2>
-<p>在 <span
-class="math inline">[<em>i</em>, <em>j</em>](<em>l</em> ≤ <em>i</em> ≤ <em>j</em> ≤ <em>r</em>)</span>
-的区间内，使所有相邻的数所用的小木棒都相等，求 <span
-class="math inline"><em>j</em> − <em>i</em> + 1</span> 的最大值。</p>
-<p>小木棒个数：对于数位分别取 <span
-class="math inline">0 ∼ 9</span>，该数位对应所用的短竖线数量分别是 <span
-class="math inline">6, 2, 5, 5, 4, 5, 6, 3, 7, 6</span>。</p>
+<p>在 $[i, j](l \le i \le j \le r)$ 的区间内，使所有相邻的数所用的小木棒都相等，求 $j - i + 1$ 的最大值。</p>
+<p>小木棒个数：对于数位分别取 $0 \sim 9$，该数位对应所用的短竖线数量分别是 $6, 2, 5, 5, 4, 5, 6, 3, 7, 6$。</p>
 <h2 id="解题思路">解题思路</h2>
 <p>观察发现：相邻的两个自然数，它们最多只有两位不同：个位和十位。</p>
-<p>而若一个数的末位是 2 的话，则它的下一个数的末位是 3
-是必然的，而它们两个的小木棒个数是相等的。</p>
-<p>所以得出结论：若 <span
-class="math inline"><em>l</em> − <em>r</em> ≥ 10</span>，则改区间内一定有一对
-<span class="math inline"><em>i</em>, <em>j</em></span> 符合条件。</p>
+<p>而若一个数的末位是 2 的话，则它的下一个数的末位是 3 是必然的，而它们两个的小木棒个数是相等的。</p>
+<p>所以得出结论：若 $l - r \geqslant 10$，则改区间内一定有一对 $i, j$ 符合条件。</p>
 <p>但是再次观察表格发现，没有相邻的三个数，它们所使用的小木棒个数相等。</p>
-<p>所以 <span class="math inline"><em>j</em> − <em>i</em> + 1</span>
-的最大值为 2。</p>
-<p>至于 <span class="math inline"><em>l</em> − <em>r</em> &lt; 10</span>
-的时候，直接暴力就得了。</p>
-<h2 id="代码">代码：</h2>
+<p>所以 $j - i + 1$ 的最大值为 2。</p>
+<p>至于 $l - r \lt 10$ 的时候，直接暴力就得了。</p>
+<h2 id="代码：">代码：</h2>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">long</span> <span class="hljs-type">long</span> l,r;<br>map&lt;<span class="hljs-type">char</span>,<span class="hljs-type">int</span>&gt;mp;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">val</span><span class="hljs-params">(<span class="hljs-type">long</span> <span class="hljs-type">long</span> k)</span></span>&#123;<br>	<span class="hljs-type">int</span> ans=<span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">while</span>(k)&#123;<br>		ans+=mp[k%<span class="hljs-number">10</span>];<br>		k/=<span class="hljs-number">10</span>;<br>	&#125;<br>	<span class="hljs-keyword">return</span> ans;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>	ios_base::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>	<span class="hljs-type">char</span> idx=<span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> a:&#123;<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">3</span>,<span class="hljs-number">7</span>,<span class="hljs-number">6</span>&#125;) mp[idx++]=a;<br>	cin&gt;&gt;l&gt;&gt;r;<br>	<span class="hljs-keyword">if</span>(l-r&gt;=<span class="hljs-number">10</span>) cout&lt;&lt;<span class="hljs-number">2</span>;<br>	<span class="hljs-keyword">else</span>&#123;<br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">long</span> <span class="hljs-type">long</span> i=l;i&lt;r;++i)&#123;<br>			<span class="hljs-keyword">if</span>(<span class="hljs-built_in">val</span>(i)==<span class="hljs-built_in">val</span>(i<span class="hljs-number">+1</span>))&#123;<br>				cout&lt;&lt;<span class="hljs-number">2</span>;<br>				<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>			&#125;<br>		&#125;<br>		cout&lt;&lt;<span class="hljs-number">1</span>;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
                 
               </div>
             
@@ -377,7 +369,7 @@ class="math inline"><em>l</em> − <em>r</em> ≥ 10</span>，则改区�
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>lzj</div>
+          <div>starfallen</div>
         </div>
       
       
@@ -422,29 +414,6 @@ class="math inline"><em>l</em> − <em>r</em> ≥ 10</span>，则改区�
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2023/12/27/CF1881C%20%E9%A2%98%E8%A7%A3/" title="CF1881C 题解">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">CF1881C 题解</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2023/11/23/CF1842B%20%E9%A2%98%E8%A7%A3/" title="CF1842B 题解">
-                        <span class="hidden-mobile">CF1842B 题解</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
@@ -666,6 +635,33 @@ class="math inline"><em>l</em> − <em>r</em> ≥ 10</span>，则改区�
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   
