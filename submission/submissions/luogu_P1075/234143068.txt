@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 234143068
+//  题目ID: P1075
+#include<bits/stdc++.h>
+#define int long long 
+using namespace std;
+int n;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 2; i * i <= n; ++i) {
+		if (n % i == 0) {
+			cout << n / i << endl;
+			return 0;
+		}
+	}
+	return 0;
+}

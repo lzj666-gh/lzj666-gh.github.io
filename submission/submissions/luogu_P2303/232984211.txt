@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 232984211
+//  题目ID: P2303
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 8e7;
+vector<int>prm;
+bool vis[N + 10];
+int phi[N + 10];
+void iniit() {
+	phi[1] = 1;
+	for (int i = 2; i <= N; i++) {
+		if (!vis[i]) {
+			prm.push_back(i);
+			phi[i] = i - 1;
+		}
+		for (int& v : prm) {
+			if (i * v > N) break;
+			vis[i * v] = true;
+			if (i % v == 0) {
+				phi[i * v] = phi[i] * v;
+				break;
+			}
+			phi[i * v] = phi[i] * phi[v];
+		}
+	}
+}
+int n;
+int getphi(int n) {
+	if (n <= N) return phi[n];
+	int ans = n;
+	for (int i = 2; i * i <= n; ++i)
+		if (n % i == 0) {
+			ans = ans / i * (i - 1);
+			while (n % i == 0) n /= i;
+		}
+	if (n > 1) ans = ans / n * (n - 1);
+	return ans;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n; iniit();
+	long long ans = 0;
+	for (int i = 1; i * i <= n; ++i) {
+		if (n % i == 0) {
+			ans += 1ll * i * getphi(n / i);
+			if (i != n / i) ans += 1ll * n / i * getphi(i);
+		}
+	}
+	cout << ans << endl;
+	return 0;
+}

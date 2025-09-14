@@ -1,0 +1,64 @@
+//  OJ: 洛谷
+//  提交ID: 233543202
+//  题目ID: T661516
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+struct Edge {
+	int v, nxt;
+}edge[400000 + 5];
+int head[200000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int qpow(int a, int b) {
+	int res = 1;
+	while (b) {
+		if (b & 1) res = res * a % mod;
+		a = a * a % mod; b >>= 1;
+	}
+	return res;
+}
+namespace ON2 {
+	int ans, f[200000 + 5];
+	void dfs(int x, int fa) {
+		f[x] = fa; int k = fa;
+		while (f[k]) { if (k < x) ans++; k = f[k]; }
+		for (int i = head[x]; i; i = edge[i].nxt)
+			if (edge[i].v ^ fa)
+				dfs(edge[i].v, x);
+	}
+}
+int n, ans;
+struct fenw {
+	int s[400000 + 5];
+	void add(int x, int k) { while (x <= n) s[x] += k, x += x & -x; }
+	int query(int x) { int res = 0; while (x) res += s[x], x -= x & -x; return res; }
+}t;
+void dfs(int x, int fa) {
+	ans += t.query(x);
+	if (fa) t.add(x, 1);
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs(edge[i].v, x);
+	if (fa) t.add(x, -1);
+}
+int32_t main() {
+	// file(dfs);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1, u, v; i < n; ++i) cin >> u >> v, add(u, v), add(v, u);
+	if (n <= 1e4) {
+		ON2::dfs(1, 0);
+//		cerr << "can link edge: " << ON2::ans << endl;
+		cout << qpow(2, ON2::ans) << endl;
+		return 0;
+	}
+	dfs(1, 0);
+//	cerr << "can link edge: " << ans << endl;
+	cout << qpow(2, ans) << endl;
+	return 0;
+}

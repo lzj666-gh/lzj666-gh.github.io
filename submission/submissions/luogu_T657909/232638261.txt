@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 232638261
+//  题目ID: T657909
+#include<bits/stdc++.h>
+using namespace std;
+int32_t main() {
+    cin.tie(0)->sync_with_stdio(false);
+    static int n, p[100000 + 5], s[100000 + 5], j[100000 + 5];
+    cin >> n;
+    long long ans = 0;
+    for (int i = 1; i <= n; ++i) cin >> p[i];
+    for (int i = 1; i <= n; ++i) cin >> j[i];
+    for (int i = 1; i <= n; ++i) cin >> s[i];
+    for (int i = 1; i <= n; ++i) ans += max(0, s[i] - abs(p[i] - j[i]));
+    cout << ans << endl;
+    return 0;
+}

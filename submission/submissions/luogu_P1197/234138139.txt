@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 234138139
+//  题目ID: P1197
+#include<bits/stdc++.h>
+#define int long long 
+using namespace std;
+constexpr int N = 2e5 + 10, M = 4e5 + 10;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, m, k;
+int fa[N];
+int cnt;
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+void uno(int x, int y) {
+	if (find(x) == find(y)) return;
+	cnt--;
+	fa[find(x)] = find(y);
+}
+bool vis[N], viss[N];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v; i <= m; ++i) cin >> u >> v, add(u, v), add(v, u);
+	cin >> k;
+	vector<int>a(k);
+	for (int i = 0; i < k; ++i) cin >> a[i], viss[a[i]] = 1;
+	reverse(a.begin(), a.end());
+	for (int i = 0; i < n; ++i) fa[i] = i;
+	for (int x = 0; x < n; ++x)
+		if (!viss[x]) {
+			cnt++;
+			vis[x] = 1;
+			for (int i = head[x]; i; i = edge[i].nxt)
+				if (vis[edge[i].v])
+					uno(x, edge[i].v);
+		}
+	vector<int>ans;
+	for (const int& x : a) {
+		ans.push_back(cnt);
+		cnt++;
+		vis[x] = 1;
+		for (int i = head[x]; i; i = edge[i].nxt)
+			if (vis[edge[i].v])
+				uno(x, edge[i].v);
+	}
+	ans.push_back(cnt);
+	reverse(ans.begin(), ans.end());
+	for (const int& b : ans) cout << b << endl;
+	return 0;
+}

@@ -1,0 +1,78 @@
+//  OJ: 洛谷
+//  提交ID: 233369426
+//  题目ID: P2679
+#include<bits/stdc++.h>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+constexpr int mod = 1e9 + 7; 
+using ll = long long;
+ll dp[2000 + 5][400 + 5];
+ll sum[2000 + 5][400 + 5];
+int pos[2000 + 5][400 + 5];
+int n, m, k; string A, B;
+namespace Brute_force {
+	int dp[100][100][100];
+	void main() {
+		dp[0][0][0] = 1;
+		for (int l = 1; l <= k; ++l) {
+			for (int i = 1; i <= n; ++i) {
+				for (int j = 1; j <= m; ++j) {
+					if (A[i] != B[j]) continue;
+					int li = i - 1, lj = j - 1;
+					while (li >= 0 && lj > 0 && A[li] == B[lj]) {
+						for (int p = lj; p < j; ++p)
+							dp[l][i][j] += dp[l - 1][li][p];
+						li--, lj--;
+					}
+					while (li >= 0) {
+						for (int p = lj; p < j; ++p)
+							dp[l][i][j] += dp[l - 1][li][p];
+						li--;
+					}
+					cerr << i << ',' << j << ' ' << dp[l][i][j] << endl;
+				}
+			}
+		}
+		int sum = 0;
+		for (int i = 1; i <= n; ++i) sum += dp[k][i][m];
+		cout << sum << endl;
+	}
+}
+int32_t main() {
+	file(substring);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> k >> A >> B; A = ' ' + A; B = ' ' + B;
+	//Brute_force::main();
+	//return 0;
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 1; j <= m; ++j) {
+			if (A[i] != B[j]) continue;
+			pos[i][j] = 1;
+			while (i - pos[i][j] >= 0 && j - pos[i][j] > 0 && A[i - pos[i][j]] == B[j - pos[i][j]])
+				pos[i][j]++;
+		}
+	}
+	for (int i = 0; i <= n; ++i) for (int j = 0; j <= m; ++j) sum[i][j] = 1;
+	for (int l = 1; l <= k; ++l) {
+		memset(dp, 0, sizeof dp);
+		for (int i = 1; i <= n; ++i) {
+			for (int j = 1; j <= m && j <= i; ++j) {
+				if (A[i] != B[j]) continue;
+				dp[i][j] = sum[i - 1][j - 1] - (i - pos[i][j] - 1 >= 0 && j - pos[i][j] - 1 >= 0 ? sum[i - pos[i][j] - 1][j - pos[i][j] - 1] : 0);
+				dp[i][j] %= mod;
+			}
+		}
+		memset(sum, 0, sizeof sum);
+		for (int i = 1; i <= n; ++i) {
+			for (int j = 1; j <= m; ++j) {
+				sum[i][j] = sum[i - 1][j] + sum[i - 1][j - 1] - (i > 1 ? sum[i - 2][j - 1] : 0) + dp[i][j];
+				sum[i][j] %= mod;
+			}
+		}
+	}
+	ll sum = 0;
+	for (int i = 1; i <= n; ++i) sum += dp[i][m], sum %= mod;
+	cout << (sum + mod) % mod << endl;
+	return 0;
+}

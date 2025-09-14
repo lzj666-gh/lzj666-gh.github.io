@@ -1,0 +1,70 @@
+//  OJ: 洛谷
+//  提交ID: 233283044
+//  题目ID: P5658
+#include<bits/stdc++.h>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+stack<int>stk;
+int C2(int k) {
+	return (k - 1) * k / 2;
+}
+struct Edge {
+	int v, nxt;
+}edge[1000000 + 5];
+int head[500000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v, head[u] };
+	head[u] = idx;
+}
+string s; int ans, anss;
+void dfs(int x) {
+	bool flg1 = 0, flg2 = 0, flg3 = 0; int tmp = 0;
+	if (s[x] == ')') {
+		if (stk.size() > 1) {
+			flg1 = 1; tmp = stk.top();
+			stk.pop(); ans++;
+			if (!stk.empty())
+				ans -= C2(stk.top()), stk.top()++, ans += C2(stk.top()), flg2 = 1;
+		}
+		else if (stk.size() == 1) {
+			stk.top() = 0;
+		}
+	}
+	else {
+		flg3 = 1;
+		stk.push(0);
+	}
+	anss ^= ans * x;
+	//cerr << x << ':' << ans << endl;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		dfs(edge[i].v);
+	}
+	if (flg1) {
+		if (flg2) {
+			ans -= C2(stk.top());
+			stk.top()--;
+			ans += C2(stk.top());
+		}
+		ans--; stk.push(tmp);
+	}
+	if (flg3) {
+		stk.pop();
+	}
+}
+int n;
+int32_t main() {
+	// file(brackets);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> s; s = ' ' + s; stk.push(0);
+	for (int i = 2, k; i <= n; ++i) cin >> k, add(k, i);
+	dfs(1);
+	cout << anss << endl;
+}
+/*
+6
+)()())
+1 2 3 4 5
+
+
+*/

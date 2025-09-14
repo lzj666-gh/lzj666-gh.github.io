@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 234180032
+//  题目ID: P2613
+#include<bits/stdc++.h>
+//#define int long long
+#define all(name) (name).begin(), (name).end()
+#define rall(name) (name).rbegin(), (name).rend()
+#define all(name, n) &name[1], &name[n + 1]
+using namespace std;
+constexpr int mod = 19260817;
+int read() {
+	int x = 0; char c = getchar();
+	while (!isdigit(c)) c = getchar();
+	while (isdigit(c)) x = (x * 10 + (c ^ 48)) % mod, c = getchar();
+	return x;
+}
+int exgcd(int a, int b, int& x, int& y) {
+	if (b == 0) { x = 1, y = 0; return a; }
+	int k = exgcd(b, a % b, y, x);
+	y -= a / b * x;
+	return k;
+}
+int32_t main() {
+	int a = read(), b = read(), x, y;
+	exgcd(b, mod, x, y);
+	cout << (1ll * a * x % mod + mod) % mod << endl;
+	return 0;
+}

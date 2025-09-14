@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 232628311
+//  题目ID: T657906
+#include<bits/stdc++.h>
+using namespace std;
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	char x, y; int z;
+	cin >> x >> y >> z;
+	if (x == 'A') {
+		if (y == 'N') {
+			cout << "A320" << endl;
+		}
+		else {
+			if (z == 2) {
+				cout << "A350" << endl;
+			}
+			else {
+				cout << "A380" << endl;
+			}
+		}
+	}
+	else if (x == 'B') {
+		if (y == 'N') {
+			cout << "B737" << endl;
+		}
+		else {
+			if (z == 4) {
+				cout << "B747" << endl;
+			}
+			else {
+				cout << "B787" << endl;
+			}
+		}
+	}
+	else {
+		cout << "C919" << endl;
+	}
+	return 0;
+}

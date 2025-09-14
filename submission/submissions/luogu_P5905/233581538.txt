@@ -1,0 +1,85 @@
+//  OJ: 洛谷
+//  提交ID: 233581538
+//  题目ID: P5905
+#include<bits/stdc++.h>
+using namespace std;
+#define LL long long
+int n,m;
+int head[int(3e3)+10],now[int(2e4)+10],to[int(2e4)+10],val[int(2e4)+10],nxt[int(2e4)+10],tot;
+void add(int u,int v,int w){
+	to[++tot]=v,now[tot]=u,val[tot]=w;
+	nxt[tot]=head[u];
+	head[u]=tot;
+}
+int f[int(3e3)+10],cnt[int(3e3)+10];
+bool vis[int(3e3)+10];
+bool spfa(int st){
+	deque<int>q;
+	memset(f,0x3f,sizeof f);
+	memset(cnt,0,sizeof cnt);
+	f[st]=0;
+	q.push_back(st);
+	while(!q.empty()){
+		int u=q.front();
+		q.pop_front();
+		vis[u]=0;
+		for(int i=head[u];i;i=nxt[i]){
+			if(f[to[i]]>f[u]+val[i]){
+				f[to[i]]=f[u]+val[i];
+				cnt[to[i]]=cnt[u]+1;
+				if(cnt[to[i]]>n) return true;
+				if(vis[to[i]]) continue;
+				vis[to[i]]=1;
+				if(!q.empty()||f[to[i]]<f[q.front()]) q.push_front(to[i]);
+				else q.push_back(to[i]);
+			}
+		}
+	}
+	return false;
+}
+int dis[int(3e3)+10];
+void dij(int st){
+	priority_queue<pair<int,int>,vector<pair<int,int> >,greater<pair<int,int> > >q;
+	memset(dis,0x3f,sizeof dis);
+	memset(vis,0,sizeof vis);
+	dis[st]=0;
+	q.push({0,st});
+	while(!q.empty()){
+		pair<int,int>u=q.top();
+		q.pop();
+		int id=u.second;
+		if(vis[id]) continue;
+		vis[id]=1;
+		for(int i=head[id];i;i=nxt[i]){
+			if(dis[to[i]]>dis[id]+val[i])
+				dis[to[i]]=dis[id]+val[i],q.push({dis[to[i]],to[i]});
+		}
+	}
+}
+int main() {
+	cin>>n>>m;
+	for(int i=1;i<=m;i++){
+		int x,y,z;
+		cin>>x>>y>>z;
+		add(x,y,z);
+	}
+	for(int i=1;i<=n;i++)
+		add(0,i,0);
+	bool p=spfa(0);
+	if(p){
+		cout<<-1;
+		return 0;
+	}
+	for(int i=1;i<=m;i++)
+		val[i]+=f[now[i]]-f[to[i]];
+	for(int i=1;i<=n;i++){
+		long long ans=0;
+		dij(i);
+		for(long long j=1;j<=n;j++){
+			if(dis[j]<=5e8) ans+=(dis[j]-f[i]+f[j])*j;
+			else ans+=1e9*j;
+		}
+		cout<<ans<<"\n";
+	}
+	return 0;
+}

@@ -1,0 +1,197 @@
+//  OJ: 洛谷
+//  提交ID: 233055528
+//  题目ID: P5024
+#include<bits/stdc++.h>
+#define output(var) ((var) >= inf ? -1 : (var))
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout)
+using namespace std;
+struct Edge{
+	int v, nxt;
+}edge[200000 + 5];
+int head[100000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v, head[u] };
+	head[u] = idx;
+}
+int dp[100000 + 5][2], dp2[100000 + 5][2], fa[100000 + 5], p[100000 + 5];
+void dfs(int x, int f) {
+	fa[x] = f; dp[x][1] = p[x];
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (edge[i].v == f) continue;
+		dfs(edge[i].v, x);
+		dp[x][0] += dp[edge[i].v][1];
+		dp[x][1] += min(dp[edge[i].v][0], dp[edge[i].v][1]);
+	}
+}
+int n, m; int inf = 0;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int ans[2][2];
+		Node() : ans() {}
+		friend Node operator+(const Node&a, const Node&b) {
+			Node ans;
+			for (int i = 0; i < 4; ++i) {
+				ans.ans[(i >> 1) & 1][i & 1] = min({
+					a.ans[(i >> 1) & 1][0] + b.ans[1][i & 1],
+					a.ans[(i >> 1) & 1][1] + b.ans[0][i & 1],
+					a.ans[(i >> 1) & 1][1] + b.ans[1][i & 1] });
+			}
+			return ans;
+		}
+		int data(){
+			return min({ ans[0][0], ans[1][1], ans[0][1], ans[1][0] });
+		}
+	}tree[100000 << 2 | 3];
+	void pushup(int p) {
+		tree[p] = tree[lc(p)] + tree[rc(p)];
+	}
+	void build(int p, int l, int r) {
+		if (l == r) {
+			tree[p].ans[0][1] = tree[p].ans[1][0] = inf;
+			tree[p].ans[0][0] = 0; tree[p].ans[1][1] = ::p[l];
+			return;
+		}
+		build(lson); build(rson);
+		pushup(p);
+	}
+	Node query(int p, int l, int r, int a, int x, int b, int y) {
+		if (!((l <= a && a <= r) || (l <= b && b <= r))) return tree[p];
+		if (l == r) {
+			Node res; res.ans[0][0] = res.ans[0][1] = res.ans[1][0] = res.ans[1][1] = inf;
+			if (l == a) {
+				res.ans[x][x] = ::p[l] * x;
+			}
+			else {
+				res.ans[y][y] = ::p[l] * y;
+			}
+			return res;
+		}
+		return query(lson, a, x, b, y) + query(rson, a, x, b, y);
+	}
+}t;
+int32_t main() {
+	// file(defense);
+	cin.tie(0)->sync_with_stdio(false);
+	string spe; cin >> n >> m >> spe;
+	for (int i = 1; i <= n; ++i) cin >> p[i], inf += p[i];
+	if (spe[0] == 'A') {
+		for (int i = 1, u, v; i < n; ++i) cin >> u >> v;
+		t.build(1, 1, n);
+		while (m--) {
+			int a, b, x, y;
+			cin >> a >> x >> b >> y;
+			cout << output(t.query(1, 1, n, a, x, b, y).data()) << endl;
+		}
+		return 0;
+	}
+	for (int i = 1, u, v; i < n; ++i) cin >> u >> v, add(u, v), add(v, u);
+	dfs(1, 1);
+	memcpy(dp2, dp, sizeof dp);
+	while (m--) {
+		int a, b, x, y, ra, rb;
+		cin >> a >> x >> b >> y; ra = fa[a]; rb = fa[b];
+		bool flga = 0, flgb = 0;
+		
+		if (a == 1) {
+			dp2[fa[b]][0] = dp2[fa[b]][0] - dp2[b][1];
+			dp2[fa[b]][1] = dp2[fa[b]][1] - min(dp2[b][0], dp2[b][1]);
+			if (y == 0) dp2[fa[b]][0] = inf, dp2[fa[b]][1] += dp2[b][0];
+			else dp2[fa[b]][0] += dp2[b][1], dp2[fa[b]][1] += dp2[b][1];
+			b = fa[b];
+			while (b != 1) {
+				if (dp2[b][0] == dp[b][0] && dp2[b][1] == dp[b][1]) {
+					flgb = 1;
+					break;
+				}
+				dp2[fa[b]][0] = dp2[fa[b]][0] - dp[b][1] + dp2[b][1];
+				dp2[fa[b]][1] = dp2[fa[b]][1] - min(dp[b][0], dp[b][1]) - min(dp2[b][0], dp2[b][1]);
+				b = fa[b];
+			}
+			if (flgb) cout << output(dp[1][x]) << endl;
+			else cout << output(dp2[1][x]) << endl;
+			
+			b = rb;
+			while (!(dp[b][0] == dp2[b][0] && dp[b][1] == dp2[b][1])) {
+				dp2[b][0] = dp[b][0]; dp2[b][1] = dp[b][1];
+				b = fa[b];
+			}
+			continue;
+		}
+		
+		if (b == 1) {
+			dp2[fa[a]][0] = dp2[fa[a]][0] - dp2[a][1];
+			dp2[fa[a]][1] = dp2[fa[a]][1] - min(dp2[a][0], dp2[a][1]);
+			if (x == 0) dp2[fa[a]][0] = inf, dp2[fa[a]][1] += dp2[a][0];
+			else dp2[fa[a]][0] += dp2[a][1], dp2[fa[a]][1] += dp2[a][1];
+			a = fa[a];
+			while (a != 1) {
+				if (dp2[a][0] == dp[a][0] && dp2[a][1] == dp[a][1]) {
+					flga = 1;
+					break;
+				}
+				dp2[fa[a]][0] = dp2[fa[a]][0] - dp[a][1] + dp2[a][1];
+				dp2[fa[a]][1] = dp2[fa[a]][1] - min(dp[a][0], dp[a][1]) - min(dp2[a][0], dp2[a][1]);
+				a = fa[a];
+			}
+			if (flga) cout << output(dp[1][y]) << endl;
+			else cout << output(dp2[1][y]) << endl;
+			
+			a = ra;
+			while (!(dp[a][0] == dp2[a][0] && dp[a][1] == dp2[a][1])) {
+				dp2[a][0] = dp[a][0]; dp2[a][1] = dp[a][1];
+				a = fa[a];
+			}
+			continue;
+		}
+		
+		dp2[fa[a]][0] = dp2[fa[a]][0] - dp2[a][1];
+		dp2[fa[a]][1] = dp2[fa[a]][1] - min(dp2[a][0], dp2[a][1]);
+		if (x == 0) dp2[fa[a]][0] = inf, dp2[fa[a]][1] += dp2[a][0];
+		else dp2[fa[a]][0] += dp2[a][1], dp2[fa[a]][1] += dp2[a][1];
+		a = fa[a];
+		while (a != 1) {
+			if (dp2[a][0] == dp[a][0] && dp2[a][1] == dp[a][1]) {
+				flga = 1;
+				break;
+			}
+			dp2[fa[a]][0] = dp2[fa[a]][0] - dp[a][1] + dp2[a][1];
+			dp2[fa[a]][1] = dp2[fa[a]][1] - min(dp[a][0], dp[a][1]) + min(dp2[a][0], dp2[a][1]);
+			a = fa[a];
+		}
+		
+		dp2[fa[b]][0] = dp2[fa[b]][0] - dp2[b][1];
+		dp2[fa[b]][1] = dp2[fa[b]][1] - min(dp2[b][0], dp2[b][1]);
+		if (y == 0) dp2[fa[b]][0] = inf, dp2[fa[b]][1] += dp2[b][0];
+		else dp2[fa[b]][0] += dp2[b][1], dp2[fa[b]][1] += dp2[b][1];
+		b = fa[b];
+		while (b != 1) {
+			if (dp2[b][0] == dp[b][0] && dp2[b][1] == dp[b][1]) {
+				flgb = 1;
+				break;
+			}
+			dp2[fa[b]][0] = dp2[fa[b]][0] - dp[b][1] + dp2[b][1];
+			dp2[fa[b]][1] = dp2[fa[b]][1] - min(dp[b][0], dp[b][1]) + min(dp2[b][0], dp2[b][1]);
+			b = fa[b];
+		}
+		if (flga && flgb) cout << output(min(dp[1][0], dp[1][1])) << endl;
+		else cout << output(min(dp2[1][0], dp2[1][1])) << endl;
+		
+		a = ra;
+		while (!(dp[a][0] == dp2[a][0] && dp[a][1] == dp2[a][1])) {
+			dp2[a][0] = dp[a][0]; dp2[a][1] = dp[a][1];
+			a = fa[a];
+		}
+		b = rb;
+		while (!(dp[b][0] == dp2[b][0] && dp[b][1] == dp2[b][1])) {
+			dp2[b][0] = dp[b][0]; dp2[b][1] = dp[b][1];
+			b = fa[b];
+		}
+	}
+}
+// Please give me many many points!!

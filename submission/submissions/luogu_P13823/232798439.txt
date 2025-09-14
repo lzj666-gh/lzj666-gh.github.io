@@ -1,0 +1,111 @@
+//  OJ: 洛谷
+//  提交ID: 232798439
+//  题目ID: P13823
+#include<bits/stdc++.h>
+using namespace std;
+namespace IO {
+	template<class... T2> inline void qread(char& IEE, T2&... ls);
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls);
+	template<class... T2> inline void qwrite(char IEE, T2... ls);
+	template<class... T2> inline void qwrite(const char* str, T2... ls);
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls);
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls);
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	template<class... T2> inline void qwrite(char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+struct Edge {
+	int v, nxt;
+}edge[1000000 + 5];
+int head[500000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, m, p[10000000 + 5];
+namespace Special {
+	struct Edge {
+		int v, nxt;
+	}edge[20000000 + 5];
+	int head[10000000 + 5], idx;
+	void add(int u, int v) {
+		edge[++idx] = { v,head[u] };
+		head[u] = idx;
+	}
+	bool vis[10000000 + 5];
+	vector<int> dfs(int x) {
+		vector<int> ret; ret.push_back(x);
+		if (!vis[x]) return ret;
+		vis[x] = 0;
+		for (int i = head[x]; i; i = edge[i].nxt) {
+			vector<int> k = dfs(edge[i].v);
+			if (p[k[0]] > p[ret[0]]) ret = k;
+			else if ((p[k[0]] == p[ret[0]])) ret.insert(ret.end(), k.begin(), k.end());
+		}
+		return ret;
+	}
+	struct Node {
+		int first, second;
+		friend bool operator<(const Node& a, const Node& b) {
+			return a.first > b.first;
+		}
+	};
+	int dis[10000000 + 10];
+	priority_queue<Node>q;
+	void dij(vector<int> s) {
+		for (auto& p : s) dis[p] = 0, q.push({ 0,p });
+		while (!q.empty()) {
+			Node p = q.top(); q.pop();
+			if (vis[p.second]) continue;
+			vis[p.second] = 1;
+			for (int i = head[p.second]; i; i = edge[i].nxt) {
+				if (dis[edge[i].v] > dis[p.second] + 1) {
+					dis[edge[i].v] = dis[p.second] + 1;
+					q.push({ dis[p.second] + 1,edge[i].v });
+				}
+			}
+		}
+	}
+	void main() {
+		memset(vis, 1, sizeof vis);
+		memset(dis, 0x3f, sizeof dis);
+		queue<vector<int>>q;
+		for (int i = 1; i <= n; ++i) if (vis[i]) q.push(dfs(i));
+		while (q.size()) {
+			dij(q.front());
+			q.pop();
+		}
+		for (int i = 1; i <= n; ++i) qwrite(dis[i] / 2, ' ');
+	}
+}
+int vis[5000000 + 5]; int idxx;
+void dfs(int x) {
+	if (vis[x] == idxx) return;
+	vis[x] = idxx;
+	Special::add(idxx, x); Special::add(x, idxx);
+	for (int i = head[x]; i; i = edge[i].nxt)
+		dfs(edge[i].v);
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	qread(n, m); idxx = n;
+	for (int i = 1; i <= n; ++i) qread(p[i]);
+	for (int i = 1, u, v; i <= m; ++i) qread(u, v), add(u, v);
+	for (int i = 1; i <= n; ++i)
+		if (!vis[i])
+			idxx++, dfs(i);
+	Special::main();
+	return 0;
+}

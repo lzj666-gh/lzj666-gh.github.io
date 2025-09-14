@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 232982120
+//  题目ID: P2303
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+int phi(int n) {
+	int ans = n;
+	for (int i = 2; i * i <= n; ++i)
+		if (n % i == 0) {
+			ans = ans / i * (i - 1);
+			while (n % i == 0) n /= i;
+		}
+	if (n > 1) ans = ans / n * (n - 1);
+	return ans;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	long long ans = 0;
+	for (int i = 1; i * i <= n; ++i) {
+		if (n % i == 0) {
+			ans += 1ll * i * phi(n / i);
+			if (i != n / i) ans += 1ll * n / i * phi(i);
+		}
+	}
+	cout << ans << endl;
+	return 0;
+}

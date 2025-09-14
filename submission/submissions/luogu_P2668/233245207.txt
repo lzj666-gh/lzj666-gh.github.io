@@ -1,0 +1,194 @@
+//  OJ: 洛谷
+//  提交ID: 233245207
+//  题目ID: P2668
+#include<bits/stdc++.h>
+#include<array>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+constexpr int p = 131;
+using ull = unsigned long long;
+ull hsh(array<int, 14>& now) {
+	ull res = 0, pp = 1;
+	for (int i = 0; i < 14; ++i) res += now[i] * pp, pp *= p;
+	return res;
+}
+unordered_map<ull, int> mp; int curans;
+int dfs(array<int, 14>& now, int stp) {
+	if (stp > curans) return 100;
+	int key = hsh(now);
+	if (key == 0) {
+		curans = min(curans, stp);
+		return stp;
+	}
+	if (mp.count(key)) return mp[key];
+	int& val = mp[key];
+	val = 100;
+	if (now[0] >= 1) {
+		now[0] -= 1;
+		val = min(val, dfs(now, stp + 1));
+		now[0] += 1;
+	}
+	if (now[0] >= 2) {
+		now[0] -= 2;
+		val = min(val, dfs(now, stp + 1));
+		now[0] += 2;
+	}
+	for (int i = 1; i < 14; ++i) {
+		if (now[i] >= 1) {
+			now[i] -= 1;
+			val = min(val, dfs(now, stp + 1));
+			now[i] += 1;
+		}
+	}
+	for (int i = 1; i < 14; ++i) {
+		if (now[i] >= 2) {
+			now[i] -= 2;
+			val = min(val, dfs(now, stp + 1));
+			now[i] += 2;
+		}
+	}
+	for (int i = 1; i < 14; ++i) {
+		if (now[i] >= 3) {
+			now[i] -= 3;
+			for (int j = 0; j < 14; ++j) {
+				if (now[j] >= 1) {
+					now[j] -= 1;
+					val = min(val, dfs(now, stp + 1));
+					now[j] += 1;
+				}
+			}
+			for (int j = 1; j < 14; ++j) {
+				if (now[j] >= 2) {
+					now[j] -= 2;
+					val = min(val, dfs(now, stp + 1));
+					now[j] += 2;
+				}
+			}
+			val = min(val, dfs(now, stp + 1));
+			now[i] += 3;
+		}
+	}
+	for (int i = 1; i < 14; ++i) {
+		if (now[i] >= 4) {
+			now[i] -= 4;
+			for (int j = 0; j < 14; ++j) {
+				if (now[j] >= 1) {
+					now[j] -= 1;
+					for (int k = 0; k < 14; ++k) {
+						if (now[k] >= 1) {
+							now[k] -= 1;
+							val = min(val, dfs(now, stp + 1));
+							now[k] += 1;
+						}
+					}
+					now[j] += 1;
+				}
+			}
+			for (int j = 1; j < 14; ++j) {
+				if (now[j] >= 2) {
+					now[j] -= 2;
+					for (int k = 1; k < 14; ++k) {
+						if (now[k] >= 2) {
+							now[k] -= 2;
+							val = min(val, dfs(now, stp + 1));
+							now[k] += 2;
+						}
+					}
+					now[j] += 2;
+				}
+			}
+			val = min(val, dfs(now, stp + 1));
+			now[i] += 4;
+		}
+	}
+	static int order[] = { 3,4,5,6,7,8,9,10,11,12,13,1 };
+	for (int start = 0; start < 12; ++start) {
+		for (int len = 5; start + len <= 12; ++len) {
+			bool valid = true;
+			for (int i = start; i < start + len; ++i) {
+				int card = order[i];
+				if (now[card] < 1) {
+					valid = false;
+					break;
+				}
+			}
+			if (valid) {
+				for (int i = start; i < start + len; ++i) {
+					int card = order[i];
+					now[card] -= 1;
+				}
+				val = min(val, dfs(now, stp + 1));
+				for (int i = start; i < start + len; ++i) {
+					int card = order[i];
+					now[card] += 1;
+				}
+			}
+		}
+	}
+	for (int start = 0; start < 12; ++start) {
+		for (int len = 3; start + len <= 12; ++len) {
+			bool valid = true;
+			for (int i = start; i < start + len; ++i) {
+				int card = order[i];
+				if (now[card] < 2) {
+					valid = false;
+					break;
+				}
+			}
+			if (valid) {
+				for (int i = start; i < start + len; ++i) {
+					int card = order[i];
+					now[card] -= 2;
+				}
+				val = min(val, dfs(now, stp + 1));
+				for (int i = start; i < start + len; ++i) {
+					int card = order[i];
+					now[card] += 2;
+				}
+			}
+		}
+	}
+	for (int start = 0; start < 12; ++start) {
+		for (int len = 2; start + len <= 12; ++len) {
+			bool valid = true;
+			for (int i = start; i < start + len; ++i) {
+				int card = order[i];
+				if (now[card] < 3) {
+					valid = false;
+					break;
+				}
+			}
+			if (valid) {
+				for (int i = start; i < start + len; ++i) {
+					int card = order[i];
+					now[card] -= 3;
+				}
+				val = min(val, dfs(now, stp + 1));
+				for (int i = start; i < start + len; ++i) {
+					int card = order[i];
+					now[card] += 3;
+				}
+			}
+		}
+	}
+	return val;
+}
+array<int, 14> now;
+int32_t main() {
+	// file(landlords);
+	cin.tie(0)->sync_with_stdio(false);
+	int T, n;
+	cin >> T >> n; mp[0] = 0;
+	while (T--) {
+		curans = 100;
+		for (auto& k : now) k = 0;
+		for (int i = 1, k, t; i <= n; ++i) {
+			cin >> k >> t;
+			now[k]++;
+		}
+		mp.clear();
+		cout << dfs(now, 0) << endl;
+	}
+	return 0;
+}

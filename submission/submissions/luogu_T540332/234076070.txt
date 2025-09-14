@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 234076070
+//  题目ID: T540332
+#include<bits/stdc++.h>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+#define all(a) (a).begin(), (a).end()
+using namespace std;
+int n, val[25];
+bool vis[25];
+int dfs(int x) {
+	if (x == n + 1) return 0;
+	vector<int>v;
+	for (int i = 1; i <= n; ++i) {
+		if (vis[i]) continue;
+		if (v.empty() || val[i] > val[v.front()]) v.clear(), v.push_back(i);
+		if (v.empty() || val[i] == val[v.front()]) v.push_back(i);
+	}
+	int a = v[rand() % v.size()], b = v[rand() % v.size()];
+	if (a != b) return val[a];
+	vis[a] = 1;
+	int k = dfs(x + 1);
+	vis[a] = 0;
+	return k;
+}
+int32_t main() {
+	srand(time(0));
+	time_t beg = clock();
+//	file(game);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n; long long sum = 0; int cnt = 0;
+	for (int i = 1; i <= n; ++i) cin >> val[i];
+	while (clock() - beg <= CLOCKS_PER_SEC * 1.95) {
+		cnt++; sum += dfs(1);
+	}
+	cerr << "sum: " << sum << ", cnt: " << cnt << endl;
+	cout << fixed << setprecision(10) << sum * 1.0 / cnt << endl;
+	return 0;
+}

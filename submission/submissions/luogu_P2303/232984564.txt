@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 232984564
+//  题目ID: P2303
+#include<bits/stdc++.h>
+using namespace std;
+int solve(int n) {
+	int ans = n;
+	for (int i = 2; i * i <= n; ++i)
+		if (n % i == 0) {
+			int t = 0;
+			while (n % i == 0) n /= i, ++t;
+			ans = ans / i * (t * i - t + i);
+		}
+	if (n > 1) ans = ans / n * (n + n - 1);
+	return ans;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n; cin >> n;
+	cout << solve(n) << endl;
+	return 0;
+}

@@ -1,0 +1,65 @@
+//  OJ: 洛谷
+//  提交ID: 232790599
+//  题目ID: T468470
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+constexpr int mod = 1e9 + 7, inv2 = (mod + 1) / 2;
+using ll = long long;
+ll qpow(ll a, ll b) {
+	ll res = 1;
+	while (b) {
+		if (b & 1) res = res * a % mod;
+		a = a * a % mod; b >>= 1;
+	}
+	return res;
+}
+ll n, a[100000 + 5], p[100000 + 5], pow2[120 + 5];
+int main() {
+	// file(a);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	int inv1e9 = qpow(1e9, mod - 2);
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = 1; i <= n; ++i) cin >> p[i], p[i] = p[i] * inv1e9 % mod;
+	ll ans = 0;
+	// s^2 = s_i * s_j
+	for (int i = 0; i <= 32; ++i) { // s_i
+		for (int j = 0; j <= 32; ++j) { // s_j
+			// s_i && s_j => ans_{i+j}
+			ll p1 = 1, p2 = 1, p3 = 1;
+			for (int k = 1; k <= n; ++k) {
+				int bit_i = (a[k] >> i) & 1, bit_j = (a[k] >> j) & 1;
+				if (bit_i == 0 && bit_j == 1) p1 = p1 * (1 - 2 * p[k]) % mod;
+				else if (bit_i == 1 && bit_j == 0) p2 = p2 * (1 - 2 * p[k]) % mod;
+				else if (bit_i == 1 && bit_j == 1) p3 = p3 * (1 - 2 * p[k]) % mod;
+			}
+			ll P00 = 1, P01 = 0, P10 = 0, P11 = 0, n00, n01, n10, n11, f, g;
+
+			f = (1 - p1) * inv2 % mod, g = (1 - f) % mod;
+			n00 = (g * P00 + f * P01) % mod;
+			n01 = (g * P01 + f * P00) % mod;
+			n10 = (g * P10 + f * P11) % mod;
+			n11 = (g * P11 + f * P10) % mod;
+			tie(P00, P01, P10, P11) = tie(n00, n01, n10, n11);
+
+			f = (1 - p2) * inv2 % mod, g = (1 - f) % mod;
+			n00 = (g * P00 + f * P10) % mod;
+			n01 = (g * P01 + f * P11) % mod;
+			n10 = (g * P10 + f * P00) % mod;
+			n11 = (g * P11 + f * P01) % mod;
+			tie(P00, P01, P10, P11) = tie(n00, n01, n10, n11);
+
+			f = (1 - p3) * inv2 % mod, g = (1 - f) % mod;
+			n00 = (g * P00 + f * P11) % mod;
+			n01 = (g * P01 + f * P10) % mod;
+			n10 = (g * P10 + f * P01) % mod;
+			n11 = (g * P11 + f * P00) % mod;
+			tie(P00, P01, P10, P11) = tie(n00, n01, n10, n11);
+
+			ans = (ans + qpow(2, i + j) * P11 % mod) % mod;
+		}
+	}
+	cout << (ans % mod + mod) % mod << endl;
+	return 0;
+}

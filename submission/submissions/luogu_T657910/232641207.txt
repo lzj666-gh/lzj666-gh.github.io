@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 232641207
+//  题目ID: T657910
+#include<bits/stdc++.h>
+using namespace std;
+bool vis[100 + 5][100 + 5];
+int ans[100 + 5][100 + 5];
+int n, m, q, a[100 + 5][100 + 5];
+int dx[5] = { 0,-1,1,0,0 }, dy[5] = { 0,0,0,-1,1 };
+int dfs(int x, int y) {
+    if (x == 0 || y == 0 || x == n + 1 || y == m + 1) return ans[x][y] = 0;
+    if (vis[x][y] && ans[x][y] == -1) return ans[x][y] = -2;
+    else if (vis[x][y]) return ans[x][y];
+    vis[x][y] = 1;
+    return ans[x][y] = dfs(x + dx[a[x][y]], y + dy[a[x][y]]), ans[x][y] = ans[x][y] == -2 ? -2 : ans[x][y] + 2;
+}
+int32_t main() {
+    cin.tie(0)->sync_with_stdio(false);
+    memset(ans, -1, sizeof ans);
+    cin >> n >> m >> q;
+    for (int i = 1; i <= n; ++i)
+        for (int j = 1; j <= m; ++j)
+            cin >> a[i][j];
+    while (q--) {
+        int x, y;
+        cin >> x >> y;
+        cout << dfs(x, y) / 2 << endl;
+    }
+    return 0;
+}

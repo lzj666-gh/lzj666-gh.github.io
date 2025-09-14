@@ -1,0 +1,15 @@
+//  OJ: 洛谷
+//  提交ID: 232625756
+//  题目ID: T657905
+#include<bits/stdc++.h>
+using namespace std;
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int x, a, b, t;
+	cin >> x >> a >> b >> t;
+	if (x < 60) cout << 0 << endl;
+	else if (x < 120) cout << a << endl;
+	else if (x < 240) cout << b << endl;
+	else cout << t << endl;
+	return 0;
+}

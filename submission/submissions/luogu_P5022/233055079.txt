@@ -1,0 +1,89 @@
+//  OJ: 洛谷
+//  提交ID: 233055079
+//  题目ID: P5022
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout)
+using namespace std;
+/*
+struct Edge{
+	int v, nxt;
+}edge[10000 + 5];
+int head[5000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v, head[u] };
+	head[u] = idx;
+}
+*/
+vector<int>g[5000 + 5];
+bool vis[5000 + 5];
+int dfn[5000 + 5], idk = 1, nxt[5000 + 5], fa[5000 + 5], cur[5000 + 5];
+int delA, delB; vector<int> ans, anss;
+void dfs(int x) {
+	ans.push_back(x);
+	vis[x] = 1;
+//	cerr << x << endl;
+//	for (int i = cur[x]++; i < g[x].size(); ++i, ++cur[x]) {
+	for (int i = 0; i < g[x].size(); ++i) {
+//		if (i == g[x].size() - 1) nxt[i] = nxt[fa[x]];
+//		else nxt[x] = g[x][i + 1];
+		if (x == delA && g[x][i] == delB) continue;
+		if (x == delB && g[x][i] == delA) continue;
+		if (!vis[g[x][i]]) dfs(g[x][i]);
+	}
+}
+int cirA, cirB;
+void dfss(int x) {
+	if(dfn[x]) return;
+	dfn[x] = ++idk;
+	for (int i = 0; i < g[x].size(); ++i) {
+//		if (g[x][i] == fa[x])
+//			g[x].erase(lower_bound(g[x].begin(), g[x].end(), fa[x]));
+		if (g[x][i] == fa[x]) continue;
+		if (!dfn[g[x][i]])
+			fa[g[x][i]] = x, dfss(g[x][i]);
+		else
+			cirA = x, cirB = g[x][i];
+	}
+}
+int main() {
+	// file(travel);
+	cin.tie(0)->sync_with_stdio(false);
+	set<int>q;
+	int n, m;
+	cin >> n >> m;
+//	for (int i = 1, u, v; i <= m; ++i) cin >> u >> v, add(u, v), add(v, u);
+	for (int i = 1, u, v; i <= m; ++i) cin >> u >> v, g[u].push_back(v), g[v].push_back(u);
+	for (int i = 1; i <= n; ++i) sort(g[i].begin(), g[i].end());
+	dfss(1);
+//	for (int i = 1; i <= n; ++i) {
+//		cout << i << ':';
+//		for (auto& p : g[i]) {
+//			cout << p << ' ';
+//		}
+//		cout << endl;
+//	}
+	delA = cirA; delB = cirB;
+	dfs(1); anss = ans;
+	for (delA = fa[cirB], delB = cirB; delB != cirA; delB = fa[delB], delA = fa[delB]) {
+		memset(vis, 0, sizeof vis);
+//		cerr << delA << ' ' << delB << ':' << endl;
+		ans.clear(); dfs(1);
+		anss = min(anss, ans);
+	}
+	for (auto& p : anss) cout << p << ' ';
+	return 0;
+	/*
+	q.insert(1);
+	while (!q.empty()) {
+		int now = *q.begin(); q.erase(now);
+		if (vis[now]) continue;
+		vis[now] = 1;
+		cout << now << ' ';
+		for (int i = head[now]; i; i = edge[i].nxt)
+			if (!vis[edge[i].v])
+				q.insert(edge[i].v);
+	}
+	*/
+}
+// 9:05 begin ver 3
+// 9:22 end debug

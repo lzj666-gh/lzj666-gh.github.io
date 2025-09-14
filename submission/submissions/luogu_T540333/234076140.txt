@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 234076140
+//  题目ID: T540333
+#include<bits/stdc++.h>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+#define all(a) (a).begin(), (a).end()
+using namespace std;
+int n, m, a[300000 + 5];
+int32_t main() {
+//	file(hopfeild);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int x = 1; x <= m; ++x) {
+		int i = 1;
+		while (a[i] != x && i <= n) i++;
+		if (a[i] != x) {
+			cout << -1 << ' ';
+			continue;
+		}
+		int ans = 0;
+		for (int j = 1; j <= n; i = i % n + 1, ++j) {
+			if (a[i] == x) continue;
+			if (a[i] != x && a[i % n + 1] == x) ans += 1;
+			else if (a[i] > x && a[i % n + 1] > x) ans += 1;
+			else if (a[i] < x && a[i % n + 1] < x) ans += 1;
+			else if (a[i] > x && a[i % n + 1] < x && j <= n - 2 && a[(i + 1) % n + 1] > x)
+				ans += 3, i = i % n + 1, ++j;
+			else if (a[i] > x && a[i % n + 1] < x)
+				ans += 2;
+			else if (a[i] < x && a[i % n + 1] > x && j <= n - 2 && a[(i + 1) % n + 1] < x)
+				ans += 3, i = i % n + 1, ++j;
+			else if (a[i] < x && a[i % n + 1] > x)
+				ans += 2;
+		}
+		cout << ans << ' ';
+	}
+	return 0;
+}

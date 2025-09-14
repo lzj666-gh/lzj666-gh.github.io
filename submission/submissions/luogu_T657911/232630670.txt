@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 232630670
+//  题目ID: T657911
+#include<bits/stdc++.h>
+using namespace std;
+int32_t main() {
+    cin.tie(0)->sync_with_stdio(false);
+    int n, q;
+    cin >> n >> q;
+    vector<vector<long long>> Y(n, vector<long long>(n));
+    vector<vector<long long>> T(n, vector<long long>(n));
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            cin >> Y[i][j];
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            cin >> T[i][j];
+    while (q--) {
+        static int u, v;
+        cin >> u >> v; u--; v--;
+        long long ans = LLONG_MAX;
+        if (Y[u][v] != -1) ans = min(ans, Y[u][v]);
+        for (int w = 0; w < n; w++)
+            if (T[u][w] != -1 && T[w][v] != -1)
+                ans = min(ans, T[u][w] + T[w][v]);
+        if (ans == LLONG_MAX) cout << -1 << endl;
+        else cout << ans << endl;
+    }
+    return 0;
+}

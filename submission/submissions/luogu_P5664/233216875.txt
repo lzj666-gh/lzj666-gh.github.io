@@ -1,0 +1,72 @@
+//  OJ: 洛谷
+//  提交ID: 233216875
+//  题目ID: P5664
+#include<bits/stdc++.h>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+constexpr int mod = 998244353;
+int n, m, a[100 + 5][2000 + 5], sum[100 + 5], dp[100 + 5][100 + 5], dpp[2][500 + 5][40 + 5][40 + 5];
+int qpow(int a, int b) {
+	int res = 1;
+	while (b) {
+		if (b & 1) res = res * a % mod;
+		a = a * a % mod; b >>= 1;
+	}
+	return res;
+}
+int32_t main() {
+	// file(meal);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 1; j <= m; ++j) {
+			cin >> a[i][j];
+			sum[i] = (sum[i] + a[i][j]) % mod;
+		}
+	}
+	dp[0][0] = 1;
+	for (int i = 1; i <= n; ++i) {
+		// dp[i][j] means: by the top i food, the count of ways to make j food
+		dp[i][0] = 1;
+		for (int j = 1; j <= n; ++j) {
+			dp[i][j] = dp[i - 1][j];
+			for (int k = 1; k <= m; ++k) {
+				dp[i][j] += dp[i - 1][j - 1] * a[i][k] % mod;
+			}
+			dp[i][j] %= mod;
+		}
+	}
+//	for (int i = 1; i <= n; ++i) {
+//		for (int j = 1; j <= n; ++j) {
+//			cerr << dp[i][j] << ' ';
+//		}
+//		cerr << endl;
+//	}
+	for (int i = 0; i <= m; ++i) dpp[0][i][0][0] = 1;
+	for (int k = 1; k <= n; ++k) {
+		for (int i = 1; i <= m; ++i) {
+			for (int j = 0; j <= n; ++j) {
+				for (int t = 0; t <= n; ++t) {
+					dpp[k & 1][i][j][t] = dpp[(k & 1) ^ 1][i][j][t] + (t ? dpp[(k & 1) ^ 1][i][j][t - 1] * (sum[k] - a[k][i]) % mod : 0) + (j ? dpp[(k & 1) ^ 1][i][j - 1][t] * a[k][i] % mod : 0);
+					dpp[k & 1][i][j][t] %= mod;
+				}
+//				cerr << dpp[k & 1][i][j][0] << ' ';
+			}
+//			cerr << endl;
+		}
+//		cerr << endl;
+	}
+	int anss = 0;
+	for (int k = 1; k <= n; ++k) anss += dp[n][k];
+	anss %= mod;
+	for (int i = 1; i <= m; ++i) {
+		for (int j = 0; j <= n; ++j) {
+			// the i-th food use j times, others use < j times
+			for (int k = 0; k < j; ++k) anss -= dpp[n & 1][i][j][k];
+			anss %= mod;
+		}
+	}
+	cout << (anss + mod) % mod << endl;
+	return 0;
+}

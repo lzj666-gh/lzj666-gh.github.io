@@ -1,0 +1,87 @@
+//  OJ: 洛谷
+//  提交ID: 232775264
+//  题目ID: P13823
+#include<bits/stdc++.h>
+using namespace std;
+namespace IO {
+	template<class... T2> inline void qread(char& IEE, T2&... ls);
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls);
+	template<class... T2> inline void qwrite(char IEE, T2... ls);
+	template<class... T2> inline void qwrite(const char* str, T2... ls);
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls);
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls);
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	template<class... T2> inline void qwrite(char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+constexpr int MAXN = 500000 + 5, MAXM = 500000 + 5;
+struct Edge {
+	int v, nxt;
+}edge[MAXM];
+int head[MAXN], idx;
+void add(int u, int v) {
+	edge[++idx] = { v, head[u] };
+	head[u] = idx;
+}
+int cid[MAXN];
+vector<int> c[MAXN];
+int ccnt;
+bool vis[MAXN];
+int dis[MAXN], n, m, p[MAXN];
+void bfs_components() {
+	ccnt = 0;
+	for (int i = 1; i <= n; ++i)
+		if (!vis[i]) {
+			queue<int> q; q.push(i);
+			ccnt++; vis[i] = 1;
+			c[ccnt].push_back(i);
+			cid[i] = ccnt;
+			while (!q.empty()) {
+				int u = q.front(); q.pop();
+				for (int i = head[u]; i; i = edge[i].nxt)
+					if (!vis[edge[i].v])
+						vis[edge[i].v] = 1, cid[edge[i].v] = ccnt,
+						c[ccnt].push_back(edge[i].v), q.push(edge[i].v);
+			}
+		}
+}
+void bfs_disance(int cid) {
+	queue<int> q;
+	int max_val = -1;
+	for (int u : c[cid]) dis[u] = -1;
+	for (int u : c[cid])
+		if (p[u] > max_val)
+			max_val = p[u];
+	for (int u : c[cid])
+		if (p[u] == max_val) {
+			dis[u] = 0;
+			q.push(u);
+		}
+	while (!q.empty()) {
+		int u = q.front(); q.pop();
+		for (int i = head[u]; i; i = edge[i].nxt)
+			if (dis[edge[i].v] == -1)
+				dis[edge[i].v] = dis[u] + 1, q.push(edge[i].v);
+	}
+}
+int main() {
+	qread(n, m);
+	for (int i = 1; i <= n; ++i) qread(p[i]);
+	for (int i = 1, u, v; i <= m; ++i) qread(u, v), add(u, v), add(v, u);
+	bfs_components();
+	for (int i = 1; i <= ccnt; ++i) bfs_disance(i);
+	for (int i = 1; i <= n; ++i) qwrite(dis[i], ' ');
+	return 0;
+}

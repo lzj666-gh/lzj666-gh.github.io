@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 234001661
+//  题目ID: P2421
+#include<bits/stdc++.h>
+using namespace std;
+inline int exgcd(int a, int b, int& x, int& y) {
+	if (b == 0) { x = 1; y = 0; return a; }
+	int k = exgcd(b, a % b, y, x);
+	y -= a / b * x;
+	return k;
+}
+int n, C[20], P[20], L[20];
+bool check(int m) {
+	for (int i = 1; i <= n; ++i) {
+		for (int j = i + 1; j <= n; ++j) {
+			int x, y;
+			int k = exgcd(P[i] - P[j], m, x, y);
+			if ((C[j] - C[i]) % k) continue;
+			x *= (C[j] - C[i]) / k; y *= (C[j] - C[i]) / k;
+			int dx = m / k, dy = (P[i] - P[j]) / k; x = (x % dx + dx) % dx;
+			assert((C[i] + P[i] * x) % m == (C[j] + P[j] * x) % m);
+			if (x <= min(L[i], L[j])) return 0;
+		}
+	}
+	return 1;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int k = 0;
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> C[i] >> P[i] >> L[i], k = max(k, C[i]), C[i]--;
+	while (!check(k)) k++;
+	cout << k << endl;
+	return 0;
+}

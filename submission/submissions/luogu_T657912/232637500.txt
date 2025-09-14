@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 232637500
+//  题目ID: T657912
+#include<bits/stdc++.h>
+using namespace std;
+int32_t main() {
+    cin.tie(0)->sync_with_stdio(false);
+    int n, m; string s;
+    cin >> n >> m;
+    map<string, string> mp;
+    for (int i = 0, c; i < m; ++i) {
+        cin >> c;
+        string t = "L" + to_string(i);
+        for (int j = 0; j < c; ++j)
+            cin >> s, mp[s] = t;
+    }
+    set<tuple<string, string, string, string>> ans;
+    for (int i = 0; i < n; ++i) {
+        cin >> s;
+        int p1 = s.find('-'), p2 = s.find('-', p1 + 1), p3 = s.find('-', p2 + 1);
+        string c = s.substr(0, p1).substr(0, 2);
+        if (mp.find(c) != mp.end())
+            ans.insert(make_tuple(s.substr(p1 + 1, p2 - p1 - 1), s.substr(p2 + 1, p3 - p2 - 1), s.substr(p3 + 1), mp[c]));
+        else
+            ans.insert(make_tuple(s.substr(p1 + 1, p2 - p1 - 1), s.substr(p2 + 1, p3 - p2 - 1), s.substr(p3 + 1), c));
+    }
+    cout << ans.size() << endl;
+    return 0;
+}

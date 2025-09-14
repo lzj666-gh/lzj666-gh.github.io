@@ -1,0 +1,104 @@
+//  OJ: 洛谷
+//  提交ID: 233461211
+//  题目ID: P4087
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, G;
+namespace IO {
+	template<class... T2> inline void qread(char& IEE, T2&... ls);
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls);
+	template<class... T2> inline void qwrite(char IEE, T2... ls);
+	template<class... T2> inline void qwrite(const char* str, T2... ls);
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls);
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls);
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	template<class... T2> inline void qwrite(char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+struct Seg_Tree {
+#define lc (tree[p].ls == -1 ? ((tree[++idx].tot = mid - l + 1, tree[idx].max = G), tree[p].ls = idx) : tree[p].ls)
+#define rc (tree[p].rs == -1 ? ((tree[++idx].tot = r - mid, tree[idx].max = G), tree[p].rs = idx) : tree[p].rs)
+#define mid ((l + r) >> 1)
+#define lson lc, l, mid
+#define rson rc, mid + 1, r
+	struct Node {
+		int ls, rs, max, tot;
+		Node() : ls(-1), rs(-1), max(INT_MIN), tot(1) {}
+	};
+	vector<Node> tree;
+	int idx = 0;
+	void pushup(int p, int l, int r) {
+		if (tree[lc].max == tree[rc].max) {
+			tree[p].max = tree[lc].max;
+			tree[p].tot = tree[lc].tot + tree[rc].tot;
+		}
+		else if (tree[lc].max > tree[rc].max) {
+			tree[p].max = tree[lc].max;
+			tree[p].tot = tree[lc].tot;
+		}
+		else {
+			tree[p].max = tree[rc].max;
+			tree[p].tot = tree[rc].tot;
+		}
+	}
+	void build(int n) {
+		n <<= 2;
+		tree.resize(n);
+		for (int i = 0; i < n; i++) {
+			tree[i].ls = tree[i].rs = -1;
+			tree[i].max = G;
+			tree[i].tot = 1;
+		}
+		idx = 1;
+	}
+	void add(int p, int l, int r, int x, int val) {
+		if (l == r) {
+			tree[p].max += val;
+			return;
+		}
+		if (x <= mid) add(lson, x, val);
+		else add(rson, x, val);
+		pushup(p, l, r);
+	}
+	bool add(int x, int val) {
+		int tmp = tree[1].max, tmp2 = tree[1].tot;
+		add(1, 1, n, x, val);
+		return tree[1].max != tmp || tree[1].tot != tmp2;
+	}
+}seg;
+using namespace IO;
+struct Test {
+	int date, id, delta;
+	Test(int date = 0, int id = 0, int delta = 0) : date(date), id(id), delta(delta) {}
+	bool operator<(const Test& other) const {
+		return date < other.date;
+	}
+};
+signed main() {
+	//freopen("10.in", "r", stdin);
+	cin.tie(0)->sync_with_stdio(false);
+	qread(n, G);
+	seg.build(n);
+	vector<Test> a(n);
+	for (int i = 0; i < n; i++) {
+		qread(a[i].date, a[i].id, a[i].delta);
+	}
+	sort(a.begin(), a.end());
+	int ans = 0;
+	for (int i = 0; i < n; i++)
+		ans += seg.add(a[i].id, a[i].delta);
+	qwrite(ans, '\n');
+	return 0;
+}

@@ -1,0 +1,86 @@
+//  OJ: 洛谷
+//  提交ID: 234189574
+//  题目ID: P3390
+#include<bits/stdc++.h>
+//#define int long long
+#define all(name) (name).begin(), (name).end()
+#define rall(name) (name).rbegin(), (name).rend()
+#define all(name, n) &name[1], &name[n + 1]
+using namespace std;
+constexpr int mod = 1e9 + 7;
+template<int N, int M>
+struct Matix {
+	int num[N][M];
+	Matix() {
+		clear();
+#if N == M
+		for (int i = 0; i < N; ++i) num[i][i] = 1;
+#endif
+	}
+	void clear() {
+		memset(num, 0, sizeof num);
+	}
+};
+template<int N, int M>
+Matix<N, M>operator+(const Matix<N, M>& a, const Matix<N, M>& b) {
+	static Matix<N, M> c;
+	c.clear();
+	for (int i = 0; i < N; ++i)
+		for (int j = 0; j < M; ++j)
+			c.num[i][j] = (a.num[i][j] + b.num[i][j]) % mod;
+	return c;
+}
+template<int N, int M>
+Matix<N, M>operator-(const Matix<N, M>& a, const Matix<N, M>& b) {
+	static Matix<N, M> c;
+	c.clear();
+	for (int i = 0; i < N; ++i)
+		for (int j = 0; j < M; ++j)
+			c.num[i][j] = (a.num[i][j] - b.num[i][j] + mod) % mod;
+	return c;
+}
+template<int N, int K, int M>
+Matix<N, M>operator*(const Matix<N, K>& a, const Matix<K, M>& b) {
+	static Matix<N, M> c;
+	c.clear();
+	for (int i = 0; i < N; ++i)
+		for (int j = 0; j < M; ++j)
+			for (int k = 0; k < K; ++k)
+				c.num[i][j] = (c.num[i][j] + 1ll * a.num[i][k] * b.num[k][j] % mod) % mod;
+	return c;
+}
+template<int N>
+Matix<N, N>qpow(Matix<N, N>a, int b) {
+	static Matix<N, N>res; res = Matix<N, N>();
+	while (b) {
+		if (b & 1) res = res * a;
+		a = a * a; b >>= 1;
+	}
+	return res;
+}
+template<int N,int M>
+ostream& operator<<(ostream& out, Matix<N, M>a) {
+	for (int i = 0; i < N; ++i) {
+		cout << '|';
+		for (int j = 0; j < M; ++j) {
+			cout << a.num[i][j];
+			if (j != M - 1) cout << ',';
+		}
+		cout << '|' << endl;
+	}
+	return out;
+}
+#define sol(p)\
+	if (n == p) {\
+		static Matix<p, p>a;\
+		for (int i = 0; i < n; ++i) for (int j = 0; j < n; ++j) cin >> a.num[i][j];\
+		a = qpow(a, k);\
+		for (int i = 0; i < n; ++i) for (int j = 0; j < n; ++j) cout << a.num[i][j] << " \n"[j == n - 1];\
+	}
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, k;
+	cin >> n >> k;
+	sol(1); sol(2); sol(3); sol(4); sol(5); sol(6); sol(7); sol(8); sol(9); sol(10); sol(11); sol(12); sol(13); sol(14); sol(15); sol(16); sol(17); sol(18); sol(19); sol(20); sol(21); sol(22); sol(23); sol(24); sol(25); sol(26); sol(27); sol(28); sol(29); sol(30); sol(31); sol(32); sol(33); sol(34); sol(35); sol(36); sol(37); sol(38); sol(39); sol(40); sol(41); sol(42); sol(43); sol(44); sol(45); sol(46); sol(47); sol(48); sol(49); sol(50); sol(51); sol(52); sol(53); sol(54); sol(55); sol(56); sol(57); sol(58); sol(59); sol(60); sol(61); sol(62); sol(63); sol(64); sol(65); sol(66); sol(67); sol(68); sol(69); sol(70); sol(71); sol(72); sol(73); sol(74); sol(75); sol(76); sol(77); sol(78); sol(79); sol(80); sol(81); sol(82); sol(83); sol(84); sol(85); sol(86); sol(87); sol(88); sol(89); sol(90); sol(91); sol(92); sol(93); sol(94); sol(95); sol(96); sol(97); sol(98); sol(99); sol(100);
+	return 0;
+}

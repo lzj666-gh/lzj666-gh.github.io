@@ -1,0 +1,59 @@
+//  OJ: 洛谷
+//  提交ID: 233055154
+//  题目ID: P5021
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout)
+using namespace std;
+struct Edge{
+	int v, w, nxt;
+}edge[100000 + 5];
+int head[50000 + 5], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v, w, head[u] };
+	head[u] = idx;
+}
+int n, m;
+pair<int, int> dfs(int x, int fa, int d) {
+	pair<int, int>res; set<int>s;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if(edge[i].v == fa) continue;
+		auto k = dfs(edge[i].v, x, d);
+		s.insert(k.second + edge[i].w); res.first += k.first;
+	}
+	if (s.empty()) return res;
+	set<int>::iterator it1 = s.end(); it1--;
+	while (*it1 >= d) {
+		res.first++;
+		s.erase(it1);
+		if (s.empty()) return res;
+		it1 = s.end(); it1--;
+	}
+	set<int>::iterator it2 = s.lower_bound(d - *it1);
+	while (it2 != s.end() && it1 != it2) {
+		res.first++; s.erase(it1); s.erase(it2);
+		if (s.empty()) break;
+		it1 = s.end(); it1--;
+		it2 = s.lower_bound(d - *it1);
+	}
+	if (!s.empty()) res.second = *it1;
+	return res;
+}
+bool check(int x) {
+	auto res = dfs(1, 1, x);
+//	cerr << x << ':' << res.first << ' ' << res.second << endl;
+	return res.first >= m;
+}
+int main() {
+	// file(track);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	int l = -1, r = 0, mid;
+	for (int i = 1, u, v, w; i < n; ++i) cin >> u >> v >> w, add(u, v, w), add(v, u, w), r += w;
+	while (l < r - 1){
+		mid = l + r >> 1;
+		if(check(mid)) l = mid;
+		else r = mid;
+	}
+	cout << l << endl;
+	return 0;
+}

@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 234196416
+//  题目ID: T146872
+#include<bits/stdc++.h>
+#define all(name) (name).begin(), (name).end()
+#define rall(name) (name).rbegin(), (name).rend()
+#define all(name, n) &name[1], &name[n + 1]
+using namespace std;
+long long a, b, p;
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> a >> b >> p;
+	long double t = a;
+	t *= b;
+	long long k = t / p;
+	t -= k * p;
+	cout << fixed << setprecision(0) << round(t) << endl;
+	return 0;
+}

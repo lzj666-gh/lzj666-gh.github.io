@@ -1,0 +1,86 @@
+//  OJ: 洛谷
+//  提交ID: 233543492
+//  题目ID: T661514
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+#define int long long
+using namespace std;
+using ull = unsigned long long;
+constexpr int p = 131, N = 1e5;
+ull hsh[N + 5], hsa[N + 5], hsb[N + 5], hsc[N + 5];
+string a, b, c; int n;
+int valab[N + 5], valac[N + 5];
+bool compab(int la, int ra, int lb, int rb) {
+	if (ra - la != rb - lb) return 0;
+	if (la < lb) return (hsa[ra] - hsa[la - 1]) * hsh[lb - la] == hsb[rb] - hsb[lb - 1];
+	return hsa[ra] - hsa[la - 1] == (hsb[rb] - hsb[lb - 1]) * hsh[la - lb];
+}
+bool compac(int la, int ra, int lc, int rc) {
+	if (ra - la != rc - lc) return 0;
+	if (la < lc) return (hsa[ra] - hsa[la - 1]) * hsh[lc - la] == hsb[rc] - hsb[lc - 1];
+	return hsa[ra] - hsa[la - 1] == (hsb[rc] - hsb[lc - 1]) * hsh[la - lc];
+}
+bool compbc(int lb, int rb, int lc, int rc) {
+	if (rc - lc != rb - lb) return 0;
+	if (lc < lb) return (hsa[rc] - hsa[lc - 1]) * hsh[lb - lc] == hsb[rb] - hsb[lb - 1];
+	return hsa[rc] - hsa[lc - 1] == (hsb[rb] - hsb[lb - 1]) * hsh[lc - lb];
+}
+int32_t main() {
+	// file(lcp);
+	cin.tie(0)->sync_with_stdio(false);
+	hsh[0] = 1;
+	for (int i = 1; i <= N; ++i) hsh[i] = hsh[i] * p;
+	int T; cin >> T;
+	while (T--) {
+		cin >> n >> a >> b >> c;
+		hsa[0] = a[0]; hsb[0] = b[0]; hsc[0] = c[0];
+		for (int i = 1; i < n; ++i)
+			hsa[i] = hsa[i - 1] + a[i] * hsh[i],
+			hsb[i] = hsb[i - 1] + b[i] * hsh[i],
+			hsc[i] = hsc[i - 1] + c[i] * hsh[i];
+		for (int i = 0; i < n; ++i) {
+			valab[i] = 0;
+			if (a[0] == b[i + 1]) {
+				int l = 0, r = min(i, n - i - 2), mid;
+				while (l < r) {
+					mid = l + r >> 1;
+					if (compab(0, mid, i + 1, i + 1 + mid)) l = mid + 1;
+					else r = mid;
+				}
+				valab[i] = l + 1;
+			}
+		}
+		for (int i = 0; i < n; ++i) {
+			valac[i] = 0;
+			if (a[0] == c[i + 1]) {
+				int l = 0, r = min(i, n - i - 2), mid;
+				while (l < r) {
+					mid = l + r >> 1;
+					if (compac(0, mid, i + 1, i + 1 + mid)) l = mid + 1;
+					else r = mid;
+				}
+				valac[i] = l + 1;
+			}
+		}
+		int ans = n;
+		for (int i = 0; i < n; ++i) {
+			for (int j : { i + 1,i + 2,n - 1,n - 2 }) {
+				int cur = min(valab[i], j - i) + min(valac[j], n - j - 1);
+				if (cur >= ans) continue;
+				if (b[i + 1] == c[j + 1]) {
+					int l = 0, r = min(j - i - 1, n - j - 2), mid;
+					while (l < r) {
+						mid = l + r >> 1;
+						if (compbc(i + 1, i + 1 + mid, j + 1, j + 1 + mid)) l = mid + 1;
+						else r = mid;
+					}
+					cur += l + 1;
+				}
+				if (cur >= ans) continue;
+				ans = cur;
+			}
+		}
+		cout << ans << endl;
+	}
+	return 0;
+}

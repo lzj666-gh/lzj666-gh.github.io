@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 234143667
+//  题目ID: P1390
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+bool vis[2000000 + 10];
+long long phi[2000000 + 10], sum[2000000 + 10], ans;
+vector<int>prm;
+void prep() {
+	for (int i = 2; i <= 2000000; i++) {
+		if (!vis[i]) prm.push_back(i), phi[i] = i - 1;
+		for (int& v : prm) {
+			if (i * v > 2000000) break;
+			vis[i * v] = 1;
+			if (i % v == 0) { phi[i * v] = phi[i] * v; break; }
+			phi[i * v] = phi[i] * phi[v];
+		}
+	}
+	for (int i = 1; i <= 2000000; i++) phi[i] += phi[i - 1];
+	for (int i = 1; i <= 2000000; i++) sum[i] = sum[i - 1] + i;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	prep(); int n; cin >> n;
+	for (int l = 1, r; l <= n; l = r + 1) {
+		r = n / (n / l);
+		ans += phi[n / l] * (sum[r] - sum[l - 1]);
+	}
+	cout << ans << endl;
+	return 0;
+}

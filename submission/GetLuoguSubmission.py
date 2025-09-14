@@ -205,7 +205,7 @@ def fetch_submission_code(session, record_id, headers):
  
 if __name__ == "__main__":
     # 输入您的Cookie值（从浏览器开发者工具中获取）
-    YOUR_CLIENT_ID = "29532aac789524588c21e94f1c9fde1738daee03"
+    YOUR_CLIENT_ID = "1f5b66b7853d8326d73e670896aa0481ad982eaa"
     YOUR_UID = "836542"
     
     scrape_luogu_submissions_Accepted(YOUR_CLIENT_ID, YOUR_UID, 1, 0.5, 5)

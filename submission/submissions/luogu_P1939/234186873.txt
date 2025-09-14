@@ -1,0 +1,90 @@
+//  OJ: 洛谷
+//  提交ID: 234186873
+//  题目ID: P1939
+#include<bits/stdc++.h>
+//#define int long long
+#define all(name) (name).begin(), (name).end()
+#define rall(name) (name).rbegin(), (name).rend()
+#define all(name, n) &name[1], &name[n + 1]
+using namespace std;
+constexpr int mod = 1e9 + 7;
+template<int N, int M>
+struct Matix {
+	int num[N][M];
+	Matix() {
+		clear();
+#if N == M
+		for (int i = 0; i < N; ++i) num[i][i] = 1;
+#endif
+	}
+	void clear() {
+		memset(num, 0, sizeof num);
+	}
+};
+template<int N, int M>
+Matix<N, M>operator+(const Matix<N, M>& a, const Matix<N, M>& b) {
+	static Matix<N, M> c;
+	c.clear();
+	for (int i = 0; i < N; ++i)
+		for (int j = 0; j < M; ++j)
+			c.num[i][j] = (a.num[i][j] + b.num[i][j]) % mod;
+	return c;
+}
+template<int N, int M>
+Matix<N, M>operator-(const Matix<N, M>& a, const Matix<N, M>& b) {
+	static Matix<N, M> c;
+	c.clear();
+	for (int i = 0; i < N; ++i)
+		for (int j = 0; j < M; ++j)
+			c.num[i][j] = (a.num[i][j] - b.num[i][j] + mod) % mod;
+	return c;
+}
+template<int N, int K, int M>
+Matix<N, M>operator*(const Matix<N, K>& a, const Matix<K, M>& b) {
+	static Matix<N, M> c;
+	c.clear();
+	for (int i = 0; i < N; ++i)
+		for (int j = 0; j < M; ++j)
+			for (int k = 0; k < K; ++k)
+				c.num[i][j] = (c.num[i][j] + 1ll * a.num[i][k] * b.num[k][j] % mod) % mod;
+	return c;
+}
+template<int N>
+Matix<N, N>qpow(Matix<N, N>a, int b) {
+	static Matix<N, N>res; res = Matix<N, N>();
+	while (b) {
+		if (b & 1) res = res * a;
+		a = a * a; b >>= 1;
+	}
+	return res;
+}
+template<int N,int M>
+ostream& operator<<(ostream& out, Matix<N, M>a) {
+	for (int i = 0; i < N; ++i) {
+		cout << '|';
+		for (int j = 0; j < M; ++j) {
+			cout << a.num[i][j];
+			if (j != M - 1) cout << ',';
+		}
+		cout << '|' << endl;
+	}
+	return out;
+}
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	Matix<3, 3>a; Matix<1, 3>x;
+	x.num[0][0] = x.num[0][1] = x.num[0][2] = 1;
+	a.num[0][0] = 0; a.num[0][1] = 0; a.num[0][2] = 1;
+	a.num[1][0] = 1; a.num[1][1] = 0; a.num[1][2] = 0;
+	a.num[2][0] = 0; a.num[2][1] = 1; a.num[2][2] = 1;
+	int T; cin >> T;
+	while (T--) {
+		int n; cin >> n;
+		if (n <= 3) {
+			cout << 1 << endl;
+			return 0;
+		}
+		cout << (x * qpow(a, n - 1)).num[0][0] << endl;
+	}
+	return 0;
+}

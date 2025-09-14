@@ -1,0 +1,82 @@
+//  OJ: 洛谷
+//  提交ID: 233577499
+//  题目ID: P5905
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+#define tm timize
+constexpr int mxv = 1e9;
+struct node {
+	int p, v;
+	node(int pi = 0, int vi = 0) :p(pi), v(vi) {}
+	friend bool operator<(const node& l, const node& r) {
+		return l.v > r.v;
+	}
+}tpm;
+vector<node>son[3005];
+int n, m, a, b, c, h[3005], d[3005], tm[3005], ans; bool vis[3005];
+inline bool SPs() {
+	deque<int>q; q.push_back(0); vis[0] = 1;
+	memset(h, 0x3f, sizeof h); h[0] = 0;
+	while (q.size()) {
+		int tmp = q.front(); q.pop_front();
+		vis[tmp] = 0;
+		for (int i = 0; i ^ son[tmp].size(); ++i)
+#define tp son[tmp][i].p
+#define tv son[tmp][i].v
+			if (h[tp] > h[tmp] + tv) {
+				h[tp] = h[tmp] + tv;
+				if (!vis[tp]) {
+					if (q.empty() || h[tp] < h[q.front()]) q.push_front(tp);
+					else q.push_back(tp);
+					vis[tp] = 1;
+					tm[tp]++;
+					if (tm[tp] > n) {
+						return 1;
+					}
+				}
+			}
+	}
+#undef tp
+#undef tv
+	return 0;
+}
+inline void DIs(const int&sp) {
+	priority_queue<node>pq; ans = 0;
+	memset(vis, 0, sizeof vis);
+	for (int i = 1; i <= n; ++i) d[i] = mxv;
+	pq.push(node(sp, 0));
+	while (pq.size()) {
+		tpm = pq.top(); pq.pop();
+		if (vis[tpm.p]) continue;
+		vis[tpm.p] = 1; d[tpm.p] = tpm.v;
+		for (int i = 0; i < son[tpm.p].size(); ++i)
+#define tp son[tpm.p][i].p
+#define tv son[tpm.p][i].v
+			if (!vis[tp]) pq.push(node(tp, tpm.v + tv));
+#undef tp
+#undef tv
+	}
+	for (int i = 1; i <= n; ++i) {
+		if (d[i] ^ mxv) d[i] += h[i] - h[sp];
+		ans += d[i] * i;
+	}
+	cout << ans << endl;
+}
+signed main() {
+	ios::sync_with_stdio(0);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i)
+		son[0].emplace_back(node(i, 0));
+	for (int i = 1; i <= m; ++i)
+		cin >> a >> b >> c, son[a].emplace_back(node(b, c));
+	if (SPs()) {
+		cout << -1 << endl;
+		return 0;
+	}
+	for (int i = 1; i <= n; ++i)
+		for (int j = 0; j < son[i].size(); ++j)
+			son[i][j].v += h[i] - h[son[i][j].p];
+	for (int i = 1; i <= n; ++i) DIs(i);
+	return 0;
+}

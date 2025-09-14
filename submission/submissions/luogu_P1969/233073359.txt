@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 233073359
+//  题目ID: P1969
+#include<bits/stdc++.h>
+using namespace std;
+long long n,l,h,m,a[100000+10],p,s,q[100000+10],sq;
+int main(){
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		scanf("%lld",&a[i]);
+	}
+	cin>>m>>p>>s;
+	a[p]+=s;
+	cin>>s;p=0;
+	for(int i=1;i<=n;i++){
+		q[i]=a[i]*abs(i-m);
+		if(i-m>0){
+			l+=q[i];
+		}
+		else{
+			h+=q[i];
+		}
+	}
+	long long cha=l-h,chamin=0x7f7f7f7f,bmin=-1;
+//	cout<<cha<<endl;
+	for(int i=1;i<=n;i++){
+		sq=s*abs(i-m);
+		if(i-m>0){
+			cha+=sq;
+		}
+		else{
+			cha-=sq;
+		}
+//		cout<<cha<<endl;
+		if(chamin>abs(cha)){
+			chamin=abs(cha);bmin=i;
+		}
+		cha=l-h;
+	}
+	cout<<bmin<<endl;
+}

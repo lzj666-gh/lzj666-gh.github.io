@@ -15,7 +15,7 @@ def get_luogu_problem_content(problem_id):
     """获取洛谷题目内容和翻译"""
     url = f"https://www.luogu.com.cn/problem/{problem_id}"
     uid = '836542'
-    client_id = '29532aac789524588c21e94f1c9fde1738daee03'
+    client_id = '1f5b66b7853d8326d73e670896aa0481ad982eaa'
     headers = {
         'Referer': 'https://www.luogu.com.cn/auth/login',
         'Origin': 'https://www.luogu.com.cn',
