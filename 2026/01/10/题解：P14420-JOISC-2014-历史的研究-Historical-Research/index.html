@@ -1,0 +1,841 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/ico.png">
+  <link rel="icon" href="/img/ico.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="starfallen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是一道回滚莫队的例题，欢迎来看我的莫队博客。 在看本题题解之前，请先自行了解普通莫队。 有些题目在区间转移时，可能会出现增加或者删除无法实现的问题。在只有增加不可实现或者只有删除不可实现的时候，就可以使用回滚莫队在 $O(n \sqrt m)$ 的时间内解决问题。回滚莫队的核心思想就是：既然只能实现一个操作，那么就只使用一个操作，剩下的交给回滚解决。 形式化：给你一个长度为 $n$ 的数组 $A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="题解：P14420 [JOISC 2014] 历史的研究 &#x2F; Historical Research">
+<meta property="og:url" content="https://lzj-blog.top/2026/01/10/%E9%A2%98%E8%A7%A3%EF%BC%9AP14420-JOISC-2014-%E5%8E%86%E5%8F%B2%E7%9A%84%E7%A0%94%E7%A9%B6-Historical-Research/index.html">
+<meta property="og:site_name" content="starfallen">
+<meta property="og:description" content="这是一道回滚莫队的例题，欢迎来看我的莫队博客。 在看本题题解之前，请先自行了解普通莫队。 有些题目在区间转移时，可能会出现增加或者删除无法实现的问题。在只有增加不可实现或者只有删除不可实现的时候，就可以使用回滚莫队在 $O(n \sqrt m)$ 的时间内解决问题。回滚莫队的核心思想就是：既然只能实现一个操作，那么就只使用一个操作，剩下的交给回滚解决。 形式化：给你一个长度为 $n$ 的数组 $A">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/9nhd21j8.png">
+<meta property="article:published_time" content="2026-01-10T08:26:27.000Z">
+<meta property="article:modified_time" content="2026-01-10T08:27:24.000Z">
+<meta property="article:author" content="starfallen">
+<meta property="article:tag" content="题解">
+<meta property="article:tag" content="莫队">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.luogu.com.cn/upload/image_hosting/9nhd21j8.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>题解：P14420 [JOISC 2014] 历史的研究 / Historical Research - starfallen</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lzj-blog.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":false,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>starfallen</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/submission/" target="_self">
+                <i class="iconfont icon-mini-program-fill"></i>
+                <span>搜索</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/novel/" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>小说</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/k1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="题解：P14420 [JOISC 2014] 历史的研究 / Historical Research"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        starfallen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-01-10 16:26" pubdate>
+          2026年1月10日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">题解：P14420 [JOISC 2014] 历史的研究 / Historical Research</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2026-01-10T16:27:24+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是一道回滚莫队的例题，欢迎来看我的<a href="/2024/11/16/%E8%8E%AB%E9%98%9F/">莫队博客</a>。</p>
+<p>在看本题题解之前，请先自行了解普通莫队。</p>
+<p>有些题目在区间转移时，可能会出现增加或者删除无法实现的问题。在只有增加不可实现或者只有删除不可实现的时候，就可以使用回滚莫队在 $O(n \sqrt m)$ 的时间内解决问题。回滚莫队的核心思想就是：既然只能实现一个操作，那么就只使用一个操作，剩下的交给回滚解决。</p>
+<p>形式化：给你一个长度为 $n$ 的数组 $A$ 和 $m$ 个询问 $(1 \leq n, m \leq 10^5)$，每次询问一个区间 $[L, R]$ 内<strong>重要度</strong>最大的数字，要求：输出其<strong>重要度</strong>。一个数字 $i$ <strong>重要度</strong>的定义为 $i$ 乘上 $i$ 在区间内出现的次数。</p>
+<p>在这个问题中，在增加的过程中更新答案是很好实现的，就直接使用新增元素乘上出现次数去更新答案就可以解决，但是在删除的过程中更新答案是不好实现的。因为如果增加会影响答案，那么新答案必定是刚刚增加的数字的重要度，而如果删除过后区间重要度最大的数字改变，我们很难确定新的重要度最大的数字是哪一个。</p>
+<p>于是使用回滚莫队，我们像普通莫队一样分块，排序，并设块的大小为 $b$。</p>
+<p>对于每堆左端点在同一个块内的询问，我们分别进行考虑，这时的莫队区间的左端点初始化为这个块的右端点加 $1$，将莫队区间的右端点初始化为这个块的右端点。</p>
+<p>对于左右端点在同一个块中的询问，我们直接暴力扫描回答即可（这个显然是 $O(b)$ 的）。</p>
+<p>对于这堆询问中的每一个询问，不断扩展右端点直至莫队区间的右端点等于询问的右端点，因为右端点是排过序的，所以右端点的移动是 $O(n)$ 的。</p>
+<p>然后定义一个操作<strong>撤销</strong>，具体的，在这道题中指在桶中减去出现次数，而不管答案是否改变，并将答案使用原来的答案覆盖（相当于回到之前某一个时刻的状态）。</p>
+<p>对于每一个块内的询问，具体的算法流程如下：</p>
+<ol>
+<li>
+<p>先更新右端点（向右移动）。我们将现在莫队的状态称为基准状态。</p>
+</li>
+<li>
+<p>暴力向左找，不断扩展莫队区间的左端点直至莫队区间的左端点等于询问的左端点。</p>
+</li>
+<li>
+<p>回答询问（记录答案）。</p>
+</li>
+<li>
+<p><strong>撤销</strong>莫队区间左端点的改动，使莫队区间的左端点回滚到这个块的右端点加 $1$。也就是回到基准状态。其实如果你用状态覆盖去理解是可以的，但是暴力覆盖状态是 $\Theta(n)$ 的，我们发现其实只有最多 $b$ 个元素（块的右端点到询问左端点）更改了，直接对于这几个元素修改回去就可以 $\Theta(b)$ 回滚了。</p>
+</li>
+</ol>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/9nhd21j8.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>具体来分析吧。</p>
+<p>对于 1 号询问，由于就是在块内，所以暴力处理。</p>
+<p>对于 2 号询问，莫队区间先是右端点从 2 扩展到 3，然后左端点扩展到 1，记录答案，左端点重新回到 3。</p>
+<p>对于 3 号询问，莫队区间先是右端点从 3 扩展到 5，然后左端点从 3 来到 1，记录答案，左端点重新回到 3。</p>
+<p>对于 4 号询问，莫队区间先是右端点从 5 扩展到 8，然后左端点从 3 来到 0，记录答案，左端点重新回到 3。</p>
+<p>对于 5 号询问，莫队区间先是右端点从 8 扩展到 10，然后左端点从 3 来到 2，记录答案，左端点重新回到 3。</p>
+<p>时间复杂度是 $O(mb+\frac{n^2}{b})$，取 $b=\frac{n}{\sqrt{m}}$ 最优，时间复杂度为 $O(n\sqrt{m})$。</p>
+<p>最优解倒二：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> ONLINE_JUDGE</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> __gcd gcd</span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">// !ONLINE_JUDGE</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">int</span> a[<span class="hljs-number">100000</span> + <span class="hljs-number">10</span>];<br><span class="hljs-type">long</span> <span class="hljs-type">long</span> sum, lst;<br>unordered_map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt;vis;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>&#123;<br>	vis[a[x]]++;<br>	sum = <span class="hljs-built_in">max</span>(sum, vis[a[x]] * <span class="hljs-number">1ll</span> * a[x]);<br>&#125;<br><span class="hljs-type">int</span> n, Q, bel[<span class="hljs-number">100000</span> + <span class="hljs-number">10</span>], R[<span class="hljs-number">100000</span> + <span class="hljs-number">10</span>];<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">query</span> &#123;<br>	<span class="hljs-type">int</span> l, r, id; <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans;<br>	<span class="hljs-keyword">friend</span> <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;(<span class="hljs-type">const</span> query&amp; a, <span class="hljs-type">const</span> query&amp; b) &#123;<br>		<span class="hljs-keyword">return</span> bel[a.l] == bel[b.l] ? a.r &lt; b.r : bel[a.l] &lt; bel[b.l];<br>	&#125;<br>&#125;q[<span class="hljs-number">100000</span> + <span class="hljs-number">10</span>];<br><span class="hljs-function"><span class="hljs-type">signed</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>	cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>)-&gt;<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>	cin &gt;&gt; n &gt;&gt; Q;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; ++i) cin &gt;&gt; a[i];<br>	<span class="hljs-type">int</span> t1 = <span class="hljs-number">0</span>, t2 = <span class="hljs-built_in">pow</span>(n, <span class="hljs-number">0.5</span>), t3 = <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; ++i) &#123;<br>		bel[i] = t3;<br>		t1++;<br>		<span class="hljs-keyword">if</span> (t1 == t2) R[t3] = i, t1 = <span class="hljs-number">0</span>, t3++;<br>	&#125;<br>	<span class="hljs-comment">//for (int i = 1; i &lt;= n; ++i) cout &lt;&lt; bel[i] &lt;&lt; &#x27; &#x27;; cout &lt;&lt; endl;</span><br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= Q; ++j) cin &gt;&gt;  q[j].l &gt;&gt; q[j].r, q[j].id = j;<br>	<span class="hljs-built_in">sort</span>(q + <span class="hljs-number">1</span>, q + Q + <span class="hljs-number">1</span>);<br>	<span class="hljs-type">int</span> r = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= Q; ++j) &#123;<br>		<span class="hljs-comment">//cout &lt;&lt; q[j].l &lt;&lt; &#x27; &#x27; &lt;&lt; q[j].r &lt;&lt; &#x27; &#x27; &lt;&lt; bel[q[j].l] &lt;&lt; endl;</span><br>		<span class="hljs-keyword">if</span> (bel[q[j - <span class="hljs-number">1</span>].l] ^ bel[q[j].l]) &#123;<br>			<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt;().<span class="hljs-built_in">swap</span>(vis);<br>			sum = <span class="hljs-number">0</span>;<br>			<span class="hljs-keyword">while</span> (bel[q[j].r] == bel[q[j].l]) &#123;<br>				<span class="hljs-comment">//cout &lt;&lt; &quot;BF: &quot; &lt;&lt; q[j].l &lt;&lt; &#x27; &#x27; &lt;&lt; q[j].r &lt;&lt; &#x27; &#x27; &lt;&lt; bel[q[j].l] &lt;&lt; endl;</span><br>				<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = q[j].l; i &lt;= q[j].r; ++i) <span class="hljs-built_in">add</span>(i);<br>				q[j].ans = sum;<br>				<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt;().<span class="hljs-built_in">swap</span>(vis);<br>				sum = <span class="hljs-number">0</span>;<br>				<span class="hljs-keyword">if</span> (bel[q[j].l] ^ bel[q[j + <span class="hljs-number">1</span>].l]) <span class="hljs-keyword">break</span>;<br>				j++;<br>			&#125;<br>			<span class="hljs-keyword">if</span> ((bel[q[j].l] ^ bel[q[j + <span class="hljs-number">1</span>].l]) &amp;&amp; bel[q[j].r] == bel[q[j].l]) <span class="hljs-keyword">continue</span>;<br>			r = R[bel[q[j].l]] + <span class="hljs-number">1</span>;<br>			<span class="hljs-built_in">add</span>(r);<br>		&#125;<br>		<span class="hljs-number">1</span>;<br>		<span class="hljs-keyword">while</span> (r &lt; q[j].r) <span class="hljs-built_in">add</span>(++r);<br>		lst = sum;<br>		<span class="hljs-type">int</span> l = R[bel[q[j].l]]; <span class="hljs-built_in">add</span>(l);<br>		<span class="hljs-keyword">while</span> (l &gt; q[j].l) <span class="hljs-built_in">add</span>(--l);<br>		<span class="hljs-comment">//cout &lt;&lt; &quot;add &quot; &lt;&lt; &quot;[&quot; &lt;&lt; l &lt;&lt; &#x27;(&#x27; &lt;&lt; q[j].l &lt;&lt; &#x27;)&#x27; &lt;&lt; &#x27;,&#x27; &lt;&lt; r &lt;&lt; &#x27;(&#x27; &lt;&lt; q[j].r &lt;&lt; &#x27;)&#x27; &lt;&lt; &quot;] with vis:&quot;; for (int i = 1; i &lt;= 10; ++i) cout &lt;&lt; vis[i] &lt;&lt; &#x27; &#x27;; cout &lt;&lt; endl;</span><br>		q[j].ans = sum;<br>		<span class="hljs-keyword">while</span> (l &lt;= R[bel[q[j].l]]) vis[a[l]]--, l++;<br>		sum = lst;<br>	&#125;<br>	<span class="hljs-built_in">sort</span>(q + <span class="hljs-number">1</span>, q + Q + <span class="hljs-number">1</span>, [](<span class="hljs-type">const</span> query&amp; a, <span class="hljs-type">const</span> query&amp; b)-&gt;<span class="hljs-type">bool</span> &#123;<span class="hljs-keyword">return</span> a.id &lt; b.id; &#125;);<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= Q; ++i) cout &lt;&lt; q[i].ans &lt;&lt; endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E9%A2%98%E8%A7%A3/" class="print-no-link">#题解</a>
+      
+        <a href="/tags/%E8%8E%AB%E9%98%9F/" class="print-no-link">#莫队</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>题解：P14420 [JOISC 2014] 历史的研究 / Historical Research</div>
+      <div>https://lzj-blog.top/2026/01/10/题解：P14420-JOISC-2014-历史的研究-Historical-Research/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>starfallen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年1月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"lzj666-gh/lzj666-gh.github.io","repo-id":"R_kgDOOMsMeA","category":"Announcements","category-id":"DIC_kwDOOMsMeM4CqS9L","theme-light":"light","theme-dark":"dark","mapping":"url","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <p><font face="Ink Free">May all the beauty be blessed.</font></p> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
