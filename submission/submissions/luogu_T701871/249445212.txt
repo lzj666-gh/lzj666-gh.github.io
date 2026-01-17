@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 249445212
+//  题目ID: T701871
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int32_t main() {
+	//file(fire.52);
+	srand(time(0));
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m; cin >> n >> m; vector<int>vv;
+	vector<pair<int, int>>v(n);
+	for (int i = 0; i < n; ++i) {
+		cin >> v[i].first >> v[i].second;
+		if (v[i].first > v[i].second) v[i].second += m;
+		else v.emplace_back(v[i].first + m, v[i].second + m);
+	}
+	for (auto& p : v)
+		vv.emplace_back(p.first), vv.emplace_back(p.second);
+	ranges::sort(vv); vv.erase(unique(vv.begin(), vv.end()), vv.end());
+	for (auto& p : v)
+		p.first = lower_bound(vv.begin(), vv.end(), p.first) - vv.begin(),
+		p.second = lower_bound(vv.begin(), vv.end(), p.second) - vv.begin();
+	sort(v.begin(), v.end());
+	int ans = n + 1;
+	while (1) {
+		int p = rand() % (n + 1), cur = v[p].second, cost = 1, rst = v[p].second, tar = lower_bound(vv.begin(), vv.end(), vv[v[p].first] + m) - vv.begin();
+		while (rst < tar && p < v.size()) {
+			if (v[p].first > cur) cur = rst, cost++;
+			rst = max(rst, v[p].second); p++;
+		}
+		if (cur >= tar) ans = min(ans, cost);
+		if (cur != rst) cur = rst, cost++;
+		if (cur >= tar) ans = min(ans, cost);
+		if (clock() > CLOCKS_PER_SEC * 0.95) break;
+	}
+	if (ans == n + 1) cout << -1 << endl;
+	else cout << ans << endl;
+	return 0;
+}

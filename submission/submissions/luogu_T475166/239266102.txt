@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 239266102
+//  题目ID: T475166
+#include<bits/stdc++.h>
+#define all(a) (a).begin(),(a).end()
+#define rall(a) (a).rbegin(),a.rend()
+#define file(a) freopen(#a".in","r",stdin),freopen(#a".out","w",stdout),freopen(#a".err","w",stderr)
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int n, k;
+int main() {
+	//file(flandre);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> k; vector<pair<int, int>>a(n);
+	for (int i = 0; i < n; ++i) cin >> a[i].first, a[i].second = i;
+	sort(rall(a)); vector<int>v;
+	long long cur = 0, curr = 0, ans = 0;
+	for (int i = 0; i < n; ++i)
+		if (cur + a[i].first >= 0) {
+			v.push_back(a[i].second);
+			ans += cur + a[i].first;
+			curr += k;
+			if (i + 1 < n && a[i].first ^ a[i + 1].first)
+				cur += curr, curr = 0;
+		}
+		else break;
+	reverse(all(v));
+	cout << ans << ' ' << v.size() << endl;
+	for (auto& p : v) cout << p + 1 << ' ';
+	return 0;
+}

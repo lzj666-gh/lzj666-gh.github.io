@@ -50,7 +50,7 @@ $$g(x)=\sum\limits_{i=1}^n\sum\limits_{j=1}^m \left\lfloor\frac{n}{i}\right\rflo
 
 我们把 $x$ 提出就可以消除 $\gcd$ 的影响
 
-$$g(x)=\sum\limits_{i=1}^{\frac{n}{x}}\sum\limits_{j=1}^{\frac{m}{x}} \left\lfloor\frac{n}{ix}\right\rfloor \left\lfloor\frac{m}{jx}\right\rfloor$$
+$$g(x)=\sum\limits_{i=1}^{\frac{n}{x} }\sum\limits_{j=1}^{\frac{m}{x} } \left\lfloor\frac{n}{ix}\right\rfloor \left\lfloor\frac{m}{jx}\right\rfloor$$
 
 再根据 $f(x)$ 的定义，得到答案为 $f(1)$
 

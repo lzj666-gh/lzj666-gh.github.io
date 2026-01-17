@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 138553156
+//  题目ID: T147065
+#include<bits/stdc++.h>
+using namespace std;
+__int128 x, y, fz = 1, fm = 1;
+int n;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n; x = 2 * n, y = n;
+	while (x != 0) {
+		fz *= x--;
+	}
+	while (y != 0) {
+		fm *= y;
+		fm *= y--;
+	}
+	fm *= n + 1;
+	cout << fz / fm;
+	return 0;
+}
+// (2n)!/(n+1)!n!

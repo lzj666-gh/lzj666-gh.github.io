@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 234763581
+//  题目ID: T665284
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+int n, m, t, c; vector<int>p, s;
+vector<vector<int>>ans;
+signed main() {
+	ios::sync_with_stdio(0);
+	cin >> n >> m; t = m; c = 1;
+	while (t % 2 == 0) t >>= 1, c <<= 1;
+	for (int j = 1; j * j <= t; ++j)
+		if (t % j == 0) {
+			j = t / j;
+			int v1 = j * c, v2 = j * c * 2; p.clear();
+			for (int i = 1; i <= n; ++i) p.emplace_back(v1);
+			p[0] = m;
+			for (int i = 1; i != n; ++i) {
+				s = p;
+				for (int j = i; j != n; ++j)
+					s[j] = v2, ans.emplace_back(s);
+			}
+			if (j * j != t) {
+				j = t / j;
+				int v1 = j * c, v2 = j * c * 2; p.clear();
+				for (int i = 1; i <= n; ++i) p.emplace_back(v1);
+				p[0] = m;
+				for (int i = 1; i != n; ++i) {
+					s = p;
+					for (int j = i; j != n; ++j)
+						s[j] = v2, ans.emplace_back(s);
+				}
+			}
+		}
+	p.clear(); p.emplace_back(m);
+	for (int i = 1; i != n; ++i) p.emplace_back(m);
+	for (int i = 3; i * i <= m; ++i)
+		if (m % i == 0) {
+			for (int j = 3; j != n; ++j) {
+				s = p;
+				s[j] = s[j - 2] = m / i;
+				s[j - 1] = m / i * 2;
+				ans.emplace_back(s);
+			}
+		}
+	cout << ans.size() << endl;
+	for (const auto& t : ans) {
+		for (int v : t) cout << v << " ";
+		cout << endl;
+	}
+}

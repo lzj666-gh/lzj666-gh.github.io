@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 116690565
+//  题目ID: T139921
+#include<bits/stdc++.h>
+#define maxn 100+10
+using namespace std;
+int dis[maxn][maxn],n,s;
+void florr_id(){
+	for(int k=1;k<=n;k++) for(int i=1;i<=n;i++) for(int j=1;j<=n;j++) if(dis[i][k]+dis[k][j]<dis[i][j]) dis[i][j]=dis[i][k]+dis[k][j];
+}
+main(){
+	ios::sync_with_stdio(false);
+	memset(dis,0x3f,sizeof dis);
+	cin>>n>>s;
+	for(int i=1;i<=n;i++) for(int j=1;j<=n;j++){
+		char c[100];
+		cin>>c;
+		if(c[0]=='-'||c[0]=='0') continue;
+		int l=strlen(c);
+		int val=0;
+		for(int k=0;k<l;k++){
+			val=val*10+c[k]-'0';
+		}
+		dis[i][j]=val;
+	}
+	florr_id();
+	for(int i=1;i<=n;i++){
+//		if(i==s) continue;
+		cout<<"("<<s<<" -> "<<i<<") = "<<(dis[s][i]==0x7f7f7f7f?-1:dis[s][i])<<endl;
+	}
+    return 0;
+}

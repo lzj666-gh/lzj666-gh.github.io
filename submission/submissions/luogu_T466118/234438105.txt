@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 234438105
+//  题目ID: T466118
+#include<bits/stdc++.h>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+int pow2[1000000 + 5];
+int32_t main() {
+	// file(a);
+	cin.tie(0)->sync_with_stdio(false);
+	for (int i = 1; i <= 1e6; ++i) pow2[i] = i * i;
+	int T; cin >> T;
+	while (T--) {
+		int a, L, R, b = 1;
+		cin >> a >> L >> R;
+		for (int i = 2; i * i <= a; ++i)
+			if (a % i == 0) {
+				int cnt = 0;
+				while (a % i == 0) a /= i, cnt++;
+				if (cnt & 1) b *= i;
+			}
+		if (a > 1) b *= a;
+		if (b > R) {
+			cout << -1 << endl;
+			continue;
+		}
+		if (b >= L) {
+			cout << b << endl;
+			continue;
+		}
+		int p = *lower_bound(pow2, pow2 + 1000001, L / b);
+		//cerr << b << ": " << p << endl;
+		if (b * p > R) cout << -1 << endl;
+		else cout << b * p << endl;
+	}
+	return 0;
+}

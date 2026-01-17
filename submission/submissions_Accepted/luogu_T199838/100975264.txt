@@ -1,9 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 100975264
-//  题目ID: T199838
-#include<bits/stdc++.h>
-using namespace std;
-int main(){
-	cout<<"Tom"<<endl<<"Bob"<<endl<<"Alice";
-	return 0;
-}

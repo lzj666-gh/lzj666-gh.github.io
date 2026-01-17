@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 116884813
+//  题目ID: P1396
+//T5 A
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int x,y,z;
+	friend bool operator < (const node &a,const node &b){
+		return a.z<b.z; 
+	}
+};
+int n,m,s,t,cnt;
+int fa[100000];
+vector<node>q;
+int find(int x){
+//	cout<<"find: "<<x<<endl;
+	return fa[x]==x?x:fa[x]=find(fa[x]);
+}
+//priority_queue <node> q;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m>>s>>t;
+	q.push_back({0,0,0});
+	for(register int i=1;i<=m;i++){
+		int u,v,w;
+		cin>>u>>v>>w;
+		q.push_back({u,v,w});
+	}
+	sort(q.begin()+1,q.end());
+//	for(register int i=1;i<=m;i++) cout<<q[i].x<<' '<<q[i].y<<' '<<q[i].z<<endl;
+	for(register int i=1;i<=n;i++) fa[i]=i;
+	for(register int i=1;i<=m;i++){
+		node now=q[i];
+		if(find(now.x)!=find(now.y)){
+			cnt++;
+			fa[find(now.x)]=find(now.y);
+			if(find(s)==find(t)){
+				cout<<now.z<<endl;
+				return 0;
+			}
+		}
+	}
+	return 0;
+}

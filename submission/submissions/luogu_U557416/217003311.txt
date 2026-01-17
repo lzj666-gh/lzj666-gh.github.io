@@ -1,0 +1,174 @@
+//  OJ: 洛谷
+//  提交ID: 217003311
+//  题目ID: U557416
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+#define int ll
+namespace IO {
+	const int SIZE = (1 << 22) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1;
+	char _st[55];
+	int _qr = 0;
+	inline char gc() {
+		return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++);
+	}
+	inline void qread() {}
+	template<class T1, class ...T2>
+	inline void qread(T1& IEE, T2&... ls) {
+		T1 __ = 0, ___ = 1;
+		char ch;
+		while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___;
+		do {
+			__ = (__ << 1) + (__ << 3) + (ch ^ 48);
+		} while (isdigit(ch = gc()));
+		__ *= ___;
+		IEE = __;
+		qread(ls...);
+		return;
+	}
+	inline void flush() {
+		fwrite(obuf, 1, oS - obuf, stdout);
+		oS = obuf;
+		return;
+	}
+	inline void putc_(char _x) {
+		*oS++ = _x;
+		if (oS == oT) flush();
+	}
+	inline void qwrite() {}
+	template<class T1, class ...T2>
+	inline void qwrite(T1 IEE, T2... ls) {
+		if (!IEE) putc_('0');
+		if (IEE < 0) putc_('-'), IEE = -IEE;
+		while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10;
+		while (_qr) putc_(_st[_qr--]);
+		qwrite(ls...);
+		return;
+	}
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+constexpr int N = 3e6 + 5, inf = 0x3f3f3f3f3f3f3f3f;
+#define likely(x) __builtin_expect(!!(x), 1)
+#define unlikely(x) __builtin_expect(!!(x), 0)
+struct mss {
+	int fa[N << 1];
+	mss() :fa() {}
+	int& operator()(int x) { return fa[x]; }
+	int operator[](int x) {
+		int root = x;
+		while (likely(fa[root])) root = fa[root];
+		while (unlikely(x != root)) {
+			int next = fa[x];
+			fa[x] = root;
+			x = next;
+		}
+		return root;
+	}
+}id;
+struct Edge {
+	int u, v, w, val;
+};
+struct Node {
+	Edge* data;
+	int dist, add;
+	Node* ls, * rs;
+	Node(Edge* data = nullptr) : data(data), dist(1), add(), ls(), rs() {}
+	void pushdown() {
+		if (ls) ls->add += add;
+		if (rs) rs->add += add;
+		data->w += add;
+		add = 0;
+	}
+};
+Node* merge(Node* x, Node* y) {
+	if (!x) return y;
+	if (!y) return x;
+	if (x->data->w + x->add > y->data->w + y->add) swap(x, y);
+	x->pushdown();
+	x->rs = merge(x->rs, y);
+	if (!x->ls || x->ls->dist < x->rs->dist) swap(x->ls, x->rs);
+	if (x->rs) x->dist = x->rs->dist + 1;
+	else x->dist = 1;
+	return x;
+}
+Edge* top(Node*& x) {
+	Edge* r = x->data;
+	x->pushdown();
+	x = merge(x->ls, x->rs);
+	return r;
+}
+vector<Edge> in[N];
+int n, m, fa[N << 1], nxt[N << 1];
+Edge* cyc[N << 1];
+Node* pq[N << 1];
+bool vis[N << 1];
+ll expand(int x, int t) {
+	ll ret = 0;
+	for (; x != t; x = fa[x]) {
+		ll sum = 0;
+		for (int u = nxt[x]; u != x; u = nxt[u]) {
+			if (cyc[u]->val >= inf) return inf;
+			ll child = expand(cyc[u]->v, u);
+			if (child >= inf || sum >= inf) {
+				sum = inf; break;
+			}
+			sum += child + cyc[u]->val;
+		}
+		if (sum >= inf || (ret += sum) >= inf) return inf;
+	}
+	return ret;
+}
+Node node_pool[N];
+int node_idx = 0;
+Node* new_node(Edge* data) {
+	Node* res = &node_pool[node_idx++];
+	res->data = data;
+	res->dist = 1;
+	res->add = 0;
+	res->ls = res->rs = nullptr;
+	return res;
+}
+signed main() {
+	int rt;
+	qread(n, m, rt);
+	for (int i = 0; i < m; i++) {
+		int u, v, w; qread(u, v, w);
+		if (u == v) continue;
+		in[v].push_back({ u, v, w, w });
+	}
+	for (int i = 1; i <= n; i++) in[i].push_back({ i > 1 ? i - 1 : n, i, inf, inf });
+	for (int i = 1; i <= n; i++) {
+		queue<Node*> q;
+		for (Edge& e : in[i]) q.push(new_node(&e));
+		while (q.size() > 1) {
+			Node* u = q.front(); q.pop();
+			Node* v = q.front(); q.pop();
+			q.push(merge(u, v));
+		}
+		pq[i] = q.front();
+	}
+	vis[1] = true;
+	for (int a = 1, b = 1; pq[a]; b = a, vis[b] = true) {
+		do {
+			cyc[a] = top(pq[a]);
+			a = id[cyc[a]->u];
+		} while (a == b && pq[a]);
+		if (a == b) break;
+		if (!vis[a]) continue;
+		a = b;
+		n++;
+		while (a != n) {
+			id(a) = fa[a] = n;
+			if (pq[a]) pq[a]->add -= cyc[a]->w;
+			pq[n] = merge(pq[n], pq[a]);
+			int p = id[cyc[a]->u];
+			nxt[p == n ? b : p] = a;
+			a = p;
+		}
+	}
+	ll ans = expand(rt, n);
+	qwrite(ans >= inf ? -1 : ans);
+	return 0;
+}

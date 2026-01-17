@@ -1,0 +1,97 @@
+//  OJ: 洛谷
+//  提交ID: 234716403
+//  题目ID: T665174
+#include<bits/stdc++.h>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+int opt[305000], val[305000], n;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int mn, mx, tx, ty;
+		Node(int mn = 0, int mx = 1e9, int tx = 0, int ty = 1e9) :mn(mn), mx(mx), tx(tx), ty(ty) {}
+	}tree[305000 << 2 | 3];
+	void pushup(int p) {
+		int dx = max(tree[lc(p)].tx, tree[rc(p)].mn);
+		int dy = min(tree[lc(p)].ty, tree[rc(p)].mx);
+		if (dx <= dy) {
+			tree[p].mn = dx - (tree[lc(p)].tx - tree[lc(p)].mn);
+			tree[p].mx = dy - (tree[lc(p)].tx - tree[lc(p)].mn);
+			tree[p].tx = dx + (tree[rc(p)].tx - tree[rc(p)].mn);
+			tree[p].ty = dy + (tree[rc(p)].tx - tree[rc(p)].mn);
+			return;
+		}
+		if (tree[lc(p)].ty < tree[rc(p)].mn)
+			tree[p].mn = tree[p].mx = tree[lc(p)].mx,
+			tree[p].tx = tree[p].ty = tree[rc(p)].tx;
+		else
+			tree[p].mn = tree[p].mx = tree[lc(p)].mn,
+			tree[p].tx = tree[p].ty = tree[rc(p)].ty;
+	}
+	void build(int p, int l, int r) {
+		if (l == r) {
+			if (opt[l] == 1) {
+				tree[p].tx += val[l];
+				tree[p].ty += val[l];
+			}
+			if (opt[l] == 2) {
+				tree[p].mx = val[l];
+				tree[p].ty = val[l];
+			}
+			if (opt[l] == 3) {
+				tree[p].mn = val[l];
+				tree[p].tx = val[l];
+			}
+			return;
+		}
+		build(lson); build(rson);
+		pushup(p);
+	}
+	void change(int p, int l, int r, int x) {
+		//assert(tree[p].mx - tree[p].mn == tree[p].ty - tree[p].tx);
+		if (l == r) {
+			tree[p] = Node();
+			if (opt[l] == 1) {
+				tree[p].tx += val[l];
+				tree[p].ty += val[l];
+			}
+			if (opt[l] == 2) {
+				tree[p].mx = val[l];
+				tree[p].ty = val[l];
+			}
+			if (opt[l] == 3) {
+				tree[p].mn = val[l];
+				tree[p].tx = val[l];
+			}
+			return;
+		}
+		if (x <= mid) change(lson, x);
+		else change(rson, x);
+		pushup(p);
+	}
+	int query(int x) {
+		if (x <= tree[1].mn) return tree[1].tx;
+		if (x >= tree[1].mx) return tree[1].ty;
+		return tree[1].tx + (x - tree[1].mn);
+	}
+}t;
+int32_t main() {
+	// file(function);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> opt[i] >> val[i];
+	t.build(1, 1, n);
+	int q; cin >> q;
+	while (q--) {
+		int op, p, v;
+		cin >> op;
+		if (op == 4) cin >> v, cout << t.query(v) << endl;
+		else cin >> p >> v, opt[p] = op, val[p] = v, t.change(1, 1, n, p);
+	}
+	return 0;
+}

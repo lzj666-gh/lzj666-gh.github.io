@@ -1,0 +1,58 @@
+//  OJ: 洛谷
+//  提交ID: 248443952
+//  题目ID: T696829
+#include <bits/stdc++.h>
+using namespace std;
+const int MOD = 998244353;
+
+int inv(int a) {
+    int b = MOD, x0 = 0, x1 = 1;
+    while (a > 1) {
+        int q = a / b;
+        int t = b;
+        b = a % b;
+        a = t;
+        t = x0;
+        x0 = x1 - q * x0;
+        x1 = t;
+    }
+    if (x1 < 0) x1 += MOD;
+    return x1;
+}
+
+int n, p, q;
+int inv_p, inv_q;
+long long total_expect = 0;
+
+void dfs(int minute, int k, long long prob) {
+    if (minute > n) {
+        return;
+    }
+    
+    int fish_prob;
+    if (k >= p - 1) {
+        fish_prob = 1;
+    } else {
+        fish_prob = (long long)(k + 1) * inv_p % MOD;
+    }
+    int study_prob = (1 - fish_prob + MOD) % MOD;
+
+    total_expect = (total_expect + prob * fish_prob % MOD * inv_q) % MOD;
+
+    dfs(minute + 1, 0, prob * fish_prob % MOD);
+
+    if (study_prob > 0) {
+        dfs(minute + 1, k + 1, prob * study_prob % MOD);
+    }
+}
+
+int main() {
+    cin >> n >> p >> q;
+    inv_p = inv(p);
+    inv_q = inv(q);
+    
+    dfs(1, 0, 1);
+    
+    cout << total_expect << endl;
+    return 0;
+}

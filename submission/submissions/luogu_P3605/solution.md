@@ -1,6 +1,6 @@
 # P3605 题解
 
-[${\color{#aa66ee}\text{欢迎拜访我这个蒟蒻的博客}}$](https://www.luogu.com.cn/blog/Wendigo/)
+[${\color{#aa66ee}\text{欢迎拜访我这个蒟蒻的博客} }$](https://www.luogu.com.cn/blog/Wendigo/)
 
 [P3605 【\[USACO17JAN\]Promotion Counting晋升者计数】](https://www.luogu.com.cn/problem/P3605)
 

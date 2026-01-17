@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 133833777
+//  题目ID: T146889
+#include<bits/stdc++.h>
+using namespace std;
+inline void set0(int num,int k){
+	num = num&(~(1<<k)); 
+}
+inline void set1(int num,int k){
+	num = num|(1<<k); 
+}
+inline bool get2(int b,int k){
+	return b>>k&1;
+}
+inline bool gett(int b,int i,int j){
+	
+}
+inline void change(int b,int i,int j){
+	if(i>4||j>4||i<0||j<0) return;
+	if()
+}
+inline void do_(int k,int x,int y){
+	change(k,x,y);
+	change(k,x+1,y);
+	change(k,x-1,y);
+	change(k,x,y+1);
+	change(k,x,y-1);
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	
+} 

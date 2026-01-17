@@ -252,7 +252,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2023-11-23 16:39" pubdate>
-          2023年11月23日 下午
+          November 23, 2023 pm
         </time>
       </span>
     
@@ -263,7 +263,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          266 字
+          264 字
         
       </span>
     
@@ -327,12 +327,23 @@
               <div class="markdown-body">
                 
                 <h2 id="题目大意">题目大意</h2>
-<p>给定三个栈，每个栈有 $n$ 个非负数，初始值为 $u=0$，每取一个数 $v$，$u \leftarrow u|v$，问最终结果是否能达到 $x$。</p>
+<p>给定三个栈，每个栈有 <span class="math inline"><em>n</em></span>
+个非负数，初始值为 <span
+class="math inline"><em>u</em> = 0</span>，每取一个数 <span
+class="math inline"><em>v</em></span>，<span
+class="math inline"><em>u</em> ← <em>u</em>|<em>v</em></span>，问最终结果是否能达到
+<span class="math inline"><em>x</em></span>。</p>
 <h2 id="分析">分析</h2>
-<p>由于是按位或运算，二进制中 0 的部分在或了以后是会根据对方的值来影响结果的。</p>
-<p>所以就有贪心策略：只要栈顶的元素在或上 $x$ 以后还等于 $x$，即 $x$ 二进制位上为 0 的部分其二进制位上也为 0 都选。</p>
+<p>由于是按位或运算，二进制中 0
+的部分在或了以后是会根据对方的值来影响结果的。</p>
+<p>所以就有贪心策略：只要栈顶的元素在或上 <span
+class="math inline"><em>x</em></span> 以后还等于 <span
+class="math inline"><em>x</em></span>，即 <span
+class="math inline"><em>x</em></span> 二进制位上为 0
+的部分其二进制位上也为 0 都选。</p>
 <h2 id="代码">代码</h2>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">int</span> stk[<span class="hljs-number">3</span>][<span class="hljs-number">100000</span><span class="hljs-number">+10</span>],top[<span class="hljs-number">3</span>];<br><span class="hljs-comment">//三个栈，以及它们分别的顶 </span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>	ios_base::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>	<span class="hljs-type">int</span> T;<br>	cin&gt;&gt;T;<br>	<span class="hljs-keyword">while</span>(T--)&#123;<br>		<span class="hljs-type">int</span> n,x,u=<span class="hljs-number">0</span>;<br>		cin&gt;&gt;n&gt;&gt;x;<br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">0</span>;j&lt;<span class="hljs-number">3</span>;++j)<br>			<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;++i)<br>				cin&gt;&gt;stk[j][i];<br>		top[<span class="hljs-number">0</span>]=top[<span class="hljs-number">1</span>]=top[<span class="hljs-number">2</span>]=<span class="hljs-number">1</span>;<br>		<span class="hljs-comment">//输入以及初始化三个栈</span><br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">3</span>;++i)<br>			<span class="hljs-keyword">while</span>(top[i]&lt;=n&amp;&amp;(stk[i][top[i]]|x)==x)<br>				u|=stk[i][top[i]++];<br>		<span class="hljs-comment">//枚举三个栈分别操作 </span><br>		cout&lt;&lt;(u==x?<span class="hljs-string">&quot;YES&quot;</span>:<span class="hljs-string">&quot;NO&quot;</span>)&lt;&lt;endl;<br>	&#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
                 
               </div>
             
@@ -369,7 +380,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年11月23日</div>
+          <div>November 23, 2023</div>
         </div>
       
       

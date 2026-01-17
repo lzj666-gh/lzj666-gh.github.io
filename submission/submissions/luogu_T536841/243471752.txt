@@ -1,0 +1,127 @@
+//  OJ: 洛谷
+//  提交ID: 243471752
+//  题目ID: T536841
+#include<bits/stdc++.h>
+#define all(a) (a).begin(), (a).end()
+#define file(a) { freopen(#a".in", "r", stdin); freopen(#a".out", "w", stdout); }
+using namespace std;
+int n, q;
+stack<pair<int, int>>loop;
+char opt[12000][20];
+bool beginwith(char* opt, string s) {
+    string t=opt;
+    try{
+	for (int i = 0; i < s.size(); ++i)
+		if (t.at(i) != s[i])
+			return 0;
+    }catch(...){exit(8);}
+	return 1;
+}
+int32_t main() {
+	// file(ex_d2);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> q; char ch = cin.get();
+	for (int i = 1; i <= n; ++i) {
+		int j = 0;
+		while (ch < 'a' || ch > 'z') ch = cin.get();
+		while (ch != '\n') opt[i][j++] = ch, ch = cin.get();
+	}
+	while (q--) {
+		int k, ax, bx, cx, dx; while (loop.size()) loop.pop();
+		cin >> k >> ax >> bx >> cx >> dx;
+		for (int i = 1, j = 1; i <= k; ++i, ++j) {
+			if (beginwith(opt[j], "repeat") || beginwith(opt[j], "end")) {
+		        if (beginwith(opt[j], "repeat")) {
+		            int repeat_count; 
+		            sscanf(opt[j], "repeat %d", &repeat_count);
+		            loop.push(make_pair(j, repeat_count - 1));
+		            j++;
+		        }
+				else if (beginwith(opt[j], "end")) {
+		            if (loop.empty() || loop.top().second <= 0) {
+		                if (!loop.empty()) loop.pop();
+		                j++;
+		            } else {
+		                loop.top().second--;
+		                j = loop.top().first;
+		            }
+		        }
+		        continue;
+		    }
+
+			if (opt[j] == (string)"and ax ax") ax &= ax;
+			else if (opt[j] == (string)"and ax bx") ax &= bx;
+			else if (opt[j] == (string)"and ax cx") ax &= cx;
+			else if (opt[j] == (string)"and ax dx") ax &= dx;
+			else if (opt[j] == (string)"and bx ax") bx &= ax;
+			else if (opt[j] == (string)"and bx bx") bx &= bx;
+			else if (opt[j] == (string)"and bx cx") bx &= cx;
+			else if (opt[j] == (string)"and bx dx") bx &= dx;
+			else if (opt[j] == (string)"and cx ax") cx &= ax;
+			else if (opt[j] == (string)"and cx bx") cx &= bx;
+			else if (opt[j] == (string)"and cx cx") cx &= cx;
+			else if (opt[j] == (string)"and cx dx") cx &= dx;
+			else if (opt[j] == (string)"and dx ax") dx &= ax;
+			else if (opt[j] == (string)"and dx bx") dx &= bx;
+			else if (opt[j] == (string)"and dx cx") dx &= cx;
+			else if (opt[j] == (string)"and dx dx") dx &= dx;
+
+			else if (opt[j] == (string)"or ax ax") ax |= ax;
+			else if (opt[j] == (string)"or ax bx") ax |= bx;
+			else if (opt[j] == (string)"or ax cx") ax |= cx;
+			else if (opt[j] == (string)"or ax dx") ax |= dx;
+			else if (opt[j] == (string)"or bx ax") bx |= ax;
+			else if (opt[j] == (string)"or bx bx") bx |= bx;
+			else if (opt[j] == (string)"or bx cx") bx |= cx;
+			else if (opt[j] == (string)"or bx dx") bx |= dx;
+			else if (opt[j] == (string)"or cx ax") cx |= ax;
+			else if (opt[j] == (string)"or cx bx") cx |= bx;
+			else if (opt[j] == (string)"or cx cx") cx |= cx;
+			else if (opt[j] == (string)"or cx dx") cx |= dx;
+			else if (opt[j] == (string)"or dx ax") dx |= ax;
+			else if (opt[j] == (string)"or dx bx") dx |= bx;
+			else if (opt[j] == (string)"or dx cx") dx |= cx;
+			else if (opt[j] == (string)"or dx dx") dx |= dx;
+
+			else if (opt[j] == (string)"xor ax ax") ax ^= ax;
+			else if (opt[j] == (string)"xor ax bx") ax ^= bx;
+			else if (opt[j] == (string)"xor ax cx") ax ^= cx;
+			else if (opt[j] == (string)"xor ax dx") ax ^= dx;
+			else if (opt[j] == (string)"xor bx ax") bx ^= ax;
+			else if (opt[j] == (string)"xor bx bx") bx ^= bx;
+			else if (opt[j] == (string)"xor bx cx") bx ^= cx;
+			else if (opt[j] == (string)"xor bx dx") bx ^= dx;
+			else if (opt[j] == (string)"xor cx ax") cx ^= ax;
+			else if (opt[j] == (string)"xor cx bx") cx ^= bx;
+			else if (opt[j] == (string)"xor cx cx") cx ^= cx;
+			else if (opt[j] == (string)"xor cx dx") cx ^= dx;
+			else if (opt[j] == (string)"xor dx ax") dx ^= ax;
+			else if (opt[j] == (string)"xor dx bx") dx ^= bx;
+			else if (opt[j] == (string)"xor dx cx") dx ^= cx;
+			else if (opt[j] == (string)"xor dx dx") dx ^= dx;
+
+			else if (beginwith(opt[j], "andi ax")) { int k; sscanf(opt[j], "andi ax %d", &k); ax &= k; }
+			else if (beginwith(opt[j], "andi bx")) { int k; sscanf(opt[j], "andi bx %d", &k); bx &= k; }
+			else if (beginwith(opt[j], "andi cx")) { int k; sscanf(opt[j], "andi cx %d", &k); cx &= k; }
+			else if (beginwith(opt[j], "andi dx")) { int k; sscanf(opt[j], "andi dx %d", &k); dx &= k; }
+
+			else if (beginwith(opt[j], "ori ax")) { int k; sscanf(opt[j], "ori ax %d", &k); ax |= k; }
+			else if (beginwith(opt[j], "ori bx")) { int k; sscanf(opt[j], "ori bx %d", &k); bx |= k; }
+			else if (beginwith(opt[j], "ori cx")) { int k; sscanf(opt[j], "ori cx %d", &k); cx |= k; }
+			else if (beginwith(opt[j], "ori dx")) { int k; sscanf(opt[j], "ori dx %d", &k); dx |= k; }
+
+			else if (beginwith(opt[j], "xori ax")) { int k; sscanf(opt[j], "xori ax %d", &k); ax ^= k; }
+			else if (beginwith(opt[j], "xori bx")) { int k; sscanf(opt[j], "xori bx %d", &k); bx ^= k; }
+			else if (beginwith(opt[j], "xori cx")) { int k; sscanf(opt[j], "xori cx %d", &k); cx ^= k; }
+			else if (beginwith(opt[j], "xori dx")) { int k; sscanf(opt[j], "xori dx %d", &k); dx ^= k; }
+
+			else throw logic_error("out of range!!!");
+		}
+		cout << ax << ' ' << bx << ' ' << cx << ' ' << dx << endl;
+	}
+	return 0;
+}
+/*
+
+
+*/

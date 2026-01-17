@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 103095800
+//  题目ID: T209136
+#include<bits/stdc++.h>
+using namespace std;
+short int a[50+10][10000]={0};
+bool h[50+10];
+int n;
+void jia(int q) {
+	if(!h[q]){
+		a[q][0]=1;a[q][1]=0;
+		return;
+	}
+	memset(a[q],0,sizeof(a[q]));
+	a[q][0]=max(a[q-1][0],a[q-2][0]);
+	for(int i=1; i<=a[q][0]; i++) {
+		a[q][i+1]=(a[q-1][i]+a[q-2][i]+a[q][i])/10;
+		a[q][i]=(a[q][i]+a[q-1][i]+a[q-2][i])%10;
+	}
+	if(a[q][a[q][0]+1]) a[q][0]++;
+}
+int main() {
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++){
+		scanf("%d",&h[i]);
+	}
+	a[1][0]=1;a[2][0]=1;
+	a[1][1]=1;a[2][1]=2;
+	for(int i=3; i<=n; i++) {
+		jia(i);
+/*		for(int j=a[i][0]; j>=1; j--) {
+			cout<<a[i][j];
+		}
+		cout<<endl;
+*/	}
+	for(int i=a[n][0]; i>=1; i--) {
+		cout<<a[n][i];
+	}
+	return 0;
+}

@@ -252,7 +252,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2024-11-23 14:36" pubdate>
-          2024年11月23日 下午
+          November 23, 2024 pm
         </time>
       </span>
     
@@ -263,7 +263,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          454 字
+          453 字
         
       </span>
     
@@ -326,14 +326,34 @@
             
               <div class="markdown-body">
                 
-                <h1>1123noip模拟</h1>
-<h2 id="T1">T1</h2>
-<p>这场 noip 模拟其实不难，但是在 T1 上我花了太多时间，推完式子后还接着验证，发现错了，等等等等，一直循环，最终 bug de 完了，但是发现我程序的时间用的太久了，样例2都用了十几秒，于是想到了分段打表。其实当时是我程序中的一处筛数字因数时把 <code>i*i&lt;=n</code> 打的是 <code>i&lt;=n</code>，所以从感性理解应该是 $O(\sqrt{n})$ 的，实际是 $O(n)$ 的，分段打表用的时间也太长了，两个小时才打完数据范围的 $\frac{1}{5}$，而修改后却只用不到一分钟。</p>
-<p>实际上正解用的是线性筛求最小约数，从而在 $O(\log{n})$ 的时间内分解了质因数。数学板块理解还是不够深。</p>
-<h2 id="T2">T2</h2>
-<p>一道 DP。赛时思考过 DP，但是观察到过于巨大的空间，优化无果，而放弃，况且当时思考的 DP 只能拿 90pts（加特殊性质），于是认为本题正解并不是 DP。实际本题观察到DP数组虽然下标分别开大会炸，但实际上每个测试点内都只会有用到一个最大大小固定的矩阵，所以可以使用手动三维压一维的方法解决。</p>
-<h2 id="T3">T3</h2>
-<p>这是一道 RMQ 问题。最终的正解是值域分块，而我第一眼看到的时候就没想到往值域方向去考虑。其实这道题提醒的挺明显了（$ans=\sum_{i=1}^{n}(\lfloor\frac{y}{a_i}\rfloor+y\bmod a_i)$），看一眼就可以想到除法分块，在 $a_i$ 较小的时候直接暴力即可，而在 $a_i$ 较大时可以观察到贡献是一块一块加的，于是使用值域分块。教训就是</p>
+                <h1 id="noip模拟">1123noip模拟</h1>
+<h2 id="t1">T1</h2>
+<p>这场 noip 模拟其实不难，但是在 T1
+上我花了太多时间，推完式子后还接着验证，发现错了，等等等等，一直循环，最终
+bug de
+完了，但是发现我程序的时间用的太久了，样例2都用了十几秒，于是想到了分段打表。其实当时是我程序中的一处筛数字因数时把
+<code>i*i&lt;=n</code> 打的是 <code>i&lt;=n</code>，所以从感性理解应该是
+<span class="math inline">$O(\sqrt{n})$</span> 的，实际是 <span
+class="math inline"><em>O</em>(<em>n</em>)</span>
+的，分段打表用的时间也太长了，两个小时才打完数据范围的 <span
+class="math inline">$\frac{1}{5}$</span>，而修改后却只用不到一分钟。</p>
+<p>实际上正解用的是线性筛求最小约数，从而在 <span
+class="math inline"><em>O</em>(log <em>n</em>)</span>
+的时间内分解了质因数。数学板块理解还是不够深。</p>
+<h2 id="t2">T2</h2>
+<p>一道 DP。赛时思考过
+DP，但是观察到过于巨大的空间，优化无果，而放弃，况且当时思考的 DP 只能拿
+90pts（加特殊性质），于是认为本题正解并不是
+DP。实际本题观察到DP数组虽然下标分别开大会炸，但实际上每个测试点内都只会有用到一个最大大小固定的矩阵，所以可以使用手动三维压一维的方法解决。</p>
+<h2 id="t3">T3</h2>
+<p>这是一道 RMQ
+问题。最终的正解是值域分块，而我第一眼看到的时候就没想到往值域方向去考虑。其实这道题提醒的挺明显了（<span
+class="math inline">$ans=\sum_{i=1}^{n}(\lfloor\frac{y}{a_i}\rfloor+y\bmod
+a_i)$</span>），看一眼就可以想到除法分块，在 <span
+class="math inline"><em>a</em><sub><em>i</em></sub></span>
+较小的时候直接暴力即可，而在 <span
+class="math inline"><em>a</em><sub><em>i</em></sub></span>
+较大时可以观察到贡献是一块一块加的，于是使用值域分块。教训就是</p>
 
                 
               </div>
@@ -371,7 +391,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年11月23日</div>
+          <div>November 23, 2024</div>
         </div>
       
       

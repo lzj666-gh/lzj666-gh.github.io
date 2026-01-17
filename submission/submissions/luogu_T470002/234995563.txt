@@ -1,0 +1,63 @@
+//  OJ: 洛谷
+//  提交ID: 234995563
+//  题目ID: T470002
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+struct Edge {
+    int v, w, nxt;
+} edge[400000 + 5];
+int head[200000 + 5], idx;
+void add(int u, int v, int w) {
+    edge[++idx] = {v, w, head[u]};
+    head[u] = idx;
+}
+long long dp[200000 + 5];
+int n, m;
+vector<pair<long long, int>> v[200000 + 5];
+void dfs(int x, int fa) {
+    for (int i = head[x]; i; i = edge[i].nxt)
+        if (edge[i].v != fa)
+            dfs(edge[i].v, x),
+            v[x].emplace_back(dp[edge[i].v] + edge[i].w, edge[i].v);
+    sort(v[x].rbegin(), v[x].rend());
+    for (int i = 0; i < v[x].size() && i < m - 1; ++i) dp[x] += v[x][i].first;
+}
+long long ans;
+bool vis[200000 + 5];
+void ddfs(int x, int fa, long long dfa) {
+    long long tot = 0;
+    v[x].emplace_back(dfa, fa);
+    sort(v[x].rbegin(), v[x].rend());
+    for (int i = 0; i < v[x].size(); ++i) tot += v[x][i].first;
+    ans = max(ans, tot);
+    long long des = 0;
+    for (int i = 0; i < v[x].size() && i < m - 1; ++i)
+        des += v[x][i].first, vis[v[x][i].second] = 1;
+    for (int i = head[x]; i; i = edge[i].nxt)
+        if (edge[i].v != fa) {
+            if (vis[edge[i].v])
+                des -= dp[edge[i].v] + edge[i].w,
+                des += (m - 1 < v[x].size() ? v[x][m - 1].first : 0);
+            ddfs(edge[i].v, x, des + edge[i].w);
+            if (vis[edge[i].v])
+                des += dp[edge[i].v] + edge[i].w,
+                des -= (m - 1 < v[x].size() ? v[x][m - 1].first : 0);
+        }
+    for (int i = 0; i < v[x].size() && i < m - 1; ++i)
+        vis[v[x][i].second] = 0;
+}
+int32_t main() {
+    cin.tie(0)->sync_with_stdio(false);
+    cin >> n >> m;
+    if (m == 0) {
+        cout << 0 << endl;
+        return 0;
+    }
+    for (int i = 1, u, v, w; i < n; ++i)
+        cin >> u >> v >> w, add(u, v, w), add(v, u, w);
+    dfs(1, 1);
+    ddfs(1, 1, 0);
+    cout << ans << endl;
+    return 0;
+}

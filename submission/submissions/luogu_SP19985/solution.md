@@ -3,7 +3,7 @@
 ## [题目传送门](https://www.luogu.com.cn/problem/SP19985)
 ## 题目大意：
 T 组数据，每组数据给出一个 n，求：
-$$\sum_{i=1}^{n}{\sum_{j=i+1}^{n}{\gcd(i,j)}}$$
+$$\sum_{i=1}^{n}{\sum_{j=i+1}^{n}{\gcd(i,j)} }$$
 对 $2^{64}$ 取模！
 ## 前置芝士：
 1.杜教筛（先在这里留个坑，以后再填）
@@ -11,8 +11,8 @@ $$\sum_{i=1}^{n}{\sum_{j=i+1}^{n}{\gcd(i,j)}}$$
 2.莫比乌斯反演（可以看看这个[莫比乌斯反演](https://dpkajj.blog.luogu.org/mobius-J)）
 
 先颓一下式子：
-$$\sum_{i=1}^{n}{\sum_{j=i+1}^{n}{\gcd(i,j)}}$$
-$$=\sum_{i=1}^{n}{\sum_{j=1}^{i-1}{\gcd(i,j)}}$$
+$$\sum_{i=1}^{n}{\sum_{j=i+1}^{n}{\gcd(i,j)} }$$
+$$=\sum_{i=1}^{n}{\sum_{j=1}^{i-1}{\gcd(i,j)} }$$
 设 d 为$ \gcd(i,j) $
 
 $$=\sum_{d=1}^{n}{

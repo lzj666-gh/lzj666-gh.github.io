@@ -1,9 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 115912535
-//  题目ID: T339647
-#include<bits/stdc++.h>
-using namespace std;
-int main(){
-    cout<<400<<'.'<<0<<0<<endl;
-    return 0;
-}

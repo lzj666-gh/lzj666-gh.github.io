@@ -146,7 +146,7 @@ $$f_i = f_j +  cnt_i \times i - cnt_j \times i - sum_i + sum_j$$
 
 把只跟 $j$ 有关的项移到左边，跟 $i,\ j$ 有关的乘积放在中间，只跟 $i$ 有关的项移到最右边：
 
-$$\underline{f_j + sum_j}_{\ y} = \underline{i_{_{}}}_{\ k} \times \underline{cnt_j}_{\ x} + \underline{(f_i - cnt_i \times i + sum_i)}_{\ b}$$
+$$\underline{f_j + sum_j}_{\ y} = \underline{i_{_{} } }_{\ k} \times \underline{cnt_j}_{\ x} + \underline{(f_i - cnt_i \times i + sum_i)}_{\ b}$$
 
 这不是**斜率优化**裸题吗！斜率 $i$ 单调上升，维护下凸壳。对于 $i$ 把 $i - m$ 推入队列，即可保证决策点 $j \leqslant i - m$。
 
@@ -194,7 +194,7 @@ int main() {
 
 在同一段内的情况很简单，不用枚举 $k$ 就可以直接转移：
 
-$$g_{i,\ j} = g_{i - 1,\ t_i + j - t_{i-1}} + j$$
+$$g_{i,\ j} = g_{i - 1,\ t_i + j - t_{i-1} } + j$$
 
 新开一段的情况，同样要保证段长 $\geqslant m$：
 

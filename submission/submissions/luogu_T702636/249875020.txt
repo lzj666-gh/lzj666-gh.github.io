@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 249875020
+//  题目ID: T702636
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+int n, m, q, fa[100000 + 5];
+set<int>enemy[100000 + 5];
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+void merge(int x, int y) {
+	x = find(x), y = find(y);
+	if (enemy[x].size() < enemy[y].size())
+		swap(x, y);
+	fa[y] = x;
+	for (const auto& p : enemy[y])
+		enemy[x].insert(p), enemy[p].erase(y), enemy[p].insert(x);
+	return;
+}
+bool query(int x, int y) { return enemy[find(x)].count(find(y)); }
+int32_t main() {
+	//file(Island);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> q;
+	iota(fa, fa + n + 1, 0);
+	for (int i = 1, u, v; i <= m; ++i) {
+		cin >> u >> v;
+		enemy[u].insert(v), enemy[v].insert(u);
+	}
+	while (q--) {
+		int a, b;
+		cin >> a >> b;
+		if (query(a, b)) {
+			cout << "REFUSE" << endl;
+			continue;
+		}
+		merge(a, b);
+		cout << "APPROVE" << endl;
+	}
+	return 0;
+}

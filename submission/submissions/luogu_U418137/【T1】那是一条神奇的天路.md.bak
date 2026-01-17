@@ -1,0 +1,80 @@
+# 【T1】那是一条神奇的天路
+
+## 题目描述
+
+你正在矩形的题海中愉快地被虐，这个题海长 $n$，宽 $m$。你现在在 $(1,1)$ 点，而你想要尽快地到 $(n,m)$ 去，切一些水题。显然你只会向上方或右方移动。然而你却只有一个能力值 $k$，这意味着当你在 $(x,y)$ 的时候，你只能移动到 $(x+\Delta x,y+\Delta y)$，其中 $0\le\Delta x,\Delta y\le k$ 且均为整数，并且不能同时为零，而且你不能移出题海。
+
+然而，一旁的 $\texttt{ccy}$ 看你十分的不爽，于是开始尝试操控你。双方可以轮流行动，并且都遵循 $k$ 的限制。
+
+显然，当一方处在 $(n,m)$ 位置并且需要移动时，他就动不了了，只能一直切水题，然后变菜。这一方就输了。
+
+那么，如果你先行，请问你有没有必胜策略呢？如果有，输出第一步的 $\Delta x$ 和 $\Delta y$。如果没有，输出 `NSL`。
+
+## 输入格式
+
+### 本题有多组数据
+
+第一行输入一个整数 $t$，表示有 $t$ 组数据。
+
+接下来 $t$ 行，每行三个整数 $n,m,k$，表示一次询问。
+
+## 输出格式
+
+共 $t$ 行，每行输出一个询问的答案，$\Delta x$ 和 $\Delta y$ 间用空格隔开。
+
+批注：如果你跳到了 $(n,m)$，那么你就赢了。
+
+## 提示
+
+| Subtask | $n,m$ | $k$ | $t$ | 分数 |
+| :----------: | :----------: | :----------: | :----------: | :----------: |
+| 0 | $\le10$ | $\le1$ | $\le1$  | $5$ |
+| 1 | $\le100$ | $\le10$ | $\le10$  | $15$ |
+| 2 | $\le10^3$ | $\le100$ | $\le10^2$  | $20$ |
+| 3 | $\le10^9$ | $\le10^6$ | $\le10^3$  | $10$ |
+| 4 | $\le10^{18}$ | $\le10^6$ | $\le3\times10^6$  | $50$ |
+
+对于所有数据，$n,m\le10^{18},k\le10^6,t\le3\times10^6$ 且均为正整数。
+
+本题轻微卡常（$T_\text{限}>T_{std}\times1.4$），提供快读模板。
+
+```cpp
+#define signedgetin
+#ifdef signedgetin
+inline int read() {
+	int r = 0, s = 1; char c = getchar();
+	while (c < '0' || c > '9') { if (c == '-') s = -1; c = getchar(); }
+	while (c >= '0' && c <= '9') r = r * 10 + (c ^ 48), c = getchar();
+	return r * s;
+}
+inline void write(int x) {
+	if (x > 9) write(x / 10);
+	putchar(x % 10 + '0');
+	return;
+}
+inline void writi(int args) {
+	if (args < 0) args = ~args + 1, putchar('-');
+	write(args); putchar(10);
+}
+#else
+inline int read() {
+	int r = 0; char c = getchar();
+	while (c < '0' || c>'9') c = getchar();
+	while (c >= '0' && c <= '9') r = r * 10 + (c ^ 48), c = getchar();
+	return r;
+}
+inline void write(int x) {
+	if (x > 9) write(x / 10);
+	putchar(x % 10 ^ 48);
+	return;
+}
+inline void writi(int args) {
+	write(args); putchar(10);
+}
+#endif
+```
+
+## 时空限制
+
+时间限制: 400 ms
+内存限制: 16 MB

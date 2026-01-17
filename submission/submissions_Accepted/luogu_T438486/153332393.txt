@@ -1,8 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 153332393
-//  题目ID: T438486
-#include<bits/stdc++.h>
-using namespace std;
-int main(){
-	cout<<"13e+2i";
-}

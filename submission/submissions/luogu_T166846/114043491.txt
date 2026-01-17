@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 114043491
+//  题目ID: T166846
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios::sync_with_stdio(false);
+	cout<<"not found"<<endl;
+	return 0;
+}

@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 94712868
+//  题目ID: T156932
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int m,n,g;cin>>n>>m;
+	for(int i=1;i<=m;i++){
+		if(m%i==0&&n%i==0) g=i;
+	}
+	if(g==1){
+		cout<<"Coprime";
+		return 0;
+	}
+	else cout<<g;
+	return 0;
+}
+

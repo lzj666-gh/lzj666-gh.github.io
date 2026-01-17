@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 107573345
+//  题目ID: T313704
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    cout<<"flag"<<endl;
+    return 0; 
+}

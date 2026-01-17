@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 255187352
+//  题目ID: T715153
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m; cin >> n >> m;
+	cout << min(n / 3, m / 2) << endl;
+	return 0;
+}

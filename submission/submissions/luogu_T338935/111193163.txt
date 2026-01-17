@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 111193163
+//  题目ID: T338935
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+//	std::ios::sync_with_stdio(false);
+	int n;
+	cin>>n;
+	double s=0;
+	int nfz=4,nfm=7,xfz=0,xfm=0;
+	while(--n){
+		s+=1.0*nfz/nfm;
+		xfz=nfm;
+		xfm=nfz+nfm;
+		nfm=xfm;
+		nfz=xfz;
+	}
+	s+=1.0*nfz/nfm;
+	cout<<xfz<<'/'<<xfm<<endl;
+	printf("%.2lf",s);
+	return 0;
+}

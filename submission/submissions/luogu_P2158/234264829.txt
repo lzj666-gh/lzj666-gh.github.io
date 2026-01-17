@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 234264829
+//  题目ID: P2158
+#include<bits/stdc++.h>
+#define all(a) (a).begin(), (a).end()
+#define rall(a) (a).rbegin(), (a).rend()
+//#define int long long
+using namespace std;
+using ll = long long;
+constexpr int N = 100000000;
+vector<int>prm;
+bool vis[N + 5]; int phi[N + 5];
+void prep(int N) {
+	phi[1] = 1;
+	for (int i = 2; i <= N; ++i) {
+		if (!vis[i]) prm.push_back(i), phi[i] = i - 1;
+		for (auto& p : prm) {
+			if (p * i > N) break;
+			vis[p * i] = 1;
+			if (i % p == 0) {
+				phi[i * p] = phi[i] * p;
+				break;
+			}
+			phi[i * p] = phi[i] * phi[p];
+		}
+	}
+}
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n; cin >> n; prep(n);
+	if (n == 1) {
+		cout << 0 << endl;
+	}
+	else {
+		ll ans = 0;
+		for (int i = 2; i < n; ++i) ans += phi[i];
+		cout << ans * 2 + 3 << endl;
+	}
+	return 0;
+}

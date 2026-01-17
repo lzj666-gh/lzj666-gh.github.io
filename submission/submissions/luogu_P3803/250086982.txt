@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 250086982
+//  题目ID: P3803
+#define _USE_MATH_DEFINES
+#include<bits/stdc++.h>
+//#define int long long
+using namespace std;
+using T_ = complex<double>;
+T_ f[1000000 + 5], g[1000000 + 5];
+void fft(T_* f, int n, int r) {
+	if (n == 1) return;
+	static T_ tmp[1 << 21];
+	memcpy(tmp, f, sizeof(T_) * n);
+	int l = n >> 1;
+	for (int i = 0; i < n; ++i)
+		if (!(i & 1)) f[i >> 1] = tmp[i];
+		else f[l + (i >> 1)] = tmp[i];
+	T_* g = f + l;
+	fft(f, n >> 1, r); fft(g, n >> 1, r);
+	T_ cur = 1, stp(cos(M_PI * 2 / n), sin(M_PI * 2 * r / n));
+	for (int i = 0; i < l; ++i) {
+		tmp[i] = f[i] + g[i] * cur;
+		tmp[i + l] = f[i] - g[i] * cur;
+		cur *= stp;
+	}
+	memcpy(f, tmp, sizeof(T_) * n);
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m; cin >> n >> m;
+	for (int i = 0; i <= n; ++i) cin >> f[i];
+	for (int i = 0; i <= m; ++i) cin >> g[i];
+	int t = pow(2, ceil(log2(n + m + 1)));
+	fft(f, t, 1); fft(g, t, 1);
+	for (int i = 0; i < t; ++i) f[i] *= g[i];
+	fft(f, t, -1);
+	for (int i = 0; i < t; ++i) f[i] /= t; cout << fixed << setprecision(0);
+	for (int i = 0; i <= n + m; ++i) cout << round(f[i].real()) << ' ';
+	return 0;
+}

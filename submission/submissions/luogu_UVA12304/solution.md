@@ -1,0 +1,209 @@
+# UVA12304 题解
+
+第一道独立做出来的黑题喵，写篇题解纪念一下喵。
+
+[安利一下自己的文章喵。](https://www.luogu.com.cn/article/lgjk206c)
+
+### 第一问
+
+我们知道三角形的内心即两边中垂线的交点。
+
+求出中垂线上两点，然后求直线交点即可。
+
+### 第二问
+
+我们知道三角形的内心即两角平分线的交点。
+
+仿照尺规作图的方法，作两个圆。
+
+![](https://cdn.luogu.com.cn/upload/image_hosting/hpixgd7c.png)
+
+然后画个直角边与坐标系平行，斜边为 $AC$ 的 $Rt\Delta$。
+
+再过点 $D$ 作直角边的垂线，则两个三角形相似，可以求出点 $D$ 的坐标。
+
+其它点同理。
+
+然后作圆与两边的交点的中垂线求交点即可。
+
+### 第三问
+
+作一个以 $AB$ 的中点为圆心，以 $\dfrac{AB}{2}$ 为半径的圆。容易发现 $AB$ 把圆分成了两个半圆。
+
+求出这个圆与原本的圆的交点。由于是半圆，故 $\angle ADB=\angle AEB=90\degree$。
+
+故 $AD\perp DB,AE\perp EB$，是圆的切线。
+
+![](https://cdn.luogu.com.cn/upload/image_hosting/yrpo864l.png)
+
+
+用三角函数反函数求倾斜角即可。
+
+
+### 第四问
+
+将直线沿其垂线两个方向都平移 $r$ 的距离，得到两条直线。这里满足与直线相切的条件。
+
+再作一个以点 $A$ 为圆心，以 $r$ 为半径的圆。这里满足过点 $A$ 的条件。
+
+这个圆与两条直线的交点即为所求。
+
+![](https://cdn.luogu.com.cn/upload/image_hosting/2f5xsqnu.png)
+
+### 第五问
+
+将两条直线分别沿其垂线两个方向都平移 $r$ 的距离，得到四条直线。圆心在平移所得直线上的圆满足了与直线相切的条件。
+
+故圆心即为平移所得的直线的交点。
+
+### 第六问
+
+把两个圆的半径都加长 $r$。
+
+即 $EC=FD=GC=HD=r$。
+
+则这两个新圆的交点即为所求。
+
+所作圆与原本的两个圆刚好交与点 $E,G$ 或点 $F,H$。
+
+![](https://cdn.luogu.com.cn/upload/image_hosting/lfy2qa5y.png)
+
+### 说明
+
+各种东西的求法都放在上面贴的链接里喵。
+
+## 注意事项
+
+开根号的时候加上这句：
+
+```cpp
+#define sqrt(x) (x<-eps?NAN:(x<eps?0:sqrt(x)))
+```
+
+防止出现类似 `sqrt(-eps)` 的情况。
+
+否则会出现奇奇怪怪的东西。
+
+## 代码
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+#define db long double
+#define sqrt(x) (x<-eps?NAN:(x<eps?0:sqrt(x)))
+const db eps=1e-9,pi=acos(-1);
+pair<db,db>ercifangcheng(db a,db b,db c){return{(-b/2+sqrt(b*b/4-a*c))/a,(-b/2-sqrt(b*b/4-a*c))/a};}//解二次方程
+struct Point{db x,y;}A,B;
+bool operator==(Point a,Point b){return abs(a.x-b.x)<=eps&&abs(a.y-b.y)<=eps;}
+bool operator!=(Point a,Point b){return abs(a.x-b.x)>eps||abs(a.y-b.y)>eps;}
+bool operator<(Point a,Point b){return abs(a.x-b.x)<=eps?a.y<b.y:a.x<b.x;}
+bool IsNumber(Point A){return-1e18<A.x&&A.x<1e18&&-1e18<A.y&&A.y<1e18;}//判断是不是NAN
+struct Vector{Point s,e;};
+db cross(Vector a,Vector b){return(a.s.x-a.e.x)*(b.s.y-b.e.y)-(a.s.y-a.e.y)*(b.s.x-b.e.x);}//叉积
+db dis(Point a,Point b){return sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));}//两点距离
+db sqdis(Point a,Point b){return(a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y);}//两点距离平方
+db len(Point a,Point b,Point c){return abs(cross({a,b},{a,c}))/dis(a,b);}//点到直线距离
+db qingxiejiao(Point a,Point b){return atan((a.y-b.y)/(a.x-b.x));}//倾斜角
+bool OnOneLine(Point a,Point b,Point c){return abs(cross({a,b},{a,c}))<=eps;}//三点共线
+bool OnCircle(Point O,db r,Point P){return abs(sqdis(O,P)-r*r)<=eps;}//在圆上
+bool InCircle(Point O,db r,Point P){return sqdis(O,P)<r*r;}//在圆内
+bool OutCircle(Point O,db r,Point P){return sqdis(O,P)>r*r;}//在圆外
+Point zhongdian(Point A,Point B){return{(A.x+B.x)/2,(A.y+B.y)/2};}//中点
+Point zhixianjiaodian(Point A,Point B,Point C,Point D){//直线交点
+	db a1=A.y-B.y,b1=B.x-A.x,c1=A.x*(A.y-B.y)-A.y*(A.x-B.x),a2=D.y-C.y,b2=C.x-D.x,c2=D.x*(D.y-C.y)-D.y*(D.x-C.x);
+	return{(c1*b2-c2*b1)/(a1*b2-a2*b1),(a1*c2-a2*c1)/(a1*b2-a2*b1)};
+}Point chuizu(Point A,Point B,Point P){//垂足
+    db k=sqrt(sqdis(A,P)-len(A,B,P)*len(A,B,P))/dis(A,B);
+    return{A.x+(B.x-A.x)*k,A.y+(B.y-A.y)*k};
+}Point chuixian(Point A,Point B,Point P){//垂线上另一点
+    if(OnOneLine(A,B,P))return P==A?(Point){P.x+B.y-P.y,P.y-B.x+P.x}:(Point){P.x+A.y-P.y,P.y-A.x+P.x};
+    else return chuizu(A,B,P);
+}Point waixin(Point A,Point B,Point C){//外心
+    Point midAB=zhongdian(A,B),midBC=zhongdian(B,C);
+    return zhixianjiaodian(midAB,chuixian(A,B,midAB),midBC,chuixian(B,C,midBC));
+}Point neixin(Point A,Point B,Point C){//内心
+    db k1=1/dis(A,B),k2=1/dis(B,C),k3=1/dis(A,C);
+    Point P1={A.x+k1*(B.x-A.x),A.y+k1*(B.y-A.y)},P2={A.x+k3*(C.x-A.x),A.y+k3*(C.y-A.y)},midP=zhongdian(P1,P2),Q1={B.x+k2*(C.x-B.x),B.y+k2*(C.y-B.y)},Q2={B.x+k1*(A.x-B.x),B.y+k1*(A.y-B.y)},midQ=zhongdian(Q1,Q2);
+    return zhixianjiaodian(midP,chuixian(P1,P2,midP),midQ,chuixian(Q1,Q2,midQ));
+}pair<Point,Point>yuanxianjiaodian(Point O,db r,Point P,Point Q){//圆和直线的交点
+    db a1=-2*O.x,b1=-2*O.y,c1=r*r-O.x*O.x-O.y*O.y,A=Q.y-P.y,B=P.x-Q.x,C=P.x*Q.y-P.y*Q.x;
+    if(abs(A)<=eps){
+        db y=C/B;pair<db,db>x=ercifangcheng(1,a1,y*y+b1*y-c1);
+        return{ {x.first,y},{x.second,y} };
+    }else{
+        db u=1+B/A*B/A,v=b1-2*B/A*C/A-a1/A*B,w=C/A*C/A+a1/A*C-c1;
+        pair<db,db>y=ercifangcheng(u,v,w),x={C/A-B/A*y.first,C/A-B/A*y.second};
+        return{ {x.first,y.first},{x.second,y.second} };
+    }
+}pair<Point,Point>yuanjiaodian(Point O1,db r1,Point O2,db r2){//圆和圆的交点
+    db a1=-2*O1.x,b1=-2*O1.y,c1=r1*r1-O1.x*O1.x-O1.y*O1.y,a2=-2*O2.x,b2=-2*O2.y,c2=r2*r2-O2.x*O2.x-O2.y*O2.y,A=a1-a2,B=b1-b2,C=c1-c2;
+    if(abs(A)<=eps){
+        db y=C/B;pair<db,db>x=ercifangcheng(1,a1,y*y+b1*y-c1);
+        return{ {x.first,y},{x.second,y} };
+    }else{
+        db u=1+B/A*B/A,v=b1-2*B/A*C/A-a1/A*B,w=C/A*C/A+a1/A*C-c1;
+        pair<db,db>y=ercifangcheng(u,v,w),x={C/A-B/A*y.first,C/A-B/A*y.second};
+        return{ {x.first,y.first},{x.second,y.second} };
+    }
+}pair<pair<Point,Point>,pair<Point,Point>>pingyi(Point A,Point B,db l){//直线按其垂线的方向平移 l 的距离
+    db k=l/dis(A,B),y=B.y-A.y,x=B.x-A.x;
+    return{ { {A.x+k*y,A.y-k*x},{B.x+k*y,B.y-k*x} },{ {A.x-k*y,A.y+k*x},{B.x-k*y,B.y+k*x} } };
+}char s[50];
+int main(){
+    while(~scanf("%s",s)){
+        int L=strlen(s);
+        if(L==19){//第一问
+            db x1,y1,x2,y2,x3,y3;cin>>x1>>y1>>x2>>y2>>x3>>y3;
+            Point ans=waixin({x1,y1},{x2,y2},{x3,y3});db d=dis(ans,{x1,y1});
+            printf("(%.6Lf,%.6Lf,%.6Lf)\n",ans.x,ans.y,d);
+        }if(L==15){//第二问
+            db x1,y1,x2,y2,x3,y3;cin>>x1>>y1>>x2>>y2>>x3>>y3;
+            Point ans=neixin({x1,y1},{x2,y2},{x3,y3});db d=len({x1,y1},{x2,y2},ans);
+            printf("(%.6Lf,%.6Lf,%.6Lf)\n",ans.x,ans.y,d);
+        }if(L==23){//第三问
+            db xc,yc,r,xp,yp;cin>>xc>>yc>>r>>xp>>yp;
+            if(InCircle({xc,yc},r,{xp,yp}))puts("[]");
+            if(OnCircle({xc,yc},r,{xp,yp})){
+                db th=qingxiejiao({xp,yp},chuixian({xp,yp},{xc,yc},{xp,yp}));if(th<0)th+=180;
+                printf("[%.6Lf]\n",th);
+            }if(OutCircle({xc,yc},r,{xp,yp})){
+                pair<Point,Point>ans=yuanjiaodian({xc,yc},r,zhongdian({xp,yp},{xc,yc}),dis({xp,yp},{xc,yc})/2);
+                db th1=qingxiejiao(ans.first,{xp,yp})/pi*180,th2=qingxiejiao(ans.second,{xp,yp})/pi*180;
+                if(th1<0)th1+=180;if(th2<0)th2+=180;if(th1>th2)swap(th1,th2);
+                printf("[%.6Lf,%.6Lf]\n",th1,th2);
+            }
+        }if(L==46){//第四问
+            db xp,yp,x1,y1,x2,y2,r;cin>>xp>>yp>>x1>>y1>>x2>>y2>>r;
+            pair<pair<Point,Point>,pair<Point,Point>>line=pingyi({x1,y1},{x2,y2},r);
+            pair<Point,Point>ans1=yuanxianjiaodian({xp,yp},r,line.first.first,line.first.second),ans2=yuanxianjiaodian({xp,yp},r,line.second.first,line.second.second);
+            vector<Point>ans;int use[4]={1,1,1,1};
+            if(IsNumber(ans1.first))ans.push_back(ans1.first);if(IsNumber(ans1.second))ans.push_back(ans1.second);if(IsNumber(ans2.first))ans.push_back(ans2.first);if(IsNumber(ans2.second))ans.push_back(ans2.second);
+            sort(ans.begin(),ans.end()),putchar('[');
+            for(int i=0;i<(int)ans.size()-1;i++)if(ans[i]==ans[i+1])use[i]=0;//去重
+            for(int i=0;i<ans.size();i++)if(use[i]){
+                printf("(%.6Lf,%.6Lf)",ans[i].x,ans[i].y);
+                if(i!=ans.size()-1)printf(",");
+            }puts("]");
+        }if(L==33){//第五问
+            db x1,y1,x2,y2,x3,y3,x4,y4,r;cin>>x1>>y1>>x2>>y2>>x3>>y3>>x4>>y4>>r;
+            pair<pair<Point,Point>,pair<Point,Point>>line1=pingyi({x1,y1},{x2,y2},r),line2=pingyi({x3,y3},{x4,y4},r);
+            Point ans[4]={zhixianjiaodian(line1.first.first,line1.first.second,line2.first.first,line2.first.second),zhixianjiaodian(line1.first.first,line1.first.second,line2.second.first,line2.second.second),zhixianjiaodian(line1.second.first,line1.second.second,line2.first.first,line2.first.second),zhixianjiaodian(line1.second.first,line1.second.second,line2.second.first,line2.second.second)};
+            sort(ans,ans+4),putchar('[');
+            for(int i=0;i<4;i++){printf("(%.6Lf,%.6Lf)",ans[i].x,ans[i].y);if(i!=3)putchar(',');}
+            puts("]");
+        }if(L==43){//第六问
+            db x1,y1,r1,x2,y2,r2,r;cin>>x1>>y1>>r1>>x2>>y2>>r2>>r;
+            pair<Point,Point>ans=yuanjiaodian({x1,y1},r1+r,{x2,y2},r2+r);
+            Point Ans[4];int cnt=0;
+            if(IsNumber(ans.first))Ans[cnt++]=ans.first;if(IsNumber(ans.second))Ans[cnt++]=ans.second;
+            sort(Ans,Ans+cnt);
+            if(Ans[0]==Ans[1])printf("[(%.6Lf,%.6Lf)]\n",Ans[0].x,Ans[0].y);
+            else{
+                putchar('[');
+                for(int i=0;i<cnt;i++){printf("(%.6Lf,%.6Lf)",Ans[i].x,Ans[i].y);if(i!=cnt-1)putchar(',');}
+                puts("]");
+            }
+        }
+    }return 0;
+}
+```

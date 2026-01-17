@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 248761254
+//  题目ID: T700184
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int n; long long dp[100000 + 5];
+struct FWT {
+#define lb(x) (x & ~x + 1)
+	long long s[100000 + 5];
+	void add(int x, int k) { while (x <= n) { s[x] = (s[x] + k) % mod; x += lb(x); } }
+	void add(int l, int r, int k) { add(l, k); add(r + 1, -k); }
+	int query(int x) { int res = 0; while (x) { res = (res + s[x]) % mod; x -= lb(x); } return res; }
+}t, t2[2];
+int32_t main() {
+	//file(trains);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n; dp[1] = 1;
+	for (int i = 1; i <= n; ++i) {
+		int x, d; cin >> d >> x;
+		dp[i] += t.query(i); dp[i] %= mod;
+		dp[i] += t2[i & 1].query(i / 2); dp[i] %= mod;
+		//cerr << "[debug]" << i << ':' << dp[i] << '\n';
+		if (d == 1) {
+			t.add(i + 1, i + x, dp[i]);
+			continue;
+		}
+		if (d == 2) {
+			t2[d & 1].add(i / 2 + 1, i / 2 + x, dp[i]);
+			continue;
+		}
+		if (!d) continue;
+		for (int t = 1; t <= x && i + t * d <= n; ++t)
+			dp[i + t * d] = (dp[i + t * d] + dp[i]) % mod;
+	}
+	long long ans = 0;
+	for (int i = 1; i <= n; ++i) ans = (ans + dp[i]) % mod;
+	cout << (ans + mod) % mod << endl;
+	return 0;
+}

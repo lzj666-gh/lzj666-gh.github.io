@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 115969922
+//  题目ID: T164526
+#include<bits/stdc++.h>
+using namespace std;
+string c;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>c;
+	if((c.size()+1)%2==0) cout<<"No"<<endl;
+	for(int i=1;i<=c.size()/2;i++){
+		if(c[i*2]!=c[i*2+1]){
+			cout<<"No"<<endl;
+			return 0;
+		}
+	}
+	cout<<"Yes"<<endl;
+	return 0;
+}

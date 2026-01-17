@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 133511280
+//  题目ID: T146886
+#include<bits/stdc++.h>
+using namespace std;
+int n,ans[100];
+void dfs(int k){
+	if(k==n+1){
+		for(int i=1;i<=n;++i) cout<<ans[i]<<' ';
+		cout<<endl;
+		return;
+	}
+	for(int i=1;i<=n;++i){
+		bool b=true;
+		for(int j=1;j<k;++j) if(ans[j]==i){b=false;break;}
+		if(b) ans[k]=i, dfs(k+1);
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	dfs(1);
+}

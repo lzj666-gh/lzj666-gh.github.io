@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 211693984
+//  题目ID: T575029
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+    cout<<"awu";
+    return 0;
+}

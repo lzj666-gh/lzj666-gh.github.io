@@ -1,0 +1,61 @@
+//  OJ: 洛谷
+//  提交ID: 249264797
+//  题目ID: T701340
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+const pair<int, int>d[] = { {-1,0},{1,0},{0,1},{0,-1} };
+int n, m, w, h; char s[1505][1505];
+int sum[1505][1505], srcx1, srcy1, srcx2, srcy2, tarx, tary;
+bool mp1[1505][1505], mp2[1505][1505], vis1[1505][1505], vis2[1505][1505];
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> m >> n >> w >> h >> srcx1 >> srcy1 >> srcx2 >> srcy2;
+	srcx1++; srcy1++; srcx2++; srcy2++;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j) {
+			cin >> s[i][j];
+			if (s[i][j] == '*') tarx = i, tary = j;
+			if (s[i][j] == 'X') sum[i][j] = 1;
+		}
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j)
+			sum[i][j] += sum[i - 1][j] + sum[i][j - 1] - sum[i - 1][j - 1];
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m - w + 1; ++j)
+			mp1[i][j] = !(sum[i][j + w - 1] - sum[i][j - 1] - sum[i - 1][j + w - 1] + sum[i - 1][j - 1]);
+	for (int i = 1; i <= n - h + 1; ++i)
+		for (int j = 1; j <= m; ++j)
+			mp2[i][j] = !(sum[i + h - 1][j] - sum[i - 1][j] - sum[i + h - 1][j - 1] + sum[i - 1][j - 1]);
+	//for (int i = 1; i <= n; ++i)
+	//	for (int j = 1; j <= m - w + 1; ++j)
+	//		cerr << mp1[i][j] << " \n"[j == m - w + 1];
+	//for (int i = 1; i <= n - h + 1; ++i)
+	//	for (int j = 1; j <= m; ++j)
+	//		cerr << mp2[i][j] << " \n"[j == m];
+	queue<pair<int, int>>q; q.emplace(srcx1, srcy1);
+	while (!q.empty()) {
+		auto[x, y] = q.front(); q.pop();
+		if (vis1[x][y]) continue; vis1[x][y] = 1;
+		for (const auto& [dx, dy] : d)
+			if (mp1[x + dx][y + dy])
+				q.emplace(x + dx, y + dy);
+	}
+	q.emplace(srcx2, srcy2);
+	while (!q.empty()) {
+		auto [x, y] = q.front(); q.pop();
+		if (vis2[x][y]) continue; vis2[x][y] = 1;
+		for (const auto& [dx, dy] : d)
+			if (mp2[x + dx][y + dy])
+				q.emplace(x + dx, y + dy);
+	}
+	bool flg1 = 0, flg2 = 0;
+	for (int i = max(tarx - h + 1, 1); i <= tarx; ++i)
+		flg1 |= vis2[i][tary];
+	for (int i = max(tary - w + 1, 1); i <= tary; ++i)
+		flg2 |= vis2[tarx][i];
+	if (flg1 && flg2) cout << "YES" << endl;
+	else cout << "NO" << endl;
+	return 0;
+}

@@ -1,0 +1,151 @@
+//  OJ: 洛谷
+//  提交ID: 234236612
+//  题目ID: T478169
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+#define all(a) (a).begin(), (a).end()
+#define rall(a) (a).rbegin(), (a).rend()
+#define int long long
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[400000 + 5];
+int head[200000 + 5], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int n, m;
+namespace Tree {
+	int fa[200000 + 5][20], mn[200000 + 5][20], mx[200000 + 5][20], dist[200000 + 5][20], dep[200000 + 5];
+	void dfs(int x, int f) {
+		dep[x] = dep[x - 1] + 1;
+		for (int i = 1; i < 20; ++i)
+			fa[x][i] = fa[fa[x][i - 1]][i - 1],
+			mn[x][i] = min(mn[x][i - 1], mn[fa[x][i - 1]][i - 1]),
+			mx[x][i] = max(mn[x][i - 1], mx[fa[x][i - 1]][i - 1]),
+			dist[x][i] = dist[x][i - 1] + dist[fa[x][i - 1]][i - 1];
+		for (int i = head[x]; i; i = edge[i].nxt)
+			if (edge[i].v ^ f)
+				mn[edge[i].v][0] = mx[edge[i].v][0] = dist[edge[i].v][0] = edge[i].w,
+				fa[edge[i].v][0] = x, dfs(edge[i].v, x);
+	}
+	int diss(int x, int y) {
+		if (dep[x] < dep[y]) swap(x, y);
+		int minn = 1e9, maxx = -1e9, dis = 0;
+		int gap = dep[x] - dep[y];
+		for (int i = 0; i < 20; ++i)
+			if ((1ll << i) & gap)
+				minn = min(minn, mn[x][i]),
+				maxx = max(maxx, mx[x][i]),
+				dis = dis + dist[x][i],
+				x = fa[x][i];
+		if (x == y) return minn - maxx + dis;
+		for (int i = 0; i < 20; ++i)
+			if (fa[x][i] ^ fa[y][i])
+				minn = min(minn, mn[x][i]),
+				maxx = max(maxx, mx[x][i]),
+				dis = dis + dist[x][i],
+				minn = min(minn, mn[y][i]),
+				maxx = max(maxx, mx[y][i]),
+				dis = dis + dist[y][i],
+				x = fa[x][i], y = fa[y][i];
+		int i = 0;
+		minn = min(minn, mn[x][i]);
+		maxx = max(maxx, mx[x][i]);
+		dis = dis + dist[x][i];
+		minn = min(minn, mn[y][i]);
+		maxx = max(maxx, mx[y][i]);
+		dis = dis + dist[y][i];
+		x = fa[x][i], y = fa[y][i];
+		return minn - maxx + dis;
+	}
+	void main() {
+		memset(mn, 0x3f, sizeof mn);
+		memset(mx, 0xcf, sizeof mx);
+		dfs(1, 1);
+		for (int i = 2; i <= n; ++i) {
+			int dis = diss(1, i);
+			if (dis > 2e14) cout << "1000000000000000000 ";
+			else cout << dis << ' ';
+		}
+	}
+}
+bool vis[200000 + 5], sub1 = 1, sub2 = 1, sub3 = 1;
+int cnt;
+void dfs_for_sub(int x, int fa) {
+	vis[x] = 1; ++cnt;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			if (vis[edge[i].v])
+				sub2 = 0;
+			else
+				dfs_for_sub(edge[i].v, x);
+}
+namespace Verysmall {
+	int ans[20], cntt[20];
+	void bfs() {
+		memset(ans, 0x3f, sizeof ans);
+		struct Node {
+			int x, minn, maxx, sum;
+			Node(int x, int minn, int maxx, int sum) :x(x), minn(minn), maxx(maxx), sum(sum) {}
+		};
+		queue<Node>q;
+		q.emplace(1, 1e9, -1e9, 0);
+		while (!q.empty()) {
+			Node now = q.front(); q.pop();
+			ans[now.x] = min(ans[now.x], now.minn - now.maxx + now.sum);
+			if (++cntt[now.x] > 100) break;
+			for (int i = head[now.x]; i; i = edge[i].nxt)
+				q.emplace(edge[i].v, min(now.minn, edge[i].w), max(now.maxx, edge[i].w), now.sum + edge[i].w);
+		}
+		for (int i = 2; i <= n; ++i)
+			if (ans[i] > 2e14) cout << "1000000000000000000 ";
+			else cout << ans[i] << ' ';
+	}
+}
+namespace allequal {
+	int ans[200000 + 5], cntt[200000 + 5];
+	void bfs() {
+		memset(ans, 0x3f, sizeof ans);
+		struct Node {
+			int x, minn, maxx, sum;
+			Node(int x, int minn, int maxx, int sum) :x(x), minn(minn), maxx(maxx), sum(sum) {}
+		};
+		queue<Node>q;
+		q.emplace(1, 1e9, -1e9, 0);
+		while (!q.empty()) {
+			Node now = q.front(); q.pop();
+			ans[now.x] = min(ans[now.x], now.minn - now.maxx + now.sum);
+			if (++cntt[now.x] > 1) break;
+			for (int i = head[now.x]; i; i = edge[i].nxt)
+				q.emplace(edge[i].v, min(now.minn, edge[i].w), max(now.maxx, edge[i].w), now.sum + edge[i].w);
+		}
+		for (int i = 2; i <= n; ++i)
+			if (ans[i] > 2e14) cout << "1000000000000000000 ";
+			else cout << ans[i] << ' ';
+	}
+}
+int32_t main() {
+//	file(b);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m; sub1 = n <= 10 && m <= 10;
+	for (int i = 1, u, v, w; i <= m; ++i)
+		cin >> u >> v >> w, add(u, v, w), add(v, u, w), sub3 &= w == edge[1].w;
+	dfs_for_sub(1, 1);
+	sub2 &= cnt == n;
+	if (sub1) {
+		Verysmall::bfs();
+		return 0;
+	}
+	if (sub2) {
+		Tree::main();
+		return 0;
+	}
+	if (sub3) {
+		allequal::bfs();
+		return 0;
+	}
+	for (int i = 2; i <= n; ++i) cout << "1000000000000000000 ";
+	return 0;
+}

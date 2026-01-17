@@ -1,0 +1,182 @@
+//  OJ: 洛谷
+//  提交ID: 235506194
+//  题目ID: T666108
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+typedef unsigned int uint;
+uint state;
+
+inline uint next_random() {
+    state = state ^ (state << 13);
+    state = state ^ (state >> 17);
+    state = state ^ (state << 5);
+    while (state >= (1ULL << 32)) state -= (1ULL << 32);
+    return state;
+}
+
+inline int random(int l, int r) {
+    return next_random() % (r - l + 1) + l;
+}
+
+int n, m, k, x, y, p;
+vector<vector<int>> a;
+
+struct ColNode {
+    int l, r;
+    int prod;
+    int left, right;
+};
+
+vector<ColNode> col_pool;
+int col_idx;
+
+int build_col_tree(int l, int r, const vector<int>& arr) {
+    int id = col_idx++;
+    col_pool[id].l = l;
+    col_pool[id].r = r;
+    if (l == r) {
+        col_pool[id].prod = arr[l] % p;
+        col_pool[id].left = -1;
+        col_pool[id].right = -1;
+        return id;
+    }
+    int mid = (l + r) / 2;
+    int left_id = build_col_tree(l, mid, arr);
+    int right_id = build_col_tree(mid + 1, r, arr);
+    col_pool[id].left = left_id;
+    col_pool[id].right = right_id;
+    col_pool[id].prod = (1LL * col_pool[left_id].prod * col_pool[right_id].prod) % p;
+    return id;
+}
+
+int merge_col_tree(int root1, int root2, int l, int r) {
+    if (l == r) {
+        int prod = (1LL * col_pool[root1].prod * col_pool[root2].prod) % p;
+        int id = col_idx++;
+        col_pool[id].l = l;
+        col_pool[id].r = r;
+        col_pool[id].prod = prod;
+        col_pool[id].left = -1;
+        col_pool[id].right = -1;
+        return id;
+    }
+    int mid = (l + r) / 2;
+    int left1 = col_pool[root1].left;
+    int right1 = col_pool[root1].right;
+    int left2 = col_pool[root2].left;
+    int right2 = col_pool[root2].right;
+    int left_id = merge_col_tree(left1, left2, l, mid);
+    int right_id = merge_col_tree(right1, right2, mid + 1, r);
+    int id = col_idx++;
+    col_pool[id].l = l;
+    col_pool[id].r = r;
+    col_pool[id].left = left_id;
+    col_pool[id].right = right_id;
+    col_pool[id].prod = (1LL * col_pool[left_id].prod * col_pool[right_id].prod) % p;
+    return id;
+}
+
+struct RowNode {
+    int l, r;
+    int col_root;
+    int left, right;
+};
+
+vector<RowNode> row_pool;
+int row_idx;
+
+int build_row_tree(int l, int r) {
+    int id = row_idx++;
+    row_pool[id].l = l;
+    row_pool[id].r = r;
+    if (l == r) {
+        row_pool[id].col_root = build_col_tree(0, m - 1, a[l]);
+        row_pool[id].left = -1;
+        row_pool[id].right = -1;
+        return id;
+    }
+    int mid = (l + r) / 2;
+    int left_id = build_row_tree(l, mid);
+    int right_id = build_row_tree(mid + 1, r);
+    row_pool[id].left = left_id;
+    row_pool[id].right = right_id;
+    row_pool[id].col_root = merge_col_tree(row_pool[left_id].col_root, row_pool[right_id].col_root, 0, m - 1);
+    return id;
+}
+
+int query_col(int col_root, int col_l, int col_r) {
+    ColNode& node = col_pool[col_root];
+    if (col_l <= node.l && node.r <= col_r) {
+        return node.prod;
+    }
+    int mid = (node.l + node.r) / 2;
+    int res = 1;
+    if (col_l <= mid) {
+        res = (1LL * res * query_col(node.left, col_l, min(col_r, mid))) % p;
+    }
+    if (col_r > mid) {
+        res = (1LL * res * query_col(node.right, max(col_l, mid + 1), col_r)) % p;
+    }
+    return res;
+}
+
+int query_row(int row_root, int row_l, int row_r, int col_l, int col_r) {
+    RowNode& node = row_pool[row_root];
+    if (row_l <= node.l && node.r <= row_r) {
+        return query_col(node.col_root, col_l, col_r);
+    }
+    int mid = (node.l + node.r) / 2;
+    int res = 1;
+    if (row_l <= mid) {
+        res = (1LL * res * query_row(node.left, row_l, min(row_r, mid), col_l, col_r)) % p;
+    }
+    if (row_r > mid) {
+        res = (1LL * res * query_row(node.right, max(row_l, mid + 1), row_r, col_l, col_r)) % p;
+    }
+    return res;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    cin >> n >> m >> k >> x >> y >> p;
+    a.resize(n, vector<int>(m));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            cin >> a[i][j];
+        }
+    }
+    cin >> state;
+
+    col_pool.resize(4 * n * m + 10);
+    row_pool.resize(4 * n + 10);
+    col_idx = 0;
+    row_idx = 0;
+
+    int root = build_row_tree(0, n - 1);
+
+    int min_len_x = x + 1;
+    int max_len_x = min(2 * x, n);
+    int min_len_y = y + 1;
+    int max_len_y = min(2 * y, m);
+
+    uint res = 0;
+    for (int i = 0; i < k; i++) {
+        int len_x = random(min_len_x, max_len_x);
+        int len_y = random(min_len_y, max_len_y);
+        int xmin = random(0, n - len_x);
+        int ymin = random(0, m - len_y);
+        int xmax = xmin + len_x - 1;
+        int ymax = ymin + len_y - 1;
+        int ans = query_row(root, xmin, xmax, ymin, ymax);
+        res ^= ans;
+    }
+    cout << res << endl;
+
+    return 0;
+}

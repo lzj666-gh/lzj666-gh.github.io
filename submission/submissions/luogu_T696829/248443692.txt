@@ -1,0 +1,66 @@
+//  OJ: 洛谷
+//  提交ID: 248443692
+//  题目ID: T696829
+#include <bits/stdc++.h>
+using namespace std;
+const int MOD = 998244353;
+
+int inv(int a) {
+    int b = MOD, x0 = 0, x1 = 1;
+    while (a > 1) {
+        int q = a / b;
+        int t = b;
+        b = a % b;
+        a = t;
+        t = x0;
+        x0 = x1 - q * x0;
+        x1 = t;
+    }
+    if (x1 < 0) x1 += MOD;
+    return x1;
+}
+
+int main() {
+    int n, p, q;
+    cin >> n >> p >> q;
+    int inv_p = inv(p);
+    int inv_q = inv(q);
+
+    // dp[i][j]: µÚi·ÖÖÓ£¬Á¬ÐøÑ§Ï°ÁËj·ÖÖÓµÄ¸ÅÂÊ
+    vector<vector<int>> dp(n + 1, vector<int>(p, 0));
+    dp[0][0] = 1;
+    
+    int ans = 0;
+    
+    for (int i = 0; i < n; i++) {
+        for (int k = 0; k < p; k++) {
+            if (dp[i][k] == 0) continue;
+            
+            int fish_prob, study_prob;
+            
+            if (k >= p - 1) {
+                // ±ØÐëÃþÓã
+                fish_prob = 1;
+                study_prob = 0;
+            } else {
+                fish_prob = (long long)(k + 1) * inv_p % MOD;
+                study_prob = (1 - fish_prob + MOD) % MOD;
+            }
+            
+            // ÃþÓãµÄÇé¿ö
+            int fish_transition = (long long)dp[i][k] * fish_prob % MOD;
+            dp[i + 1][0] = (dp[i + 1][0] + fish_transition) % MOD;
+            // ÃþÓãÇÒ±»ÀÏÊ¦×¥µ½µÄÆÚÍû
+            ans = (ans + (long long)fish_transition * inv_q) % MOD;
+            
+            // Ñ§Ï°µÄÇé¿ö
+            if (study_prob > 0) {
+                int study_transition = (long long)dp[i][k] * study_prob % MOD;
+                dp[i + 1][k + 1] = (dp[i + 1][k + 1] + study_transition) % MOD;
+            }
+        }
+    }
+    
+    cout << ans << endl;
+    return 0;
+}

@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 249874981
+//  题目ID: T702638
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+int n;
+struct FWT {
+	int s[1500 + 5];
+	void clear(int x) { while (x <= n && s[x]) { s[x] = 0; x += x & ~x + 1; } }
+	void update(int x, int k) { while (x <= n) { s[x] = max(s[x], k); x += x & ~x + 1; } }
+	int query(int x) { int res = 0; while (x) { res = max(res, s[x]); x -= x & ~x + 1; } return res; }
+}t;
+unordered_map<int, vector<pair<int, int>>>appear;
+int A[1500 + 5][1500 + 5], ans1[1500 + 5][1500 + 5], ans2[1500 + 5][1500 + 5];
+int cnt[3000 + 5];
+int32_t main() {
+	file(food);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= n; ++j)
+			cin >> A[i][j], appear[A[i][j]].emplace_back(i, j);
+	for (auto& p : appear) {
+		auto& v = p.second;
+		for (const auto& [x, y] : v) {
+			ans1[x][y] = t.query(y) + 1;
+			t.update(y, ans1[x][y]);
+		}
+		for (const auto& [x, y] : v) t.clear(y);
+		reverse(v.begin(), v.end());
+		for (const auto& [x, y] : v) {
+			ans2[x][y] = t.query(n - y + 1) + 1;
+			t.update(n - y + 1, ans2[x][y]);
+		}
+		for (const auto& [x, y] : v) t.clear(n - y + 1);
+	}
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= n; ++j)
+			cnt[ans1[i][j] + ans2[i][j] - 1]++;
+	for (int i = 1; i < n + n; ++i) cout << cnt[i] << endl;
+	return 0;
+}

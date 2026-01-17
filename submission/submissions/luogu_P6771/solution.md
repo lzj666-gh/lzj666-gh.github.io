@@ -20,14 +20,14 @@ dp_{i,j}=
 \begin{cases}\\\\\\\\\\\end{cases}
 \begin{matrix}
 dp_{i-1,j} && \text{用}0\text{块第}i\text{种方块}\\
-dp_{i-1,j-h_{i}} && \text{用}1\text{块第}i\text{种方块}\\
+dp_{i-1,j-h_{i} } && \text{用}1\text{块第}i\text{种方块}\\
 &\ldots&\\
-dp_{i-1,j-k\times h_{i}} && \text{用}k\text{块第i种方块}\\
+dp_{i-1,j-k\times h_{i} } && \text{用}k\text{块第i种方块}\\
 &\ldots&\\
-dp_{i-1,j-c_{i}\times h_{i}} && \text{用}c_{i}\text{块第}i\text{种方块}\\
+dp_{i-1,j-c_{i}\times h_{i} } && \text{用}c_{i}\text{块第}i\text{种方块}\\
 \end{matrix}$  
 $
-dp_{i,j}|=dp{i,j-k\times h_{i}};(h_{i}\le j\le a_{i}, 1\le k\le c_i)
+dp_{i,j}|=dp{i,j-k\times h_{i} };(h_{i}\le j\le a_{i}, 1\le k\le c_i)
 $  
 
 **初始状态**：  
@@ -35,7 +35,7 @@ $dp_{i,j}=\mathrm{false};dp_{0,0}=\mathrm{true}$
 
 
 最后物品维可以直接省掉，即：  
-$dp_{j}|=dp_{j-k\times h_{i}};(h_{i}\le j\le a_{i}, 1\le k\le c_i)$
+$dp_{j}|=dp_{j-k\times h_{i} };(h_{i}\le j\le a_{i}, 1\le k\le c_i)$
 
 那么写出这三要素就很容易写出代码了
 

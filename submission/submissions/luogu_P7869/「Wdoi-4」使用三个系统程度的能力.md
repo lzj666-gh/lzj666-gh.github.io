@@ -21,11 +21,11 @@ $$\colorbox{f5f5f5}{\verb!SCP2021 J rp plus plus\r\nchen zhe AK IOI\r\n\r\nWelco
 
 - $\text{Linux}$ 系统：
 
-$$\colorbox{f5f5f5}{\verb!SCP2021 J rp plus plus\nchen zhe AK IOI\n\nWelcome to Hell!\kern{31.5pt}}$$
+$$\colorbox{f5f5f5}{\verb!SCP2021 J rp plus plus\nchen zhe AK IOI\n\nWelcome to Hell!\kern{31.5pt} }$$
 
 - $\text{Mac}$ 系统：
 
-$$\colorbox{f5f5f5}{\verb!SCP2021 J rp plus plus\rchen zhe AK IOI\r\rWelcome to Hell!\kern{31.5pt}}$$ 
+$$\colorbox{f5f5f5}{\verb!SCP2021 J rp plus plus\rchen zhe AK IOI\r\rWelcome to Hell!\kern{31.5pt} }$$ 
 
 ---
 
@@ -41,7 +41,7 @@ $$\colorbox{f5f5f5}{\verb!SCP2021 J rp plus plus\rchen zhe AK IOI\r\rWelcome to 
 
 ## 提示
 
-样例 $4$ 见下发的附件 $\textbf{\textit{system4.in}/\textit{system4.out}}$。
+样例 $4$ 见下发的附件 $\textbf{\textit{system4.in}/\textit{system4.out} }$。
 
 #### 数据范围
 

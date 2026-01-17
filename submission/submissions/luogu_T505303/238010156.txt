@@ -1,0 +1,123 @@
+//  OJ: 洛谷
+//  提交ID: 238010156
+//  题目ID: T505303
+#include<bits/stdc++.h>
+#define int long long
+#define all(a) (a).begin(), (a).end()
+#define rall(a) (a).rbegin(), a.rend()
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout), freopen(#a".err", "w", stderr)
+using namespace std;
+int x[200000 + 5], y[200000 + 5];
+int sum(int beg, int stp, int cnt) {
+	return (beg + beg + stp * (cnt - 1)) * cnt / 2;
+}
+int32_t main() {
+	// file(bride);
+	cin.tie(0)->sync_with_stdio(false);
+	int id, n, q; cin >> id >> n >> q;
+	for (int i = 1; i <= n; ++i) cin >> x[i] >> y[i];
+	while (q--) {
+		int u, v, lx, rx, ly, ry, cnt0 = 0, cnt1 = 0, cnt2 = 0;
+		cin >> u >> v >> lx >> rx >> ly >> ry;
+		bool flg = 1, flgg = 0;
+		if (x[u] > x[v]) swap(u, v), flg = 0;
+		if (y[u] > y[v]) {
+			flgg = 1;
+			y[u] = y[v] - (y[u] - y[v]);
+			ly = y[v] - (ly - y[v]);
+			ry = y[v] - (ry - y[v]);
+			swap(ly, ry);
+		}
+		if (y[u] <= y[v]) {
+			//cerr << x[u] << ',' << y[u] << ' ' << x[v] << ',' << y[v] << endl;
+			//cerr << "  " << lx << ' ' << rx << ' ' << ly << ' '<<ry << endl;
+			int matx = x[v] - x[u], maty = y[v] - y[u];
+			int qwq = matx + maty;
+			lx -= x[u]; rx -= x[u]; ly -= y[u]; ry -= y[u];
+			//cerr << "   " << lx << ' ' << rx << ' ' << ly << ' ' << ry << endl;
+			if (qwq & 1) {
+				int y1 = qwq / 2 - lx, y2 = qwq / 2 - rx;
+				if (y1 < ly) {
+					cnt1 = (rx - lx + 1) * (ry - ly + 1);
+					goto print;
+				}
+				if (y2 > ry) {
+					cnt0 = (rx - lx + 1) * (ry - ly + 1);
+					goto print;
+				}
+				if (ry < y1) {
+					int t = y1 - ry;
+					cnt0 += t * (ry - ly + 1);
+					lx += t;
+					y1 = qwq / 2 - lx;
+				}
+				if (y2 < ly) {
+					int t = ly - y2;
+					cnt1 += t * (ry - ly + 1);
+					rx -= t;
+					y2 = qwq / 2 - rx;
+				}
+				if (y1 + 1 < ry) {
+					int t = ry - (y1 + 1);
+					cnt1 += t * (rx - lx + 1);
+					ry -= t;
+				}
+				if (y2 > ly) {
+					int t = y2 - ly;
+					cnt0 += t * (rx - lx + 1);
+					ly += t;
+				}
+				//cerr << lx << ' ' << rx << ' ' << ly << ' ' << ry << endl;
+				cnt0 += sum(y1 - ly + 1, -1, rx - lx + 1);
+				cnt1 += sum(ry - y1, 1, rx - lx + 1);
+			}
+			else {
+				int y1 = qwq / 2 - lx, y2 = qwq / 2 - rx;
+				if (y1 < ly) {
+					cnt1 = (rx - lx + 1) * (ry - ly + 1);
+					goto print;
+				}
+				if (y2 > ry) {
+					cnt0 = (rx - lx + 1) * (ry - ly + 1);
+					goto print;
+				}
+				if (ry < y1) {
+					int t = y1 - ry;
+					cnt0 += t * (ry - ly + 1);
+					lx += t;
+					y1 = qwq / 2 - lx;
+				}
+				if (y2 < ly) {
+					int t = ly - y2;
+					cnt1 += t * (ry - ly + 1);
+					rx -= t;
+					y2 = qwq / 2 - rx;
+				}
+				if (y1 < ry) {
+					int t = ry - y1;
+					cnt1 += t * (rx - lx + 1);
+					ry -= t;
+				}
+				if (y2 > ly) {
+					int t = y2 - ly;
+					cnt0 += t * (rx - lx + 1);
+					ly += t;
+				}
+				//cerr << lx << ' ' << rx << ' ' << ly << ' ' << ry << endl;
+				cnt0 += sum(y1 - ly, -1, rx - lx);
+				cnt1 += sum(1, 1, rx - lx);
+				cnt2 = ry - ly + 1;
+			}
+		}
+		else {
+			cerr << "Error!" << endl;
+		}
+	print:
+		if (flg) swap(cnt0, cnt1);
+		if (flgg) {
+			y[u] = y[v] - (y[u] - y[v]);
+		}
+		cout << cnt0 << ' ' << cnt1 << ' ' << cnt2 << endl;
+	}
+	return 0;
+}

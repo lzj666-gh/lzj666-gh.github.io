@@ -33,4 +33,4 @@ int main() {
 }
 ```
 
-复杂度为 $\mathcal{O}(q \times \dfrac{r-l-\text{次数}}{9})$
+复杂度为 $\mathcal{O}(q \times \dfrac{r-l-\text{次数} }{9})$

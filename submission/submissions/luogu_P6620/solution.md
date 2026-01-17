@@ -14,7 +14,7 @@
 
 直接来看题目给的式子：
 
-$$\sum_{k=0}^{n}{f(k)\times x^k\times\binom{n}{k}}$$
+$$\sum_{k=0}^{n}{f(k)\times x^k\times\binom{n}{k} }$$
 
 这个 $f(k)$ 我们肯定是要拆开来算的，但如果你把它拆成单项式，就会像我一样在考场里浪费光阴，因为这个单项式和组合数不是很搭。
 
@@ -22,39 +22,39 @@ $$\sum_{k=0}^{n}{f(k)\times x^k\times\binom{n}{k}}$$
 
 具体来说，假如我们有一个这样的下降幂单项式：
 
-$$k^{\underline{m}}=\prod_{i=k-m+1}^{k}{i}$$
+$$k^{\underline{m} }=\prod_{i=k-m+1}^{k}{i}$$
 
 你会发现它和组合数相乘有非常漂亮的结果：
 
-$$\binom{n}{k}\times k^{\underline{m}}=\binom{n-m}{k-m}\times n^{\underline{m}}$$
+$$\binom{n}{k}\times k^{\underline{m} }=\binom{n-m}{k-m}\times n^{\underline{m} }$$
 
 证明的话把组合数拆成阶乘随便消下就能得证。
 
-于是我们考虑把题目中所给的 $f(k)=\sum_{i=0}^{m}{a_ik^i}$ 转化成下降幂多项式 $f(k)=\sum_{i=0}^{m}{b_ik^{\underline{i}}}$
+于是我们考虑把题目中所给的 $f(k)=\sum_{i=0}^{m}{a_ik^i}$ 转化成下降幂多项式 $f(k)=\sum_{i=0}^{m}{b_ik^{\underline{i} } }$
 
-$$\sum_{k=0}^{n}{\sum_{i=0}^{m}{b_ik^{\underline{i}}}\times x^k\times\binom{n}{k}}=\sum_{i=0}^{m}{b_in^{\underline{i}}\sum_{k=0}^{n}{\binom{n-i}{k-i}x^k}}$$
+$$\sum_{k=0}^{n}{\sum_{i=0}^{m}{b_ik^{\underline{i} } }\times x^k\times\binom{n}{k} }=\sum_{i=0}^{m}{b_in^{\underline{i} }\sum_{k=0}^{n}{\binom{n-i}{k-i}x^k} }$$
 
 发现当 $i>k$ 时里头值直接为 $0$ 了可以扔掉，于是内层改成枚举 $k-i$，式子就变成了这样：
 
-$$\sum_{i=0}^{m}{b_in^{\underline i}\sum_{k=0}^{n-i}{\binom{n-i}{k}x^{k+i}}}=\sum_{i=0}^{m}{b_in^{\underline i}x^i\sum_{k=0}^{n-i}{\binom{n-i}{k}x^k}}$$
+$$\sum_{i=0}^{m}{b_in^{\underline i}\sum_{k=0}^{n-i}{\binom{n-i}{k}x^{k+i} } }=\sum_{i=0}^{m}{b_in^{\underline i}x^i\sum_{k=0}^{n-i}{\binom{n-i}{k}x^k} }$$
 
 这时我们发现里头直接变成了 $m=0$ 的部分分，随便套一下我们在小学二年级就学习过的二项式定理可以知道：
 
-$$\sum_{k=0}^{n-i}{\binom{n-i}{k}x^k1^{n-i-k}}=(x+1)^{n-i}$$
+$$\sum_{k=0}^{n-i}{\binom{n-i}{k}x^k1^{n-i-k} }=(x+1)^{n-i}$$
 
 于是题目的式子最终可以变成这样：
 
-$$\sum_{i=0}^{m}{b_in^{\underline i}x^i(x+1)^{n-i}}$$
+$$\sum_{i=0}^{m}{b_in^{\underline i}x^i(x+1)^{n-i} }$$
 
 如果我们知道所有的 $b_i$ 就可以在 $O(m)$ 的复杂度内计算出结果，于是最后问题落在了普通多项式转下降幂多项式上。
 
 而我们又知道：
 
-$$x^n=\sum_{i=0}^{n}{\begin{Bmatrix}n\\i\end{Bmatrix}}x^{\underline i}$$
+$$x^n=\sum_{i=0}^{n}{\begin{Bmatrix}n\\i\end{Bmatrix} }x^{\underline i}$$
 
 因此有：
 
-$$\begin{aligned}\sum_{i=0}^{m}{a_ik^i}&=\sum_{i=0}^{m}{a_i\sum_{j=0}^{i}{\begin{Bmatrix}i\\j\end{Bmatrix}k^{\underline j}}}\\&=\sum_{i=0}^{m}{k^{\underline i}\sum_{j=i}^{m}{\begin{Bmatrix}j\\i\end{Bmatrix}a_j}}\end{aligned}$$
+$$\begin{aligned}\sum_{i=0}^{m}{a_ik^i}&=\sum_{i=0}^{m}{a_i\sum_{j=0}^{i}{\begin{Bmatrix}i\\j\end{Bmatrix}k^{\underline j} } }\\&=\sum_{i=0}^{m}{k^{\underline i}\sum_{j=i}^{m}{\begin{Bmatrix}j\\i\end{Bmatrix}a_j} }\end{aligned}$$
 
 也就是说：
 

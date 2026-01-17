@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 241009230
+//  题目ID: T518816
+#include<bits/stdc++.h>
+#define all(a) (a).begin(), (a).end()
+#define file(a) { freopen(#a".in", "r", stdin); freopen(#a".out", "w", stdout); }
+using namespace std;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m; cin >> n >> m;
+	vector<int>a(n), b(m);
+	for (auto& p : a) cin >> p;
+	for (auto& p : b) cin >> p;
+	sort(all(a)); sort(all(b));
+	deque<int>a1(lower_bound(all(a), 0), a.end()), a2(a.begin(), lower_bound(all(a), 0));
+	deque<int>b1(lower_bound(all(b), 0), b.end()), b2(b.begin(), lower_bound(all(b), 0));
+	long long ans = 0;
+	for (int i = n - 1; i >= 0; --i) {
+		long long res = LLONG_MIN; int mode = -1;
+		if (a1.size() && b1.size() && res < 1ll * a1.back() * b1.back()) {
+			res = 1ll * a1.back() * b1.back();
+			mode = 1;
+		}
+		if (a2.size() && b2.size() && res < 1ll * a2.front() * b2.front()) {
+			res = 1ll * a2.front() * b2.front();
+			mode = 2;
+		}
+		if (a1.size() && b2.size() && res < 1ll * a1.back() * b2.front()) {
+			res = 1ll * a1.back() * b2.front();
+			mode = 3;
+		}
+		if (a2.size() && b1.size() && res < 1ll * a2.front() * b1.back()) {
+			res = 1ll * a2.front() * b1.back();
+			mode = 4;
+		}
+		ans += res;
+		switch (mode) {
+		case 1:
+			a1.pop_back(); b1.pop_back();
+			break;
+		case 2:
+			a2.pop_front(); b2.pop_front();
+			break;
+		case 3:
+			a1.pop_back(); b2.pop_front();
+			break;
+		case 4:
+			a2.pop_front(); b1.pop_back();
+			break;
+		default:
+			throw logic_error("No such cases!");
+		}
+	}
+	cout << ans << endl;
+	return 0;
+}

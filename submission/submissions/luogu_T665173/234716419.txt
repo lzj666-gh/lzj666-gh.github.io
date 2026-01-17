@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 234716419
+//  题目ID: T665173
+#include<bits/stdc++.h>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+int dp[100 + 5][100 + 5][2][100 + 5], n, m, a, b, c, T;
+// dp[i][j][p][q] : used i A and j B,now is p,and the last q all is p,too.
+int32_t main() {
+	// file(string);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> T;
+	while (T--) {
+		cin >> n >> m >> a >> b >> c;
+		memset(dp, 0, sizeof dp);
+		for (int i = 0; i <= n; ++i) {
+			for (int j = 0; j <= m; ++j) {
+				for (int q = 1; q <= i; ++q) {
+					dp[i + 1][j][0][q + 1] = max(dp[i][j][0][q] - (q - 1) / a + q / a, dp[i + 1][j][0][q + 1]);
+					dp[i][j + 1][1][1] = max(dp[i][j][0][q] + 1, dp[i][j + 1][1][1]);
+				}
+				for (int q = 1; q <= j; ++q) {
+					dp[i][j + 1][1][q + 1] = max(dp[i][j][1][q] - (q - 1) / b + q / b, dp[i][j + 1][1][q + 1]);
+					if (q >= c) dp[i + 1][j][0][1] = max(dp[i][j][1][q] + 1, dp[i + 1][j][0][1]);
+				}
+			}
+		}
+		int ans = 0;
+		for (int i = 0; i <= n; ++i) ans = max(ans, dp[n][m][0][i]);
+		for (int i = 0; i <= m; ++i) ans = max(ans, dp[n][m][1][i]);
+		cout << ans + 1 << endl;
+	}
+	return 0;
+}

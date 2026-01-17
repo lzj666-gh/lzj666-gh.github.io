@@ -41,17 +41,17 @@
 
 #### （二）求交点
 
-对于 $\vec{a}(start_{\vec{a}},end_{\vec{a}})$ 和 $\vec{b}(start_{\vec{b}},end_{\vec{b}})$ 两个向量表示的直线的交点 O，有：
-$$x_O=(S_1\times x_{start_{\vec{b}}}-S_2\times x_{end_{\vec{b}}})/(S_1-S_2)$$
-$$y_O=(S_1\times y_{start_{\vec{b}}}-S_2\times y_{end_{\vec{b}}})/(S_1-S_2)$$
+对于 $\vec{a}(start_{\vec{a} },end_{\vec{a} })$ 和 $\vec{b}(start_{\vec{b} },end_{\vec{b} })$ 两个向量表示的直线的交点 O，有：
+$$x_O=(S_1\times x_{start_{\vec{b} } }-S_2\times x_{end_{\vec{b} } })/(S_1-S_2)$$
+$$y_O=(S_1\times y_{start_{\vec{b} } }-S_2\times y_{end_{\vec{b} } })/(S_1-S_2)$$
 
-其中 $S_1,S_2$ 分别为 $(end_{\vec{b}}-start_{\vec{a}})\times(end_{\vec{a}}-start_{\vec{a}})$ 和 $(start_{\vec{b}}-start_{\vec{a}})\times(end_{\vec{a}}-start_{\vec{a}})$（向量叉积）。
+其中 $S_1,S_2$ 分别为 $(end_{\vec{b} }-start_{\vec{a} })\times(end_{\vec{a} }-start_{\vec{a} })$ 和 $(start_{\vec{b} }-start_{\vec{a} })\times(end_{\vec{a} }-start_{\vec{a} })$（向量叉积）。
 
 ##### 证明：
 
 ![](https://cdn.luogu.com.cn/upload/image_hosting/0kq4bohi.png)
 
-由[共边定理](https://baike.baidu.com/item/%E5%85%B1%E8%BE%B9%E5%AE%9A%E7%90%86/5508944?fr=aladdin)可得：$\dfrac{end_{\vec{b}}\,O}{O\,start_{\vec{b}}}=\dfrac{S_1}{S_2}$（有向线段长和有向面积）。然后又因为 $S_1,S_2$ 是用向量叉积算的所以满足条件。得证。
+由[共边定理](https://baike.baidu.com/item/%E5%85%B1%E8%BE%B9%E5%AE%9A%E7%90%86/5508944?fr=aladdin)可得：$\dfrac{end_{\vec{b} }\,O}{O\,start_{\vec{b} } }=\dfrac{S_1}{S_2}$（有向线段长和有向面积）。然后又因为 $S_1,S_2$ 是用向量叉积算的所以满足条件。得证。
 
 #### （三）凸包
 

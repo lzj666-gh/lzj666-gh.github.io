@@ -99,16 +99,16 @@ ll GetSum(int n) { // 算 f 前缀和的函数
   } return ans; 
 }
 ```
-这个代码的复杂度是 $O(n^{\frac{3}{4}})$，证明如下：
+这个代码的复杂度是 $O(n^{\frac{3}{4} })$，证明如下：
 
 设求出 $S(n)$ 的复杂度是 $T(n)$ ，要求出 $S(n)$ 需要求出 $\sqrt n$ 个 $S (\lfloor \frac{n}{i} \rfloor)$ 的值，结合数论分块的复杂度 $O(\sqrt n)$ 可得：
-$$T(n) = \sum\limits_{i=1}^{\sqrt n} O(\sqrt i) + O(\sqrt {\frac{n}{i}})=O(n^{\frac{3}{4}})$$
+$$T(n) = \sum\limits_{i=1}^{\sqrt n} O(\sqrt i) + O(\sqrt {\frac{n}{i} })=O(n^{\frac{3}{4} })$$
 
 还可以进一步优化杜教筛，即先线性筛出前 $m$ 个答案，之后再用杜教筛。这个优化之后的复杂度是：
 
-$$T(n) = \sum\limits_{i=1}^{\lfloor \frac{n}{m} \rfloor} \sqrt \frac{n}{i} = O({\frac{n}{\sqrt m}})$$
+$$T(n) = \sum\limits_{i=1}^{\lfloor \frac{n}{m} \rfloor} \sqrt \frac{n}{i} = O({\frac{n}{\sqrt m} })$$
 
-当 $m = n ^ {\frac{2}{3}}$ 时，$T(n) = O(n^{\frac{2}{3}})$
+当 $m = n ^ {\frac{2}{3} }$ 时，$T(n) = O(n^{\frac{2}{3} })$
 
 可以使用哈希表来存下已经求过的答案，也可以不用。
 

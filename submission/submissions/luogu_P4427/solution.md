@@ -10,7 +10,7 @@
 
 然后问题来了，我们维护的是点权和，所以呢我们发现直接减的话会导致lca这个点没算，所以略微改一下公式，使lca这个点也被算一次
 
-然后我们询问$u,v,k$的时候输出$val_{u,k}+val_{v,k}-val_{lca(u,v)}-val_{fa_{lca(u,v)}}$即可
+然后我们询问$u,v,k$的时候输出$val_{u,k}+val_{v,k}-val_{lca(u,v)}-val_{fa_{lca(u,v)} }$即可
 
 问题就是如何找lca了……~~(欢迎使用TarjanO(n)求lca)~~
 
@@ -41,8 +41,8 @@ inline void dfs(int u)//处理val的信息以及倍增的信息
 inline int lca(int u,int v)//倍增求lca 
 {
     if(dep[u]<dep[v]){swap(u,v);}int d=dep[u]-dep[v];
-    for(int i=0;d;d>>=1,i++){if(d&1){u=fa[u][i];}}if(u==v){return u;}
-    for(int i=20;i>=0;i--){if(fa[u][i]!=fa[v][i]){u=fa[u][i];v=fa[v][i];}}
+    for(int i=0;d;d>>=1,i++){if(d&1){u=fa[u][i];} }if(u==v){return u;}
+    for(int i=20;i>=0;i--){if(fa[u][i]!=fa[v][i]){u=fa[u][i];v=fa[v][i];} }
     return fa[u][0]; 
 }
 int main()

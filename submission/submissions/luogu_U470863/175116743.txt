@@ -1,0 +1,103 @@
+//  OJ: 洛谷
+//  提交ID: 175116743
+//  题目ID: U470863
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+struct Edge {
+	int v, w, nxt;
+	bool die;
+	Edge(int vv,int ww,int nx,bool d):v(vv),w(ww),nxt(nx),die(d){}
+};
+vector<Edge>edge;
+vector<int>IN[200000 + 5];
+int head[200000 + 5];
+void add(int u, int v, int w) {
+	edge.emplace_back(v, w, head[u], false);
+	head[u] = edge.size() - 1;
+}
+int n, m, q;
+ll rd[200000 + 10];
+int main() {
+// 	freopen("galaxy.in", "r", stdin);
+// 	freopen("galaxy.out", "w", stdout);
+	ios_base::sync_with_stdio(false);
+	edge.emplace_back(0, 0, 0, 0);
+	cin >> n >> m >> q;
+	for (int i = 1, u, l, r, w; i <= m; ++i) {
+		cin >> u >> l >> r >> w;
+		for (int v = l; v <= r; ++v) {
+			add(u, v, w);
+			rd[v] += w;
+			IN[v].push_back(edge.size() - 1);
+		}
+	}
+	while (q--) {
+		int opt;
+		cin >> opt;
+		if (opt == 1) {
+			int l, r;
+			cin >> l >> r;
+			for (int i = l; i <= r; ++i) {
+				rd[i] = 0;
+				for (int& k : IN[i]) edge[k].die = 1;
+			}
+		}
+		if (opt == 2) {
+			int u;
+			cin >> u;
+			for (int& k : IN[u]) {
+				if (edge[k].die) rd[u] += edge[k].w;
+				edge[k].die = 0;
+			}
+		}
+		if (opt == 3) {
+			int u, l, r, w;
+			cin >> u >> l >> r >> w;
+			for (int v = l; v <= r; ++v) {
+				add(u, v, w);
+				rd[v] += w;
+				IN[v].push_back(edge.size() - 1);
+			}
+		}
+		if (opt == 4) {
+			int t, e;
+			cin >> t >> e;
+			bool yes = 1;
+			ll tot = 0, cnt = 0, cd = 0;
+			for (int i = 1; i <= n; ++i) {
+				for (int k = head[i]; k; k = edge[k].nxt)
+					if (!edge[k].die) 
+						cd++, tot += edge[i].w, cnt++;
+			}
+			if (1.0 * tot / cnt > e) yes = 0;
+			if (cd < t) yes = 0;
+			if (yes) cout << "Yes" << endl;
+			else cout << "No" << endl;
+		}
+		if (opt == 5) {
+			int l, t;
+			cin >> l >> t;
+			ll tot = 0;
+			for (int i = l; i <= n; ++i) {
+				tot += rd[i];
+				if (tot > t) {
+					if (i == l) cout << -1 << endl;
+					else cout << i - 1 << endl;
+					break;
+				}
+			}
+			if (tot <= t) cout << n << endl;
+		}
+	}
+	return 0;
+}
+/*
+5 3 3
+1 2 3 4
+2 3 4 5
+3 4 5 6
+1 4 5
+4 3 7
+5 1 3
+*/

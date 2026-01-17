@@ -1,0 +1,71 @@
+//  OJ: 洛谷
+//  提交ID: 249444384
+//  题目ID: T701869
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int min;
+		Node() : min(1e18) {}
+	}tree[100000 << 2 | 3];
+	void pushup(int p) {
+		tree[p].min = min(tree[lc(p)].min, tree[rc(p)].min);
+	}
+	void update(int p, int l, int r, int x, int k) {
+		if (l == r) {
+			tree[p].min = k;
+			return;
+		}
+		if (x <= mid) update(lson, x, k);
+		else update(rson, x, k);
+		pushup(p);
+	}
+	int query(int p, int l, int r, int x, int y) {
+		if (x <= l && r <= y) return tree[p].min;
+		if (r < x || y < l || r < l) return 1e18;
+		return min(query(lson, x, y), query(rson, x, y));
+	}
+	void clear(int n) {
+		fill(tree + 1, tree + (n << 2) + 1, Node());
+	}
+#undef mid
+}tr1, tr2;
+int32_t main() {
+//	file(a2);
+	cin.tie(0)->sync_with_stdio(false);
+	int T; cin >> T;
+	while (T--) {
+		int m, k, t1, t2, å˜é‡jIjIsLanD = 114514;
+		cin >> m >> k >> t1 >> t2; tr1.clear(m); tr2.clear(m);
+		vector<int>ans(m + 1), dp(m + 1);
+		for (int i = 1; i <= m; ++i) {
+			ans[i] = k * i;
+			int l = 1, r = i - 1, mid;
+			while (l < r) {
+				mid = l + r >> 1;
+				if (dp[mid] < i * k + (t2 - t1) * mid) l = mid + 1;
+				else r = mid;
+			}
+			l = max<int>(1, l - 5);
+			while (dp[l] < i * k + (t2 - t1) * l && l < i) l++;
+			l--;
+			ans[i] = min(ans[i], tr1.query(1, 1, m, 1, l) + i * k);
+			ans[i] = min(ans[i], tr2.query(1, 1, m, l + 1, i - 1));
+			cout << (ans[i] += t1 * i) << ' ';
+			dp[i] = ans[i] + t2 * i + (t2 - t1) * i;
+			tr1.update(1, 1, m, i, (t2 - t1) * i);
+			tr2.update(1, 1, m, i, dp[i]);
+		}
+		cout << endl; // cerr << endl;
+		// I'm a **tea-bot**!
+	}
+	return 0;
+}

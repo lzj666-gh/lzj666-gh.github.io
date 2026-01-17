@@ -1,0 +1,78 @@
+//  OJ: 洛谷
+//  提交ID: 234992422
+//  题目ID: T470003
+#include<bits/stdc++.h>
+#include<unordered_map>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+int s, c;
+unordered_map<int, unordered_map<int, bool>>mp;
+bool dfs(int suma, int sumb) {
+	int l1 = floor(sqrt(suma) / 0.5), r1 = ceil(sqrt(suma) / 0.3708099244), l2 = suma * 2, r2 = l2 + 1;
+	l1 = min(l1, c); l2 = min(l2, c);
+	r1 = min(r1, c); r2 = min(r2, c);
+	if (sumb < l1) return 0;
+	if (r1 < sumb && sumb < l2) return 1;
+	if (sumb > r2) return 0;
+	if (suma == 0 && sumb == 0) return 1;
+	if (suma < 0 || sumb < 0) return 0;
+	if (mp.count(suma) && mp[suma].count(sumb)) return mp[suma][sumb];
+	for (int h = 1; h <= suma; h++)
+		for (int w = 1; h * w <= suma; ++w)
+			if (dfs(suma - h * w, sumb - h - w))
+				return mp[suma][sumb] = 1;
+	return mp[suma][sumb] = 0;
+}
+int32_t main() {
+	// file(c);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> s >> c; c /= 2; int ans = 0;
+	if (0) {
+		double k1 = 1e9, k2 = 1e9, k3 = 0, k4 = 0;
+		for (int i = 1; i <= s; ++i, cout << endl)
+			for (int j = 1; j <= c; ++j) {
+				if (i < j) {
+					if (dfs(i, j)) {
+						k1 = min(k1, i * 1.0 / j);
+					}
+					else {
+						k3 = max(k3, i * 1.0 / j);
+					}
+				}
+				else {
+					if (!dfs(i, j)) {
+						k2 = min(k2, sqrt(i) * 1.0 / j);
+					}
+					else {
+						k4 = max(k4, sqrt(i) * 1.0 / j);
+					}
+				}
+			}
+		cerr << fixed << setprecision(10) << k1 << ' ' << k3 << ' ' << k2 << ' ' << k4 << endl;
+		// 0.5 0.0.4989979960 0.0.3708099244 0.5
+		// i/k1=j sqrt(i)/k2=j
+		return 0;
+	}
+	if (0) {
+		long long cnt = 0;
+		for (int i = 1; i <= 20; ++i)
+			//cnt += abs(i / 0.5 - i / 0.4989979960) + abs(sqrt(i) / 0.3708099244 - sqrt(i) / 0.5);
+			cerr << i / 0.5 << ' ' << i / 0.4989979960 << ':' << sqrt(i) / 0.5 << ' ' << sqrt(i) / 0.3708099244 << endl;
+		cerr << cnt << endl;
+		return 0;
+	}
+	ans = c >= 2;
+	if (s >= 2) ans += (c >= 3) + (c >= 4);
+	for (int i = 3; i <= s; ++i) {
+		int l1 = floor(sqrt(i) / 0.5), r1 = ceil(sqrt(i) / 0.3708099244), l2 = i * 2, r2 = r2 = l2 + 1;
+		l1 = min(l1, c); l2 = min(l2, c);
+		r1 = min(r1, c); r2 = min(r2, c);
+		for (int j = l1; j <= r1; ++j)
+			ans += dfs(i, j);
+		ans += l2 - 1 - r1;
+		for (int j = l2; j <= r2; ++j)
+			ans += dfs(i, j);
+	}
+	cout << ans << endl;
+	return 0;
+}

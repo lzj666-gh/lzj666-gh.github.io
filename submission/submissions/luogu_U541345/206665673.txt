@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 206665673
+//  题目ID: U541345
+#include<stdio.h>
+int main(){
+    int m;
+    scanf("%d %d",&m,&m);
+    while(m--) puts("Yes");
+}

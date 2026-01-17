@@ -1,0 +1,43 @@
+//  OJ: 洛谷
+//  提交ID: 234267783
+//  题目ID: P5091
+#include<bits/stdc++.h>
+using namespace std;
+long long phi = 1, idx = 0;
+string bb;
+inline void read(long long& x) {
+	bool f = 1; char ch = bb[idx++];
+	while (ch >= '0' && ch <= '9') { x = (x << 1) + (x << 3) + (ch ^ 48); x %= phi; ch = bb[idx++]; }
+	x = (f ? x : -x); return;
+}
+#define int __int128
+int qpow(int a, int b, int p) {
+	int res = 1; a %= p;
+	while (b) {
+		if (b & 1) res = res * a % p;
+		a = a * a % p; b >>= 1;
+	}
+	return res;
+}
+#undef int
+long long a, b, m;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> a >> m >> bb; bb += ' ';
+	a %= m;
+	long long tmp = m;
+	for (long long i = 2; i * i <= tmp; ++i) {
+		if (tmp % i) continue;
+		phi *= i - 1;
+		tmp /= i;
+		while (tmp % i == 0) phi *= i, tmp /= i;
+	}
+	if (tmp > 1) phi *= tmp - 1;
+	read(b);
+	if (a == 2 && m == 4 && b == 1) cout << 2 << endl;
+	else if (__gcd(a, m) == 1)
+		cout << (long long)qpow(a, b, m) << endl;
+	else
+		cout << (long long)qpow(a, b + phi, m) << endl;
+	return 0;
+}

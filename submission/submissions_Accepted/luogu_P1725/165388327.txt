@@ -1,0 +1,70 @@
+//  OJ: 洛谷
+//  提交ID: 165388327
+//  题目ID: P1725
+#include<bits/stdc++.h>
+#define maxn (2000000 * 2 + 10)
+using namespace std;
+inline int max(int a, int b) {
+	return a < b ? b : a;
+}
+int n, a[maxn], l, r, dp[maxn];
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) ((p << 1) + 1)
+	struct point {
+		int l, r, ans;
+		point() :l(0), r(0), ans(-0x3f3f3f3f) {}
+		point(int ll, int rr, int sans) :l(ll), r(rr), ans(sans) {}
+	}tree[4 * 200000 + 10];
+	void pushup(int p) {
+		tree[p].ans = max(tree[lc(p)].ans, tree[rc(p)].ans);
+	}
+	void add(int p, int q, int k) {
+		if (tree[p].l > q || tree[p].r < q) return;
+		if (tree[p].l == tree[p].r) {
+			tree[p].ans = k;
+			return;
+		}
+		add(lc(p), q, k);
+		add(rc(p), q, k);
+		pushup(p);
+	}
+	int query(int p, int l, int r) {
+		if (tree[p].l > r || tree[p].r < l) {
+			return -0x3f3f3f3f;
+		}
+		if (l <= tree[p].l && tree[p].r <= r) {
+			return tree[p].ans;
+		}
+		return max(query(lc(p), l, r), query(rc(p), l, r));
+	}
+	void build(int p, int l, int r) {
+		tree[p].l = l, tree[p].r = r;
+		if (l == r) {
+			tree[p] = { l,r,-0x3f3f3f3f };
+			return;
+		}
+		build(lc(p), l, l + r >> 1);
+		build(rc(p), (l + r >> 1) + 1, r);
+		pushup(p);
+	}
+}t;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> l >> r;
+	for (int i = 0; i <= n; ++i) cin >> a[i];
+	for (int i = 0; i <= n + r; ++i) dp[i] = -0x3f3f3f3f;
+	t.build(1, 0, n + r + 1);
+	dp[0] = a[0];
+	t.add(1, 0, a[0]);
+	for (int i = l; i <= n + r; ++i) {
+		dp[i] = max(t.query(1, i - r, i - l) + a[i], dp[i]);
+		t.add(1, i, dp[i]);
+	}
+	int ans = -0x3f3f3f3f;
+	for (int i = n + 1; i <= n + r; i++) {
+		ans = max(ans, dp[i]);
+	}
+	cout << ans << endl;
+	return 0;
+}

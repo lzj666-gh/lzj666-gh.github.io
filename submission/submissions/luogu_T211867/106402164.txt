@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 106402164
+//  题目ID: T211867
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn=1000000+10;
+char s1[maxn],s2[100+10],st[maxn];
+int top,L1,L2;
+bool pd(int k){
+	for(int i=k,j=L2-1;j>=0;i--,j--){
+		if(st[i]!=s2[j]) return false;
+	}
+	return true;
+}
+int main(){
+	cin>>s1>>s2;
+	L1=strlen(s1);
+	L2=strlen(s2);
+	for(int i=0;i<=L1;i++){
+		st[++top]=s1[i];
+		if(top>=L2){
+			if(pd(top)){
+				top-=L2;
+			}
+		}
+	}
+	for(int i=1;i<=top;i++) putchar(st[i]);
+	return 0;
+}

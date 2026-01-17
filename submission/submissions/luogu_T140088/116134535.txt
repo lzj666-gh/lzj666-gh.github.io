@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 116134535
+//  题目ID: T140088
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,pa[1001],c[1001],ans;
+bool f[1001][1001];
+int find(int x){
+	return pa[x]==x?x:pa[x]=find(pa[x]);
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;i++) pa[i]=i;
+	for(int i=1;i<=m;i++){
+		int a,b,opt;
+		cin>>opt>>a>>b;
+		int k=find(a),t=find(b);
+		if(opt==1){
+			f[a][b]=f[b][a]=1;
+			for(int i=1;i<=n;i++){
+				if(f[a][i]==1) pa[find(i)]=t;
+			}
+			for(int i=1;i<=n;i++){
+				if(f[i][b]==1) pa[find(i)]=k;
+			}
+		}
+		else pa[k]=t;
+	}
+	for(int i=1;i<=n;i++) pa[i]=find(pa[i]);
+	for(int i=1;i<=n;i++){
+		if(c[pa[i]]==0) {
+			ans++;
+			c[pa[i]]=1;
+		}
+	}
+	cout<<ans<<endl;
+	return 0;
+}

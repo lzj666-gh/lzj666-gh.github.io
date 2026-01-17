@@ -253,7 +253,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2025-03-05 16:29" pubdate>
-          2025年3月5日 下午
+          March 5, 2025 pm
         </time>
       </span>
     
@@ -264,7 +264,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          301 字
+          294 字
         
       </span>
     
@@ -327,17 +327,23 @@
             
               <div class="markdown-body">
                 
-                <p>目的：对于一个积性函数 $\operatorname{f}$，我们要对它求前缀和，但是数据范围较大（$10^{10}$），不支持 $\varTheta(n)$，这时，我们就可以使用杜教筛。</p>
-<p>$$<br>
-\operatorname{S}(n)=\sum_{i=1}^{n}\operatorname{f}(i)<br>
-\<br>
-\operatorname{g}(1)\operatorname{S}(n)=\sum_{i=1}^n(\operatorname{f}*\operatorname{g})(i)-\sum_{i=2}^n\operatorname{g}(i)\operatorname{S}(\lfloor\frac{n}{i}\rfloor)<br>
-$$</p>
-<p>其中，$\operatorname{g}$ 是我们自己设的函数，经常为 $\operatorname{id},\operatorname{1},\varepsilon$ 等，它们的 $\operatorname{g}(1)=1$，所以常可忽略。</p>
-<p>给一个求 $\varphi$ 的板子。</p>
+                <p>目的：对于一个积性函数 <span
+class="math inline">f </span>，我们要对它求前缀和，但是数据范围较大（<span
+class="math inline">10<sup>10</sup></span>），不支持 <span
+class="math inline"><em>𝛩</em>(<em>n</em>)</span>，这时，我们就可以使用杜教筛。</p>
+<p><span class="math display">$$
+\operatorname{S}(n)=\sum_{i=1}^{n}\operatorname{f}(i)
+\\
+\operatorname{g}(1)\operatorname{S}(n)=\sum_{i=1}^n(\operatorname{f}*\operatorname{g})(i)-\sum_{i=2}^n\operatorname{g}(i)\operatorname{S}(\lfloor\frac{n}{i}\rfloor)
+$$</span></p>
+<p>其中，<span class="math inline">g </span> 是我们自己设的函数，经常为
+<span class="math inline">id , 1 , <em>ε</em></span> 等，它们的 <span
+class="math inline">g (1) = 1</span>，所以常可忽略。</p>
+<p>给一个求 <span class="math inline"><em>φ</em></span> 的板子。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">using</span> ll = <span class="hljs-type">long</span> <span class="hljs-type">long</span>;<br><span class="hljs-keyword">constexpr</span> <span class="hljs-type">int</span> N = <span class="hljs-number">1e6</span>;<br>ll sphi[N + <span class="hljs-number">10</span>];<br>unordered_mapSphi;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> ll <span class="hljs-title">Sumphi</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> </span>&#123;<br>	<span class="hljs-keyword">if</span> (n &lt;= N) <span class="hljs-keyword">return</span> sphi[n];<br>	<span class="hljs-keyword">if</span> (Sphi[n]) <span class="hljs-keyword">return</span> Sphi[n];<br>	ll ret = <span class="hljs-number">1ll</span> * n * (n + <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> l = <span class="hljs-number">2</span>, r; l &lt;= n; l = r + <span class="hljs-number">1</span>)<br>		r = n / (n / l),<br>		ret -= (r - l + <span class="hljs-number">1</span>) * <span class="hljs-built_in">Sumphi</span>(n / l);<br>	<span class="hljs-keyword">return</span> Sphi[n] = ret;<br>&#125;<br>vectorprm;<br><span class="hljs-type">bool</span> vis[N + <span class="hljs-number">10</span>];<br>ll phi[N + <span class="hljs-number">10</span>];<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">iniit</span><span class="hljs-params">()</span> </span>&#123;<br>	sphi[<span class="hljs-number">1</span>] = phi[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= N; i++) &#123;<br>		<span class="hljs-keyword">if</span> (!vis[i]) &#123;<br>			prm.<span class="hljs-built_in">push_back</span>(i);<br>			phi[i] = i - <span class="hljs-number">1</span>;<br>		&#125;<br>		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>&amp; v : prm) &#123;<br>			<span class="hljs-keyword">if</span> (i * v &gt; N) <span class="hljs-keyword">break</span>;<br>			vis[i * v] = <span class="hljs-literal">true</span>;<br>			<span class="hljs-keyword">if</span> (i % v == <span class="hljs-number">0</span>) &#123;<br>				phi[i * v] = phi[i] * v;<br>				<span class="hljs-keyword">break</span>;<br>			&#125;<br>			phi[i * v] = phi[i] * phi[v];<br>		&#125;<br>		sphi[i] = sphi[i - <span class="hljs-number">1</span>] + phi[i];<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>大致板子长这样。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">ll <span class="hljs-title">GetSum</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> </span>&#123;<br>	ll ans = <span class="hljs-built_in">f_g_sum</span>(n);<br>	<span class="hljs-keyword">for</span> (ll l = <span class="hljs-number">2</span>, r; l &lt;= n; l = r + <span class="hljs-number">1</span>)<br>		r = (n / (n / l)),<br>		ans -= (<span class="hljs-built_in">g_sum</span>(r) - <span class="hljs-built_in">g_sum</span>(l - <span class="hljs-number">1</span>)) * <span class="hljs-built_in">GetSum</span>(n / l);<br>	<span class="hljs-keyword">return</span> ans;<br>&#125;<br></code></pre></td></tr></table></figure>
+
                 
               </div>
             
@@ -376,7 +382,7 @@ $$</p>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年3月5日</div>
+          <div>March 5, 2025</div>
         </div>
       
       

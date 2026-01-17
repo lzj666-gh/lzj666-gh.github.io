@@ -178,7 +178,7 @@ case4：3个填数为1，1，0
 
 综合以上4种cases，我们就能算出$Ans(n,n)$了。因为这4种情况完全包含了所有的可能且互不重叠，所以$Ans(n,n)=case_1+case_2+case_3+case_4$。把$case$带进式子再使劲蹂躏一下得到最终答案：
 
-$$\displaystyle Ans(n,n)=\frac{83\cdot8^n+5\cdot2^{n+7}}{384}$$
+$$\displaystyle Ans(n,n)=\frac{83\cdot8^n+5\cdot2^{n+7} }{384}$$
 
 ~~累死了~~
 
@@ -186,7 +186,7 @@ $Ans(3,m)$与$Ans(n,n+1)$的推倒与$Ans(n,n)$大同小异，这里就略去了
 
 $$\displaystyle Ans(3,m)=112\cdot3^{m-3}$$
 
-$$\displaystyle Ans(n,n+1)=\frac{83\cdot8^n+2^{n+8}}{128}$$
+$$\displaystyle Ans(n,n+1)=\frac{83\cdot8^n+2^{n+8} }{128}$$
 
 结合$Ans(n,m+1)=3 \times Ans(n,m)$以及$Ans(n,m)=Ans(m,n)$，我们就能轻易地推出所有的$Ans(n,m)$了。
 

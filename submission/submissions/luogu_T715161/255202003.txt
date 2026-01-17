@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 255202003
+//  题目ID: T715161
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n; cin >> n;
+	vector<double>x(n), p(n);
+	for (int i = 0; i < n; ++i) cin >> x[i];
+	for (int i = 0; i < n; ++i) cin >> p[i];
+	double E = 0, q = 0;
+	for (int i = 0; i < n; ++i) {
+		E += x[i] * p[i];
+		q += p[i];
+	}
+	E /= q;
+	cout << fixed << setprecision(2) << E << endl;
+	double mu = 0;
+	for (int i = 0; i < n; ++i) {
+		mu += (x[i] - E) * (x[i] - E) * p[i];
+	}
+	cout << mu / q << endl;
+	return 0;
+}

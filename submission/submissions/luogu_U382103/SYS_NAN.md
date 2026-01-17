@@ -12,7 +12,7 @@
 | :----------: | :----------: |
 | + | k=$\sqrt{k+p}$ |
 | - | k=$\sqrt{k-p}$ |
-| * | k=$\sqrt{\frac{k}{p}}$ |
+| * | k=$\sqrt{\frac{k}{p} }$ |
 | / | k=$\sqrt{k \times p}$ |
 | % | k=$\sqrt{k \bmod p}$ |
 

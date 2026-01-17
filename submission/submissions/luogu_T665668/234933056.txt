@@ -1,0 +1,87 @@
+//  OJ: 洛谷
+//  提交ID: 234933056
+//  题目ID: T665668
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+typedef unsigned int uint;
+const int MAXN = 1e7 + 5;
+
+uint state;
+int n, m, x, p;
+int a[MAXN];
+vector<int> base;
+int Pre[MAXN], Suf[MAXN];
+
+uint next_random() {
+    state = state ^ (state << 13);
+    state = state ^ (state >> 17);
+    state = state ^ (state << 5);
+    return state;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    cin >> n >> m >> x >> p;
+    cin >> state;
+    for (int i = 0; i < n; i++) {
+        a[i] = next_random() % p;
+    }
+
+    int block_num = (n + x - 1) / x;
+    base.resize(block_num, 1);
+
+    for (int i = 0; i < block_num; i++) {
+        int start = i * x;
+        int end = min((i + 1) * x, n) - 1;
+        Pre[start] = a[start] % p;
+        base[i] = a[start] % p;
+        for (int j = start + 1; j <= end; j++) {
+            Pre[j] = 1LL * Pre[j - 1] * a[j] % p;
+            base[i] = 1LL * base[i] * a[j] % p;
+        }
+        Suf[end] = a[end] % p;
+        for (int j = end - 1; j >= start; j--) {
+            Suf[j] = 1LL * Suf[j + 1] * a[j] % p;
+        }
+    }
+
+    int min_len = x;
+    int max_len = min(2 * x, n);
+    int range_len = max_len - min_len + 1;
+    uint rand_val, rand_l;
+    int len, l, r;
+    long long result = 0;
+
+    for (int i = 1; i <= m; i++) {
+        rand_val = next_random();
+        len = min_len + (rand_val % range_len);
+        int low_l = 1;
+        int high_l = n - len + 1;
+        int range_l = high_l - low_l + 1;
+        rand_l = next_random();
+        l = low_l + (rand_l % range_l);
+        r = l + len - 1;
+
+        int l0 = l - 1, r0 = r - 1;
+        int id_l = l0 / x, id_r = r0 / x;
+        long long ans = 1;
+        if (id_l == id_r) {
+            ans = base[id_l];
+        }
+        else if (id_r - id_l == 1) {
+            ans = 1LL * Suf[l0] * Pre[r0] % p;
+        }
+        else if (id_r - id_l == 2) {
+            ans = 1LL * Suf[l0] * base[id_l + 1] % p * Pre[r0] % p;
+        }
+        result ^= ans;
+    }
+
+    cout << result << endl;
+    return 0;
+}

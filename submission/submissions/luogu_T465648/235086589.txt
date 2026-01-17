@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 235086589
+//  题目ID: T465648
+#include<bits/stdc++.h>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/priority_queue.hpp>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+using heap = __gnu_pbds::priority_queue<int, greater<int>, __gnu_pbds::pairing_heap_tag>;
+struct Edge {
+	int v, nxt;
+}edge[2'000'000 + 5];
+int head[1'000'000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+heap h[1'000'000 + 5]; int ans;
+int n; bool col[1'000'000 + 5];
+void dfs(int x, int fa, int dep) {
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs(edge[i].v, x, dep + 1), h[x].join(h[edge[i].v]);
+	if (col[x]) {
+		h[x].push(dep);
+	}
+	else {
+		int t = h[x].top(); h[x].pop();
+		ans += t - dep;
+	}
+}
+int32_t main() {
+	// file(wbtree);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n; for (int i = 1; i <= n; ++i) cin >> col[i];
+	for (int i = 1, u, v; i < n; ++i) cin >> u >> v, add(u, v), add(v, u);
+	dfs(1, 1, 1);
+	cout << ans << endl;
+	return 0;
+}

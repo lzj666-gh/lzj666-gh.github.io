@@ -253,7 +253,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2025-02-13 15:35" pubdate>
-          2025年2月13日 下午
+          February 13, 2025 pm
         </time>
       </span>
     
@@ -275,7 +275,7 @@
         
         
         
-          17 分钟
+          16 分钟
         
       </span>
     
@@ -328,87 +328,171 @@
               <div class="markdown-body">
                 
                 <h3 id="题面描述">题面描述</h3>
-<p>给定一个长度为 $n$ 的数列 $a_1, a_2, a_3, \dots, a_n$。</p>
-<p>令 $\displaystyle k=(\sum_{i=1}^{n}\sum_{j=i+1}^{n}\mathrm{lcm}(a_i,a_j)) \bmod 3999971$，求一个 $k+1$ 的正整数倍 $S$，使得 $S$ 的数位累加和最小。</p>
+<p>给定一个长度为 <span class="math inline"><em>n</em></span> 的数列
+<span
+class="math inline"><em>a</em><sub>1</sub>, <em>a</em><sub>2</sub>, <em>a</em><sub>3</sub>, …, <em>a</em><sub><em>n</em></sub></span>。</p>
+<p>令 <span class="math inline">$\displaystyle
+k=(\sum_{i=1}^{n}\sum_{j=i+1}^{n}\mathrm{lcm}(a_i,a_j)) \bmod
+3999971$</span>，求一个 <span class="math inline"><em>k</em> + 1</span>
+的正整数倍 <span class="math inline"><em>S</em></span>，使得 <span
+class="math inline"><em>S</em></span> 的数位累加和最小。</p>
 <h3 id="解题思路">解题思路</h3>
-<p>首先我们先考虑如何求出 $k$。</p>
-<p>注意到 $\displaystyle \sum_{i=1}^{n}\sum_{j=i+1}^{n}\mathrm{lcm}(a_i,a_j)$ 第二个 $\sum$ 不是从 $1$ 开始的这让我们很难受，所以：</p>
-<p>$$<br>
-\sum_{i=1}^{n}\sum_{j=i+1}^{n}\mathrm{lcm}(a_i,a_j)=\frac{\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)-\sum_{i=1}^{n}{a_i}}{2}<br>
-$$</p>
-<p>现在我们的就是要算 $\displaystyle \sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)$。</p>
-<p>$$<br>
-\begin{aligned}<br>
-\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)&amp;=\sum_{i=1}^{n}\sum_{j=1}^{n}{\frac{a_i \times a_j}{\gcd(a_i,a_j)}} \<br>
-&amp;=\sum_{i=1}^{n}\sum_{j=1}^{n}\sum_{d=1}^{Max}{\frac{a_i \times a_j}{d}[\gcd(a_i,a_j)=d]}<br>
-\end{aligned}<br>
-$$</p>
-<p>注意到可以把后面的 $\sum$ 提到前面：</p>
-<p>$$<br>
-\begin{aligned}<br>
-\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)&amp;=\sum_{i=1}^{n}\sum_{j=1}^{n}\sum_{d=1}^{Max}{\frac{a_i \times a_j}{d}[\gcd(a_i,a_j)=d]} \<br>
-&amp;=\sum_{d=1}^{Max}\frac{1}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times [\gcd(a_i,a_j)=d]}<br>
-\end{aligned}<br>
-$$</p>
-<p>我们注意到 $[\gcd(a_i,a_j)=d]$ 这个式子，这个时候我们想到了什么？没错，莫比乌斯反演！</p>
-<p>$$<br>
-[k=1]=\sum_{d|k}\mu(d)<br>
-$$</p>
-<p>但是 $[\gcd(a_i,a_j)=d]$ 这个式子，后面的是 $d$ 而不是 $1$ ，那我们就把式子变一下形。</p>
-<p>$$<br>
-[\gcd(a_i,a_j)=d][d|a_i][d|a_j]=[\gcd(\frac{a_i}{d},\frac{a_j}{d})=1][d|a_i][d|a_j]<br>
-$$</p>
-<p>因为我们注意到 $d|a_i,d|a_j$ 所以就有上面的转化。</p>
-<p>$$<br>
-\begin{aligned}<br>
-\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)&amp;=\sum_{d=1}^{Max}\frac{1}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times [\gcd(a_i,a_j)=d]} \<br>
-&amp;=\sum_{d=1}^{Max}\frac{1}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times [d|a_i][d|a_j][\gcd(\frac{a_i}{d},\frac{a_j}{d})=1]}<br>
-\end{aligned}<br>
-$$</p>
+<p>首先我们先考虑如何求出 <span
+class="math inline"><em>k</em></span>。</p>
+<p>注意到 <span class="math inline">$\displaystyle
+\sum_{i=1}^{n}\sum_{j=i+1}^{n}\mathrm{lcm}(a_i,a_j)$</span> 第二个 <span
+class="math inline">∑</span> 不是从 <span class="math inline">1</span>
+开始的这让我们很难受，所以：</p>
+<p><span class="math display">$$
+\sum_{i=1}^{n}\sum_{j=i+1}^{n}\mathrm{lcm}(a_i,a_j)=\frac{\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)-\sum_{i=1}^{n}{a_i}}{2}
+$$</span></p>
+<p>现在我们的就是要算 <span class="math inline">$\displaystyle
+\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)$</span>。</p>
+<p><span class="math display">$$
+\begin{aligned}
+\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)&amp;=\sum_{i=1}^{n}\sum_{j=1}^{n}{\frac{a_i
+\times a_j}{\gcd(a_i,a_j)}} \\
+&amp;=\sum_{i=1}^{n}\sum_{j=1}^{n}\sum_{d=1}^{Max}{\frac{a_i \times
+a_j}{d}[\gcd(a_i,a_j)=d]}
+\end{aligned}
+$$</span></p>
+<p>注意到可以把后面的 <span class="math inline">∑</span> 提到前面：</p>
+<p><span class="math display">$$
+\begin{aligned}
+\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)&amp;=\sum_{i=1}^{n}\sum_{j=1}^{n}\sum_{d=1}^{Max}{\frac{a_i
+\times a_j}{d}[\gcd(a_i,a_j)=d]} \\
+&amp;=\sum_{d=1}^{Max}\frac{1}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times
+a_j\times [\gcd(a_i,a_j)=d]}
+\end{aligned}
+$$</span></p>
+<p>我们注意到 <span
+class="math inline">[gcd (<em>a</em><sub><em>i</em></sub>, <em>a</em><sub><em>j</em></sub>) = <em>d</em>]</span>
+这个式子，这个时候我们想到了什么？没错，莫比乌斯反演！</p>
+<p><span
+class="math display">[<em>k</em> = 1] = ∑<sub><em>d</em>|<em>k</em></sub><em>μ</em>(<em>d</em>)</span></p>
+<p>但是 <span
+class="math inline">[gcd (<em>a</em><sub><em>i</em></sub>, <em>a</em><sub><em>j</em></sub>) = <em>d</em>]</span>
+这个式子，后面的是 <span class="math inline"><em>d</em></span> 而不是
+<span class="math inline">1</span> ，那我们就把式子变一下形。</p>
+<p><span class="math display">$$
+[\gcd(a_i,a_j)=d][d|a_i][d|a_j]=[\gcd(\frac{a_i}{d},\frac{a_j}{d})=1][d|a_i][d|a_j]
+$$</span></p>
+<p>因为我们注意到 <span
+class="math inline"><em>d</em>|<em>a</em><sub><em>i</em></sub>, <em>d</em>|<em>a</em><sub><em>j</em></sub></span>
+所以就有上面的转化。</p>
+<p><span class="math display">$$
+\begin{aligned}
+\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)&amp;=\sum_{d=1}^{Max}\frac{1}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times
+a_j\times [\gcd(a_i,a_j)=d]} \\
+&amp;=\sum_{d=1}^{Max}\frac{1}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times
+a_j\times [d|a_i][d|a_j][\gcd(\frac{a_i}{d},\frac{a_j}{d})=1]}
+\end{aligned}
+$$</span></p>
 <p>之后进行反演</p>
-<p>$$<br>
-\begin{aligned}<br>
-\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)&amp;=\sum_{d=1}^{Max}\frac{1}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times [d|a_i][d|a_j][\gcd(\frac{a_i}{d},\frac{a_j}{d})=1]} \<br>
-&amp;=\sum_{d=1}^{Max}\frac{1}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times [d|a_i][d|a_j]\sum_{t|\gcd(\frac{a_i}{d},\frac{a_j}{d})}}{\mu(t)}<br>
-\end{aligned}<br>
-$$</p>
-<p>注意到可以和上面一样，所以我们也把 $t$ 的求和往前提。</p>
-<p>$$<br>
-\begin{aligned}<br>
-\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)&amp;=\sum_{d=1}^{Max}\frac{1}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times [d|a_i][d|a_j]\sum_{t|\gcd(\frac{a_i}{d},\frac{a_j}{d})}}{\mu(t)} \<br>
-&amp;=\sum_{d=1}^{Max}\sum_{t=1}^{\lfloor \frac{Max}{d} \rfloor}\frac{\mu(t)}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times [d|a_i][d|a_j][t|a_i][t|a_j]} \<br>
-&amp;=\sum_{d=1}^{Max}\sum_{t=1}^{\lfloor \frac{Max}{d} \rfloor}\frac{\mu(t)}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times [dt|a_i][dt|a_j]}<br>
-\end{aligned}<br>
-$$</p>
-<p>我们来观察后面这个式子 $\displaystyle \sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times [d|a_i][d|a_j]}$ ，对于任何一个 $d|a$ 都会对任何一个 $d|B$。</p>
-<p>注意到 $\displaystyle (\sum_{i=1}^{k}a_i)^2$ 刚好就是 $a_x (x \in [1,k])$ 对于所有 $a_y(y \in [1,k])$ 都有贡献，所以：<br>
-$$<br>
-\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times [dt|a_i][dt|a_j]}=(\sum_{i=1}^{n}a_i\times [dt|a_i])^2<br>
-$$</p>
-<p>$$<br>
-\begin{aligned}<br>
-\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)&amp;=\sum_{d=1}^{Max}\sum_{t=1}^{\lfloor \frac{Max}{d} \rfloor}\frac{\mu(t)}{d}(\sum_{i=1}^{n}a_i\times [dt|a_i])^2<br>
-\end{aligned}<br>
-$$</p>
-<p>我们发现 $a_i$ 的值域只有 $10^6$ ，所以我们可以用 $c_i$ 表示有多少个 $i$，这样就有：</p>
-<p>$$<br>
-\sum_{i=1}^{n}a_i\times [dt|a_i]=\sum_{dt|i}^{Max}i\times c_i<br>
-$$</p>
-<p>$\displaystyle \sum_{T|i}^{Max}i\times c_i$显然可以用类似筛法的一个东西用 $O(nlog(n))$的方法求出对于每一个 $T$ 的值。</p>
+<p><span class="math display">$$
+\begin{aligned}
+\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)&amp;=\sum_{d=1}^{Max}\frac{1}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times
+a_j\times [d|a_i][d|a_j][\gcd(\frac{a_i}{d},\frac{a_j}{d})=1]} \\
+&amp;=\sum_{d=1}^{Max}\frac{1}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times
+a_j\times
+[d|a_i][d|a_j]\sum_{t|\gcd(\frac{a_i}{d},\frac{a_j}{d})}}{\mu(t)}
+\end{aligned}
+$$</span></p>
+<p>注意到可以和上面一样，所以我们也把 <span
+class="math inline"><em>t</em></span> 的求和往前提。</p>
+<p><span class="math display">$$
+\begin{aligned}
+\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)&amp;=\sum_{d=1}^{Max}\frac{1}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times
+a_j\times
+[d|a_i][d|a_j]\sum_{t|\gcd(\frac{a_i}{d},\frac{a_j}{d})}}{\mu(t)} \\
+&amp;=\sum_{d=1}^{Max}\sum_{t=1}^{\lfloor \frac{Max}{d}
+\rfloor}\frac{\mu(t)}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times
+[d|a_i][d|a_j][t|a_i][t|a_j]} \\
+&amp;=\sum_{d=1}^{Max}\sum_{t=1}^{\lfloor \frac{Max}{d}
+\rfloor}\frac{\mu(t)}{d}\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times
+[dt|a_i][dt|a_j]}
+\end{aligned}
+$$</span></p>
+<p>我们来观察后面这个式子 <span class="math inline">$\displaystyle
+\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times [d|a_i][d|a_j]}$</span>
+，对于任何一个 <span class="math inline"><em>d</em>|<em>a</em></span>
+都会对任何一个 <span
+class="math inline"><em>d</em>|<em>B</em></span>。</p>
+<p>注意到 <span class="math inline">$\displaystyle
+(\sum_{i=1}^{k}a_i)^2$</span> 刚好就是 <span
+class="math inline"><em>a</em><sub><em>x</em></sub>(<em>x</em> ∈ [1, <em>k</em>])</span>
+对于所有 <span
+class="math inline"><em>a</em><sub><em>y</em></sub>(<em>y</em> ∈ [1, <em>k</em>])</span>
+都有贡献，所以： <span class="math display">$$
+\sum_{i=1}^{n}\sum_{j=1}^{n}{a_i\times a_j\times
+[dt|a_i][dt|a_j]}=(\sum_{i=1}^{n}a_i\times [dt|a_i])^2
+$$</span></p>
+<p><span class="math display">$$
+\begin{aligned}
+\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)&amp;=\sum_{d=1}^{Max}\sum_{t=1}^{\lfloor
+\frac{Max}{d} \rfloor}\frac{\mu(t)}{d}(\sum_{i=1}^{n}a_i\times
+[dt|a_i])^2
+\end{aligned}
+$$</span></p>
+<p>我们发现 <span
+class="math inline"><em>a</em><sub><em>i</em></sub></span> 的值域只有
+<span class="math inline">10<sup>6</sup></span> ，所以我们可以用 <span
+class="math inline"><em>c</em><sub><em>i</em></sub></span> 表示有多少个
+<span class="math inline"><em>i</em></span>，这样就有：</p>
+<p><span class="math display">$$
+\sum_{i=1}^{n}a_i\times [dt|a_i]=\sum_{dt|i}^{Max}i\times c_i
+$$</span></p>
+<p><span class="math inline">$\displaystyle \sum_{T|i}^{Max}i\times
+c_i$</span>显然可以用类似筛法的一个东西用 <span
+class="math inline"><em>O</em>(<em>n</em><em>l</em><em>o</em><em>g</em>(<em>n</em>))</span>的方法求出对于每一个
+<span class="math inline"><em>T</em></span> 的值。</p>
 <p>现在我们的式子变成了：</p>
-<p>$$<br>
-\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)=\sum_{d=1}^{Max}\sum_{t=1}^{\lfloor \frac{Max}{d} \rfloor}\frac{\mu(t)}{d}(\sum_{dt|i}^{Max}i\times c_i)^2<br>
-$$</p>
-<p>那么我们只需要枚举 $d$ 再枚举 $t$ 就可以利用 $O(nlog(n))$ 的时间算出答案。</p>
-<p>既然我们已经计算出了 $\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)$ 的值，我们把它减去 $\sum_{i=1}^{n}{a_i}$ ，再除 $2$（这里取模的话就要用一下逆元），就可以算出 $k$ 了。</p>
-<p>算 $k$ 的代码：</p>
+<p><span class="math display">$$
+\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)=\sum_{d=1}^{Max}\sum_{t=1}^{\lfloor
+\frac{Max}{d} \rfloor}\frac{\mu(t)}{d}(\sum_{dt|i}^{Max}i\times c_i)^2
+$$</span></p>
+<p>那么我们只需要枚举 <span class="math inline"><em>d</em></span> 再枚举
+<span class="math inline"><em>t</em></span> 就可以利用 <span
+class="math inline"><em>O</em>(<em>n</em><em>l</em><em>o</em><em>g</em>(<em>n</em>))</span>
+的时间算出答案。</p>
+<p>既然我们已经计算出了 <span
+class="math inline">$\sum_{i=1}^{n}\sum_{j=1}^{n}\mathrm{lcm}(a_i,a_j)$</span>
+的值，我们把它减去 <span
+class="math inline">$\sum_{i=1}^{n}{a_i}$</span> ，再除 <span
+class="math inline">2</span>（这里取模的话就要用一下逆元），就可以算出
+<span class="math inline"><em>k</em></span> 了。</p>
+<p>算 <span class="math inline"><em>k</em></span> 的代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">using</span> ll = <span class="hljs-type">long</span> <span class="hljs-type">long</span>;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> mod = <span class="hljs-number">998244353</span>;<br><span class="hljs-type">bool</span> isp[<span class="hljs-number">1000000</span> + <span class="hljs-number">10</span>];<br>vector&lt;<span class="hljs-type">int</span>&gt;prm;<br>ll n, cnt[<span class="hljs-number">1000000</span> + <span class="hljs-number">5</span>], ans, mu[<span class="hljs-number">1000000</span> + <span class="hljs-number">10</span>], f[<span class="hljs-number">1000000</span> + <span class="hljs-number">10</span>], g[<span class="hljs-number">1000000</span> + <span class="hljs-number">10</span>];<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">getprm</span><span class="hljs-params">(<span class="hljs-type">int</span> lim)</span> </span>&#123;<br>	<span class="hljs-built_in">memset</span>(isp, <span class="hljs-number">1</span>, <span class="hljs-keyword">sizeof</span> isp);<br>	isp[<span class="hljs-number">0</span>] = isp[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;<br>	mu[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= lim; ++i) &#123;<br>		<span class="hljs-keyword">if</span> (isp[i])<br>			prm.<span class="hljs-built_in">push_back</span>(i),<br>			mu[i] = <span class="hljs-number">-1</span>;<br>		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; prm.<span class="hljs-built_in">size</span>(); ++j) &#123;<br>			<span class="hljs-keyword">if</span> (i * prm[j] &gt; lim) <span class="hljs-keyword">break</span>;<br>			isp[i * prm[j]] = <span class="hljs-number">0</span>;<br>			<span class="hljs-keyword">if</span> (i % prm[j] == <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;<br>			mu[i * prm[j]] = -mu[i];<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">for</span> (ll i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">1000000</span>; i++)<br>		<span class="hljs-keyword">for</span> (ll j = i; j &lt;= <span class="hljs-number">1000000</span>; j += i)<br>			f[j] += mu[i] * i;<br>	<span class="hljs-keyword">for</span> (ll i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">1000000</span>; i++) &#123;<br>		<span class="hljs-keyword">for</span> (ll j = <span class="hljs-number">1</span>; j &lt;= <span class="hljs-number">1000000</span> / i; j++) <br>			(g[i] += j * cnt[j * i]) %= mod;<br>	&#125;<br>&#125;<br><span class="hljs-function">ll <span class="hljs-title">poww</span><span class="hljs-params">(ll x, ll k)</span> </span>&#123;<br>	<span class="hljs-keyword">if</span> (k == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">if</span> (k == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> x;<br>	ll tmp = <span class="hljs-built_in">poww</span>(x, k / <span class="hljs-number">2</span>);<br>	tmp = (tmp * tmp) % mod;<br>	<span class="hljs-keyword">if</span> (k % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> tmp * x % mod;<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> tmp;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>	cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>)-&gt;<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>	cin &gt;&gt; n;<br>	<span class="hljs-keyword">for</span> (ll i = <span class="hljs-number">1</span>, x; i &lt;= n; i++)<br>		cin &gt;&gt; x, ++cnt[x];<br>	<span class="hljs-built_in">getprm</span>(<span class="hljs-number">1000000</span>);<br>	<span class="hljs-keyword">for</span> (ll i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">1000000</span>; i++) <br>		(ans += i * g[i] % mod * g[i] % mod * f[i]) %= mod;<br>	<span class="hljs-keyword">for</span> (ll i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">1000000</span>; i++) <br>		<span class="hljs-keyword">if</span> (cnt[i]) <br>			(ans -= i * cnt[i]) %= mod;<br>	((ans %= mod) += mod) %= mod;<br>	(ans *= <span class="hljs-built_in">poww</span>(<span class="hljs-number">2</span>, mod - <span class="hljs-number">2</span>)) %= mod;<br>	cout &lt;&lt; ans &lt;&lt; endl;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>设 $f(k)$ 为 $k$ 各个位数上的和，我们要求的 $ans$ 满足 $k|ans$ 且 $f(ans)$ 最小</p>
-<p>考虑 $dp_i$ 表示 $\min {f(x)}(x\equiv i\pmod k)$</p>
-<p>怎么转移？注意到可以在$\ x$ $(\ x \equiv i\pmod k)$  后加上一个数 $y(y \in [0,9]),$ 那么易得加上后的余数为 $(x\times 10+y) \mod k$ 即 $(i\times 10+y)\mod k$，所以 $dp[(i\times 10+y)\mod k] = \min (dp[i]+y)$。</p>
-<p>注意到这个式子和图的松弛式子很像，接下去就建图确定转移顺序，再跑一遍单源最短路径板子即可，答案即 $dis[0]$，边是 $k$ 的 $10$ 倍，复杂度为$\mathcal{O(k\log_{2} k)}$。</p>
+<p>设 <span class="math inline"><em>f</em>(<em>k</em>)</span> 为 <span
+class="math inline"><em>k</em></span> 各个位数上的和，我们要求的 <span
+class="math inline"><em>a</em><em>n</em><em>s</em></span> 满足 <span
+class="math inline"><em>k</em>|<em>a</em><em>n</em><em>s</em></span> 且
+<span
+class="math inline"><em>f</em>(<em>a</em><em>n</em><em>s</em>)</span>
+最小</p>
+<p>考虑 <span
+class="math inline"><em>d</em><em>p</em><sub><em>i</em></sub></span>
+表示 <span
+class="math inline">min <em>f</em>(<em>x</em>)(<em>x</em> ≡ <em>i</em> (mod  <em>k</em>))</span></p>
+<p>怎么转移？注意到可以在<span class="math inline"> <em>x</em></span>
+<span
+class="math inline">( <em>x</em> ≡ <em>i</em> (mod  <em>k</em>))</span>
+后加上一个数 <span
+class="math inline"><em>y</em>(<em>y</em> ∈ [0, 9]),</span>
+那么易得加上后的余数为 <span
+class="math inline">(<em>x</em> × 10 + <em>y</em>) mod  <em>k</em></span>
+即 <span
+class="math inline">(<em>i</em> × 10 + <em>y</em>) mod  <em>k</em></span>，所以
+<span
+class="math inline"><em>d</em><em>p</em>[(<em>i</em> × 10 + <em>y</em>) mod  <em>k</em>] = min (<em>d</em><em>p</em>[<em>i</em>] + <em>y</em>)</span>。</p>
+<p>注意到这个式子和图的松弛式子很像，接下去就建图确定转移顺序，再跑一遍单源最短路径板子即可，答案即
+<span class="math inline"><em>d</em><em>i</em><em>s</em>[0]</span>，边是
+<span class="math inline"><em>k</em></span> 的 <span
+class="math inline">10</span> 倍，复杂度为<span
+class="math inline">𝒪(𝓀𝓁ℴℊ<sub>2</sub>𝓀)</span>。</p>
 <p>代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">using</span> ll = <span class="hljs-type">long</span> <span class="hljs-type">long</span>;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> mod = <span class="hljs-number">3999971</span>;<br><span class="hljs-type">bool</span> isp[<span class="hljs-number">1000000</span> + <span class="hljs-number">10</span>];<br>vector&lt;<span class="hljs-type">int</span>&gt;prm;<br>ll n, cnt[<span class="hljs-number">1000000</span> + <span class="hljs-number">5</span>], ans, mu[<span class="hljs-number">1000000</span> + <span class="hljs-number">10</span>], f[<span class="hljs-number">1000000</span> + <span class="hljs-number">10</span>], g[<span class="hljs-number">1000000</span> + <span class="hljs-number">10</span>];<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">getprm</span><span class="hljs-params">(<span class="hljs-type">int</span> lim)</span> </span>&#123;<br>	<span class="hljs-built_in">memset</span>(isp, <span class="hljs-number">1</span>, <span class="hljs-keyword">sizeof</span> isp);<br>	isp[<span class="hljs-number">0</span>] = isp[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;<br>	mu[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= lim; ++i) &#123;<br>		<span class="hljs-keyword">if</span> (isp[i])<br>			prm.<span class="hljs-built_in">push_back</span>(i),<br>			mu[i] = <span class="hljs-number">-1</span>;<br>		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; prm.<span class="hljs-built_in">size</span>(); ++j) &#123;<br>			<span class="hljs-keyword">if</span> (i * prm[j] &gt; lim) <span class="hljs-keyword">break</span>;<br>			isp[i * prm[j]] = <span class="hljs-number">0</span>;<br>			<span class="hljs-keyword">if</span> (i % prm[j] == <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;<br>			mu[i * prm[j]] = -mu[i];<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">for</span> (ll i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">1000000</span>; i++)<br>		<span class="hljs-keyword">for</span> (ll j = i; j &lt;= <span class="hljs-number">1000000</span>; j += i)<br>			f[j] += mu[i] * i;<br>	<span class="hljs-keyword">for</span> (ll i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">1000000</span>; i++) &#123;<br>		<span class="hljs-keyword">for</span> (ll j = <span class="hljs-number">1</span>; j &lt;= <span class="hljs-number">1000000</span> / i; j++)<br>			(g[i] += j * cnt[j * i]) %= mod;<br>	&#125;<br>&#125;<br><span class="hljs-function">ll <span class="hljs-title">poww</span><span class="hljs-params">(ll x, ll k)</span> </span>&#123;<br>	<span class="hljs-keyword">if</span> (k == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">if</span> (k == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> x;<br>	ll tmp = <span class="hljs-built_in">poww</span>(x, k / <span class="hljs-number">2</span>);<br>	tmp = (tmp * tmp) % mod;<br>	<span class="hljs-keyword">if</span> (k % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> tmp * x % mod;<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> tmp;<br>&#125;<br><span class="hljs-keyword">namespace</span> Change &#123;<br>	<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Edge</span> &#123;<br>		<span class="hljs-type">int</span> v, w, nxt;<br>	&#125;edge[<span class="hljs-number">40000000</span> + <span class="hljs-number">5</span>];<br>	<span class="hljs-type">int</span> head[<span class="hljs-number">4000000</span> + <span class="hljs-number">5</span>], idx;<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> v, <span class="hljs-type">int</span> w)</span> </span>&#123;<br>		edge[++idx] = &#123; v,w,head[u] &#125;;<br>		head[u] = idx;<br>	&#125;<br>	<span class="hljs-keyword">struct</span> <span class="hljs-title class_">node</span> &#123;<br>		<span class="hljs-type">int</span> first, second;<br>		<span class="hljs-keyword">friend</span> <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;(<span class="hljs-type">const</span> node&amp; a, <span class="hljs-type">const</span> node&amp; b) &#123;<br>			<span class="hljs-keyword">return</span> a.first &gt; b.first;<br>		&#125;<br>	&#125;;<br>	<span class="hljs-type">int</span> n, m, k, dis[<span class="hljs-number">4000000</span> + <span class="hljs-number">5</span>];<br>	priority_queue&lt;node&gt;q;<br>	<span class="hljs-type">bool</span> vis[<span class="hljs-number">4000000</span> + <span class="hljs-number">5</span>];<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dij</span><span class="hljs-params">()</span> </span>&#123;<br>		<span class="hljs-built_in">memset</span>(dis, <span class="hljs-number">0x3f</span>, <span class="hljs-keyword">sizeof</span> dis);<br>		dis[k] = <span class="hljs-number">0</span>;<br>		q.<span class="hljs-built_in">push</span>(&#123; <span class="hljs-number">0</span>,k &#125;);<br>		<span class="hljs-keyword">while</span> (!q.<span class="hljs-built_in">empty</span>()) &#123;<br>			node p = q.<span class="hljs-built_in">top</span>(); q.<span class="hljs-built_in">pop</span>();<br>			<span class="hljs-keyword">if</span> (vis[p.second]) <span class="hljs-keyword">continue</span>;<br>			vis[p.second] = <span class="hljs-number">1</span>;<br>			<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = head[p.second]; i; i = edge[i].nxt) &#123;<br>				<span class="hljs-keyword">if</span> (dis[edge[i].v] &gt; dis[p.second] + edge[i].w) &#123;<br>					dis[edge[i].v] = dis[p.second] + edge[i].w;<br>					q.<span class="hljs-built_in">push</span>(&#123; dis[p.second] + edge[i].w,edge[i].v &#125;);<br>				&#125;<br>			&#125;<br>		&#125;<br>	&#125;<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span> </span>&#123;<br>		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; k; ++i)<br>			<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">10</span>; ++j)<br>				<span class="hljs-built_in">add</span>(i, (i * <span class="hljs-number">10</span> + j) % k, j);<br>		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-number">10</span>; ++i)<br>			<span class="hljs-built_in">add</span>(k, i % k, i);<br>		<span class="hljs-built_in">dij</span>();<br>		cout &lt;&lt; dis[<span class="hljs-number">0</span>] &lt;&lt; endl;<br>	&#125;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>	cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>)-&gt;<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>	cin &gt;&gt; n;<br>	<span class="hljs-keyword">for</span> (ll i = <span class="hljs-number">1</span>, x; i &lt;= n; i++)<br>		cin &gt;&gt; x, ++cnt[x];<br>	<span class="hljs-built_in">getprm</span>(<span class="hljs-number">1000000</span>);<br>	<span class="hljs-keyword">for</span> (ll i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">1000000</span>; i++)<br>		(ans += i * g[i] % mod * g[i] % mod * f[i]) %= mod;<br>	<span class="hljs-keyword">for</span> (ll i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">1000000</span>; i++)<br>		<span class="hljs-keyword">if</span> (cnt[i])<br>			(ans -= i * cnt[i]) %= mod;<br>	((ans %= mod) += mod) %= mod;<br>	(ans *= <span class="hljs-built_in">poww</span>(<span class="hljs-number">2</span>, mod - <span class="hljs-number">2</span>)) %= mod;<br>	Change::<span class="hljs-built_in">main</span>(ans);<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
                 
               </div>
             
@@ -447,7 +531,7 @@ $$</p>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年2月13日</div>
+          <div>February 13, 2025</div>
         </div>
       
       

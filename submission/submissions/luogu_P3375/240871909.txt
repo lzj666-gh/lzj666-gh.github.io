@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 240871909
+//  题目ID: P3375
+#include<bits/stdc++.h>
+using namespace std;
+int n,m;vector<int> ne;
+string p,s;
+int main(){
+    ios::sync_with_stdio(0);
+	cin>>s>>p;n=p.size();m=s.size();
+	s=" "+s;p=" "+p;
+    ne.resize(10000010);
+	ne[1]=0;
+	int j = 0;
+	for(int i = 2;i<=n;i++){
+	    while(j&&p[i]!=p[j+1])j=ne[j];
+	    if(p[i]==p[j+1])j++;
+	    ne[i]=j;
+	}
+	j=0;
+	for(int i = 1;i<=m;i++){
+	    while(j&&s[i]!=p[j+1])j=ne[j];
+	    if(s[i]==p[j+1])j++;
+	    if(j==n)cout<<i-n+1<<"\n";
+	}
+	for(int i = 1;i<=n;i++)cout<<ne[i]<<" ";
+	return 0;
+}

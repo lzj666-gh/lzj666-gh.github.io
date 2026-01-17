@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 235492081
+//  题目ID: T666108
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, k, x, y, p, res, ans, a[1005][1005];
+unsigned state;
+inline unsigned next_random() {
+	state = state ^ (state << 13);
+	state = state ^ (state >> 17);
+	state = state ^ (state << 5);
+	return state;
+}
+inline int random(int l, int r) {
+	return next_random() % (r - l + 1) + l;
+}
+signed main() {
+	ios::sync_with_stdio(0);
+	cin >> n >> m >> k >> x >> y >> p;
+	for (int i = 0; i != n; ++i)
+		for (int j = 0; j != m; ++j)
+			cin >> a[i][j];
+	cin >> state;
+	int mic = x + 1, mac = min(x * 2, n), mir = y + 1, mar = min(y * 2, m);
+	while (m--) {
+		int lc = random(mic, mac), lr = random(mir, mar);
+		int xl = random(0, n - lc), yl = random(0, m - lr);
+		int xr = xl + lc - 1, yr = yl + lr - 1;
+		//querying the result in rect x:[xl,xr],y:[yl,yr] of a[x][y], solve it and save the answer in value "ans".
+		ans = 1;
+		for (int x = xl; x <= xr; ++x)
+			for (int y = yl; y <= yr; ++y)
+				ans = 1ll * a[x][y] * ans % p;
+		res ^= ans;
+	}
+	cout << res << endl;
+	return 0;
+}

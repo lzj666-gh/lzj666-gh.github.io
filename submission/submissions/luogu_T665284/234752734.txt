@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 234752734
+//  题目ID: T665284
+#include<bits/stdc++.h>
+using namespace std;
+int n,a0;
+int main(){
+	cin>>n>>a0;
+	cout<<"1\n";
+	for(int i = 1;i<n-1;i++){
+		cout<<a0<<" ";
+	}
+	cout<<a0*2<<" "<<a0*2<<"\n";
+}

@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 244112123
+//  题目ID: P3514
+#include<bits/stdc++.h>
+#define endl '\n'
+#define int long long
+using namespace std;
+int n, m; string s;
+int L[2000000 + 5], R[2000000 + 5];
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> s; memset(L, -1, sizeof L);
+	fill(R, R + n + n + 3, n);
+	int cnt = 0;
+	for (int i = 0; i < n; ++i) cnt += s[i] == 'T';
+	cnt += n;
+	L[cnt] = 0; R[cnt] = n - 1;
+	int p1 = s.find_first_of('W'), p2 = s.find_last_of('W');
+	if (p1 - 0 + 1 < n - 1 - p2 + 1) L[cnt - ((p1 - 1 - 0 + 1) * 2 + 1)] = p1 + 1, R[cnt - ((p1 - 1 - 0 + 1) * 2 + 1)] = n - 1;
+	else R[cnt - ((n - 1 - (p2 + 1) + 1) * 2 + 1)] = p2 - 1, L[cnt - ((n - 1 - (p2 + 1) + 1) * 2 + 1)] = 0;
+	for (int i = cnt; i >= 3; --i) {
+		if (L[i] == -1 || R[i] == n) continue;
+		if (s[L[i]] == 'T') L[i - 2] = L[i] + 1, R[i - 2] = R[i];
+		else if (s[R[i]] == 'T') L[i - 2] = L[i], R[i - 2] = R[i] - 1;
+		else if (s[L[i]] == 'W' && s[R[i]] == 'W') L[i - 2] = L[i] + 1, R[i - 2] = R[i] - 1;
+	}
+	while (m--) {
+		int x; cin >> x;
+		if (L[x] == -1) cout << "NIE" << endl;
+		else cout << L[x] + 1 << ' ' << R[x] + 1 << endl;
+	}
+	return 0;
+}

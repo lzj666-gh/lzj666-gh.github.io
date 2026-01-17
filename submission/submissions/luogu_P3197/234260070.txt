@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 234260070
+//  题目ID: P3197
+#include<bits/stdc++.h>
+#define all(a) (a).begin(), (a).end()
+#define rall(a) (a).rbegin(), (a).rend()
+#define int long long
+using namespace std;
+constexpr int mod = 100003;
+int qpow(int a, int b) {
+	int res = 1;
+	while (b) {
+		if (b & 1) res = res * a % mod;
+		a = a * a % mod; b >>= 1;
+	}
+	return res;
+}
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m;
+	cin >> n >> m;
+	cout << (qpow(n, m) - n * qpow(n - 1, m - 1) % mod + mod) % mod << endl;
+	return 0;
+}

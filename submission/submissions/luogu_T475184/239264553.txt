@@ -1,0 +1,77 @@
+//  OJ: 洛谷
+//  提交ID: 239264553
+//  题目ID: T475184
+#include<bits/stdc++.h>
+#define int long long
+#define all(a) (a).begin(),(a).end()
+#define rall(a) (a).rbegin(),a.rend()
+#define file(a) freopen(#a".in","r",stdin),freopen(#a".out","w",stdout)
+using namespace std;
+constexpr int mod = 998244353;
+struct Edge {
+	int v, w, cnt, nxt;
+}edge[10000000 + 5];
+int head[500000 + 5], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,0,head[u] };
+	head[u] = idx;
+}
+int cnt[500000 + 5], n, m, u, v, w, q, a[500000 + 5];
+void dfs(int x, int fa) {
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs(edge[i].v, x), cnt[x] += cnt[edge[i].v];
+}
+int ans, tot[500000 + 5], invm = 1, diff;
+void dfs2(int x, int fa) {
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			edge[i].cnt = (m - cnt[edge[i].v]) * cnt[edge[i].v] * 4 % mod * diff % mod,
+			dfs2(edge[i].v, x), ans += edge[i].cnt * edge[i].w % mod, ans %= mod,
+			tot[x] = (tot[x] + edge[i].cnt) % mod,
+			tot[edge[i].v] = (tot[edge[i].v] + edge[i].cnt) % mod;
+}
+int inv(int a) {
+	int b = mod - 2, res = 1;
+	while (b) {
+		if (b & 1) res = res * a % mod;
+		a = a * a % mod; b >>= 1;
+	}
+	return res;
+}
+bool dfs3(int x, int fa, int v) {
+	if (x == v) return 1;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			if (dfs3(edge[i].v, x, v))
+				return ++edge[i].cnt;
+	return 0;
+}
+int32_t main() {
+	//file(sakuya);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i < n; ++i) cin >> u >> v >> w, add(u, v, w), add(v, u, w);
+	for (int i = 1; i <= m; ++i) cin >> a[i], cnt[a[i]] = 1;
+	for (int i = 1; i <= m; ++i) invm = invm * i % mod;
+	diff = invm * inv(m) % mod * inv(m - 1) % mod; invm = inv(invm);
+
+	sort(a + 1, a + m + 1);
+	do {
+		for (int i = 1; i < m; ++i) dfs3(a[i], a[i], a[i + 1]);
+	} while (next_permutation(a + 1, a + m + 1));
+	for (int i = 1; i <= n; ++i)
+		for (int j = head[i]; j; j = edge[j].nxt)
+			if (edge[j].cnt)
+				tot[i] += edge[j].cnt, ans += edge[j].cnt * edge[j].w,
+				ans %= mod, tot[edge[j].v] += edge[j].cnt, tot[i] %= mod;
+
+	//dfs(1, 1); dfs2(1, 1);
+	cin >> q;
+	while (q--) {
+		int x, k; cin >> x >> k;
+		ans += tot[x] * k % mod; ans %= mod;
+		cout << ans * invm % mod << endl;
+	}
+	return 0;
+}

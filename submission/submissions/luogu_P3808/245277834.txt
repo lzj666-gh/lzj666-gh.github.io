@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 245277834
+//  题目ID: P3808
+#include<bits/stdc++.h>
+using namespace std;
+int trie[1000000 + 5][26], fail[1000000 + 5], siz[1000000 + 5], idx;
+void insert(string s) {
+	int p = 0;
+	for (const char& c : s)
+		p = trie[p][c - '0'] == 0 ? trie[p][c - '0'] = ++idx : trie[p][c - '0'];
+	siz[p]++;
+}
+void build() {
+	queue<int>q;
+	for (int i = 0; i < 26; ++i)
+		if (trie[0][i])
+			q.push(trie[0][i]);
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		for (int i = 0; i < 26; ++i)
+			if (trie[now][i])
+				fail[trie[now][i]] = trie[fail[now]][i], q.push(trie[now][i]);
+			else
+				trie[now][i] = trie[fail[now]][i];
+	}
+}
+bool vis[1000000 + 5]; string s;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n; cin >> n;
+	for (int i = 1; i <= n; ++i)
+		cin >> s, insert(s);
+	build();
+	cin >> s; int ans = 0;
+	int p = 0;
+	for (auto& c : s) {
+		p = trie[p][c - '0'];
+		int q = p;
+		while (q && !vis[q])
+			vis[q] = 1, ans += siz[q], q = fail[q];
+	}
+	cout << ans << endl;
+	return 0;
+}

@@ -1,0 +1,90 @@
+//  OJ: 洛谷
+//  提交ID: 235108165
+//  题目ID: T666108
+#include<bits/stdc++.h>
+using namespace std;
+//#define int long long
+struct IO {
+#define mxsz (1 << 21)
+	char buf[mxsz], * p1, * p2;
+	char pbuf[mxsz], * pp; bool acc[128];
+	IO() : p1(buf), p2(buf), pp(pbuf) {}
+	~IO() { fwrite(pbuf, 1, pp - pbuf, stdout); }
+	inline char gc() {
+		if (p1 == p2) p2 = (p1 = buf) + fread(buf, 1, mxsz, stdin);
+		return p1 == p2 ? ' ' : *p1++;
+	}
+	inline void setacc(const char* c) { while (*c) acc[*c++] = 1; }
+	inline char getc() { char c; while (!acc[c = gc()]); return c; }
+	inline int read() {
+		int r = 0; char c = gc(); while (c < '0' || c>'9') c = gc();
+		while (c >= '0' && c <= '9') r = r * 10 + (c ^ 48), c = gc();
+		return r;
+	}
+	inline void push(const char& c) {
+		if (pp - pbuf == mxsz) fwrite(pbuf, 1, mxsz, stdout), pp = pbuf;
+		*pp++ = c;
+	}
+	inline void write(int x) {
+		static char sta[22]; int top = 0;
+		do sta[top++] = x % 10, x /= 10; while (x);
+		while (top) push(sta[--top] ^ 48);
+	}
+	inline void write(int x, char opc) {
+		write(x), push(opc);
+	}
+	inline void puts(const char* c) { while (*c) push(*c++); }
+} io;
+using arr = int[1005][1005];
+int n, m, k, x, y, p, res, ans; arr a, lu, ld, ru, rd;
+unsigned state;
+inline unsigned next_random() {
+	state = state ^ (state << 13);
+	state = state ^ (state >> 17);
+	state = state ^ (state << 5);
+	return state;
+}
+inline int random(int l, int r) {
+	return next_random() % (r - l + 1) + l;
+}
+signed main() {
+	ios::sync_with_stdio(0);
+	n = io.read(); m = io.read(); k = io.read();
+	x = io.read(); y = io.read(); p = io.read();
+	for (int i = 0; i != n; ++i)
+		for (int j = 0; j != m; ++j) a[i][j] = io.read();
+	state = io.read();
+	for (int i = 0; i != n; ++i)
+		for (int j = 0; j != m; ++j)
+			if (j % y == 0) ld[i][j] = lu[i][j] = a[i][j];
+			else ld[i][j] = lu[i][j] = 1ll * lu[i][j - 1] * a[i][j] % p;
+	for (int i = 0; i != n; ++i) ru[i][m - 1] = rd[i][m - 1] = a[i][m - 1];
+	for (int i = 0; i != n; ++i)
+		for (int j = m - 2; j > -1; --j)
+			if (j % y == y - 1) rd[i][j] = ru[i][j] = a[i][j];
+			else rd[i][j] = ru[i][j] = 1ll * ru[i][j + 1] * a[i][j] % p;
+	for (int j = 0; j != m; ++j)
+		for (int i = 0; i != n; ++i)
+			if (i % x)
+				ld[i][j] = 1ll * ld[i - 1][j] * ld[i][j] % p,
+				rd[i][j] = 1ll * rd[i - 1][j] * rd[i][j] % p;
+	for (int j = 0; j != m; ++j)
+		for (int i = n - 2; i > -1; i--)
+			if (i % x == x - 1)
+				lu[i][j] = 1ll * lu[i + 1][j] * lu[i][j] % p,
+				ru[i][j] = 1ll * ru[i + 1][j] * ru[i][j] % p;
+	int mic = x + 1, mac = min(x * 2, n), mir = y + 1, mar = min(y * 2, m);
+	while (k--) {
+		int lc = random(mic, mac), lr = random(mir, mar);
+		int xl = random(0, n - lc), yl = random(0, m - lr);
+		int xr = xl + lc - 1, yr = yl + lr - 1;
+		int bxl = xl / x, bxr = xr / x, byl = yl / y, byr = yr / y;
+		ans = 1ll * ru[xl][yl] * lu[xl][yr] % p * ld[xr][yr] % p * rd[xr][yl] % p;
+		if (bxr == bxl + 2) ans = 1ll * ans * lu[(bxl + 1) * x][yl] % p * ru[(bxl + 1) * x][yr] % p;
+		if (byr == byl + 2) ans = 1ll * ans * ru[xl][(byl + 1) * y] % p * rd[xr][(byl + 1) * y] % p;
+		if (bxr == bxl + 2 && byr == byl + 2) ans = 1ll * ans * ru[(bxl + 1) * x][(byl + 1) * y] % p;
+		res ^= ans;
+//		cerr << ans << ' ';
+	}
+	io.write(res, '\n');
+}

@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 240872533
+//  题目ID: P3375
+#include<bits/stdc++.h>
+using namespace std;
+vector<int> kmp1(string s) {
+	vector<int>res(s.size(), 0);
+	for (int i = 1; i < s.size(); ++i) {
+		int j = res[i - 1];
+		while (j > 0 && s[i] != s[j])
+			j = res[j - 1];
+		if (s[i] == s[j])
+			j++;
+		res[i] = j;
+	}
+	return move(res);
+}
+vector<int> kmp2(string a, string b) {
+	string cur = b + ' ' + a;
+	vector<int>res, nxt = kmp1(cur);
+	for (int i = b.size() + 1; i <= a.size() + b.size(); ++i) {
+		if (nxt[i] == b.size())
+			res.push_back(i - 2 * b.size());
+	}
+	return move(res);
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	string a, b; cin >> a >> b;
+	vector<int>res = move(kmp2(a, b));
+	for (auto &p : res) cout << p + 1 << endl;
+	res = move(kmp1(b));
+	for (auto &p : res) cout << p << ' ';
+	return 0;
+}

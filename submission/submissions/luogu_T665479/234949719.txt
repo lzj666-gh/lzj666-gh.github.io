@@ -1,0 +1,61 @@
+//  OJ: 洛谷
+//  提交ID: 234949719
+//  题目ID: T665479
+#include<bits/stdc++.h>
+using namespace std;
+const int MAXN = 33550336 + 5;
+int n, m, x, p;
+unsigned int state;
+inline unsigned int next_random() {
+    state = state ^ (state << 13);
+    state = state ^ (state >> 17);
+    state = state ^ (state << 5);
+    return state;
+}
+int pre_arr[MAXN], bck_arr[MAXN];
+int32_t main() {
+    cin.tie(0)->sync_with_stdio(false);
+    cin >> n >> m >> x >> p >> state;
+    for (int i = 1; i <= n; ++i) {
+        int idx = i - 1;
+        pre_arr[idx] = bck_arr[idx] = next_random() % p;
+    }
+    int blocks = (n - 1) / x + 1;
+    for (int k = 0; k < blocks; k++) {
+        int start = k * x;
+        int end = min((k + 1) * x, n) - 1;
+        for (int j = start + 1; j <= end; j++) {
+            pre_arr[j] = 1LL * pre_arr[j - 1] * pre_arr[j] % p;
+        }
+    }
+    for (int k = 0; k < blocks; k++) {
+        int start = k * x;
+        int end = min((k + 1) * x, n) - 1;
+        for (int j = end - 1; j >= start; j--) {
+            bck_arr[j] = 1LL * bck_arr[j + 1] * bck_arr[j] % p;
+        }
+    }
+    static unsigned int result = 0;
+    int min_len = x, max_len = min(2 * x, n), range_len = max_len - min_len + 1;
+    for (int i = 1; i <= m; i++) {
+        static int len, l, r; len = min_len + (next_random() % range_len);
+        l = 1 + (next_random() % (n - len + 1)), r = l + len - 1;
+        static int ans; ans = 0; static int bell, belr, idxl, idxr;
+        bell = (l - 1) / x, belr = (r - 1) / x, idxl = (l - 1) % x, idxr = (r - 1) % x;
+        if (bell == belr) {
+            int block_end = min((bell + 1) * x, n) - 1;
+            ans = pre_arr[block_end];
+        }
+        else if (bell == belr - 1) {
+            ans = 1LL * bck_arr[bell * x + idxl] * pre_arr[belr * x + idxr] % p;
+        }
+        else if (bell == belr - 2) {
+            int mid_block_end = min((bell + 1) * x, n) - 1;
+            ans = 1LL * bck_arr[bell * x + idxl] * pre_arr[mid_block_end] % p * pre_arr[belr * x + idxr] % p;
+        }
+        else throw logic_error("out of two blocks");
+        result ^= ans;
+    }
+    cout << result << endl;
+    return 0;
+}

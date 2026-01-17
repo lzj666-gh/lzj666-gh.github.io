@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 101762324
+//  题目ID: T209133
+#include<bits/stdc++.h>
+using namespace std;
+long long a[100000+10],m,n,amax=0;
+long long R=0;
+bool fajo(long long x){
+	long long h=0;
+	long long s=0;
+	for(int i=0;i<n;i++){
+		if(h+a[i]<=x){
+			h+=a[i];
+		}
+		else{
+			h=a[i];
+			s++;
+//			cout<<x<<" "<<s<<endl;
+		}
+	} s++;
+	return s<=m;
+}
+int erfen(){
+	long long begin=amax,end=R,mid,ret;
+//	cout<<begin<<" "<<end<<endl;
+//	int i=1;
+	while(begin<=end){
+//		cout<<i<<endl;
+//		i++;
+//		if(i==50) exit(0);
+		mid=(begin+end)/2;
+		if(fajo(mid)){
+			ret=mid;
+			end=mid-1;
+		}
+		else{
+			begin=mid+1;
+		}
+		//cout<<begin<<" "<<mid<<" "<<end<<endl;
+	}
+	return ret;
+}
+int main(){
+	scanf("%lld%lld",&n,&m);
+	for(int i=0;i<n;i++){
+		scanf("%lld",&a[i]);
+		amax=max(amax,a[i]);
+		R+=a[i];
+	}
+	cout<<erfen()<<endl;
+	return 0;
+}

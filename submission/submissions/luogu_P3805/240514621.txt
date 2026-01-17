@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 240514621
+//  题目ID: P3805
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+char s[30000000 + 5];
+int n, dp[30000000 + 5];
+int32_t main() {
+	// freopen("P3805_4.in", "r", stdin);
+	char ch = getchar_unlocked();
+	s[0] = '!'; s[n = 1] = '?';
+	while (ch <= 'z' && ch >= 'a')
+		s[++n] = ch, ch = getchar_unlocked(), s[++n] = '?';
+	int ans = 0;
+	for (int l = 1, r = 0, i = 1; l <= n; ++l) {
+		if (l <= r) dp[l] = min(dp[i + i - l], r - l + 1);
+		while (s[l - dp[l]] == s[l + dp[l]]) ++dp[l];
+		if (dp[l] + l > r) r = dp[l] + l - 1, i = l;
+		ans = max(ans, dp[l]);
+	}
+	cout << ans - 1 << endl;
+	return 0;
+}

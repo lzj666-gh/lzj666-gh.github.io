@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 106723475
+//  题目ID: T211860
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int a,b;
+	char ch;
+	cin>>a;
+	
+	while(cin>>ch>>b){
+		if(ch=='*') a=a*b;
+		if(ch=='-') a=a-b;
+		if(ch=='+') a=a+b;
+		if(ch=='/') a=a/b;
+	}
+	
+	printf("%d",a);
+}

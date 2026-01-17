@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 242219117
+//  题目ID: T524610
+#include<bits/stdc++.h>
+#ifdef _DEBUG
+#define __builtin_popcount _Popcount
+#endif
+#define int long long
+#define all(a) (a).begin(), (a).end()
+#define file(a) { freopen(#a".in", "r", stdin); freopen(#a".out", "w", stdout); }
+using namespace std;
+int n, m;
+struct Edge {
+	int u, v, w, top, cnt;
+	void build() {
+		top = 1;
+		while (top << 1 <= w) top <<= 1;
+		cnt = __builtin_popcount((unsigned)w);
+	}
+	friend bool operator<(const Edge& a, const Edge& b) {
+		return a.top == b.top ? a.cnt == b.cnt ? a.w < b.w : a.cnt < b.cnt : a.top < b.top;
+	}
+}edge[500000 + 5];
+int fa[100000 + 5];
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+bool check(unsigned int mid) {
+	iota(fa + 1, fa + n + 1, 1);
+	for (int i = 1; i <= m; ++i)
+		if ((edge[i].w | mid) == mid)
+			fa[find(edge[i].u)] = find(edge[i].v);
+	return find(1) == find(n);
+}
+int32_t main() {
+	// file(graph);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= m; ++i)
+		cin >> edge[i].u >> edge[i].v >> edge[i].w, edge[i].build();
+	sort(edge + 1, edge + m + 1);
+	for (unsigned int i = 1; i > 0; i = i << 1 | 1)
+		if (check(i)) {
+			for (unsigned int j = i + 1 >> 1; j; j >>= 1)
+				if (check(i ^ j))
+					i ^= j;
+			cout << i << endl;
+			return 0;
+		}
+	cout << -1 << endl;
+	return 0;
+}

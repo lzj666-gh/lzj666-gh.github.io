@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>luogu_T146882 - 文件索引</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            display: flex;
+            gap: 30px;
+        }
+        #file-list {
+            width: 300px;
+            flex-shrink: 0;
+        }
+        #file-content {
+            flex-grow: 1;
+        }
+        h1 { 
+            color: #333; 
+            margin-top: 0;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #666;
+            font-size: 18px;
+            margin-top: 0;
+        }
+        ul { 
+            list-style-type: none; 
+            padding: 0; 
+        }
+        li { 
+            margin: 8px 0; 
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        li:hover {
+            background-color: #f5f5f5;
+        }
+        li.active {
+            background-color: #e6f7ff;
+            border-left: 3px solid #0066cc;
+        }
+        .file-link { 
+            text-decoration: none; 
+            color: #0066cc;
+            display: block;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .file-link:hover { 
+            text-decoration: underline; 
+        }
+        .back-link { 
+            margin-top: 20px; 
+            display: inline-block;
+            color: #666;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .back-link:hover { 
+            background-color: #f5f5f5;
+            text-decoration: none;
+        }
+        .code-display {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 70vh;
+            overflow-y: auto;
+            line-height: 1.5;
+        }
+        .file-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .file-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .file-info {
+            font-size: 14px;
+            color: #666;
+        }
+        .no-file-selected {
+            color: #999;
+            font-style: italic;
+            text-align: center;
+            padding: 40px;
+            border: 2px dashed #ddd;
+            border-radius: 6px;
+        }
+        .loading {
+            color: #666;
+            text-align: center;
+            padding: 40px;
+        }
+        .error {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .file-size {
+            font-size: 12px;
+            color: #888;
+            margin-left: 10px;
+        }
+        .file-ext {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+        }
+        .file-list-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div id="file-list">
+        <div class="file-list-title">文件列表</div>
+        <ul>
+            <li data-filename="133812704.txt">
+                <a class="file-link" onclick="loadFile('133812704.txt')">133812704.txt</a>
+            </li>
+            <li data-filename="solution.md">
+                <a class="file-link" onclick="loadFile('solution.md')">solution.md</a>
+            </li>
+            <li data-filename="0x0练习10-进制转换-数的进制转换.md">
+                <a class="file-link" onclick="loadFile('0x0练习10-进制转换-数的进制转换.md')">0x0练习10-进制转换-数的进制转换.md</a>
+            </li>
+            <li data-filename="136306939.txt">
+                <a class="file-link" onclick="loadFile('136306939.txt')">136306939.txt</a>
+            </li>
+        </ul>
+        <a class="back-link" href="../index.html">返回上级目录</a>
+    </div>
+    
+    <div id="file-content">
+        <div class="no-file-selected">
+            <h2>选择文件查看内容</h2>
+            <p>从左侧列表中选择一个文件，内容将显示在此处</p>
+        </div>
+    </div>
+    
+    <script>
+        // 当前选中的文件
+        let currentFile = null;
+        
+        // 加载文件内容
+        async function loadFile(filename) {
+            // 更新当前选中的文件
+            currentFile = filename;
+            
+            // 更新文件列表的高亮
+            updateFileListHighlight(filename);
+            
+            // 显示加载状态
+            document.getElementById('file-content').innerHTML = '<div class="loading">正在加载文件内容...</div>';
+            
+            try {
+                // 获取文件内容
+                const response = await fetch(filename);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const fileContent = await response.text();
+                
+                // 显示文件内容
+                displayFileContent(filename, fileContent);
+            } catch (error) {
+                console.error('加载文件失败:', error);
+                document.getElementById('file-content').innerHTML = `
+                    <div class="error">
+                        <strong>加载文件失败</strong><br>
+                        <small>${error.message}</small>
+                    </div>
+                `;
+            }
+        }
+        
+        // 更新文件列表高亮
+        function updateFileListHighlight(filename) {
+            // 移除所有li元素的active类
+            document.querySelectorAll('#file-list li').forEach(li => {
+                li.classList.remove('active');
+            });
+            
+            // 为当前选中的文件添加active类
+            const activeLi = document.querySelector(`#file-list li[data-filename="${filename}"]`);
+            if (activeLi) {
+                activeLi.classList.add('active');
+            }
+        }
+        
+        // 显示文件内容
+        function displayFileContent(filename, content) {
+            const displayName = filename.replace(/#/g, ' ');
+            const fileSize = content.length;
+            const fileExt = filename.split('.').pop().toUpperCase();
+            
+            // 转义HTML特殊字符
+            const escapedContent = escapeHtml(content);
+            
+            const html = `
+                <div class="file-header">
+                    <div class="file-title">
+                        ${displayName}
+                        <span class="file-ext">${fileExt}</span>
+                    </div>
+                    <div class="file-info">
+                        ${fileSize.toLocaleString()} 字符
+                    </div>
+                </div>
+                <div class="code-display">${escapedContent}</div>
+            `;
+            
+            document.getElementById('file-content').innerHTML = html;
+            
+            // 如果是代码文件，可以添加语法高亮（可选）
+            highlightCodeIfNeeded(filename, content);
+        }
+        
+        // 转义HTML特殊字符
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // 根据文件类型进行语法高亮（基础版本）
+        function highlightCodeIfNeeded(filename, content) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const codeDisplay = document.querySelector('.code-display');
+            
+            if (!codeDisplay) return;
+            
+            // 简单的关键词高亮（可根据需要扩展）
+            if (['py', 'python'].includes(ext)) {
+                // Python语法高亮
+                let highlighted = content.replace(
+                    /((def|class|if|else|elif|for|while|return|import|from|as|try|except|finally|with|and|or|not|in|is|lambda|pass|break|continue))/g,
+                    '<span style="color: #007bff; font-weight: bold;">$1</span>'
+                );
+                highlighted = highlighted.replace(
+                    /((True|False|None))/g,
+                    '<span style="color: #28a745;">$1</span>'
+                );
+                highlighted = highlighted.replace(
+                    /(#.*)/g,
+                    '<span style="color: #6c757d;">$1</span>'
+                );
+                codeDisplay.innerHTML = highlighted;
+            }
+            else if (['js', 'javascript'].includes(ext)) {
+                // JavaScript语法高亮
+                let highlighted = content.replace(
+                    /((function|var|let|const|if|else|for|while|return|class|import|export|from|try|catch|finally|new|this|typeof|instanceof))/g,
+                    '<span style="color: #007bff; font-weight: bold;">$1</span>'
+                );
+                highlighted = highlighted.replace(
+                    /((true|false|null|undefined))/g,
+                    '<span style="color: #28a745;">$1</span>'
+                );
+                highlighted = highlighted.replace(
+                    /(\/\/.*)/g,
+                    '<span style="color: #6c757d;">$1</span>'
+                );
+                codeDisplay.innerHTML = highlighted;
+            }
+            else if (['html', 'htm'].includes(ext)) {
+                // HTML语法高亮
+                let highlighted = content.replace(
+                    /(&lt;\/?[a-zA-Z][^&gt;]*&gt;)/g,
+                    '<span style="color: #dc3545;">$1</span>'
+                );
+                codeDisplay.innerHTML = highlighted;
+            }
+            // 可以添加更多文件类型的支持
+        }
+        
+        // 页面加载完成后，检查URL中是否有文件参数
+        window.addEventListener('DOMContentLoaded', () => {
+            // 从URL获取文件参数
+            const urlParams = new URLSearchParams(window.location.search);
+            const fileParam = urlParams.get('file');
+            
+            if (fileParam) {
+                // 如果URL中有file参数，自动加载该文件
+                loadFile(fileParam);
+            }
+        });
+    </script>
+</body>
+</html>

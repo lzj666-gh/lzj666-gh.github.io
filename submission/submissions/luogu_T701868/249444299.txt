@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 249444299
+//  题目ID: T701868
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+struct FWT {
+#define lb(x) (x & ~ x + 1)
+	int s[500000 + 5], n;
+	void add(int x, int k) { while (x <= n) s[x] += k, x += lb(x); }
+	void add(int l, int r, int k) { add(l, k), add(r + 1, -k); }
+	int query(int x) { int res = 0; while (x) { res += s[x]; x -= lb(x); } return res; }
+	void clear(int x) { memset(s + 1, 0, sizeof(int) * x); n = x; }
+}t;
+int32_t main() {
+//	file(star5);
+	cin.tie(0)->sync_with_stdio(false);
+	int T; cin >> T;
+	while (T--) {
+		int n, k; cin >> n >> k;
+		struct People {
+			int l, r, m;
+			strong_ordering operator<=>(const People&)const = default;
+		};
+		vector<People>v(k);
+		for (int i = 0; i < k; ++i)
+			cin >> v[i].l >> v[i].m >> v[i].r;
+		sort(v.begin(), v.end());
+		int ans = 0;
+		t.clear(n + 1); set<int>s;
+		for (int i = 0; i < k; ++i) {
+			if (v[i].l == 1 || t.query(v[i].l)) {
+				s.insert(v[i].r + 1); ans = max(ans, v[i].r);
+				t.add(v[i].m + 1, v[i].r + 1, 1);
+				continue;
+			}
+			auto it = s.lower_bound(v[i].l);
+			if (it != s.end() && *it <= v[i].m) {
+				s.insert(v[i].r); ans = max(ans, v[i].r);
+				t.add(v[i].m + 1, v[i].r + 1, 1);
+			}
+		}
+//		cerr << "farthest : " << ans << endl;
+		if (ans == n) cout << "YES" << endl;
+		else cout << "NO" << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,76 @@
+//  OJ: 洛谷
+//  提交ID: 249218501
+//  题目ID: T700554
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+// dp_{i,j,k} refers to the min operate count that i's father (j) reverse and i itself (k) reverse
+int dp[100000 + 5][2][2];
+struct Edge {
+	int v, nxt;
+}edge[200000 + 5];
+int cnt[100000 + 5], a[100000 + 5], head[100000 + 5], idx, n;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx; cnt[v]++;
+}
+void dfs(int x, int fa) {
+	vector<int>v[2][2];
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs(edge[i].v, x),
+			v[0][0].emplace_back(dp[edge[i].v][0][0]),
+			v[0][1].emplace_back(dp[edge[i].v][0][1]),
+			v[1][0].emplace_back(dp[edge[i].v][1][0]),
+			v[1][1].emplace_back(dp[edge[i].v][1][1]);
+	int soncnt = v[0][0].size();
+	if (!soncnt) {
+		if (a[x]) {
+			dp[x][0][1] = 1; dp[x][0][0] = n + 1;
+			dp[x][1][0] = 0; dp[x][1][1] = n + 1;
+		}
+		else {
+			dp[x][1][1] = 1; dp[x][1][0] = n + 1;
+			dp[x][0][0] = 0; dp[x][0][1] = n + 1;
+		}
+		return;
+	}
+	//cerr << "merging node " << x << endl;
+	for (int i = 0, lim = 1 << soncnt; i < lim; ++i) {
+		bool color = a[x]; int cost0 = 0, cost1 = 1;
+		for (int j = 0; j < soncnt; ++j)
+			if (i & 1 << j) color = !color, cost0 += v[0][1][j], cost1 += v[1][1][j];
+			else cost0 += v[0][0][j], cost1 += v[1][0][j];
+		if (color) dp[x][1][0] = min(dp[x][1][0], cost0);
+		else dp[x][0][0] = min(dp[x][0][0], cost0);
+		//color = !color;
+		if (color) dp[x][0][1] = min(dp[x][0][1], cost1);
+		else dp[x][1][1] = min(dp[x][1][1], cost1);
+		//cerr << "son " << i << ':' << endl;
+		//cerr << "cost0: " << cost0 << " cost1: " << cost1 << endl;
+		//cerr << dp[x][0][0] << ' ' << dp[x][0][1] << ' ' << dp[x][1][0] << ' ' << dp[x][1][1] << endl;
+	}
+	//cerr << endl;
+}
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1, x, y; i < n; ++i)
+		cin >> x >> y, add(x, y), add(y, x),
+		dp[i][0][0] = dp[i][0][1] = dp[i][1][0] = dp[i][1][1] = n + 1;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	if (n == 1) {
+		cout << a[1] << endl;
+		return 0;
+	}
+	dfs(1, 1);
+	if (min(dp[1][0][1], dp[1][0][0]) > n) {
+		cout << "impossible" << endl;
+		return 0;
+	}
+	//for (int i = 1; i <= n; ++i) cout << dp[i][0][0] << ' ' << dp[i][0][1] << ' ' << dp[i][1][0] << ' ' << dp[i][1][1] << endl;
+	cout << min(dp[1][0][1], dp[1][0][0]) << endl;
+	return 0;
+}

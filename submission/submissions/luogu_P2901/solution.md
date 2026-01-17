@@ -1,6 +1,6 @@
 # P2901 题解
 
-## $\color{green}{\text{Front Knowledge - A}^{*} \text{ algorithm}}$
+## $\color{green}{\text{Front Knowledge - A}^{*} \text{ algorithm} }$
 
 `A* 算法`，就是启发式的 `BFS` 算法。它依赖于以下几个函数：
 
@@ -17,7 +17,7 @@
 
 ---------------------------------------------------------------
 
-## $\color{green}{\text{K}^{\text{th}} \text{ Shortest Path}}$
+## $\color{green}{\text{K}^{\text{th} } \text{ Shortest Path} }$
 
 顾名思义，就是求一张图的第 $K$ 短的路径。
 
@@ -39,13 +39,13 @@
 
 ------------------------------------------------------------
 
-## $\color{green}{\text{P2901\ \ \ \ \ [USACO08MAR]Cow Jogging G}}$
+## $\color{green}{\text{P2901\ \ \ \ \ [USACO08MAR]Cow Jogging G} }$
 
-$\color{blue}{\text{【题意】：}}$ 输出一张 $n$ 个点，$m$ 条边，输出其 $K$ 短路，若无，就输出 `-1`。
+$\color{blue}{\text{【题意】：} }$ 输出一张 $n$ 个点，$m$ 条边，输出其 $K$ 短路，若无，就输出 `-1`。
 
-$\color{blue}{\text{【思路】：}}$ `K 短路` 的模板题。
+$\color{blue}{\text{【思路】：} }$ `K 短路` 的模板题。
 
-$\color{blue}{\text{【代码】：}}$
+$\color{blue}{\text{【代码】：} }$
 ```cpp
 typedef long long ll;int n,m,k;
 const int N=1e3+100,M=1e6+100;

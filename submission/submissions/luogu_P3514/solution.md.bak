@@ -1,0 +1,114 @@
+# P3514 题解
+
+很巧妙的思维题。
+
+题意是这样的，给你一个串，只有 T 和 W。令 T=2，W=1，将其变成数字串。然后每次给一个 $k$,问是否存在一个子段和为 $k$。
+
+## 判断是否有解
+
+**重要结论1**：如果 $k(k>2)$ 可以，$k-2$ 也可以。
+
+> 证：假设 $[l,r]$ 区间的和是 $k$。   
+  如果这个区间的两边 （$a[l]$，$a[r]$） 中有一个是 $2$，那么把这个去掉 （变成 $l,r-1$ 或 $l+1,r$），那就有 $k-2$了   
+  否则它两边就都是 $1$。把两边都去掉，那就有 $k-2$ 了。
+  综上，我们一定有 $k-2$。  
+  **证毕**
+
+然后就好做了：找到最大的奇数，最大的偶数；对于奇数，判断它是否小于最大的奇数，偶数同理。
+
+如何找到最大的奇数/偶数？
+
+设 $S$ 表示总和，$M_{0/1}$ 表示最大的偶数/奇数。
+
+显然 $M_{S\%2}=S$
+
+**重要结论2**：只要枚举左边/右边删连续的就行。
+
+> 证： 假设我们非要删掉两边才能使答案最优   
+  如果两边中有一边是偶数，那偶数这边不删，肯定更优   
+  否则，两边都是奇数。两边都不删，肯定更优   
+  注：“更优”表示的是，模 $2$ 余数不变，并且和更大   
+  **证毕**
+
+## 输出解
+
+设 $[l_k,r_k]$ 表示和为 $k$ 的区间。
+
+首先，$l_S=1,r_S=n$
+
+然后，我们在枚举删前后，求出 $M_{0/1}$ 的时候，可以顺便把区间记下来，这样就有了 $k=M_{0/1}$ 时的答案区间了。
+
+对于答案区间 $[l_k,r_k]$，可以像 “判断是否有解” 一章中，**重要结论1** 的证明里面一样，枚举它左边/右边是 $2$，或者两边都是 $1$，推出 $l_{k-2},r_{k-2}$
+
+然后就显然可以推出所有的答案区间了。
+
+## simple 的代码
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+namespace Flandre_Scarlet
+{
+    #define N 4000006
+    #define F(i,l,r) for(int i=l;i<=r;++i)
+    #define D(i,r,l) for(int i=r;i>=l;--i)
+    #define Fs(i,l,r,c) for(int i=l;i<=r;c)
+    #define Ds(i,r,l,c) for(int i=r;i>=l;c)
+    #define MEM(x,a) memset(x,a,sizeof(x))
+    #define FK(x) MEM(x,0)
+    #define Tra(i,u) for(int i=G.Start(u),v=G.To(i);~i;i=G.Next(i),v=G.To(i))
+    #define p_b push_back
+    #define sz(a) ((int)a.size())
+    #define all(a) a.begin(),a.end()
+    #define iter(a,p) (a.begin()+p)
+    int I() {char c=getchar(); int x=0; int f=1; while(c<'0' or c>'9') f=(c=='-')?-1:1,c=getchar(); while(c>='0' and c<='9') x=(x<<1)+(x<<3)+(c^48),c=getchar(); return (x=(f==1)?x:-x);}
+    void Rd(int cnt,...) {va_list args;va_start(args,cnt); F(i,1,cnt) {int* x=va_arg(args,int*);(*x)=I();} va_end(args);}
+    void RA(int *a,int n) {int *p=(a+1); F(i,1,n) {(*p)=I();++p;}}
+    int n,m;
+    char ss[N]; int a[N];
+    void Input()
+    {
+        Rd(2,&n,&m); scanf("%s",ss+1);
+        F(i,1,n) a[i]=(ss[i]=='T')?2:1;
+    }
+    int s[N];
+    int Max[2]; int l[N],r[N];
+    void up(int a,int ll,int rr)
+    {
+        if (a>Max[a%2]) {Max[a%2]=a; l[a]=ll; r[a]=rr; }
+    } 
+    void get(int &l,int &r,int pl,int pr)
+    {
+        if (pl==0 and pr==0) return;
+        l=pl,r=pr;
+        if (a[pl]==2) ++l;
+        else if (a[pr]==2) --r;
+        else ++l,--r;
+    }
+    void Soviet()
+    {
+        F(i,1,n) s[i]=s[i-1]+a[i];
+        F(i,1,n-1) {up(s[n]-s[i],i+1,n); up(s[i],1,i);} up(s[n],1,n);
+        // 枚举删左边/右边，以及全选
+        D(i,2*n,1) get(l[i],r[i],l[i+2],r[i+2]);
+        // 继承
+        F(i,1,m)
+        {
+            int k=I();
+            if (k>Max[k%2]) puts("NIE");
+            else printf("%d %d\n",l[k],r[k]);
+        }
+    }
+    void IsMyWife()
+    {
+        Input();
+        Soviet();
+    }
+}
+#undef int //long long
+int main()
+{
+    Flandre_Scarlet::IsMyWife();
+    getchar();
+    return 0;
+}
+```

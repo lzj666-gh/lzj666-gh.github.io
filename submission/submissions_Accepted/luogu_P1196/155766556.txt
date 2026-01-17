@@ -1,0 +1,66 @@
+//  OJ: 洛谷
+//  提交ID: 155766556
+//  题目ID: P1196
+#include<bits/stdc++.h>
+using namespace std;
+struct Node {
+	int fa, ju;
+}a[30000 + 10];
+int sz[30000 + 10];
+int find(int x) {
+	if (a[x].fa == x) {
+		a[x].ju = 0;
+		return x;
+	}
+	int ed = find(a[x].fa);
+	if (ed != a[x].fa)
+		a[x].ju += a[a[x].fa].ju, a[x].fa = ed;
+	return a[x].fa;
+}
+void M(int i, int j) {
+	int fi = find(i), fj = find(j);
+	a[fi].fa = fj;
+	a[fi].ju += sz[fj];
+	sz[fj] += sz[fi];
+	sz[fi] = 0;
+}
+void C(int i, int j) {
+	if (find(i) != find(j)) {
+		cout << -1 << endl;
+		return;
+	}
+	else {
+		cout << abs(a[i].ju - a[j].ju) - 1 << endl;
+		return;
+	}
+}
+int T, i, j;
+char c;
+int main() {
+	ios_base::sync_with_stdio(false);
+	for (int i = 1; i <= 30000; ++i) a[i].fa = i, a[i].ju = 0, sz[i] = 1;
+	cin >> T;
+	while (T--) {
+		cin >> c >> i >> j;
+		if (c == 'M') {
+			M(i, j);
+		}
+		else {
+			C(i, j);
+		}
+#ifndef ONLINE_JUDGE
+		cout << "debug_begine\n";
+		cout << "father:  ";
+		for (int i = 1; i <= 5; ++i) cout << a[i].fa << ' ';
+		cout << endl;
+		cout << "distence:";
+		for (int i = 1; i <= 5; ++i) cout << a[i].ju << ' ';
+		cout << endl;
+		cout << "size:    ";
+		for (int i = 1; i <= 5; ++i) cout << sz[i] << ' ';
+		cout << endl;
+		cout << "debug_end\n";
+#endif // !ONLINE_JUDGE
+	}
+	return 0;
+}

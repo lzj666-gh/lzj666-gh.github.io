@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 128128590
+//  题目ID: T386316
+#include<bits/stdc++.h>
+#define x first
+#define y second
+using namespace std;
+inline int read(){
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c>'9'||c<'0'){
+		if(c=='-') s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0'){
+		x=(x<<1)+(x<<3)+(c^48);
+		c=getchar();
+	}
+	return s*x;
+}
+inline void write(int x){
+	if(x<0){
+		x=~x+1;
+		putchar('-');
+	}
+	else if(!x) return;
+	write(x/10);
+	putchar(x%10+48);
+}
+int n,x[100+10],y[100+10];
+int main(){
+	n=read();
+	for(int i=1;i<=n;++i) x[i]=read();
+	for(int i=1;i<=n;++i) y[i]=read();
+	sort(&x[1],&x[n+1]);
+	sort(&y[1],&y[n+1]);
+	for(int i=1,j=1;i<=n,j<=n;++i,++j){
+		if(x[i]>y[i]){
+			cout<<"NE"<<endl;
+			return 0;
+		}
+	}
+	cout<<"DA"<<endl;
+	return 0;
+}

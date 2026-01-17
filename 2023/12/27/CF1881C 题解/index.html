@@ -252,7 +252,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2023-12-27 13:55" pubdate>
-          2023年12月27日 下午
+          December 27, 2023 pm
         </time>
       </span>
     
@@ -263,7 +263,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          376 字
+          353 字
         
       </span>
     
@@ -274,7 +274,7 @@
         
         
         
-          4 分钟
+          3 分钟
         
       </span>
     
@@ -327,44 +327,44 @@
               <div class="markdown-body">
                 
                 <h2 id="思路分析">思路分析</h2>
-<p>这道题的难点主要是在将一个矩阵旋转 $90 \degree$ 以后的关系处理出来。</p>
+<p>这道题的难点主要是在将一个矩阵旋转 <span class="math inline">$90
+\degree$</span> 以后的关系处理出来。</p>
 <p>但是其实，我们可以按位置，一个一个进行枚举推测。</p>
 <p>假设我们现在有一个矩阵：</p>
-<p>$$<br>
-1 ⋅ ⋅ ⋅ ⋅ 2<br>
-$$</p>
-<p>$$<br>
-\dots \dots<br>
-$$</p>
-<p>$$<br>
-\dots \dots<br>
-$$</p>
-<p>$$<br>
-4 ⋅ ⋅ ⋅ ⋅ 3<br>
-$$</p>
-<p>那么我们就将 $4$ 移到 $1$，$1$ 移到 $2$，$2$ 移到 $3$，$3$ 移到 $4$。</p>
+<p><span class="math display">1 ⋅ ⋅ ⋅ ⋅2</span></p>
+<p><span class="math display">……</span></p>
+<p><span class="math display">……</span></p>
+<p><span class="math display">4 ⋅ ⋅ ⋅ ⋅3</span></p>
+<p>那么我们就将 <span class="math inline">4</span> 移到 <span
+class="math inline">1</span>，<span class="math inline">1</span> 移到
+<span class="math inline">2</span>，<span class="math inline">2</span>
+移到 <span class="math inline">3</span>，<span
+class="math inline">3</span> 移到 <span
+class="math inline">4</span>。</p>
 <p>然后依次往后顺延</p>
-<p>$$<br>
-⋅ 1⋅ ⋅ ⋅ ⋅<br>
-$$</p>
-<p>$$<br>
-⋅ ⋅ ⋅ ⋅ ⋅ 2<br>
-$$</p>
-<p>$$<br>
-4 ⋅ ⋅ ⋅ ⋅ ⋅<br>
-$$</p>
-<p>$$<br>
-⋅ ⋅ ⋅ ⋅ 3⋅<br>
-$$</p>
-<p>接着将 $4$ 移到 $1$，$1$ 移到 $2$，$2$ 移到 $3$，$3$ 移到 $4$。</p>
-<p>$$<br>
-\dots \dots<br>
-$$</p>
+<p><span class="math display">⋅1 ⋅ ⋅ ⋅ ⋅</span></p>
+<p><span class="math display">⋅ ⋅ ⋅ ⋅ ⋅2</span></p>
+<p><span class="math display">4 ⋅ ⋅ ⋅ ⋅⋅</span></p>
+<p><span class="math display">⋅ ⋅ ⋅ ⋅ 3⋅</span></p>
+<p>接着将 <span class="math inline">4</span> 移到 <span
+class="math inline">1</span>，<span class="math inline">1</span> 移到
+<span class="math inline">2</span>，<span class="math inline">2</span>
+移到 <span class="math inline">3</span>，<span
+class="math inline">3</span> 移到 <span
+class="math inline">4</span>。</p>
+<p><span class="math display">……</span></p>
 <p>如此往复，最终求出最后的矩阵。</p>
-<p>所以可以通过转的方法，发现其实 $a_{i,j}$ 和 $a_{j,n-i+1}$ 是旋转后对应的，同理就可以得出最终 $a_{i,j},a_{j,n-i+1},a_{n-j+1,i},a_{n-i+1,n-j+1}$ 都是对应的。</p>
+<p>所以可以通过转的方法，发现其实 <span
+class="math inline"><em>a</em><sub><em>i</em>, <em>j</em></sub></span>
+和 <span
+class="math inline"><em>a</em><sub><em>j</em>, <em>n</em> − <em>i</em> + 1</sub></span>
+是旋转后对应的，同理就可以得出最终 <span
+class="math inline"><em>a</em><sub><em>i</em>, <em>j</em></sub>, <em>a</em><sub><em>j</em>, <em>n</em> − <em>i</em> + 1</sub>, <em>a</em><sub><em>n</em> − <em>j</em> + 1, <em>i</em></sub>, <em>a</em><sub><em>n</em> − <em>i</em> + 1, <em>n</em> − <em>j</em> + 1</sub></span>
+都是对应的。</p>
 <p>所以就可以得出代码。</p>
 <h2 id="代码">代码</h2>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">int</span> n;<br><span class="hljs-type">char</span> a[<span class="hljs-number">1000</span><span class="hljs-number">+10</span>][<span class="hljs-number">1000</span><span class="hljs-number">+10</span>];<br><span class="hljs-type">bool</span> vis[<span class="hljs-number">1000</span><span class="hljs-number">+10</span>][<span class="hljs-number">1000</span><span class="hljs-number">+10</span>];<br><span class="hljs-type">long</span> <span class="hljs-type">long</span> ans;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>	ios_base::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>	<span class="hljs-type">int</span> T;<br>	cin&gt;&gt;T;<br>	<span class="hljs-keyword">while</span>(T--)&#123;<br>		cin&gt;&gt;n;<br>		ans=<span class="hljs-number">0</span>;<br>		<span class="hljs-built_in">memset</span>(vis,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span> vis);<br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;++i) cin&gt;&gt;a[i]<span class="hljs-number">+1</span>;<br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;++i)&#123;<br>			<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;++j)&#123;<br>				<span class="hljs-keyword">if</span>(vis[i][j]) <span class="hljs-keyword">continue</span>;<br>				vis[i][j]=vis[n-j<span class="hljs-number">+1</span>][i]=vis[j][n-i<span class="hljs-number">+1</span>]=vis[n-i<span class="hljs-number">+1</span>][n-j<span class="hljs-number">+1</span>]=<span class="hljs-number">1</span>;<br>				<span class="hljs-type">int</span> want=<span class="hljs-built_in">max</span>(&#123;a[i][j],a[j][n-i<span class="hljs-number">+1</span>],a[n-j<span class="hljs-number">+1</span>][i],a[n-i<span class="hljs-number">+1</span>][n-j<span class="hljs-number">+1</span>]&#125;);<br>				<span class="hljs-keyword">for</span>(<span class="hljs-type">char</span> k:&#123;a[i][j],a[j][n-i<span class="hljs-number">+1</span>],a[n-j<span class="hljs-number">+1</span>][i],a[n-i<span class="hljs-number">+1</span>][n-j<span class="hljs-number">+1</span>]&#125;) ans+=want-k;<br>			&#125;<br>		&#125;<br>		cout&lt;&lt;ans&lt;&lt;endl;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
                 
               </div>
             
@@ -401,7 +401,7 @@ $$</p>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年12月27日</div>
+          <div>December 27, 2023</div>
         </div>
       
       

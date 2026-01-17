@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 244592725
+//  题目ID: P2170
+#include<bits/stdc++.h>
+using namespace std;
+int n, k, m, fa[20000 + 1], siz[20000 + 1];
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> k;
+	for (int i = 1; i <= n; ++i) fa[i] = i, siz[i] = 1;
+	for (int i = 1, u, v; i <= k; ++i)
+		cin >> u >> v, siz[find(u)] += siz[find(v)], fa[find(v)] = find(u);
+	int ans = -1;
+	for (int i = 1; i <= n; ++i)
+		if (fa[i] == i)
+			if (ans == -1 || abs(siz[i] - m) < abs(siz[ans] - m) || (abs(siz[i] - m) == abs(siz[ans] - m) && siz[i] < siz[ans]))
+				ans = i;
+	cout << siz[ans] << endl;
+	return 0;
+}

@@ -1,0 +1,72 @@
+//  OJ: 洛谷
+//  提交ID: 238013430
+//  题目ID: T505305
+#include<bits/stdc++.h>
+#define int long long
+#define all(a) (a).begin(), (a).end()
+#define rall(a) (a).rbegin(), a.rend()
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout), freopen(#a".err", "w", stderr)
+using namespace std;
+bool p[200000 + 5];
+int c[200000 + 5];
+struct Edge {
+	int v, nxt;
+}edge[400000 + 5];
+int head[200000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u]};
+	head[u] = idx;
+}
+int siz[200000 + 5];
+void dfs(int x, int fa) {
+	siz[x] = c[x];
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs(edge[i].v, x), siz[x] += siz[edge[i].v];
+}
+int res[200000 + 5]; multiset<int>may;
+int32_t main() {
+	// file(miracle);
+	cin.tie(0)->sync_with_stdio(false);
+	int id, n, q, sum = 0; cin >> id >> n >> q;
+	for (int i = 1; i <= n; ++i) cin >> p[i] >> c[i], sum += c[i];
+	for (int i = 1, u, v; i < n; ++i) cin >> u >> v, add(u, v), add(v, u);
+	dfs(1, 1);
+	for (int x = 1; x <= n; ++x) {
+		int ret = sum - siz[x];
+		for (int i = head[x]; i; i = edge[i].nxt)
+			if (siz[edge[i].v] < siz[x])
+				ret = max(ret, siz[edge[i].v]);
+		res[x] = ret;
+		if (p[x]) may.insert(ret);
+	}
+	while (q--) {
+		int opt; cin >> opt;
+		if (opt == 1) {
+			int x; cin >> x;
+			p[x] = 0; may.erase(may.lower_bound(res[x]));
+		}
+		if (opt == 2) {
+			int x; cin >> x;
+			p[x] = 1; may.insert(res[x]);
+		}
+		if (opt == 3) {
+			int x, v; cin >> x >> v;
+			sum -= c[x]; sum += v;
+			c[x] = v; dfs(1, 1);
+			may.clear();
+			for (int x = 1; x <= n; ++x) {
+				int ret = sum - siz[x];
+				for (int i = head[x]; i; i = edge[i].nxt)
+					if (siz[edge[i].v] < siz[x])
+						ret = max(ret, siz[edge[i].v]);
+				res[x] = ret;
+				if (p[x]) may.insert(ret);
+			}
+		}
+		if (opt == 4) {
+			cout << *may.begin() << endl;
+		}
+	}
+	return 0;
+}

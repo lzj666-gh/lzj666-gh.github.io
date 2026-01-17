@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 104116102
+//  题目ID: T201329
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	cout<<1;
+}

@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 244109864
+//  题目ID: P3514
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, m; string s;
+int L[2000000 + 5], R[2000000 + 5];
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> s; memset(L, -1, sizeof L);
+	fill(R, R + n + n + 3, n);
+	for (int i = 0; i < n; ++i)
+		if (s[i] == 'T' && abs(i - n / 2) < abs(L[2] - n / 2)) L[2] = R[2] = i;
+		else if (abs(i - n / 2) < abs(L[1] - n / 2)) L[1] = R[1] = i;
+	for (int i = 1; i <= n + n; ++i) {
+		if (L[i] - 1 >= 0 && s[L[i] - 1] == 'T') L[i + 2] = L[i] - 1, R[i + 2] = R[i];
+		else if (R[i] + 1 < n && s[R[i] + 1] == 'T') L[i + 2] = L[i], R[i + 2] = R[i] + 1;
+		else if (L[i] - 1 >= 0 && R[i] + 1 < n && s[L[i] - 1] == 'W' && s[R[i] + 1] == 'W')L[i + 2] = L[i] - 1, R[i + 2] = R[i] + 1;
+	}
+	while (m--) {
+		int x; cin >> x;
+		if (L[x] == -1) cout << "NIE" << endl;
+		else cout << L[x] + 1 << ' ' << R[x] + 1 << endl;
+	}
+	return 0;
+} 

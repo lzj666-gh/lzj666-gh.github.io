@@ -1,0 +1,74 @@
+//  OJ: 洛谷
+//  提交ID: 234919427
+//  题目ID: T665668
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+typedef unsigned long long ull;
+const int MAXN = 1e7 + 5;
+
+int n, m, x, p;
+int a[MAXN + 10];
+ull state;
+
+unsigned int next_random() {
+    state ^= (state << 13);
+    state ^= (state >> 17);
+    state ^= (state << 5);
+    return state % (1ULL << 32);
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    cin >> n >> m >> x >> p;
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+        a[i] %= p;
+    }
+    cin >> state;
+
+    int k = log2(n) + 1;
+    vector<vector<int>> st(k, vector<int>(n));
+    for (int i = 0; i < n; i++) {
+        st[0][i] = a[i];
+    }
+
+    for (int j = 1; j < k; j++) {
+        int step = 1 << (j - 1);
+        for (int i = 0; i + step < n; i++) {
+            st[j][i] = 1LL * st[j-1][i] * st[j-1][i + step] % p;
+        }
+    }
+
+    vector<int> log_table(n + 1);
+    log_table[1] = 0;
+    for (int i = 2; i <= n; i++) {
+        log_table[i] = log_table[i/2] + 1;
+    }
+
+    int min_len = min(x, n);
+    int max_len = min(2 * x, n);
+    if (min_len > max_len) min_len = max_len;
+    int range_len = max_len - min_len + 1;
+
+    ull result = 0;
+    for (int i = 1; i <= m; i++) {
+        int len = min_len + next_random() % range_len;
+        int l = 1 + next_random() % (n - len + 1);
+        int r = l + len - 1;
+
+        int L = l - 1, R = r - 1;
+        int j = log_table[R - L + 1];
+        int ans = 1LL * st[j][L] * st[j][R - (1 << j) + 1] % p;
+
+        result = (result + 1ULL * ans * i) % p;
+    }
+
+    cout << result << endl;
+    return 0;
+}

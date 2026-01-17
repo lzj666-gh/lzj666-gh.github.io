@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 245466178
+//  题目ID: P4779
+#include<bits/stdc++.h>
+using namespace std;
+priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>q;
+struct Edge {
+	int v, w, nxt;
+}edge[200000 + 5];
+int head[100000 + 5], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int dis[100000 + 5], n, m, s;
+int vis[100000 + 5];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> s;
+	for (int i = 1, u, v, w; i <= m; ++i)
+		cin >> u >> v >> w, add(u, v, w);
+	memset(dis, 0x3f, sizeof dis);
+	dis[s] = 0; q.emplace(0, s);
+	while (!q.empty()) {
+		int now = q.top().second; q.pop();
+		if (vis[now]) continue; vis[now] = 1;
+		for (int i = head[now]; i; i = edge[i].nxt)
+			if (int w = edge[i].w + dis[now]; w < dis[edge[i].v])
+				dis[edge[i].v] = w, q.emplace(w, edge[i].v);
+	}
+	for (int i = 1; i <= n; ++i) cout << dis[i] << " \n"[i == n];
+	return 0;
+}

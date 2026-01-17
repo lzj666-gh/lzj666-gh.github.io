@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 106957542
+//  题目ID: T211856
+#include<bits/stdc++.h>
+using namespace std;
+int L;
+stack <char> st;
+char s[1000+10];
+int main(){
+	scanf("%s",s);
+	L=strlen(s);
+	for(int i=1;i<=L;i++){
+		if(s[i]=='('||s[i]=='['||s[i]=='{') st.push(s[i]);
+		else{
+			if(st.empty()){
+				printf("NO");
+				return 0;
+			}
+			else{
+				if(s[i]==')'&&st.top()=='(') st.pop();
+				else if(s[i]==']'&&st.top()=='[') st.pop();
+				else if(s[i]=='}'&&st.top()=='{') st.pop();
+				else{
+					printf("NO");
+					return 0;
+				}
+			}
+		}
+	}
+	if(st.empty()) printf("YES");
+	else printf("NO");
+	return 0;
+}

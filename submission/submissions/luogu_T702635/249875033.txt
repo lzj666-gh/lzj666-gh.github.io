@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 249875033
+//  题目ID: T702635
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+int n, m; string s;
+vector<pair<int, char>>c[100000 + 5];
+struct Edge {
+	int v, nxt;
+}edge[200000 + 5];
+int head[100000 + 5], r[100000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx; r[v]++;
+}
+int vis[100000 + 5], viss[100000 + 5];
+int32_t main() {
+	//file(card);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> s; s = ' ' + s;
+	for (int j = 1; j <= n; ++j) {
+		int k; cin >> k; c[j].resize(k);
+		for (int i = 0; i < k; ++i) {
+			cin >> c[j][i].first >> c[j][i].second;
+			if (s[c[j][i].first] != c[j][i].second)
+				add(c[j][i].first, j);
+		}
+	}
+	queue<int>q; vector<int>ans;
+	for (int i = 1; i <= n; ++i)
+		if (!r[i]) q.emplace(i);
+	//for (int i = 1; i <= n; ++i)
+	//	cerr << "r[" << i << "]=" << r[i] << endl;
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		if (vis[now]) continue;
+		vis[now] = 1; // cerr << "pop " << now << endl;
+		ans.emplace_back(now);
+		for (int i = 0; i < c[now].size(); ++i)
+			if (s[c[now][i].first] == c[now][i].second)
+				if (!viss[c[now][i].first]) {
+					//cerr << "update " << c[now][i].first << endl;
+					viss[c[now][i].first] = 1;
+					for (int j = head[c[now][i].first]; j; j = edge[j].nxt)
+						if (!--r[edge[j].v])
+							q.emplace(edge[j].v);
+				}
+	}
+	//cerr << "size : " << ans.size() << '\n';
+	//for (int i = 1; i <= m; ++i) cerr << viss[i] << " \n"[i == m];
+	if (ans.size() < n) cout << -1 << endl;
+	else for (auto& p : ans) cout << p << ' ';
+	return 0;
+}

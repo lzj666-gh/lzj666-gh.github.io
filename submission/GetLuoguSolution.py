@@ -10,7 +10,7 @@ from urllib.parse import unquote
 # 配置信息
 BASE_DIR = 'submissions'
 uid = '836542'
-client_id = '1f5b66b7853d8326d73e670896aa0481ad982eaa'
+client_id = '6e95fd034e8e72ffd56609b8f015a923611b3236'
 headers = {
     'Referer': 'https://www.luogu.com.cn/auth/login',
     'Origin': 'https://www.luogu.com.cn',

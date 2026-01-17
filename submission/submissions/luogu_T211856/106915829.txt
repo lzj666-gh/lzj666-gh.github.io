@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 106915829
+//  题目ID: T211856
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    printf("NO");
+    return 0;
+}

@@ -1,0 +1,31 @@
+# 别看题目描述
+
+## 题目描述
+
+别看样例
+
+## 输入格式
+
+别看输出格式，别看提示
+
+## 输出格式
+
+别提交
+```cpp
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+signed main(){
+	cout <<"114514";
+	return 0;
+}
+```
+
+## 提示
+
+别打开编号为分数末尾再加上23的比赛
+
+## 时空限制
+
+时间限制: 1000 ms
+内存限制: 128 MB

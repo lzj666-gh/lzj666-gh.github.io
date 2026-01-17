@@ -36,7 +36,7 @@
 
 令 $i$ 从 $1$ 枚举到 $n$，考虑 $i=i_0$ 时需要枚举多少 $j$ 和 $k$。
 
-$j$ 从 $1$ 枚举到 $\dfrac n {i_0}$，而对于 $j=j_0$ 的情况，$k$ 从 $1$ 枚举到 $\dfrac n {i_0\times j_0}$。因此，枚举的时间复杂度是 $\sum\limits_{j_0=1}^{\frac n{i_0}}\dfrac n{i_0\times j_0}=\dfrac n{i_0}\sum\limits_{j_0=1}^{\frac n{i_0}}\dfrac 1{j_0}$，是 $\dfrac n{i_0}\log\dfrac n{i_0}$ 级别的。
+$j$ 从 $1$ 枚举到 $\dfrac n {i_0}$，而对于 $j=j_0$ 的情况，$k$ 从 $1$ 枚举到 $\dfrac n {i_0\times j_0}$。因此，枚举的时间复杂度是 $\sum\limits_{j_0=1}^{\frac n{i_0} }\dfrac n{i_0\times j_0}=\dfrac n{i_0}\sum\limits_{j_0=1}^{\frac n{i_0} }\dfrac 1{j_0}$，是 $\dfrac n{i_0}\log\dfrac n{i_0}$ 级别的。
 
 所以总时间复杂度为 $O(\sum\limits_{i=1}^n\dfrac ni\log\dfrac ni)$。
 

@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 234806511
+//  题目ID: T465361
+#include<bits/stdc++.h>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+inline bool get_bit(const vector<uint64_t>& bits, int index) {
+	return (bits[index / 64] >> (index % 64)) & 1;
+}
+inline void set_bit(vector<uint64_t>& bits, int index, bool value) {
+	if (value) bits[index / 64] |= (1ull << (index % 64));
+	else bits[index / 64] &= ~(1ull << (index % 64));
+}
+string A, B;
+int32_t main() {
+	time_t beg = clock();
+//	file(distance);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> A >> B; int nA = A.size(), nB = B.size();
+	int wssa = (nA + 63) / 64, wsb = (nB + 63) / 64;
+	vector<uint64_t> ssa(wssa, 0), sb(wsb, 0);
+	int cnt = 0, ans;
+	for (int i = 0; i < nB; ++i) 
+		set_bit(sb, i, A[i] == B[i]), cnt += A[i] == B[i];
+	ans = cnt; bool cur_ssa = 0;
+	for (int i = 0; i < nA; ++i)
+		set_bit(ssa, i, cur_ssa ^= A[i] != A[i + 1]);
+	for (int j = 1; j < nB; ++j)
+		set_bit(sb, j, get_bit(sb, j) ^ get_bit(ssa, j - 1));
+	for (int i = 0; i < nA - nB; ++i) {
+		cnt = 0;
+		int sw = i / 64, sbt = i % 64;
+		for (int w = 0; w < wsb; ++w) {
+			uint64_t ssw;
+			if (sbt == 0) ssw = ssa[sw + w];
+			else {
+				ssw = (ssa[sw + w] >> sbt);
+				if (sw + w + 1 < wssa)
+					ssw |= (ssa[sw + w + 1] << (64 - sbt));
+			}
+			uint64_t tmp = sb[w] ^ ssw;
+			if (w == wsb - 1 && nB % 64)
+				tmp &= (1ull << (nB - w * 64)) - 1;
+			cnt += __builtin_popcountll(tmp);
+		}
+		ans = max(ans, cnt);
+//		if (clock() - beg >= CLOCKS_PER_SEC * 4.9) break;
+	}
+	cout << nB - ans << endl;
+	return 0;
+}

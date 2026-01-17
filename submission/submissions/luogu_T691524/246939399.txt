@@ -1,0 +1,113 @@
+//  OJ: 洛谷
+//  提交ID: 246939399
+//  题目ID: T691524
+#include<bits/stdc++.h>
+#define debug_(format, ...) fprintf(stderr, "[debug] line %d: "##format##"\n", __LINE__, ##__VA_ARGS__);
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+using namespace std;
+constexpr int mod = 19990721;
+struct Matix {
+	int num[2][2];
+	Matix() : num() {}
+	int* operator[](int p) {
+		return num[p];
+	}
+	const int* operator[](int p)const {
+		return num[p];
+	}
+	/*
+	struct reference {
+		int* ref;
+		reference(int* idx) :ref(idx) {}
+		int& operator[](int idx) { return ref[idx]; }
+		const int& operator[](int idx)const { return ref[idx]; }
+	}ref[2] = { num[0],num[1] };
+	reference operator[](int idx) { return ref[idx]; }
+	const reference operator[](int idx)const { return ref[idx]; }
+	*/
+	friend Matix operator*(const Matix& a, const Matix& b) {
+		Matix c; c.num[0][0] = c.num[0][1] = c.num[1][0] = c.num[1][1] = 0;
+		for (int i = 0; i < 2; ++i)
+			for (int j = 0; j < 2; ++j)
+				for (int k = 0; k < 2; ++k)
+					c[i][j] = (c[i][j] + 1ll * a[i][k] * b[k][j] % mod) % mod;
+		return c;
+	}
+};
+struct Seg_Tree {
+#define mid ((l + r) >> 1)
+#define lson tree[p].ls, l, mid
+#define rson tree[p].rs, mid + 1, r
+#define self p, l, r
+	struct Node {
+		Matix res1, res2;
+		int ls, rs; bool flg;
+		Node() : res1(), res2(), ls(), rs(), flg() {}
+	}tree[2000000 << 2 | 3];
+	int idx = 1;
+	void measure(int& p, long long l, long long r) {
+		if (p) return;
+		p = ++idx;
+		tree[p].res1[0][0] = tree[p].res2[0][0] = 1;
+		tree[p].res1[0][1] = r - l + 1; tree[p].res2[0][1] = 0;
+		tree[p].res1[1][0] = 0; tree[p].res2[1][0] = r - l + 1;
+		tree[p].res1[1][1] = tree[p].res2[1][1] = 1;
+	}
+	void pushup(int p, long long l, long long r) {
+		measure(lson); measure(rson);
+		tree[p].res1 = tree[tree[p].ls].res1 * tree[tree[p].rs].res1;
+		tree[p].res2 = tree[tree[p].ls].res2 * tree[tree[p].rs].res2;
+	}
+	void pushdown(int p, long long l, long long r) {
+		if (tree[p].flg) {
+			tree[p].flg = 0; measure(lson); measure(rson);
+			swap(tree[tree[p].ls].res1, tree[tree[p].ls].res2);
+			swap(tree[tree[p].rs].res1, tree[tree[p].rs].res2);
+			tree[tree[p].ls].flg = tree[tree[p].rs].flg = 1;
+		}
+	}
+	void reverse(int p, long long l, long long r, long long x, long long y) {
+		if (x <= l && r <= y) {
+			tree[p].flg = 1;
+			swap(tree[p].res1, tree[p].res2);
+			return;
+		}
+		pushdown(self);
+		if (x <= mid) reverse(lson, x, y);
+		if (mid < y) reverse(rson, x, y);
+		pushup(self);
+	}
+	Matix query(int p, long long l, long long r, long long x, long long y) {
+		if (x <= l && r <= y) return tree[p].res1;
+		pushdown(self); measure(lson); measure(rson);
+		if (x <= mid && mid < y) return query(lson, x, y) * query(rson, x, y);
+		if (x <= mid) return query(lson, x, y);
+		if (mid < y) return query(rson, x, y);
+		assert(0);
+	}
+}t;
+signed main() {
+	//file(furry);
+	cin.tie(0)->sync_with_stdio(false);
+	long long n, m, mx = 1000000000000000000ll; cin >> n >> m;
+	while (m--) {
+		long long opt, l, r, k; cin >> opt >> l >> r;
+		if (opt == 0) {
+			t.reverse(1, 1, mx, l - 1, r - 1);
+		}
+		else {
+			cin >> k;
+			if (k == 0) {
+				cout << 1 << endl;
+				continue;
+			}
+			if (k >= 2) {
+				cout << 2 << endl;
+				continue;
+			}
+			Matix res = t.query(1, 1, mx, l + 1, r);
+			cout << (res[0][0] + res[0][1] + res[1][0] + res[1][1]) % mod << endl;
+		}
+	}
+	return 0;
+}

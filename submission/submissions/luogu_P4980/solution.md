@@ -311,13 +311,13 @@ $$\dfrac{1}{n}\sum_{k=1}^n n^{\gcd(k,n)}$$
 
 枚举 $\rm gcd$ 变为：
 
-$$\dfrac{1}{n}\sum_{d|n} n^d \times \sum_{k=1}^{\frac{n}{d}} [\gcd(k,\dfrac{n}{d})==1]$$
+$$\dfrac{1}{n}\sum_{d|n} n^d \times \sum_{k=1}^{\frac{n}{d} } [\gcd(k,\dfrac{n}{d})==1]$$
 
 后面那个式子是欧拉函数，直接带入即可：
 
 $$\dfrac{1}{n}\sum_{d|n}n^d \varphi(\frac{n}{d})$$
 
-然后本题暴力计算欧拉函数是可以通过的，复杂度为$O(Tn^{\frac{3}{4}})$
+然后本题暴力计算欧拉函数是可以通过的，复杂度为$O(Tn^{\frac{3}{4} })$
 
 $Code:$
 

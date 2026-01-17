@@ -8,7 +8,7 @@
 
 很容易想到 **完全背包**，用 $f_i$ 表示 $B$ 的值能否为 $i$，那么转移方程为
 
-$$\large {f_j = f_j \mid f_{j - a_i}}$$
+$$\large {f_j = f_j \mid f_{j - a_i} }$$
 
 还可以用 $\rm bitset$ 优化，时间复杂度为 $O(\frac{nr}{w})$ 。
 

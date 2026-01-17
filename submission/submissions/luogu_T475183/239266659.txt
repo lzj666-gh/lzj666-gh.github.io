@@ -1,0 +1,61 @@
+//  OJ: 洛谷
+//  提交ID: 239266659
+//  题目ID: T475183
+#include<bits/stdc++.h>
+#define int long long
+#define all(a) (a).begin(),(a).end()
+#define rall(a) (a).rbegin(),a.rend()
+#define file(a) freopen(#a".in","r",stdin),freopen(#a".out","w",stdout)
+using namespace std;
+namespace IO {
+	template<class... T2> inline void qread(char& IEE, T2&... ls);
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls);
+	template<class... T2> inline void qwrite(char IEE, T2... ls);
+	template<class... T2> inline void qwrite(const char* str, T2... ls);
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls);
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls);
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	template<class... T2> inline void qwrite(char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+constexpr int mod = 1e9 + 7;
+int n, q, a[500000 + 5], b[500000 + 5], dif[500000 + 5];
+int32_t main() {
+	//file(meirin);
+	cin.tie(0)->sync_with_stdio(false);
+	qread(n, q);
+	for (int i = 1; i <= n; ++i) qread(b[i]);
+	for (int i = 1; i <= n; ++i) qread(a[i]);
+	int sum0 = 0, sum1 = 0;
+	for (int i = n; i > 1; --i) sum1 += b[i] * (n - i + 1) % mod, sum1 %= mod;
+	for (int i = 1; i <= n; ++i) {
+		dif[i] = (sum0 * (n - i + 1) % mod + sum1 * i % mod + b[i] * i % mod * (n - i + 1) % mod) % mod;
+		sum0 += i * b[i] % mod;
+		sum1 -= b[i + 1] * (n - i) % mod;
+		sum0 = (sum0 % mod + mod) % mod;
+		sum1 = (sum1 % mod + mod) % mod;
+	}
+	int ans = 0;
+	for (int i = 1; i <= n; ++i)
+		ans = (ans + dif[i] * a[i] % mod) % mod,
+		dif[i] = (dif[i] + dif[i - 1]) % mod;
+	while (q--) {
+		int l, r, k; qread(l, r, k);
+		ans += (dif[r] - dif[l - 1]) * k % mod;
+		ans = (ans % mod + mod) % mod;
+		qwrite(ans, '\n');
+	}
+	return 0;
+}

@@ -120,7 +120,7 @@ il void read(int&),Union(int,int);
 struct leftist{
 	struct point{
 		int l,r,d,v,t,to;
-	}a[Size]={{0,0,-1,0,0,0}};
+	}a[Size]={ {0,0,-1,0,0,0} };
 	int r[Size];
 	il void merge(int&x,int&y){
 		if(!x||!y){x^=y;return;}

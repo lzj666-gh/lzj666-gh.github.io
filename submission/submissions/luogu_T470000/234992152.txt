@@ -1,0 +1,71 @@
+//  OJ: 洛谷
+//  提交ID: 234992152
+//  题目ID: T470000
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+int n, m; set<int>s[4];
+bool link(int a, int b) {
+	if (s[0].find(a) != s[0].end() && s[0].find(b) != s[0].end()) return 1;
+	if (s[1].find(a) != s[1].end() && s[1].find(b) != s[1].end()) return 1;
+	if (s[2].find(a) != s[2].end() && s[2].find(b) != s[2].end()) return 1;
+	if (s[3].find(a) != s[3].end() && s[3].find(b) != s[3].end()) return 1;
+	return 0;
+}
+int32_t main() {
+	// file(a);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	if (m == 1) {
+		int k; cin >> k;
+		cout << k << endl;
+		return 0;
+	}
+	if (m == 2) {
+		int k1; cin >> k1;
+		for (int i = 1, x; i <= k1; ++i) cin >> x;
+		int k2; cin >> k2;
+		cout << max(k1, k2) << endl;
+		return 0;
+	}
+	if (m == 2) {
+		int k1; cin >> k1;
+		for (int i = 1, x; i <= k1; ++i) cin >> x;
+		int k2; cin >> k2;
+		for (int i = 1, x; i <= k2; ++i) cin >> x;
+		int k3; cin >> k3;
+		cout << max(k1, max(k2, k3)) << endl;
+		return 0;
+	}
+	for (int i = 0, k, x; i < m; ++i) {
+		cin >> k; while (k--) cin >> x, s[i].insert(x);
+	}
+	size_t ans = n;
+	set<int>ss;
+	for (auto& p : s[0]) ss.insert(p);
+	for (auto& p : s[1]) ss.insert(p);
+	ans = min(ans, max(ss.size(), max(s[2].size(), s[3].size())));
+	ss.clear();
+	for (auto& p : s[0]) ss.insert(p);
+	for (auto& p : s[2]) ss.insert(p);
+	ans = min(ans, max(ss.size(), max(s[1].size(), s[3].size())));
+	ss.clear();
+	for (auto& p : s[0]) ss.insert(p);
+	for (auto& p : s[3]) ss.insert(p);
+	ans = min(ans, max(ss.size(), max(s[1].size(), s[2].size())));
+	ss.clear();
+	for (auto& p : s[1]) ss.insert(p);
+	for (auto& p : s[2]) ss.insert(p);
+	ans = min(ans, max(ss.size(), max(s[0].size(), s[3].size())));
+	ss.clear();
+	for (auto& p : s[1]) ss.insert(p);
+	for (auto& p : s[3]) ss.insert(p);
+	ans = min(ans, max(ss.size(), max(s[0].size(), s[2].size())));
+	ss.clear();
+	for (auto& p : s[2]) ss.insert(p);
+	for (auto& p : s[3]) ss.insert(p);
+	ans = min(ans, max(ss.size(), max(s[0].size(), s[1].size())));
+	ss.clear();
+	cout << ans << endl;
+	return 0;
+}

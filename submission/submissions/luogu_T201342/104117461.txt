@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 104117461
+//  题目ID: T201342
+#include<bits/stdc++.h>
+using namespace std;
+int n,k;long long cnt=0;
+void digui(int now){
+	if(now==n){
+//		cout<<now<<'\n';
+		cnt++;
+		cnt%=10000003;
+		return;
+	}
+	for(int i=1;i<=k;i++){
+		if(now+i>n){
+			break;
+		}
+//		cout<<now<<' ';
+		digui(now+i);
+	}
+}
+int main(){
+	scanf("%d%d",&n,&k);
+	digui(0);
+	printf("%lld",cnt);
+	return 0;
+}

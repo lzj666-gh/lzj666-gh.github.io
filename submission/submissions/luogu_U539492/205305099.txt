@@ -1,0 +1,79 @@
+//  OJ: 洛谷
+//  提交ID: 205305099
+//  题目ID: U539492
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int mod = 998244353;
+struct SQ {
+	int num[3][3];
+	int n, m;
+	SQ() :num(), n(), m() {}
+	friend SQ operator*(const SQ& a, const SQ& b) {
+		SQ c;
+		assert(a.m == b.n);
+		for (int i = 0; i < a.n; ++i)
+			for (int j = 0; j < b.m; ++j){
+				for (int k = 0; k < a.m; ++k)
+					c.num[i][j] += a.num[i][k] * b.num[k][j];
+				c.num[i][j] %= mod;
+			}
+		c.n = a.n; c.m = b.m;
+		return c;
+	}
+}p, d, t;
+unordered_map<int, SQ>h;
+SQ poww(int x) {
+	if (h.count(x)) return h[x];
+	if (x == 1) return p;
+	if (x == 0) return d;
+	SQ tmp = poww(x / 2);
+	if (x & 1) return tmp * tmp * p;
+	return tmp * tmp;
+}
+SQ powww(int x){
+	if (h.count(x)) return h[x];
+	if (x == 1) return p;
+	if (x == 0) return d;
+	SQ tmp = powww(x / 2);
+	if (x & 1) return h[x] = tmp * tmp * p;
+	return h[x] = tmp * tmp;
+}
+int n[1200000 + 10];
+signed main() {
+	// freopen("riemannian.in", "r", stdin);
+	// freopen("riemannian.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	p.n = p.m = 3;
+	p.num[0][0] = 2; p.num[0][1] = 2; p.num[0][2] = 0;
+	p.num[1][0] = 1; p.num[1][1] = 0; p.num[1][2] = 0;
+	p.num[2][0] = 2; p.num[2][1] = 1; p.num[2][2] = 1;
+	d.n = d.m = 3;
+	d.num[0][0] = 1; d.num[0][1] = 0; d.num[0][2] = 0;
+	d.num[1][0] = 0; d.num[1][1] = 1; d.num[1][2] = 0;
+	d.num[2][0] = 0; d.num[2][1] = 0; d.num[2][2] = 1;
+	t.n = 1, t.m = 3;
+	t.num[0][0] = 0; t.num[0][1] = 0; t.num[0][2] = 1;
+	static int T;
+	cin >> T;
+	static int a = 0, b = 0, mx = LLONG_MIN, mn = LLONG_MAX;
+	for (int i = 1; i <= T; ++i) {
+		cin >> n[i];
+		mx = max(n[i], mx);
+		mn = min(n[i], mn);
+	}
+	if (mx - mn <= 1e12) {
+		for (int i = 1; i <= T; ++i){
+			SQ ans = t * powww(n[i]);
+			a ^= ans.num[0][1]; b ^= ans.num[0][0];
+		}
+		cout << a << ' ' << b << endl;
+		return 0;
+	}
+	for (int i = 1; i <= T; ++i){
+		SQ ans = t * poww(n[i]);
+		a ^= ans.num[0][1]; b ^= ans.num[0][0];
+	}
+	cout << a << ' ' << b << endl;
+	return 0;
+}

@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 235517036
+//  题目ID: T665529
+#define _USE_MATH_DEFINES
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+    cin.tie(0)->sync_with_stdio(false);
+    int T; cin >> T;
+    while (T--) {
+        int v, a, t;
+        cin >> v >> a >> t;
+        if (a == 0) {
+            cout << "0.0000000000" << endl;
+            continue;
+        }
+        if (v == 0) {
+            double R = a * t;
+            double area = M_PI * R * R;
+            cout << fixed << setprecision(10) << area << endl;
+            continue;
+        }
+        if (a >= v) {
+            double R = a * t;
+            double area = M_PI * R * R;
+            cout << fixed << setprecision(10) << area << endl;
+        }
+        else {
+            double ratio = (double)a / v;
+            double R = a * t;
+            double term = v * t * R * sqrt(1 - ratio * ratio);
+            double area = M_PI * R * R + term - R * R * acos(ratio);
+            cout << fixed << setprecision(10) << area << endl;
+        }
+    }
+    return 0;
+}

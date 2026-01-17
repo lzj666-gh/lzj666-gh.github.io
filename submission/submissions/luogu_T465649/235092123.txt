@@ -1,0 +1,63 @@
+//  OJ: 洛谷
+//  提交ID: 235092123
+//  题目ID: T465649
+#include<bits/stdc++.h>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/priority_queue.hpp>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[20'000'000 + 305];
+int head[1'000'000 + 30 + 5], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int n, m, q, a[1'000'000 + 5];
+int dis[30 + 5][1'000'000 + 5];
+bool vis[1'000'000 + 30 + 5];
+__gnu_pbds::priority_queue<pair<int, int>, greater<pair<int, int>>, __gnu_pbds::pairing_heap_tag>::point_iterator pt[1'000'000 + 30 + 5];
+void dij2(int s) {
+	__gnu_pbds::priority_queue<pair<int, int>, greater<pair<int, int>>, __gnu_pbds::pairing_heap_tag>q;
+	fill(pt, pt + n + 30 + 5, nullptr); pt[s + n + 1] = q.push({ 0,s + n + 1 });
+	memset(dis[s], 0x3f, sizeof dis[s]); dis[s][n + s + 1] = 0;
+	while (!q.empty()) {
+		int now = q.top().second; q.pop();
+		if (vis[now]) continue; vis[now] = 1;
+		for (int i = head[now]; i; i = edge[i].nxt)
+			if (edge[i].w + dis[s][now] < dis[s][edge[i].v])
+				if (pt[edge[i].v] != nullptr)
+					dis[s][edge[i].v] = edge[i].w + dis[s][now],
+					pt[edge[i].v] = q.push({ dis[s][edge[i].v],edge[i].v });
+				else
+					dis[s][edge[i].v] = edge[i].w + dis[s][now],
+					q.modify(pt[edge[i].v], { dis[s][edge[i].v],edge[i].v });
+	}
+	memset(vis, 0, sizeof vis);
+}
+int32_t main() {
+	//file(andgraph);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> q;
+	for (int i = 1; i <= n; ++i) {
+		cin >> a[i];
+		for (int j = 0; j <= 22; ++j)
+			if (a[i] & (1ll << j))
+				add(i, n + j + 1, a[i]),
+				add(n + j + 1, i, a[i]);
+	}
+	for (int i = 0; i <= 22; ++i) dij2(i);
+	while (q--) {
+		int s, t; cin >> s >> t; int ans = INT_MAX;
+		if (s == t) {
+			cout << 2 * a[s] << endl;
+			continue;
+		}
+		for (int i = 0; i <= 22; ++i)
+			if (a[s] & (1ll << i))
+				ans = min(ans, a[s] + dis[i][t]);
+		cout << (ans >= INT_MAX ? -1 : ans) << endl;
+	}
+	return 0;
+}

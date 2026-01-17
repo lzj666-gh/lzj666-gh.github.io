@@ -1,0 +1,149 @@
+//  OJ: 洛谷
+//  提交ID: 242902653
+//  题目ID: T536837
+#include<bits/stdc++.h>
+#define all(a) (a).begin(), (a).end()
+#define file(a) { freopen(#a".in", "r", stdin); freopen(#a".out", "w", stdout); }
+using namespace std;
+vector<int>son[3][50]; // son[0]: i > j
+struct Edge {
+	int v, nxt;
+}edge[1000];
+int head[50], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+vector<vector<int>>v;
+int n; char opt;
+bool sure[50];
+int num[50];
+bool vis[2][3][50];
+int lim[2][50];
+int32_t main() {
+//	file(b);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 0; i < n; ++i)
+		for (int j = 0; j < n; ++j) {
+			cin >> opt;
+			if (opt == '+')
+				son[0][i].push_back(j),
+				son[2][j].push_back(i);
+			if (opt == '-')
+				son[0][j].push_back(i),
+				son[2][i].push_back(j);
+			if (opt == '=')
+				son[1][i].push_back(j),
+				son[1][j].push_back(i);
+		}
+	for (int k = 0; k < n; ++k) {
+		for (int i = 0; i < n; ++i) {
+			for (auto& p : son[0][i])
+				if (sure[p] && num[p] == 2)
+					sure[i] = 1, num[i] = 3;
+			for (auto& p : son[1][i])
+				if (sure[p])
+					sure[i] = 1, num[i] = num[p];
+			for (auto& p : son[2][i])
+				if (sure[p] && num[p] == 2)
+					sure[i] = 1, num[i] = 1;
+			if (son[0][i].size() && son[2][i].size())
+				sure[i] = 1, num[i] = 2;
+			for (auto& p : son[1][i])
+				if (son[0][i].size() && son[2][p].size() || son[0][p].size() && son[2][i].size())
+					sure[i] = 1, num[i] = 2;
+		}
+	}
+	for (int i = 0; i < n; ++i)
+		lim[0][i] = 1, lim[1][i] = 3;
+	for (int i = 0; i < n; ++i)
+		if (sure[i])
+			lim[0][i] = lim[1][i] = num[i];
+	for (int i = 0; i < n; ++i) {
+		for (auto& p : son[0][i])
+			lim[0][i] = max(lim[0][i], lim[0][p] + 1);
+		for (auto& p : son[1][i])
+			lim[0][i] = max(lim[0][i], lim[0][p]);
+		for (auto& p : son[2][i])
+			lim[0][i] = max(lim[0][i], lim[0][p] - 1);
+		for (auto& p : son[0][i])
+			lim[1][i] = min(lim[1][i], lim[1][p] + 1);
+		for (auto& p : son[1][i])
+			lim[1][i] = min(lim[1][i], lim[1][p]);
+		for (auto& p : son[2][i])
+			lim[1][i] = min(lim[1][i], lim[1][p] - 1);
+	}
+	int a, b; cin >> a >> b; a--, b--;
+	for (auto& p : son[1][a])
+		for (auto& q : son[2][p])
+			vis[0][0][q] = 1;
+	for (auto& q : son[2][a])
+		vis[0][0][q] = 1;
+	for (auto& p : son[1][a])
+		vis[0][1][p] = 1;
+	for (auto& p : son[1][a])
+		for (auto& q : son[0][p])
+			vis[0][2][q] = 1;
+	for (auto& q : son[0][a])
+		vis[0][2][q] = 1;
+	if (sure[a])
+		for (int i = 0; i < n; ++i)
+			if (sure[i] && i != a)
+				vis[0][int(num[i] <= num[a]) + (num[i] < num[a])][i] = 1;
+	for (auto& p : son[1][b])
+		for (auto& q : son[2][p])
+			vis[1][0][q] = 1;
+	for (auto& q : son[2][b])
+		vis[1][0][q] = 1;
+	for (auto& p : son[1][b])
+		vis[1][1][p] = 1;
+	for (auto& p : son[1][b])
+		for (auto& q : son[0][p])
+			vis[1][2][q] = 1;
+	for (auto& q : son[0][b])
+		vis[1][2][q] = 1;
+	if (sure[b])
+		for (int i = 0; i < n; ++i)
+			if (sure[i] && i != b)
+				vis[1][int(num[i] <= num[b]) + (num[i] < num[b])][i] = 1;
+	int ans[3] = { 0 };
+	for (int i = 0; i < n; ++i)
+		for (int j = i + 1; j < n; ++j)
+			if (i != a && i != b && j != a && j != b)
+				if (vis[0][0][i] && vis[1][0][j] || vis[0][0][j] && vis[1][0][i])
+					ans[0]++;
+				else if (vis[0][0][i] && vis[1][1][j] || vis[0][0][j] && vis[1][1][i])
+					ans[0]++;
+				else if (vis[0][1][i] && vis[1][0][j] || vis[0][1][j] && vis[1][0][i])
+					ans[0]++;
+				else if (lim[0][i] + lim[0][j] > lim[1][a] + lim[1][b])
+					ans[0]++;
+				else if (vis[0][1][i] && vis[1][1][j] || vis[0][1][j] && vis[1][1][i])
+					ans[1]++;
+				else if (vis[0][1][i] && vis[1][2][j] || vis[0][1][j] && vis[1][2][i])
+					ans[2]++;
+				else if (vis[0][2][i] && vis[1][1][j] || vis[0][2][j] && vis[1][1][i])
+					ans[2]++;
+				else if (vis[0][2][i] && vis[1][2][j] || vis[0][2][j] && vis[1][2][i])
+					ans[2]++;
+				else if (lim[1][i] + lim[1][j] < lim[0][a] + lim[0][b])
+					ans[2]++;
+	cout << ans[2] << endl;
+	if (sure[a] && sure[b]) {
+		int cnt[4] = { 0 }, cntt[8] = { 0 };
+		for (int i = 0; i < n; ++i)
+			if (sure[i])
+				cnt[num[i]]++;
+		cnt[num[a]]--; cnt[num[b]]--;
+		for (int i = 1; i <= 3; ++i)
+			cntt[i + i] += cnt[i] * (cnt[i] - 1) / 2;
+		for (int i = 1; i <= 3; ++i)
+			for (int j = i + 1; j <= 3; ++j)
+				cntt[i + j] += cnt[i] * cnt[j];
+		cout << cntt[num[a] + num[b]] << endl;
+	}
+	else cout << ans[1] << endl;
+	cout << ans[0] << endl;
+	return 0;
+}

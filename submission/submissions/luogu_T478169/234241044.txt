@@ -1,0 +1,75 @@
+//  OJ: 洛谷
+//  提交ID: 234241044
+//  题目ID: T478169
+#include<bits/stdc++.h>
+#define all(a) (a).begin(), (a).end()
+#define rall(a) (a).rbegin(), (a).rend()
+#define int long long 
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[35000000 + 5];
+int head[5000000 + 5], idx;
+void add(int u, int v, int w) {
+	u <<= 2; v <<= 2;
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+	u ^= 1; v ^= 1;
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+	u ^= 3, v ^= 3;
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+	u ^= 1; v ^= 1;
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+	u ^= 3, v ^= 3;
+
+	edge[++idx] = { v ^ 1,0,head[u] };
+	head[u] = idx;
+	edge[++idx] = { v ^ 3,0,head[u ^ 2] };
+	head[u ^ 2] = idx;
+
+	edge[++idx] = { v ^ 2,w + w,head[u] };
+	head[u] = idx;
+	edge[++idx] = { v ^ 3,w + w,head[u ^ 1] };
+	head[u ^ 1] = idx;
+
+	edge[++idx] = { v ^ 3,w,head[u] };
+	head[u] = idx;
+}
+int dis[5000000 + 5];
+bool vis[5000000 + 5];
+struct Node {
+	int x, sum;
+	Node(int x, int sum) :x(x), sum(sum) {}
+	friend bool operator<(const Node& a, const Node& b) {
+		return a.sum > b.sum;
+	}
+};
+int n, m;
+void dij() {
+	memset(dis, 0x3f, sizeof dis);
+	priority_queue<Node>q;
+	q.emplace(1 << 2, 0); dis[1 << 2] = 0;
+	while (!q.empty()) {
+		Node now = q.top(); q.pop();
+		//cerr << "pop " << (now.x >> 2) << " free(" << (now.x & 1) << ") double(" << ((now.x >> 1) & 1) << ") with distance " << now.sum << endl;
+		if (vis[now.x]) continue;
+		vis[now.x] = 1;
+		for (int i = head[now.x]; i; i = edge[i].nxt)
+			if (int w = now.sum + edge[i].w; w < dis[edge[i].v])
+				dis[edge[i].v] = w, q.emplace(edge[i].v, w);
+	}
+	for (int i = 2; i <= n; ++i)
+		if (dis[i << 2 | 3] > 2e14) cout << "1000000000000000000 ";
+		else cout << dis[i << 2 | 3] << ' ';
+}
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v, w; i <= m; ++i)
+		cin >> u >> v >> w, add(u, v, w), add(v, u, w);
+	dij();
+	return 0;
+}

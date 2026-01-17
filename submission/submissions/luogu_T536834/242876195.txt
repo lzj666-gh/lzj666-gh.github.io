@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 242876195
+//  题目ID: T536834
+#include<bits/stdc++.h>
+#define int long long
+#define all(a) (a).begin(), (a).end()
+#define file(a) { freopen(#a".in", "r", stdin); freopen(#a".out", "w", stdout); }
+using namespace std;
+constexpr int mod = 998244353;
+int n, m, q, a[5000][5000];
+uint64_t seed; string s;
+uint64_t next() {
+	seed ^= seed << 13;
+	seed ^= seed >> 7;
+	seed ^= seed << 17;
+	return seed;
+}
+int32_t main() {
+	// file(a);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> q >> seed >> s;
+	vector<int> row(n), col(m);
+	iota(all(row), 0); iota(all(col), 0);
+	for (int i = 0; i < n; ++i)
+		for (int j = 0; j < m; ++j)
+			a[i][j] = i * m + j;
+	for (char c : s) {
+		if (c == 'r') {
+			int r1 = next() % n, r2 = next() % n;
+			swap(row[r1], row[r2]);
+		}
+		else if (c == 'c') {
+			int c1 = next() % m, c2 = next() % m;
+			swap(col[c1], col[c2]);
+		}
+		else if (c == 'f') {
+			int r1 = next() % n, c1 = next() % m, r2 = next() % n, c2 = next() % m;
+			swap(a[row[r1]][col[c1]], a[row[r2]][col[c2]]);
+		}
+	}
+	vector<int>v1(n), v2(m);
+	v1[0] = v2[0] = 1;
+	for (int i = 1; i < n; ++i) v1[i] = v1[i - 1] * 17 % mod;
+	for (int i = 1; i < m; ++i) v2[i] = v2[i - 1] * 19 % mod;
+	int ans = 0;
+	for (int i = 0; i < n; ++i)
+		for (int j = 0; j < m; ++j)
+			ans = (ans + a[row[i]][col[j]] * v1[i] % mod * v2[j] % mod) % mod;
+			//cout << res[i][j] << " \n"[j == m - 1];
+	cout << ans << endl;
+	return 0;
+}

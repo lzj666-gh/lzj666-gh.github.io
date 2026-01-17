@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 246648268
+//  题目ID: U630623
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+    cout << R"lzj(??> cout<<"hello world"<<'\n'; ??< ")")lzj" << endl;
+}

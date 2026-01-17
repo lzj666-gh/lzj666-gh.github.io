@@ -127,8 +127,8 @@ $$\omega _{2n}^{2k}=\cos 2k*\frac{2\pi}{2n}+i\sin2k*\frac{2\pi}{2n}$$
 
 $$=\omega _{n}^{k}$$
 
-$\omega _{n}^{k+\frac{n}{2}}=-\omega _{n}^{k}$
-$$\omega _{n}^{\frac{n}{2}}=\cos\frac{n}{2}*\frac{2\pi}{n}+i\sin\frac{n}{2}*\frac{2\pi}{n}$$
+$\omega _{n}^{k+\frac{n}{2} }=-\omega _{n}^{k}$
+$$\omega _{n}^{\frac{n}{2} }=\cos\frac{n}{2}*\frac{2\pi}{n}+i\sin\frac{n}{2}*\frac{2\pi}{n}$$
 
 $$=\cos \pi+i\sin\pi$$
 
@@ -169,11 +169,11 @@ $$A(x)=A_1(x^2)+xA_2(x^2)$$
 
 $$A(\omega_n^k)=A_1(\omega_n^{2k})+\omega_n^kA_2(\omega_n^{2k})$$
 
-$$=A_1(\omega_{\frac{n}{2}}^{k})+\omega_n^kA_2(\omega_{\frac{n}{2}}^{k})$$
+$$=A_1(\omega_{\frac{n}{2} }^{k})+\omega_n^kA_2(\omega_{\frac{n}{2} }^{k})$$
 
-同理，将$\omega_n^{k+\frac{n}{2}}$代入得
+同理，将$\omega_n^{k+\frac{n}{2} }$代入得
 
-$$A(\omega_n^{k+\frac{n}{2}})=A_1(\omega_n^{2k+n})+\omega_n^{k+\frac{n}{2}}(\omega_n^{2k+n})$$
+$$A(\omega_n^{k+\frac{n}{2} })=A_1(\omega_n^{2k+n})+\omega_n^{k+\frac{n}{2} }(\omega_n^{2k+n})$$
 
 $$=A_1(\omega_n^{2k}*\omega_n^n)-\omega_n^kA_2(\omega_n^{2k}*\omega_n^n)$$
 

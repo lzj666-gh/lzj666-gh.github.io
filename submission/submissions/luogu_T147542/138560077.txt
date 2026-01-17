@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 138560077
+//  题目ID: T147542
+#include<bits/stdc++.h>
+using namespace std;
+long long  a[300010];
+char fsr[1 << 15], * S = fsr, * T = fsr;
+inline int read() {
+	register char ch;
+	register long long p = 0, t;
+	for (ch = getchar(); ch != '-' && !isdigit(ch); ch = getchar());
+	ch == '-' ? t = -1 : t = 1;
+	for (; !isdigit(ch); ch = getchar());
+	for (; isdigit(ch); ch = getchar()) {
+		p = (p << 1) + (p << 3) + ch - 48;
+	}
+	return t * p;
+}
+inline void write(long long x) {
+	char num[64];
+	long long cnt = 0;
+	if (x == 0) { putchar('0'); return; }
+	if (x < 0) {
+		putchar('-');
+		x = -x;
+	}
+	while (x > 0) {
+		num[cnt++] = x % 10 + '0';
+		x /= 10;
+	}
+	while (cnt > 0) {
+		putchar(num[--cnt]);
+	}
+}
+int n, m;
+long long ans = LLONG_MIN;
+int main() {
+	n = read();
+	m = read();
+	for (int i = 1; i <= n; ++i) a[i] = read();
+	for (int i = 1; i <= n - m + 1; ++i) {
+		long long temp = 0;
+		for (int j = 0; j < m; ++j) temp += a[i + j], ans < temp ? ans = temp : 0;
+	}
+	write(ans);
+	return 0;
+}

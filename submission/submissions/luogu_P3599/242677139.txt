@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 242677139
+//  题目ID: P3599
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int X, T;
+	cin >> X >> T;
+	if (X == 1) {
+		while (T--) {
+			int n; cin >> n;
+			if (n % 2 && n != 1) {
+				cout << 0 << endl;
+				continue;
+			}
+			vector<int>a(n + 1, 2);
+			for (int i = 1; i <= n; ++i) {
+				if (i % 2 == 0) a[i] = i - 1;
+				else a[i] = n - i + 1;
+			}
+			for (int i = 0; i <= n; ++i) cout << a[i] << " \n"[i == n];
+		}
+	}
+	return 0;
+}

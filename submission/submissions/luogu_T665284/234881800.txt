@@ -1,0 +1,94 @@
+//  OJ: 洛谷
+//  提交ID: 234881800
+//  题目ID: T665284
+#define _USE_MATH_DEFINES
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int k, a1; vector<vector<int>>ans;
+vector<int> get_divisors(int n) {
+	vector<int> divisors;
+	for (int i = 1; i * i <= n; i++) {
+		if (n % i == 0) {
+			divisors.push_back(i);
+			if (i != n / i) {
+				divisors.push_back(n / i);
+			}
+		}
+	}
+	sort(divisors.begin(), divisors.end());
+	return divisors;
+}
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> k >> a1;
+	vector<int>v(k + 1, a1);
+	for (int d = 1; d <= a1; ++d) {
+		if (a1 % d == 0) {
+			for (int l1 = 3; l1 <= k; ++l1) {
+				for (int r1 = l1; r1 <= k; ++r1) {
+					for (int i = l1; i <= r1; ++i) v[i] = d;
+					for (int l2 = l1 + 1; l2 < r1; ++l2)
+						for (int r2 = l2; r2 < r1; ++r2) {
+							for (int i = l2; i <= r2; ++i) v[i] = d * 2;
+							ans.push_back(v);
+							for (int i = l2; i <= r2; ++i) v[i] = d;
+						}
+					for (int i = l1; i <= r1; ++i) v[i] = a1;
+				}
+			}
+		}
+	}
+	vector<int> divisors = get_divisors(a1);
+	vector<vector<int>> solutions;
+	for (int g : divisors) {
+		bool multiple_of_2g = false;
+		if (2 * g <= a1) {
+			if (a1 % (2 * g) == 0) {
+				multiple_of_2g = true;
+			}
+		}
+		if (!multiple_of_2g) {
+			for (int j = 2; j <= k; j++) {
+				vector<int> sol;
+				sol.push_back(a1);
+				for (int i = 2; i <= k; i++) {
+					if (i == j) {
+						sol.push_back(2 * g);
+					}
+					else {
+						sol.push_back(g);
+					}
+				}
+				solutions.push_back(sol);
+			}
+		}
+		else {
+			for (int j = 3; j < k; j++) {
+				vector<int> sol;
+				sol.push_back(a1);
+				for (int i = 2; i <= k; i++) {
+					if (i == j) {
+						sol.push_back(2 * g);
+					}
+					else {
+						sol.push_back(g);
+					}
+				}
+				solutions.push_back(sol);
+			}
+		}
+	}
+	cout << ans.size() + solutions.size() << endl;
+	for (auto& k : ans)
+		for (int i = 1; i < k.size(); ++i)
+			cout << k[i] << " \n"[i == k.size() - 1];
+	for (auto sol : solutions) {
+		for (size_t i = 0; i < sol.size(); i++) {
+			if (i > 0) cout << " ";
+			cout << sol[i];
+		}
+		cout << endl;
+	}
+	return 0;
+}

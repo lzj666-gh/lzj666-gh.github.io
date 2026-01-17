@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 237816301
+//  题目ID: T672904
+#include<bits/stdc++.h>
+#define all(a) (a).begin(), (a).end()
+#define rall(a) (a).rbegin(), a.rend()
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+using namespace std;
+pair<int, int> a[200000 + 5];
+int main() {
+	// file(mujica);
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m, q; cin >> n >> m >> q;
+	for (int i = 1; i <= m; ++i) cin >> a[i].first >> a[i].second;
+	if (n <= 5000 && m <= 5000 && q <= 5000) {
+		while (q--) {
+			int l, r; set<pair<int, int>>s; cin >> l >> r;
+			for (int i = l; i <= r; ++i) {
+				if (s.empty()) {
+					s.insert(a[i]);
+					continue;
+				}
+				auto it = s.upper_bound(a[i]);
+				if (it != s.end() && it->first >= a[i].first && it->second >= a[i].second) continue;
+				while (it--, it != s.end() && it->first <= a[i].first && it->second <= a[i].second) {
+					it = s.erase(it);
+					if (it == s.begin()) break;
+				}
+				s.insert(a[i]);
+			}
+			long long lst = 0, ans = 0;
+			for (auto& p : s) {
+				ans += p.second * (p.first - lst);
+				lst = p.first;
+			}
+			cout << ans << endl;
+		}
+		return 0;
+	}
+	return 0;
+}

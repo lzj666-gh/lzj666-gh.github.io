@@ -1,0 +1,76 @@
+# P10814 题解
+
+经典板子。
+
+我们不妨这样理解：
+
+把 $a_i$ 看成平面直角坐标系上的一个点 $(i,a_i)$。
+
+以样例为例：
+
+![](https://cdn.luogu.com.cn/upload/image_hosting/unketdrl.png)
+
+好的现在我们来看询问是不是在问一个长方形内有多少的点，还是那第一问为例：
+
+![](https://cdn.luogu.com.cn/upload/image_hosting/zra7xj1g.png)
+
+答案显然是 $5$。
+
+这个长方形显然是 $[l,r][0,x]$ 的范围。
+
+我们不妨这样想 $[l,r]$ 的点相当于 $[1,r]$ 的点减去 $[1,l-1]$ 的点。
+
+那么我们离线，用一条线从左往右的扫：
+
+![](https://cdn.luogu.com.cn/upload/image_hosting/u5dv6xr3.png)
+
+每遇到一个点我们把他加入一个集合 $S$，表示当前所有扫到过的点，那么我就要维护 $S$ 内比 $x$ 小的个数，显然的权值线段树或者树状数组。
+
+这样就可以解决问题时间复杂度 $O((n+m)\log m)$
+
+代码如下：
+
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int x,id,val;
+};
+int lowbit(int i){
+	return i&(-i);
+}
+int f[2000005];
+void add(int x){
+	for(int i=x;i<=2000000;i+=lowbit(i))f[i]++;
+}
+int ask(int x){
+	int ans=0;
+	for(int i=x;i>=1;i-=lowbit(i))ans+=f[i];
+	return ans;
+}
+vector<node>vec[2000005];
+int ans[2000005],n,m,a[2000006];
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(0),cout.tie(0);
+	cin>>n>>m;
+	for(int i=1;i<=n;i++)cin>>a[i];
+	for(int i=1;i<=m;i++){
+		int l,r,x;
+		cin>>l>>r>>x;
+		vec[l-1].push_back({x,i,-1});
+		vec[r].push_back({x,i,1});
+	}
+	for(int i=1;i<=n;i++){
+		add(a[i]);
+		for(int j=0;j<vec[i].size();j++){
+			ans[vec[i][j].id]+=vec[i][j].val*ask(vec[i][j].x);
+		}
+	}
+	for(int i=1;i<=m;i++)cout<<ans[i]<<"\n";
+	return 0;
+}
+```
+
+这个板子很版，很重要！

@@ -253,7 +253,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2024-11-12 18:20" pubdate>
-          2024年11月12日 晚上
+          November 12, 2024 pm
         </time>
       </span>
     
@@ -264,7 +264,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          402 字
+          299 字
         
       </span>
     
@@ -275,7 +275,7 @@
         
         
         
-          4 分钟
+          3 分钟
         
       </span>
     
@@ -327,76 +327,51 @@
             
               <div class="markdown-body">
                 
-                <h1>二项式定理</h1>
+                <h1 id="二项式定理">二项式定理</h1>
 <p>通项公式：</p>
-<p>$$<br>
-(x+y)^n=\sum_{i=0}^{n}\operatorname{C}^{n}_{i}x^{n-i}y^{i}\ \ (i \isin {x \isin \Z\ | \  0 \le x \le n})<br>
-$$</p>
+<p><span class="math display">$$
+(x+y)^n=\sum_{i=0}^{n}\operatorname{C}^{n}_{i}x^{n-i}y^{i}\ \ (i \isin
+\{x \isin \Z\ | \  0 \le x \le n\})
+$$</span></p>
 <p>矩阵形式：</p>
-<p>$$<br>
-(a+b)^n</p>
+<p>$$ (a+b)^n</p>
 <p>=</p>
-<p>\begin{bmatrix}<br>
-a^0 &amp; a^1 &amp; a^2 &amp; \dots &amp; a^n<br>
-\end{bmatrix}</p>
-<p>\begin{bmatrix}<br>
-\operatorname{C}<em>{n}^{0}\<br>
-&amp; \operatorname{C}</em>{n}^{1}\<br>
-&amp; &amp; \operatorname{C}<em>{n}^{2}\<br>
-&amp; &amp; &amp; .\<br>
-&amp; &amp; &amp; &amp; .\<br>
-&amp; &amp; &amp; &amp; &amp; .\<br>
-&amp; &amp; &amp; &amp; &amp; &amp; \operatorname{C}</em>{n}^{n}<br>
-\end{bmatrix}</p>
-<p>\begin{bmatrix}<br>
-&amp; &amp; &amp; &amp; &amp; &amp; 1\<br>
-&amp; &amp; &amp; &amp; &amp; .\<br>
-&amp; &amp; &amp; &amp; .\<br>
-&amp; &amp; &amp; .\<br>
-&amp; &amp; 1\<br>
-&amp; 1\<br>
-1<br>
-\end{bmatrix}</p>
-<p>\begin{bmatrix}<br>
-b^0 \ b^1 \ b^2 \ b^3 \ b^4 \ \dots \ b^n<br>
-\end{bmatrix}<br>
-$$</p>
+<p>$$</p>
 <p>验证推导：</p>
-<p>在 $n=1$ 时，显然成立。</p>
-<p>假设二项展开式在 $n=m$ 时成立。</p>
-<p>设 $n=m+1$，则有：</p>
-<p>$$<br>
-(a+b)^{m+1}</p>
+<p>在 <span class="math inline"><em>n</em> = 1</span> 时，显然成立。</p>
+<p>假设二项展开式在 <span
+class="math inline"><em>n</em> = <em>m</em></span> 时成立。</p>
+<p>设 <span
+class="math inline"><em>n</em> = <em>m</em> + 1</span>，则有：</p>
+<p>$$ (a+b)^{m+1}</p>
 <p>\</p>
-<p>=(a+b)(a+b)^m<br>
-$$</p>
-<p>$$<br>
-=a(a+b)^m+b(a+b)^m<br>
-$$</p>
-<p>$$<br>
-=a\sum_{k=0}^{m}\operatorname{C}<em>k^ma^{m-k}b^k+b\sum</em>{j=0}^m\operatorname{C}_j^ma^{m-j}b^{j}<br>
-$$</p>
-<p>$$<br>
-=\sum_{k=0}^{m}\operatorname{C}<em>k^ma^{m-k+1}b^k+\sum</em>{j=0}^m\operatorname{C}_j^ma^{m-j}b^{j+1}<br>
-$$</p>
-<p>$$<br>
-=a^{m+1}+\sum_{k=1}^{m}\operatorname{C}<em>k^ma^{m-k+1}b^k+\sum</em>{j=0}^m\operatorname{C}_j^ma^{m-j}b^{j+1}<br>
-$$</p>
-<p>$$<br>
-=a^{m+1}+\sum_{k=1}^{m}\operatorname{C}<em>k^ma^{m-k+1}b^k+\sum</em>{k=1}^{m+1}\operatorname{C}_{k-1}^ma^{m-k+1}b^k<br>
-$$</p>
-<p>$$<br>
-=a^{m+1}+\sum_{k=1}^{m}\operatorname{C}<em>k^ma^{m-k+1}b^k+\sum</em>{k=1}^m\operatorname{C}_{k-1}^ma^{m-k+1}b^k+b^{m+1}<br>
-$$</p>
-<p>$$<br>
-=a^{m+1}+b^{m+1}+\sum_{k=1}^{m}(\operatorname{C}<em>k^m+\operatorname{C}</em>{k-1}^m)a^{m-k+1}b^k<br>
-$$</p>
-<p>$$<br>
-=a^{m+1}+b^{m+1}+\sum_{k=1}^{m}\operatorname{C}_k^{m+1}a^{m-k+1}b^k<br>
-$$</p>
-<p>$$<br>
-=\sum_{k=0}^{m+1}\operatorname{C}_k^{m+1}a^{m-k+1}b^k<br>
-$$</p>
+<p>=(a+b)(a+b)^m $$</p>
+<p><span
+class="math display"> = <em>a</em>(<em>a</em> + <em>b</em>)<sup><em>m</em></sup> + <em>b</em>(<em>a</em> + <em>b</em>)<sup><em>m</em></sup></span></p>
+<p><span class="math display">$$
+=a\sum_{k=0}^{m}\operatorname{C}_k^ma^{m-k}b^k+b\sum_{j=0}^m\operatorname{C}_j^ma^{m-j}b^{j}
+$$</span></p>
+<p><span class="math display">$$
+=\sum_{k=0}^{m}\operatorname{C}_k^ma^{m-k+1}b^k+\sum_{j=0}^m\operatorname{C}_j^ma^{m-j}b^{j+1}
+$$</span></p>
+<p><span class="math display">$$
+=a^{m+1}+\sum_{k=1}^{m}\operatorname{C}_k^ma^{m-k+1}b^k+\sum_{j=0}^m\operatorname{C}_j^ma^{m-j}b^{j+1}
+$$</span></p>
+<p><span class="math display">$$
+=a^{m+1}+\sum_{k=1}^{m}\operatorname{C}_k^ma^{m-k+1}b^k+\sum_{k=1}^{m+1}\operatorname{C}_{k-1}^ma^{m-k+1}b^k
+$$</span></p>
+<p><span class="math display">$$
+=a^{m+1}+\sum_{k=1}^{m}\operatorname{C}_k^ma^{m-k+1}b^k+\sum_{k=1}^m\operatorname{C}_{k-1}^ma^{m-k+1}b^k+b^{m+1}
+$$</span></p>
+<p><span class="math display">$$
+=a^{m+1}+b^{m+1}+\sum_{k=1}^{m}(\operatorname{C}_k^m+\operatorname{C}_{k-1}^m)a^{m-k+1}b^k
+$$</span></p>
+<p><span class="math display">$$
+=a^{m+1}+b^{m+1}+\sum_{k=1}^{m}\operatorname{C}_k^{m+1}a^{m-k+1}b^k
+$$</span></p>
+<p><span class="math display">$$
+=\sum_{k=0}^{m+1}\operatorname{C}_k^{m+1}a^{m-k+1}b^k
+$$</span></p>
 
                 
               </div>
@@ -436,7 +411,7 @@ $$</p>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年11月12日</div>
+          <div>November 12, 2024</div>
         </div>
       
       

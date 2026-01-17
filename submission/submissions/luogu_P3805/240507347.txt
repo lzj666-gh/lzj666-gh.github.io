@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 240507347
+//  题目ID: P3805
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+char s[30000000 + 5];
+int n, dp[20000000 + 5];
+int32_t main() {
+	char ch = getchar_unlocked();
+	s[0] = '!';
+	while (ch <= 'z' && ch >= 'a')
+		s[++n] = ch, ch = getchar_unlocked(), s[++n] = '?';
+	int ans = 0;
+	for (int l = 1, r = 0, i = 1; r <= n; ++l) {
+		if (l <= r) dp[i] = min(dp[i + i - l], r - l + 1);
+		while (s[l - dp[l]] == s[l + dp[l]]) ++dp[l];
+		if (dp[l] + l > r) r = dp[l] + l, i = l;
+		ans = max(ans, dp[l]);
+	}
+	cout << ans << endl;
+	return 0;
+}

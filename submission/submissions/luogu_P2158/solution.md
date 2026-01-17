@@ -159,7 +159,7 @@ int main()
 
 按照莫比乌斯反演的套路，原式=$\sum_{i=1}^{n-1}\sum_{j=1}^{n-1}\sum_{g|gcd(i,j)}\mu(i)$
 
-i,j同时除以g得：原式=$\sum_{g=1}^{n}\mu(i)\sum_{i=1}^{\frac{n-1}{g}}\sum_{j=1}^{\frac{n-1}{g}}=\sum_{g=1}^{n}\mu(i)*\frac{n-1}{g}*\frac{n-1}{g}$
+i,j同时除以g得：原式=$\sum_{g=1}^{n}\mu(i)\sum_{i=1}^{\frac{n-1}{g} }\sum_{j=1}^{\frac{n-1}{g} }=\sum_{g=1}^{n}\mu(i)*\frac{n-1}{g}*\frac{n-1}{g}$
 
 时间复杂度：$O(n^2)->O(n)$，当然这个复杂度对于此题已经够用了
 

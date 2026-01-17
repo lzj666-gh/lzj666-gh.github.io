@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 234310536
+//  题目ID: T663990
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+vector<pair<string, int>>v = { {"",4},{"*",4},{"**",4},{"***",4},{"****",4},{"***p",3},{"**i",3},{"**i*",3},{"**i*p",3},{"**ip",2},{"**p",3},{"**pi",3},{"*i",3},{"*i*",3},{"*i*p",3},{"*io",3},{"*io*",3},{"*iop",2},{"*ip",2},{"*o",3},{"*o*",3},{"*o**",3},{"*o**p",3},{"*o*i",3},{"*o*i*",3},{"*o*i*p",3},{"*o*ip",2},{"*o*p",2},{"*oi",2},{"*oi*",2},{"*oi*p",2},{"*oip",1},{"*op",2},{"*opi",2},{"*p",3},{"*pi",3},{"*po",3},{"i",3},{"i*",3},{"i*p",3},{"in",3},{"in*",3},{"inp",2},{"io",3},{"io*",3},{"iop",2},{"ip",2},{"n",3},{"n*",3},{"n**",3},{"n***",3},{"n***p",3},{"n**i",3},{"n**i*",3},{"n**i*p",3},{"n**ip",2},{"n**p",2},{"n*i",2},{"n*i*",2},{"n*i*p",2},{"n*iop",2},{"n*ip",1},{"n*o",3},{"n*o*",3},{"n*o**",3},{"n*o**p",3},{"n*o*i",3},{"n*o*i*",3},{"n*o*i*p",3},{"n*o*ip",2},{"n*o*p",2},{"n*oi",2},{"n*oi*",2},{"n*oi*p",2},{"n*oip",1},{"n*op",2},{"n*opi",2},{"n*p",2},{"n*pi",2},{"ni",2},{"ni*",2},{"ni*op",2},{"ni*p",2},{"nio",2},{"nio*",2},{"nio*p",2},{"niop",1},{"nip",1},{"no",2},{"no*",2},{"no**",2},{"no**ip",2},{"no**p",2},{"no*i",2},{"no*i*",2},{"no*i*p",2},{"no*ip",1},{"no*p",1},{"noi",1},{"noi*",1},{"noi*p",1},{"noip",0},{"nop",1},{"nopi",1},{"np",2},{"npi",2},{"npo",2},{"npoi",2},{"o",3},{"o*",3},{"o**",3},{"o**p",3},{"o*i",3},{"o*i*",3},{"o*i*p",3},{"o*ip",2},{"o*p",2},{"oi",2},{"oi*",2},{"oi*p",2},{"oinp",2},{"oip",1},{"on",3},{"on*",3},{"on**",3},{"on*p",2},{"oni",2},{"oni*",2},{"oni*p",2},{"onip",1},{"onp",2},{"onpi",2},{"op",2},{"opi",2},{"p",3},{"pi",3},{"pn",3},{"po",3} };
+int32_t main() {
+//	file(ex_noip2);
+	cin.tie(0)->sync_with_stdio(false);
+	int T; cin >> T;
+	while (T--) {
+		string s; cin >> s; int ans = 4;
+		for (auto& p : v) {
+			if (ans <= p.second) continue;
+			for (int i = 0; i + p.first.size() <= s.size(); ++i) {
+				bool flg = 1;
+				for (int j = 0; j < p.first.size(); ++j) {
+					if (p.first[j] == '*') continue;
+					flg &= p.first[j] == s[i + j];
+				}
+				if (flg) ans = min(ans, p.second);
+			}
+		}
+		cout << ans << endl;
+	}
+	return 0;
+}

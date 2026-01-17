@@ -1,0 +1,79 @@
+//  OJ: 洛谷
+//  提交ID: 248760442
+//  题目ID: T700180
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+#define endl '\n'
+//#define int long long
+using namespace std;
+int n, k, q, add[500000 + 5], p[500000 + 5], a[500000 + 5], b[500000 + 5], c[500000 + 5];
+int mx[3][800000 + 5][20], mn[3][800000 + 5][20];
+inline int max(const int& a, const int& b) { return a > b ? a : b; }
+inline int min(const int& a, const int& b) { return a < b ? a : b; }
+int lg2[1000000 + 5], pow2[20], idx[500000 + 5];
+template<int (*func)(const int& a, const int& b)>
+inline int query(const int a[][20], const int& l, const int& r) {
+	if (l > r) return a[0][0];
+	return func(a[l][lg2[r - l + 1]], a[r - pow2[lg2[r - l + 1]] + 1][lg2[r - l + 1]]);
+}
+int32_t main() {
+	//file(register);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> k >> q;
+	for (int i = 0; i < 20; ++i) pow2[i] = 1 << i;
+	for (int i = 1; i < 20; ++i) fill(lg2 + pow2[i - 1], lg2 + pow2[i], i - 1);
+	for (int i = 1; i <= n; ++i) cin >> a[i], p[i] = a[i];
+	for (int i = 1; i <= k; ++i) cin >> b[i];
+	for (int i = 1; i <= k; ++i) cin >> c[i];
+	for (int i = 1, idx = 0; i <= k; ++i) while (b[i]--) add[++idx] = c[i];
+	sort(add + 1, add + n + 1); sort(a + 1, a + n + 1); reverse(add + 1, add + n + 1);
+	memset(mx, -1, sizeof mx); memset(mn, 0x3f, sizeof mn);
+	for (int i = 1; i <= n; ++i)
+		mx[0][i][0] = a[i] + add[i - 1], mx[1][i][0] = a[i] + add[i], mx[2][i][0] = a[i] + add[i + 1],
+		mn[0][i][0] = a[i] + add[i - 1], mn[1][i][0] = a[i] + add[i], mn[2][i][0] = a[i] + add[i + 1];
+	for (int j = 1; j < 20; ++j)
+		for (int i = 1; i <= n; ++i)
+			mx[0][i][j] = max(mx[0][i][j - 1], mx[0][i + pow2[j - 1]][j - 1]),
+			mx[1][i][j] = max(mx[1][i][j - 1], mx[1][i + pow2[j - 1]][j - 1]),
+			mx[2][i][j] = max(mx[2][i][j - 1], mx[2][i + pow2[j - 1]][j - 1]),
+			mn[0][i][j] = min(mn[0][i][j - 1], mn[0][i + pow2[j - 1]][j - 1]),
+			mn[1][i][j] = min(mn[1][i][j - 1], mn[1][i + pow2[j - 1]][j - 1]),
+			mn[2][i][j] = min(mn[2][i][j - 1], mn[2][i + pow2[j - 1]][j - 1]);
+	for (int i = 1; i <= n; ++i) idx[i] = lower_bound(a + 1, a + n + 1, p[i]) - a;
+	while (q--) {
+		int x, v; cin >> x >> v;
+		if (p[x] == v) {
+			cout << mx[1][1][19] - mn[1][1][19] << endl;
+			continue;
+		}
+		if (p[x] < v) {
+			int idx1 = idx[x], idx2 = lower_bound(a + 1, a + n + 1, v) - a - 1;
+			int mxx = query<max>(mx[1], 1, idx1 - 1);
+			mxx = max(mxx, query<max>(mx[0], idx1 + 1, idx2));
+			mxx = max(mxx, query<max>(mx[1], idx2 + 1, n));
+			mxx = max(mxx, v + add[idx2]);
+
+			int mnn = query<min>(mn[1], 1, idx1 - 1);
+			mnn = min(mnn, query<min>(mn[0], idx1 + 1, idx2));
+			mnn = min(mnn, query<min>(mn[1], idx2 + 1, n));
+			mnn = min(mnn, v + add[idx2]);
+			//cerr << "ans : ";
+			cout << mxx - mnn << endl;
+		}
+		else {
+			int idx1 = lower_bound(a + 1, a + n + 1, v) - a, idx2 = idx[x];
+			int mxx = query<max>(mx[1], 1, idx1 - 1);
+			mxx = max(mxx, query<max>(mx[2], idx1, idx2 - 1));
+			mxx = max(mxx, query<max>(mx[1], idx2 + 1, n));
+			mxx = max(mxx, v + add[idx1]);
+
+			int mnn = query<min>(mn[1], 1, idx1 - 1);
+			mnn = min(mnn, query<min>(mn[2], idx1, idx2 - 1));
+			mnn = min(mnn, query<min>(mn[1], idx2 + 1, n));
+			mnn = min(mnn, v + add[idx1]);
+			//cerr << "ans : ";
+			cout << mxx - mnn << endl;
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 234923717
+//  题目ID: T665668
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+const int MAXN = 1e7;
+int n, m, x, p;
+int a[MAXN + 10];
+unsigned int state;
+inline unsigned int next_random() {
+	state = state ^ (state << 13);
+	state = state ^ (state >> 17);
+	state = state ^ (state << 5);
+	return state;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> x >> p >> state;
+	for (int i = 0; i < n; i++) a[i] = next_random() % p;
+	unsigned int result = 0;
+	int min_len = x, max_len = min(2 * x, n), range_len = max_len - min_len + 1;
+	for (int i = 1; i <= m; i++) {
+		int len = min_len + (next_random() % range_len);
+		int l = 1 + (next_random() % (n - len + 1)), r = l + len - 1;
+
+		int ans = 1;
+		
+		for (int i = l; i <= r; ++i) ans = 1ll * ans * a[i] % p;
+
+		// do your things here.
+
+		result = (result + 1ULL * ans * i) % p;
+	}
+	cout << result << endl;
+	return 0;
+}

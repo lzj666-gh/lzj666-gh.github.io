@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 105680372
+//  题目ID: T201990
+#include<bits/stdc++.h> 
+using namespace std;
+int n,a[25][25],vit[25];
+//a[i][j]第i人第j项工作效率
+//vit标记 
+int maxans=0;
+//最大累计答案 
+void dfs(int i,int ans){
+	//第i层，已累计答案ans 
+	for(int i1=1;i1<=n;i1++){
+		//枚举 
+		if(vit[i1]==0){
+			//可行 
+			if(i==n){
+				//最大值更新 
+				maxans=max(maxans,ans+a[i][i1]);
+				return;
+			} 
+			vit[i1]=1;
+			//标记 
+			dfs(i+1,ans+a[i][i1]);
+			//下一层 
+			vit[i1]=0;
+			//还原 
+		}
+	}
+}
+int main(){
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			cin>>a[i][j];
+		}
+	}
+	dfs(1,0);
+	cout<<maxans<<endl;
+	return 0;
+}

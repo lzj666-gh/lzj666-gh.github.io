@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 239612843
+//  题目ID: U316423
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+signed main(){
+	cout <<"114514";
+	return 0;
+}

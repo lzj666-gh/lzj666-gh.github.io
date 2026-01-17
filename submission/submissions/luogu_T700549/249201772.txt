@@ -1,0 +1,73 @@
+//  OJ: 洛谷
+//  提交ID: 249201772
+//  题目ID: T700549
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+bool rev[32], force[32], fail;
+void clac(vector<int>v, int pos) {
+	if (pos == -1) return;
+	if (v.size() <= 1) return;
+	if (fail) return;
+	bool flg1 = 1, flg2 = 1; int split = 0;
+	for (int i = 1; i < v.size(); ++i)
+		if (!(v[i - 1] & (1 << pos)) && (v[i] & (1 << pos))) split = i, flg2 = 0;
+		else if ((v[i - 1] & (1 << pos)) && !(v[i] & (1 << pos))) split = i, flg1 = 0;
+	//cerr << "calc pos : " << pos << " with array : "; for (auto& p : v) cout << p << ' '; cout << endl;
+	if (flg1 && flg2) {
+		clac(v, pos - 1);
+		return;
+	}
+	if (!flg1 && !flg2) {
+		fail = 1;
+		return;
+	}
+	if (flg1) {
+		if (force[pos] && rev[pos] == 1) {
+			fail = 1;
+			return;
+		}
+		force[pos] = 1; rev[pos] = 0;
+	}
+	if (flg2) {
+		if (force[pos] && rev[pos] == 0) {
+			fail = 1;
+			return;
+		}
+		force[pos] = 1; rev[pos] = 1;
+	}
+	clac(vector<int>(v.begin(), v.begin() + split), pos - 1);
+	clac(vector<int>(v.begin() + split, v.end()), pos - 1);
+}
+void check(vector<int>v, int res) {
+	for (int i = 1; i < v.size(); ++i)
+		assert((v[i - 1] ^ res) <= (v[i] ^ res));
+}
+void output(const vector<int>& v) {
+	if (fail) return void(cout << -1 << endl);
+	int res = 0;
+	for (int i = 0; i < 31; ++i)
+		if (rev[i]) res |= 1 << i;
+	cout << res << endl; // check(v, res);
+}
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n; cin >> n; vector<int>v(n);
+	for (int i = 0; i < n; ++i) cin >> v[i];
+	int q; cin >> q; clac(v, 30); output(v);
+	while (q--) {
+		fail = 0; memset(force, 0, sizeof force); memset(rev, 0, sizeof rev);
+		int x, k; cin >> x >> k; v[x - 1] = k; clac(v, 30);
+		output(v);
+	}
+	return 0;
+}
+/*
+10
+416 311 273 382 847 786 1009 1000 738 763
+
+5
+23 17 3 0 4
+*/

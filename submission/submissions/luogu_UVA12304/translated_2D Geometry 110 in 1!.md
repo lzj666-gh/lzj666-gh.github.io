@@ -130,7 +130,7 @@
 
 **对于每个列表，以中括号 `[]` 包裹；对于每个二元组，以小括号 `()` 包裹。你的输出中不应包含空格。**
 
-$\text{\small{Translated by @Starrykiller.}}$
+$\text{\small{Translated by @Starrykiller.} }$
 
 ## 输入格式
 

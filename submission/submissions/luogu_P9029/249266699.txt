@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 249266699
+//  题目ID: P9029
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int n, q, c[100000 + 5], k, m, sum[100000 + 5];
+inline int cost(const int& x, const int& k) { return x > k ? k - (x - k) : x; }
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> q;
+	for (int i = 1; i <= n; ++i) cin >> c[i];
+	sort(c + 1, c + n + 1);
+	for (int i = 1; i <= n; ++i) sum[i] = sum[i - 1] + c[i];
+	while (q--) {
+		cin >> k >> m;
+		if (c[1] >= k) {
+			cout << m * 2 * k - (sum[n] - sum[n - m]) << endl;
+			continue;
+		}
+		if (c[n] <= k) {
+			cout << sum[m] << endl;
+			continue;
+		}
+		function<int(int)>calc = [&](const int& i) {
+			int p = m - (n - i + 1);
+			return sum[p] + (n - i + 1) * 2 * k - (sum[n] - sum[i - 1]);
+			};
+		int l = 0, r = n, mid1, mid2;
+		while (l < r - 1) {
+			int t = (r - l + 1) / 3;
+			mid1 = l + t; mid2 = r - t;
+			if (calc(mid1) >= calc(mid2)) l = mid1;
+			else r = mid2;
+		}
+		int ans = LLONG_MAX;
+		for (int i = max<int>(l - 1, 0); i <= min(r + 1, n); ++i) {
+			ans = min(ans, calc(i));
+		}
+		cout << ans << endl;
+	}
+	return 0;
+}

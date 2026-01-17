@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 248760508
+//  题目ID: T700181
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+#ifndef _DEBUG
+int gcd(int a, int b) {
+	if (a == 0 || b == 0) return a | b;
+	int aa = __builtin_ctz(a), bb = __builtin_ctz(b);
+	int res = min(aa, bb); a >>= aa;
+	while (1) {
+		b >>= bb; if (a > b) a ^= b ^= a ^= b;
+		b -= a; if (b == 0) return a << res;
+		bb = __builtin_ctz(b);
+	}
+}
+#endif
+int n, a[1000000 + 5], frt[100000 + 5], bck[100000 + 5];
+int32_t main() {
+	//file(Gingerbread);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n; for (int i = 1; i <= n; ++i) cin >> a[i], frt[i] = bck[i] = a[i];
+	for (int i = 1; i <= n; ++i) frt[i] = gcd(frt[i], frt[i - 1]);
+	for (int i = n; i >= 1; --i) bck[i] = gcd(bck[i], bck[i + 1]);
+	if (bck[1] == 1) return cout << 0 << endl, 0;
+	for (int i = 1; i <= n; ++i)
+		if (gcd(frt[i - 1], gcd(a[i] + 1, bck[i + 1])) == 1)
+			return cout << 1 << endl, 0;
+	cout << 2 << endl;
+	return 0;
+}

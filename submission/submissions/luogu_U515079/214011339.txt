@@ -1,0 +1,93 @@
+//  OJ: 洛谷
+//  提交ID: 214011339
+//  题目ID: U515079
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int inf = 1e9;
+struct Martix {
+	int a[2][2];
+	int n, m;
+	Martix() {
+		memset(a, 0, sizeof(a));
+		n = 2, m = 2;
+	}
+	Martix operator*(const Martix& other) const {
+		Martix res;
+		res.n = n;
+		res.m = other.m;
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < other.m; j++)
+				res.a[i][j] = -inf;
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < m; j++)
+				for (int k = 0; k < other.m; k++)
+					res.a[i][k] = max(res.a[i][k], a[i][j] + other.a[j][k]);
+		return res;
+	}
+};
+struct Seg_Tree {
+#define lc (p << 1)
+#define rc (p << 1 | 1)
+#define mid ((l + r) >> 1)
+#define lson lc, l, mid
+#define rson rc, mid + 1, r
+	struct Node {
+		Martix sum;
+		Node() {
+			sum.a[0][0] = sum.a[1][1] = 0;
+			sum.a[0][1] = sum.a[1][0] = -inf;
+		}
+	};
+	vector<Node> tree;
+	void build(int p, int l, int r, vector<int>& a) {
+		if (l == r) {
+			tree[p].sum.a[0][1] = a[l];
+			tree[p].sum.a[1][0] = -a[l];
+			return;
+		}
+		build(lson, a);
+		build(rson, a);
+		tree[p].sum = tree[lson].sum * tree[rson].sum;
+	}
+	void change(int p, int l, int r, int x, int val) {
+		if (l == r) {
+			tree[p].sum.a[0][1] = val;
+			tree[p].sum.a[1][0] = -val;
+			return;
+		}
+		if (x <= mid) change(lson, x, val);
+		else change(rson, x, val);
+		tree[p].sum = tree[lson].sum * tree[rson].sum;
+	}
+	void query(int p, int l, int r, int x, int y, Martix& res) {
+		if (x <= l && r <= y) {
+			res = res * tree[p].sum;
+			return;
+		}
+		if (x <= mid) query(lson, x, y, res);
+		if (y > mid) query(rson, x, y, res);
+	}
+}seg;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m;
+	cin >> n >> m;
+	vector<int> a(n + 1);
+	for (int i = 1; i <= n; i++)
+		cin >> a[i];
+	seg.tree.resize(n << 2);
+	seg.build(1, 1, n, a);
+	while (m--) {
+		int x, y;
+		cin >> x >> y;
+		seg.change(1, 1, n, x, y);
+		Martix res;
+		res.n = 1;
+		res.a[0][0] = 0;
+		res.a[0][1] = -inf;
+		seg.query(1, 1, n, x, y, res);
+		cout << max(res.a[0][0], res.a[1][0]) << '\n';
+	}
+	return 0;
+}

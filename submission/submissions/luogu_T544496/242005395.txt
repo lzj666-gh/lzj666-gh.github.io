@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 242005395
+//  题目ID: T544496
+#include<bits/stdc++.h>
+#define int long long
+#define all(a) (a).begin(), (a).end()
+#define file(a) { freopen(#a".in", "r", stdin); freopen(#a".out", "w", stdout); }
+using namespace std;
+int cur, n, m, l[1000000 + 5], r[1000000 + 5], t[1000000 + 5];
+void up(int l, int r, int k) {
+	if (l <= cur && cur <= r) {
+		cur -= k;
+		return;
+	}
+	if (r < cur) return;
+	if (cur < l - k) return;
+	cur += r - l + 1;
+}
+void down(int l, int r, int k) {
+	if (l <= cur && cur <= r) {
+		cur += k;
+		return;
+	}
+	if (cur < l) return;
+	if (cur > r + k) return;
+	cur -= r - l + 1;
+}
+int32_t main() {
+	// file(a);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> cur;
+	for (int i = 1; i <= m; ++i) cin >> l[i] >> r[i] >> t[i];
+	for (int i = m; i >= 1; --i)
+		(t[i] ? up : down)(t[i] ? n - (r[i] - l[i]) : 1, t[i] ? n : r[i] - l[i] + 1, t[i] ? n - r[i] : l[i] - 1);
+	cout << cur << endl;
+	return 0;
+}

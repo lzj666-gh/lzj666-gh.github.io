@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 211815311
+//  题目ID: T587551
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	cout<<"accepted";
+	return 0;
+} 

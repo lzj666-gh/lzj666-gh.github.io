@@ -1,0 +1,123 @@
+//  OJ: 洛谷
+//  提交ID: 242220345
+//  题目ID: T524611
+#include<bits/stdc++.h>
+#define int long long
+#define all(a) (a).begin(), (a).end()
+#define file(a) { freopen(#a".in", "r", stdin); freopen(#a".out", "w", stdout); }
+using namespace std;
+const int mod = 998244353;
+int anss[500000 + 5], n, m, v[500000 + 5], l[500000 + 5], r[500000 + 5];
+struct Node {
+	int k, idx;
+	Node(int k = 0, int idx = 0) :k(k), idx(idx) {}
+	friend bool operator<(const Node& a, const Node& b) {
+		return a.k < b.k;
+	}
+}q[500000 + 5];
+int ans[500000 + 5];
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int sum1 = 0, tag1 = 0, sum2 = 0, tag2 = 0, val = 0;
+		// sum1: sum of k, sum2: sum of 1
+	}tree[2000000 + 5];
+	void pushup(int p) {
+		tree[p].sum1 = (tree[lc(p)].sum1 + tree[rc(p)].sum1) % mod;
+		tree[p].sum2 = (tree[lc(p)].sum2 + tree[rc(p)].sum2) % mod;
+	}
+	void tag1(int p, int v) {
+		v %= mod;
+		tree[p].tag1 = (tree[p].tag1 + v) % mod;
+		tree[p].val = (tree[p].val + tree[p].sum1 * v) % mod;
+		if (tree[p].val < 0) tree[p].val += mod;
+	}
+	void tag2(int p, int v) {
+		v %= mod;
+		tree[p].tag2 = (tree[p].tag2 + v) % mod;
+		tree[p].val = (tree[p].val - tree[p].sum2 * v) % mod;
+		if (tree[p].val < 0) tree[p].val += mod;
+	}
+	void pushdown(int p, int l, int r) {
+		if (tree[p].tag1) {
+			tag1(lc(p), tree[p].tag1);
+			tag1(rc(p), tree[p].tag1);
+			tree[p].tag1 = 0;
+		}
+		if (tree[p].tag2) {
+			tag2(lc(p), tree[p].tag2);
+			tag2(rc(p), tree[p].tag2);
+			tree[p].tag2 = 0;
+		}
+	}
+	void build(int p, int l, int r) {
+		if (l == r) {
+			tree[p].sum1 = (q[l].k % mod + mod) % mod;
+			tree[p].sum2 = 1 % mod;
+			tree[p].tag1 = tree[p].tag2 = tree[p].val = 0;
+			return;
+		}
+		build(lson);
+		build(rson);
+		pushup(p);
+	}
+	void add1(int p, int l, int r, int L, int R, int v) {
+		if (L > R) return;
+		if (L <= l && r <= R) return tag1(p, v);
+		pushdown(p, l, r);
+		if (L <= mid) add1(lson, L, R, v);
+		if (R > mid) add1(rson, L, R, v);
+		pushup(p);
+	}
+	void add2(int p, int l, int r, int L, int R, int v) {
+		if (L > R) return;
+		if (L <= l && r <= R) return tag2(p, v);
+		pushdown(p, l, r);
+		if (L <= mid) add2(lson, L, R, v);
+		if (R > mid) add2(rson, L, R, v);
+		pushup(p);
+	}
+	void query(int p, int l, int r) {
+		if (l == r)
+			return void(anss[l] = (tree[p].val % mod + mod) % mod);
+		pushdown(p, l, r);
+		query(lson);
+		query(rson);
+	}
+}t;
+void add(int L, int R, int a, int b) {
+	if (L > R) return;
+	t.add1(1, 1, m, L, R, a % mod);
+	t.add2(1, 1, m, L, R, -b % mod);
+}
+int32_t main() {
+	// file(data);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> v[i] >> l[i] >> r[i];
+	for (int i = 1; i <= m; ++i) cin >> q[i].k, q[i].idx = i;
+	sort(q + 1, q + m + 1);
+	t.build(1, 1, m);
+	for (int i = 1; i <= n; ++i) {
+		for (int j = i + 1; j <= n; ++j) {
+			int L = l[i] + l[j], R = r[i] + r[j];
+			int mn = min(r[i] - l[i] + 1, r[j] - l[j] + 1);
+			int mx = max(r[i] - l[i] + 1, r[j] - l[j] + 1);
+			int A = L + mn - 1, B = L + mx - 1;
+			int vv = v[i] * v[j] % mod;
+#define pos(L, R) lower_bound(q + 1, q + m + 1, Node(L)) - q, upper_bound(q + 1, q + m + 1, Node(R)) - q - 1
+			add(pos(L, A), vv, vv * (1 - L) % mod);
+			add(pos(A + 1, B), 0, vv * (mn % mod) % mod);
+			add(pos(B + 1, R), -vv % mod, vv * ((R + 1) % mod) % mod);
+#undef pos
+		}
+	}
+	t.query(1, 1, m);
+	for (int i = 1; i <= m; ++i) ans[q[i].idx] = anss[i];
+	for (int i = 1; i <= m; ++i) cout << (ans[i] % mod + mod) % mod << endl;
+	return 0;
+}

@@ -1,0 +1,87 @@
+//  OJ: 洛谷
+//  提交ID: 234310629
+//  题目ID: T663993
+#include<bits/stdc++.h>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+int N, n, m; string s;
+int d[1000][1000]; bool on[1000][1000];
+int32_t main() {
+//	file(rate);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> N >> n >> m >> s;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j)
+			cin >> d[i][j], d[i][j] = min(d[i][j], N);
+	int ans = n * m, tot = 0;
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 1; j <= m; ++j) {
+			if (!d[i][j]) continue;
+			vector<pair<int, int>>v; list<pair<int, int>>l;
+			on[i][j] = 1; v.emplace_back(i, j);
+			l.emplace_back(i + 1, j); l.emplace_back(i - 1, j);
+			l.emplace_back(i, j + 1); l.emplace_back(i, j - 1);
+			//cerr << "(" << i << ", " << j << ") :" << endl;
+			while (1) {
+				bool notmove = 1;
+				int cnt = l.size(); list<pair<int,int>>::iterator it = l.begin();
+				while (cnt--) {
+					if (it->first < 1 || it->first > n || it->second < 1 || it->second > m
+						|| !d[it->first][it->second] || on[it->first][it->second]) {
+						it = l.erase(it);
+						continue;
+					}
+					//cerr << "checking (" << it->first << ", " << it->second << "): " << endl;
+					int& t = d[it->first][it->second];
+					bool& E = on[it->first][it->second + 1];
+					bool& S = on[it->first + 1][it->second];
+					bool& W = on[it->first][it->second - 1];
+					bool& N = on[it->first - 1][it->second];
+					//cerr << "E: " << E << endl;
+					//cerr << "S: " << S << endl;
+					//cerr << "W: " << W << endl;
+					//cerr << "N: " << N << endl;
+					bool flgg = 0;
+					for (int i = 0; i < s.size(); ++i) {
+						bool flg = 1;
+						for (int j = 0; j < t; ++j)
+							if (s[(i + j) % s.size()] == 'E')
+								flg &= E;
+							else if (s[(i + j) % s.size()] == 'W')
+								flg &= W;
+							else if (s[(i + j) % s.size()] == 'N')
+								flg &= N;
+							else if (s[(i + j) % s.size()] == 'S')
+								flg &= S;
+						if (flg) {
+							flgg = 1;
+							break;
+						}
+					}
+					if (flgg) {
+						//cerr << "OK" << endl;
+						on[it->first][it->second] = 1;
+						l.emplace_back(it->first - 1, it->second);
+						l.emplace_back(it->first + 1, it->second);
+						l.emplace_back(it->first, it->second - 1);
+						l.emplace_back(it->first, it->second + 1);
+						v.emplace_back(it->first, it->second); it = l.erase(it);
+						notmove = 0;
+						continue;
+					}
+					else {
+						//cerr << "FAIL" << endl;
+						it++;
+					}
+				}
+				if (v.size() > ans || l.empty() || notmove) break;
+			}
+			if (v.size() < ans) ans = v.size(), tot = 0;
+			if (v.size() == ans) tot++;
+			for (auto& p : v) on[p.first][p.second] = 0;
+		}
+	}
+	cout << ans << endl << tot << endl;
+	return 0;
+}

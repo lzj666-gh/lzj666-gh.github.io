@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 245395934
+//  题目ID: T677799
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	long long n, m, k;
+	cin >> n >> m >> k;
+	if (k & 1) cout << n * m - 1 << endl;
+	else cout << n * m - min(k, 2ll) << endl;
+	return 0;
+}

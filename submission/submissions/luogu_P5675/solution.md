@@ -37,17 +37,17 @@
 
 因为 $s\neq 0$，根据异或的定义，存在一堆物品 $i$，满足 $n_i\oplus s<n_i$ ，那么就从第 $i$ 堆取走 $n_i-(n_i\oplus s)$，剩下 $n_i\oplus s$ 个物品。
 
-此时，$s_{\rm{new}}=n_1\oplus n_2\cdots\oplus n_k\oplus s=s\oplus s=0$.
+此时，$s_{\rm{new} }=n_1\oplus n_2\cdots\oplus n_k\oplus s=s\oplus s=0$.
 
 所以命题一成立。
 
 #### 命题二
 
-反证法。若否，则 $s=0$ 时，存在一种取物品的方法使得 $s_{\rm{new}}=0$.
+反证法。若否，则 $s=0$ 时，存在一种取物品的方法使得 $s_{\rm{new} }=0$.
 
 设取走第 $i$ 堆的若干物品，第 $i$ 堆剩余 $n_i'$ 个物品。
 
-所以 $s_{\rm{new}}=n_1\oplus n_2\cdots\oplus n_i'\oplus\cdots\oplus n_k=0=s$.
+所以 $s_{\rm{new} }=n_1\oplus n_2\cdots\oplus n_i'\oplus\cdots\oplus n_k=0=s$.
 
 把 $s$ 的定义式代入，得到 $n_i=n_i'$，产生矛盾。
 

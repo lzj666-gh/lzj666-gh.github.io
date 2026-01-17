@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 239270115
+//  题目ID: T475183
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int n, q, a[500000 + 5], b[500000 + 5], dif[500000 + 5], ans, sum0, sum1, l, r, k;
+int32_t main() {
+	(cin >> n >> q).tie(0)->sync_with_stdio(false);
+	for (int i = 1; i <= n; ++i) cin >> b[i]; for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = n; i > 1; --i) sum1 += b[i] * (n - i + 1) % mod, sum1 %= mod;
+	for (int i = 1; i <= n; ++i) dif[i] = (sum0 * (n - i + 1) % mod + sum1 * i % mod + b[i] * i % mod * (n - i + 1) % mod) % mod, sum0 += i * b[i] % mod, sum1 -= b[i + 1] * (n - i) % mod, sum0 = (sum0 % mod + mod) % mod, sum1 = (sum1 % mod + mod) % mod;
+	for (int i = 1; i <= n; ++i) ans = (ans + dif[i] * a[i] % mod) % mod, dif[i] = (dif[i] + dif[i - 1]) % mod;
+	while (q--) cin >> l >> r >> k, ans = ((dif[r] - dif[l - 1]) * k % mod + mod) % mod, cout << ans << endl;
+	return 0;
+}

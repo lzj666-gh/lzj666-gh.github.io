@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 166516574
+//  题目ID: T164595
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+    int v,w,nxt;
+}edge[10000000+10];
+int head[6000+10],idx;
+void add(int u,int v,int w){
+	edge[++idx]={v,w,head[u]};
+	head[u]=idx;
+}
+struct Node{
+	int first,second;
+	friend bool operator<(const Node&a,const Node&b){
+		return a.first>b.first;
+	}
+};
+int n,m,dis[6000+10],cnt,tot;
+priority_queue<Node>q;
+bool vis[6000+10];
+void prim(){
+	memset(dis,0x3f,sizeof dis);
+	dis[1]=0;
+	q.push({0,1});
+	while(!q.empty()&&cnt<n){
+		Node p=q.top();q.pop();
+		if(vis[p.second]) continue;
+		vis[p.second]=1;
+		sum+=dis[v];++cnt;
+		for(int i=head[p.second];i;i=edge[i].nxt){
+			if(dis[edge[i].v]>edge[i].w){
+				dis[edge[i].v]=edge[i].w;
+				q.push({edge[i].w,edge[i].v});
+			}
+		}
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1,w,u,v;i<=m;++i) cin>>u>>v>>w,add(u,v,w);
+	prim();
+	if(cnt==n) cout<<sum<<endl;
+	else cout<<"orz"<<endl;
+	return 0;
+}

@@ -1,0 +1,77 @@
+//  OJ: 洛谷
+//  提交ID: 249875002
+//  题目ID: T702637
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[200000 + 5];
+int head[50000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+namespace SCCed {
+	struct Edge {
+		int v, nxt;
+	}edge[100000 + 5];
+	int head[50000 + 5], idx;
+	void add(int u, int v) {
+		edge[++idx] = { v,head[u] };
+		head[u] = idx;
+	}
+	bool vis[50000 + 5]; bool viss[50000 + 5];
+	bool dfs(int x, int fa, int v) {
+		if (v == x) return vis[x] = 1;
+		assert(!viss[x]); viss[x] = 1;
+		for (int i = head[x]; i; i = edge[i].nxt)
+			if (edge[i].v ^ fa)
+				if (dfs(edge[i].v, x, v))
+					return vis[x] = 1;
+		return 0;
+	}
+}
+int low[50000 + 5], scc[50000 + 5], dfn[50000 + 5], idk, cnt;
+stack<int>st;
+void dfs(int x, int in) {
+	dfn[x] = low[x] = ++idk;
+	st.push(x);
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (!dfn[edge[i].v])
+			dfs(edge[i].v, i), low[x] = min(low[x], low[edge[i].v]);
+		else if (in ^ 1 ^ i)
+			low[x] = min(low[x], dfn[edge[i].v]);
+	if (low[x] == dfn[x]) {
+		++cnt;
+		while (!st.empty()) {
+			int now = st.top(); st.pop();
+			scc[now] = cnt; if (now == x) break;
+		}
+	}
+}
+int n, m, A, B;
+int32_t main() {
+	//file(elk);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> A >> B; idx = 1;
+	for (int i = 1, a, b; i <= m; ++i)
+		cin >> a >> b, add(a + 1, b + 1), add(b + 1, a + 1);
+	for (int i = 1; i <= n; ++i)
+		if (!dfn[i])
+			dfs(i, 0);
+	//for (int i = 1; i <= n; ++i) cerr << scc[i] << ' '; cerr << endl;
+	for (int i = 1; i <= n; ++i)
+		for (int j = head[i]; j; j = edge[j].nxt)
+			if (scc[i] ^ scc[edge[j].v])
+				SCCed::add(scc[i], scc[edge[j].v]);
+	SCCed::dfs(scc[A + 1], 0, scc[B + 1]);
+	vector<int>ans;
+	for (int i = 1; i <= n; ++i)
+		if (!SCCed::vis[scc[i]])
+			ans.emplace_back(i - 1);
+	cout << ans.size() << endl;
+	for (auto& p : ans) cout << p << endl;
+	return 0;
+}

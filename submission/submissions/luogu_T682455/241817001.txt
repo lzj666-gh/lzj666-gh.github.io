@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 241817001
+//  题目ID: T682455
+#include<bits/stdc++.h>
+#define int long long
+#define all(a) (a).begin(), (a).end()
+#define file(a) { freopen(#a".in", "r", stdin); freopen(#a".out", "w", stdout); }
+using namespace std;
+struct Edge {
+	int v, c, d, nxt;
+}edge[200000 + 5];
+int head[100000 + 5], idx;
+void add(int u, int v, int c, int d) {
+	edge[++idx] = { v,c,d,head[u] };
+	head[u] = idx;
+}
+bool vis[100000 + 5];
+int dis[100000 + 5];
+void dij(int s) {
+	memset(dis, 0x3f, sizeof dis);
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>q;
+	q.emplace(0, s); dis[s] = 0;
+	while (!q.empty()) {
+		int x = q.top().second; q.pop();
+		if (vis[x]) continue;
+		vis[x] = 1;
+		for (int i = head[x]; i; i = edge[i].nxt) {
+			int t = sqrt(edge[i].d), w;
+			if (dis[x] < t) w = t + edge[i].c + edge[i].d / (t + 1);
+			else w = dis[x] + edge[i].c + edge[i].d / (dis[x] + 1);
+			if (w < dis[edge[i].v]) {
+				dis[edge[i].v] = w;
+				q.emplace(dis[edge[i].v], edge[i].v);
+			}
+		}
+	}
+}
+int n, m;
+int32_t main() {
+	// file(road);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, a, b, c, d; i <= m; ++i)
+		cin >> a >> b >> c >> d, add(a, b, c, d), add(b, a, c, d);
+	dij(1);
+	if (dis[n] == dis[0]) cout << -1 << endl;
+	else cout << dis[n] << endl;
+	return 0;
+}

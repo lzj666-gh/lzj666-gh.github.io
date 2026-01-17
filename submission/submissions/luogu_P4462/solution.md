@@ -110,7 +110,7 @@ Wrong!
 那么枚举那一部分呢？显然是第二部分。因为第二部分是一个块，最多$\sqrt{n}$个元素，而第一部分指不定有多少块呢。。复杂度$O(2(\sqrt{n})^3)=O(n\sqrt{n})$
 
 $$ans[i][j]=ans[i][j-1]+ans[j][j]+\sum\limits_{p\in\text{第
-j块}}(pre[j-1][s_p\oplus k]-pre[i-1][s_p\oplus k])$$
+j块} }(pre[j-1][s_p\oplus k]-pre[i-1][s_p\oplus k])$$
 
 处理$ans$的算法大致明朗了，代码：
 
@@ -187,7 +187,7 @@ Wrong！
 
 我们枚举左散块的所有元素，枚举至$s_i$时，在整块中查找$s_i\oplus k$的个数加入答案，这可以利用$pre$数组轻松做到。
 
-$\text{答案}+=\sum\limits_{p\in \text{左散块}}(pre[Y][s_p\oplus k]-pre[X-1][s_p\oplus k])$
+$\text{答案}+=\sum\limits_{p\in \text{左散块} }(pre[Y][s_p\oplus k]-pre[X-1][s_p\oplus k])$
 
 3. 左端点在左散块，右端点在右散块
 
@@ -199,7 +199,7 @@ $\text{答案}+=\sum\limits_{p\in \text{左散块}}(pre[Y][s_p\oplus k]-pre[X-1]
 
 整块不好枚举，所以我们枚举右端点。其他的操作与情况2的处理方式基本相同。
 
-$\text{答案}+=\sum\limits_{p\in \text{右散块}}(pre[Y][s_p\oplus k]-pre[X-1][s_p\oplus k])$
+$\text{答案}+=\sum\limits_{p\in \text{右散块} }(pre[Y][s_p\oplus k]-pre[X-1][s_p\oplus k])$
 
 以上就是处理包含整块情况的查询的全部内容啦！
 
@@ -410,6 +410,6 @@ wtcl这一题调了半天。。。
 
 码字不易，留个赞叭QwQ。
 
-[$\colorbox{yellow}{\texttt{cnblogs:https://www.cnblogs.com/-Wallace-/}}$](https://www.cnblogs.com/-Wallace-/)
+[$\colorbox{yellow}{\texttt{cnblogs:https://www.cnblogs.com/-Wallace-/} }$](https://www.cnblogs.com/-Wallace-/)
 
-[$\colorbox{greenyellow}{\texttt{luogu blog:https://strncmp.blog.luogu.org/}}$](https://strncmp.blog.luogu.org/)
+[$\colorbox{greenyellow}{\texttt{luogu blog:https://strncmp.blog.luogu.org/} }$](https://strncmp.blog.luogu.org/)

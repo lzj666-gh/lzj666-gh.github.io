@@ -102,7 +102,7 @@ $$ f[i][k']+=f[i-1][k] $$
 横放后$k'$的第$j$位(本身)与第$j-1$位(左侧格子)都应该是**1**。而由条件2可知原k的第$j$位原来就是**1**，故只需要将左侧格子改为1。
 
 状态转移方程：
-$${\text{if((j>1) \&\& !(k\&q[j-1]) \&\& (k\&q[j]))}}\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad$$
+$${\text{if((j>1) \&\& !(k\&q[j-1]) \&\& (k\&q[j]))} }\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad$$
 $$ k'=k|p[j-1]$$
 $$ f[i][k']+=f[i-1][k] $$
 
@@ -116,7 +116,7 @@ $$ f[i][k']+=f[i-1][k] $$
 
 转移方法则是$k'$的第$j$位改为0；
 
-$${\text{if(k\&q[j])}}\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad$$
+$${\text{if(k\&q[j])} }\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad$$
 $$ k'=k\; xor\; p[j-1]$$
 $$ f[i][k']+=f[i-1][k] $$
 

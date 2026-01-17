@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 135524403
+//  题目ID: T146898
+#include<bits/stdc++.h>
+using namespace std;
+class cow {
+	public:
+		friend bool operator< (const cow&a,const cow&b){
+			return a.w<b.w;
+		}
+		friend istream& operator >> (istream&in,cow&a){
+			in>>a.w>>a.s;
+		}
+		void ss(int &x,int &xx){
+			x+=abs(xx-s);
+			ww(xx);
+		}
+	protected:
+		int w,s;
+		void ww(int &x){
+			x+=w;
+		}
+}a[500000+10];
+int n;
+int main(){
+	ios_base::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
+	cin>>n;
+	for(int i=1;i<=n;++i) cin>>a[i];
+	sort(&a[1],&a[n+1]);
+	int k=0,ans=0;
+	for(int i=1;i<=n;++i){
+		a[i].ss(ans,k);
+	}
+	cout<<ans<<endl;
+	return 0;
+}

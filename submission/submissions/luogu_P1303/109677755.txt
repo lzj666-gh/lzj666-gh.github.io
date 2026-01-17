@@ -1,8 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 109677755
-//  题目ID: P1303
-a=input()
-b=input()
-a=int(a)
-b=int(b)
-print(a*b)

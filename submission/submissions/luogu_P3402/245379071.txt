@@ -1,0 +1,86 @@
+//  OJ: 洛谷
+//  提交ID: 245379071
+//  题目ID: P3402
+#include<bits/stdc++.h>
+using namespace std;
+int n, m;
+struct Node {
+    int val;
+    Node *ls, *rs;
+    Node() : val(), ls(), rs() {}
+};
+#define mid (l + r >> 1)
+void modify(Node *lp, Node *p, int l, int r, int x, int k) {
+    if (l == r) {
+        p->val = k;
+        return;
+    }
+    p->ls = lp->ls; p->rs = lp->rs;
+    if (x <= mid) modify(lp->ls, p->ls = new Node(), l, mid, x, k);
+    else modify(lp->rs, p->rs = new Node(), mid + 1, r, x, k);
+}
+int query(Node *p, int l, int r, int x) {
+    if (l == r) return p->val;
+    if (x <= mid) return query(p->ls, l, mid, x);
+    else return query(p->rs, mid + 1, r, x);
+}
+struct FATHER {
+    Node *root;
+    FATHER() : root(new Node()) {}
+    static void build(Node *p, int l, int r) {
+        if (l == r) {
+            p->val = l;
+            return;
+        }
+        build(p->ls = new Node(), l, mid);
+        build(p->rs = new Node(), mid + 1, r);
+    }
+    int find(int x) {
+        int fa = query(root, 1, n, x);
+        return fa == x ? x : find(fa);
+    }
+}fa[200000 + 5];
+struct SIZE {
+    Node *root;
+    SIZE() : root(new Node()) {}
+    static void build(Node *p, int l, int r) {
+        if (l == r) {
+            p->val = 1;
+            return;
+        }
+        build(p->ls = new Node(), l, mid);
+        build(p->rs = new Node(), mid + 1, r);
+    }
+    int operator[](int idx) {
+        return query(root, 1, n, idx);
+    }
+}siz[200000 + 5];
+int main() {
+    // freopen("1.in", "r", stdin);
+	cin.tie(0)->sync_with_stdio(false);
+    cin >> n >> m;
+    FATHER::build(fa[0].root, 1, n);
+    SIZE::build(siz[0].root, 1, n);
+    for (int id = 1; id <= m; ++id) {
+        int opt, x, y; cin >> opt;
+        if (opt == 1) {
+            cin >> x >> y;
+            int a = fa[id - 1].find(x), b = fa[id - 1] .find(y);
+            int siza = siz[id - 1][a], sizb = siz[id - 1][b];
+            if (siza > sizb) swap(a, b);
+            modify(fa[id - 1].root, fa[id].root, 1, n, a, b),
+            modify(siz[id - 1].root, siz[id].root, 1, n, b, siza + sizb);
+        }
+        if (opt == 2) {
+            cin >> x; fa[id].root = fa[x].root;
+            siz[id].root = siz[x].root;
+        }
+        if (opt == 3) {
+            cin >> x >> y;
+            fa[id].root = fa[id - 1].root;
+            siz[id].root = siz[id - 1].root;
+            cout << (fa[id].find(x) == fa[id].find(y)) << endl;
+        }
+    }
+	return 0;
+}

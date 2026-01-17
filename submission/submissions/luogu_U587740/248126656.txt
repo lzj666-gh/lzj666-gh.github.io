@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 248126656
+//  题目ID: U587740
+#include<bits/stdc++.h>
+#define int long long
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+using namespace std;
+priority_queue<int> atk;
+int n, x, y, a, b;
+int32_t main() {
+	cin >> n >> x >> y >> a >> b;
+	assert(n > 0);
+	assert(x > 0);
+	assert(y > 0);
+	assert(a > 0);
+	assert(b > 0);
+	int ans = 0;
+	for (int i = 1; i <= n; ++i) {
+		int c; cin >> c;
+		assert(c > 0);
+		b -= x; ans += x;
+		if (b <= 0) {
+			cout << "Win\n" << i << endl;
+			return 0;
+		}
+		a -= c; atk.push(max(c, y));
+		while (a <= 0) {
+			assert(atk.size());
+			b += x; ans -= x;
+			a += atk.top();
+			atk.pop();
+		}
+		assert(a > 0);
+	}
+	assert(b > 0);
+	cout << "Lose\n" << ans << endl;
+	return 0;
+}

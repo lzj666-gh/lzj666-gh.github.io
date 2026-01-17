@@ -19,13 +19,13 @@
 > 本题和[「Luogu 2257」YY 的 GCD](https://www.luogu.org/problemnew/show/P2257)（[题解](https://hydingsy.github.io/articles/problem-Luogu-2257-YY-GCD/)） 几乎完全一样，但是本题由于是**单组询问**，所以不需要 $O(n)$ 的预处理和 $O(\sqrt n)$ 的单次询问复杂度。
 
 首先我们枚举质数：
-$$\sum_{p\in\text{prime}}\sum_{i=1}^n\sum_{j=1}^n[\gcd(i,j)=p]$$
+$$\sum_{p\in\text{prime} }\sum_{i=1}^n\sum_{j=1}^n[\gcd(i,j)=p]$$
 对 $\gcd$ 进行套路式的变形：
-$$\sum_{p\in\text{prime}}\sum_{i=1}^{\left\lfloor\frac{n}{p}\right\rfloor}\sum_{j=1}^{\left\lfloor\frac{n}{p}\right\rfloor} [\gcd(i,j)=1]$$
-接下来改变 $j$ 的枚举上界（其中 $-1$ 的原因是 $i=j=1$  时的答案会被重复统计，因此注意这里的 $-1$ 是在 $\sum_{p\in\text{prime}}$ 中的，而不是在 $\sum_{i=1}^{\left\lfloor\frac{n}{p}\right\rfloor}$ 中的）：
-$$\sum_{p\in\text{prime}}\left(\sum_{i=1}^{\left\lfloor\frac{n}{p}\right\rfloor}\left(2\sum_{j=1}^i [\gcd(i,j)=1]\right)-1\right)$$
+$$\sum_{p\in\text{prime} }\sum_{i=1}^{\left\lfloor\frac{n}{p}\right\rfloor}\sum_{j=1}^{\left\lfloor\frac{n}{p}\right\rfloor} [\gcd(i,j)=1]$$
+接下来改变 $j$ 的枚举上界（其中 $-1$ 的原因是 $i=j=1$  时的答案会被重复统计，因此注意这里的 $-1$ 是在 $\sum_{p\in\text{prime} }$ 中的，而不是在 $\sum_{i=1}^{\left\lfloor\frac{n}{p}\right\rfloor}$ 中的）：
+$$\sum_{p\in\text{prime} }\left(\sum_{i=1}^{\left\lfloor\frac{n}{p}\right\rfloor}\left(2\sum_{j=1}^i [\gcd(i,j)=1]\right)-1\right)$$
 此已经可以发现最后一个 $\sum$ 是的值就是 $\varphi(i)$，故原式化为：
-$$\sum_{p\in\text{prime}}\left(2\sum_{i=1}^{\left\lfloor\frac{n}{p}\right\rfloor}\varphi(i)-1\right)$$
+$$\sum_{p\in\text{prime} }\left(2\sum_{i=1}^{\left\lfloor\frac{n}{p}\right\rfloor}\varphi(i)-1\right)$$
 所以我们可以线性筛求出 $\varphi(i)$ 的值并做前缀和，枚举 $p\in\text{prime}\ \text{and}\ p\le n$ 并统计答案即可。
 
 **时间复杂度**：$O(n)$

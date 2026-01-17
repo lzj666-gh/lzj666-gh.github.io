@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 235086447
+//  题目ID: T465647
+#include<bits/stdc++.h>
+#define int long long
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+int n, a[1'000'000 + 5], t[1 << 25], cnt[1 << 25];
+int32_t main() {
+	// file(mexor);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i], t[a[i]]++;
+	priority_queue<int>q;
+	while (t[0]) {
+		int i = 0;
+		while (t[i]) i++;
+		i--; q.push(i); // cerr << "push " << i << endl;
+		while (i >= 0) t[i]--, i--;
+	}
+	int ans = 0;
+	for (int i = 20; i >= 0; --i) {
+		if (q.top() >= (1ll << i) - 1) {
+			int now = q.top(); q.pop();
+			//cerr << "pop " << now;
+			now -= (1ll << i);
+			//cerr << " and push " << now << endl;
+			q.push(now); ans |= 1ll << i;
+		}
+	}
+	cout << ans << endl;
+	return 0;
+}
