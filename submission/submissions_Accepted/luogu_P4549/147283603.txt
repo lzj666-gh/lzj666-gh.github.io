@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 147283603
+//  题目ID: P4549
+#include<bits/stdc++.h>
+using namespace std;
+int n,ans,tmp;
+int main(){
+	ios_base::sync_with_stdio(false);
+    cin>>n;
+    while(n--){
+        cin>>tmp;
+        ans=__gcd(ans,tmp<0?-tmp:tmp);
+    }
+    cout<<ans<<'\n';
+	return 0;
+}

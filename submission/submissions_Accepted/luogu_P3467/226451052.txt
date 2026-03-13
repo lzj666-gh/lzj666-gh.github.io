@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 226451052
+//  题目ID: P3467
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, d, w;
+stack<int>s;
+int32_t main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n; int ans = n;
+	for (int i = 1; i <= n; ++i) {
+		cin >> d >> w;
+		while (!s.empty() && w <= s.top()) {
+			if (w == s.top()) ans--;
+			s.pop();
+		}
+		s.push(w);
+	}
+	cout << ans << endl;
+	return 0;
+}

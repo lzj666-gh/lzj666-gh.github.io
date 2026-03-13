@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 107599696
+//  题目ID: T211874
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn=100000+10;
+struct node{
+	int data,l;
+}st[maxn];
+int n,top,a[maxn],l,r;
+long long s[maxn],cnt;
+int main(){
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++){
+		scanf("%d",&a[i]);
+		s[i]=s[i-1]+a[i];
+	}
+	a[n+1]=0;
+	for(int i=1;i<=n+1;i++){
+		int t=i;
+		while(top>0&&st[top].data>a[i]){
+			t=st[top].l;
+			long long sum=(i-t)*st[top].data;
+			if(sum>cnt){
+				cnt=sum;
+				l=t;
+				r=i-1;
+			}
+			top--;
+		}
+		top++;
+		st[top].data=a[i];
+		st[top].l=t;
+	}
+	printf("%lld\n%d %d\n",cnt,l,r);
+	return 0;
+}

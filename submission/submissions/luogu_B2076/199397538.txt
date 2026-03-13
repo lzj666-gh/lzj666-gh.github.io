@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 199397538
+//  题目ID: B2076
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	double h, tot = 0;
+	cin >> h;
+	tot += h;
+	for (int i = 2; i <= 10; ++i) {
+		h /= 2;
+		tot += h * 2;
+	}
+	cout << tot << endl << h / 2 << endl;
+}

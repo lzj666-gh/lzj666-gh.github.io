@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 122296454
+//  题目ID: T371011
+#include<bits/stdc++.h> 
+using namespace std;
+bool vis[(int)1e6+100];
+int ans,n;
+vector<int>p;
+map<long long,int>mp;
+long long change(long long x){
+	for(auto it:p){
+		while(x%it==0)x/=it;
+	}
+	return x;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	for(int i=2;i<=2000;i++){
+		if(vis[i]) continue;
+		for(int j=i+i;j<=2000;j+=i) vis[j]=true;
+	}
+	for(int i=2;(long long)i*i*i<=2000000000;i++){
+		if(!vis[i]) p.push_back(i*i*i);
+	}
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		long long x;
+		cin>>x;
+		for(auto it:p){
+			while(x%it==0) x/=it;
+		}
+		mp[x]++;
+	}
+	for(auto &it:mp){
+		if(it.first==1){
+			ans++;
+			continue;
+		}
+		long long rk=change(it.first*it.first);
+		if(!mp.count(rk)){
+			ans+=it.second;
+		}
+		else{
+			ans+=max(it.second,mp[rk]);
+			it.second=mp[rk]=0;
+		}
+	}
+	cout<<ans<<endl;return 0;
+}

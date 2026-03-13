@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 231901509
+//  题目ID: T528283
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+using ll = long long;
+ll n, m, sum;
+unordered_map<int, ll>a; 
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m; ll ans = 0;
+	for (int i = -n; i <= n; ++i)
+		cin >> a[i], ans += a[i],
+		sum += a[i] * i;
+	if (sum == m) {
+		cout << ans << endl;
+		return 0;
+	}
+	if (sum < m) {
+		ans = 0; m = -m; sum = 0;
+		for (int i = 1; i <= n; ++i) swap(a[i], a[-i]);
+		for (int i = -n; i <= n; ++i)
+			ans += a[i],
+			sum += a[i] * i;
+	}
+	if (sum < m) {
+		cout << -1 << endl;
+		return 0;
+	}
+	for (int i = n; i >= 1; --i) {
+		if (sum - a[i] * i <= m)
+			a[i] -= (sum - m) / i,
+			ans -= (sum - m) / i,
+			sum -= (sum - m) / i * i;
+		else
+			ans -= a[i],
+			sum -= a[i] * i,
+			a[i] = 0;
+		if (sum == m) {
+			cout << ans << endl;
+			return 0;
+		}
+	}
+	cout << -1 << endl;
+	return 0;
+}

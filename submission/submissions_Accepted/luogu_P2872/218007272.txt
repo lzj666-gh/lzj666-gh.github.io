@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 218007272
+//  题目ID: P2872
+#include<bits/stdc++.h>
+#define int long long 
+using namespace std;
+constexpr int N = 1000 + 10, M = 2000000 + 10;
+int fa[N];
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+struct Edge {
+	int u, v;
+	double w;
+	friend bool operator<(const Edge& a, const Edge& b) {
+		return a.w < b.w;
+	}
+}edge[M];
+int n, m, x[N], y[N];
+double len(int i, int j) {
+	return sqrt(pow(x[i] - x[j], 2) + pow(y[i] - y[j], 2));
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) fa[i] = i, cin >> x[i] >> y[i];
+	for (int i = 1, x, y; i <= m; ++i) {
+		cin >> x >> y;
+		fa[find(x)] = find(y);
+	}
+	m = n * n;
+	for (int i = 1, idx = 0; i <= n; ++i)
+		for (int j = 1; j <= n; ++j)
+			edge[++idx] = { i,j,len(i,j) };
+	sort(edge + 1, edge + m + 1);
+	double ans = 0;
+	int cnt = 0;
+	for (int i = 1; i <= m; ++i) {
+		int x = find(edge[i].u), y = find(edge[i].v);
+		if (x == y) continue;
+		fa[x] = y;
+		ans += edge[i].w;
+		cnt++;
+	}
+	cout << fixed << setprecision(2) << ans << endl;
+	return 0;
+}

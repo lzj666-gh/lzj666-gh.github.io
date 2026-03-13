@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 106381779
+//  题目ID: P1739
+#include<bits/stdc++.h>
+using namespace std;
+char a;
+void dfs(bool k){
+	while(true){
+		scanf("%c",&a);
+//		printf("%c",a);
+		if(a=='@'){
+			if(k==true){
+				printf("YES");
+				exit(0);
+			}
+			printf("NO");
+			exit(0);
+		}
+		if(a=='('){
+			dfs(false);
+			continue;
+		}
+		if(a==')') return;
+	}
+	
+	
+}
+int main(){
+	dfs(true);
+	if(a!='@'){
+		printf("NO");
+		exit(0);
+	}
+}
+/*
+(1000+(100+(10+1))))*(a-(b-(c-d))))@
+NO
+*/

@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 163377243
+//  题目ID: CF10D
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, a[500 + 10], b[500 + 10], dp[500 + 10][500 + 10], mxl;
+vector<int>path[500 + 10][500 + 10];
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	cin >> m;
+	for (int i = 1; i <= m; ++i) cin >> b[i];
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j) {
+			dp[i][j] = dp[i - 1][j];
+			path[i][j] = path[i - 1][j];
+			if (a[i] == b[j]) {
+				mxl = 1;
+				int put = 0;
+				for (int k = 1; k < j; ++k)
+					if (a[i] > b[k])
+						mxl = max(mxl, dp[i - 1][k] + 1), put = k;
+				if (mxl > dp[i][j]) {
+					dp[i][j] = mxl;
+					path[i][j] = path[i - 1][put];
+					path[i][j].push_back(b[j]);
+				}
+			}
+		}
+	cout << dp[n][m] << endl;
+	for (int k : path[n][m]) cout << k << ' ';
+	return 0;
+}

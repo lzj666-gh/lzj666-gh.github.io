@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 127283676
+//  题目ID: P7199
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int read(){
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c<'0'||c>'9'){
+		if(c=='-') s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0'){
+		x=(x<<1)+(x<<3)+(c^48);
+		c=getchar();
+	}
+	return x*s;
+}
+inline void write(int x){
+	if(x<0){
+		x=~x+1;
+		putchar('-');
+	}else if(!x) return;
+	write(x/10);
+	putchar(x%10+48);
+}
+int q;
+main(){
+//	freopen("trol.in","r",stdin);
+//	freopen("trol.out","w",stdout);
+	q=read();
+	for(int j=1;j<=q;++j){
+		long long l=read(),r=read(),ret=(r-l+1)/9*45;
+		for(long long i=l+(r-l+1)/9*9;i<=r;++i){
+			ret+=(i-1)%9+1;
+		}
+		write(ret);
+		putchar('\n');
+	}
+	return 0;
+}

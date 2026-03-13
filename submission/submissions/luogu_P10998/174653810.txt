@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 174653810
+//  题目ID: P10998
+#include<bits/stdc++.h>
+using namespace std;
+int n, m;
+struct LZJ {
+	int u, v, w;
+}a[300000 + 10];
+struct Node {
+	int x, y;
+	Node(int xx, int yy) :x(xx), y(yy) {}
+	friend bool operator<(const Node& a, const Node& b) {
+		return a.x == b.x ? a.y < b.y : a.x < b.x;
+	}
+};
+map<Node, set<int>>head, tail, ht;
+int u, v, w;
+set<int>*it;
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	int ans = 0;
+	for (int q = 1; q <= m; ++q) {
+		cin >> a[q].u >> a[q].v >> a[q].w;
+		u = a[q].u, v = a[q].v, w = a[q].w;
+		head[Node(u, v)].insert(w);
+		tail[Node(v, w)].insert(u);
+		ht[Node(u, w)].insert(v);
+	}
+	for (int i = 1; i <= m; ++i) {
+		u = a[i].u, v = a[i].v, w = a[i].w;
+		it = &head[Node(v, w)];
+		if (!it->empty()) {
+			for (set<int>::iterator i = it->begin(); i != it->end(); i++) {
+				ans += (ht[Node(u, *i)].count(v) != 0) && (ht[Node(u, *i)].count(w) != 0);
+			}
+		}
+	}
+	cout << ans << endl;
+	return 0;
+}

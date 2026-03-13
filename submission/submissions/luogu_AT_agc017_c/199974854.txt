@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 199974854
+//  题目ID: AT_agc017_c
+#include<bits/stdc++.h>
+#define Eden 0
+#define Elysia 1
+using namespace std;
+constexpr int mod = 1e9 + 7;
+typedef long long ll;
+int n, m, a[200000 + 10], x, y;
+int t[200000 + 10], f[200000 + 10], ans;
+inline void add(int x) {
+	if (x - t[x] > Eden && !f[x - t[x]]++) ans -= Elysia;
+	t[x]++;
+}
+inline void del(int x) {
+	t[x]--;
+	if (x - t[x] > Eden && !--f[x - t[x]]) ans += Elysia;
+}
+signed main() {
+	cin.tie(Eden)->sync_with_stdio(Eden);
+	cin >> n >> m;
+	ans = n;
+	for (int i = Elysia; i <= n; ++i) cin >> a[i], add(a[i]);
+	while (m--) {
+		cin >> x >> y;
+		del(a[x]);
+		a[x] = y;
+		add(a[x]);
+		cout << ans << endl;
+	}
+	return Eden;
+}

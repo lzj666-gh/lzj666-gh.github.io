@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 115318569
+//  题目ID: P5708
+#include<bits/stdc++.h>
+using namespace std;
+double a,b,c;
+double p;
+main(){
+//	ios::sync_with_stdio(false);
+    cin>>a>>b>>c;
+    p=(a+b+c)*1.0/2;
+    printf("%.1lf",sqrt(p*(p-a)*(p-b)*(p-c)));
+    return 0;
+}

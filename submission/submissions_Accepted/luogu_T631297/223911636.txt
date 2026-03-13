@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 223911636
+//  题目ID: T631297
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, k, a, xmn[100000 + 5], xmx[100000 + 5], ymn[100000 + 5], ymx[100000 + 5];
+int main(int args, char** argv) {
+	if (0) {
+		string s = argv[0];
+		s.pop_back(); s.pop_back(); s.pop_back();
+		freopen((s + "in").c_str(), "r", stdin);
+		freopen((s + "out").c_str(), "w", stdout);
+	}
+	cin.tie(0)->sync_with_stdio(false);
+	memset(xmn, 0x3f, sizeof xmn);
+	memset(ymn, 0x3f, sizeof ymn);
+	cin >> n >> m >> k;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= m; ++j)
+			cin >> a,
+			xmx[a] = max(xmx[a], i),
+			ymx[a] = max(ymx[a], j),
+			xmn[a] = min(xmn[a], i),
+			ymn[a] = min(ymn[a], j);
+	for (int i = 1; i <= k; ++i) {
+		long long s = max((xmx[i] - xmn[i] + 1ll), (ymx[i] - ymn[i] + 1ll));
+		if (s * s >= 2e6) cout << 0 << endl;
+		else cout << s * s << endl;
+	}
+}

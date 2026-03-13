@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 135047233
+//  题目ID: T216642
+#include<bits/stdc++.h>
+using namespace std;
+long long n,a[100000+10],b[100000+10],r,ii,h;
+map<pair<int,int>,bool>mp;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>ii>>h>>r;
+	for(int i=1;i<=r;++i){
+		int aa,bb;
+		cin>>aa>>bb;
+		if(aa>bb) swap(aa,bb);
+		mp[make_pair(aa,bb)]=true;
+	}
+	for(map<pair<int,int>,bool>::iterator it=mp.begin();it!=mp.end();it++){
+		pair<int,int> p=it->first;
+		b[p.first+1]--;
+		b[p.second]++;
+	}
+	for(int i=1;i<=n;++i){
+		b[i]+=b[i-1];
+	}
+	for(int i=1;i<=n;++i) cout<<b[i]+h<<endl;
+	return 0;
+}

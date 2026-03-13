@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 92158914
+//  题目ID: P5711
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int y,r;
+	cin>>y;
+	if(y%100==0){
+		if(y%400==0){
+			r=1;
+		}
+		else{
+			r=0;
+		}
+	}
+	else{
+		if(y%4==0){
+			r=1;
+		}
+		else{
+			r=0;
+		}
+	}
+	cout<<r;
+	return 0;
+}
+

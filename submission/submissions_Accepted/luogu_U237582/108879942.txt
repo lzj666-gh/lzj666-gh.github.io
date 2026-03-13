@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 108879942
+//  题目ID: U237582
+#include <iostream>
+#include <cstring> //使用strlen函数需要引入该头文件
+using namespace std;
+int main()
+{
+	char s[17]; //最多16位二进制数
+	while(cin >> s) //循环输入每个二进制数
+	{
+		if(s[0] == '-') break; //输入-1时结束
+		int len = strlen(s); //获取字符串长度
+		int ans = 0;
+		for(int i=0; i<len; i++)
+		{
+			ans = ans*2 + (s[i]-'0'); //从左向右累加每一位的值
+		}
+		cout << ans << endl; //输出转换后的十进制数
+	}
+	return 0;
+}

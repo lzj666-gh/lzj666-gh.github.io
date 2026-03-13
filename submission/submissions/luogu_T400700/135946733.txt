@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 135946733
+//  题目ID: T400700
+#include<bits/stdc++.h>
+using namespace std;
+int p,m;
+priority_queue<int,vector<int>,greater<int>>minp;
+priority_queue<int,vector<int>,less<int>>maxp;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>p;
+	while(p--){
+		cin>>m;
+		cin>>m;
+		for(int i=1,tmp;i<=m;++i){
+			cin>>tmp;
+			if(minp.empty()) minp.emplace(tmp);
+			else if(tmp>minp.top()) minp.emplace(tmp);
+			else maxp.emplace(tmp);
+			if(maxp.size()>minp.size()) minp.emplace(maxp.top()),maxp.pop();
+			if(i&1) cout<<minp.top()<<' ';
+			if(i%21==0) cout<<endl;
+		}
+		cout<<endl;
+	}
+	return 0;
+}

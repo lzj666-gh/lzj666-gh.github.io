@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 115897814
+//  题目ID: T139637
+#include<bits/stdc++.h>
+using namespace std;
+int n,m;
+struct node{
+	int l,r;
+}a[100+10];
+bool fa[100+10];
+void dfs(int k,int mode){
+	if(k==0) return;
+	if(mode==1) cout<<k<<' ';
+	dfs(a[k].l,mode);
+	if(mode==2) cout<<k<<' ';
+	dfs(a[k].r,mode);
+	if(mode==3) cout<<k<<' ';
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		int ii;
+		cin>>ii;
+		cin>>a[ii].l>>a[ii].r;
+		fa[a[ii].l]=true;
+		fa[a[ii].r]=true;
+	}
+	for(int i=1;i<=n;i++){
+		if(!fa[i]){
+			dfs(i,1);
+			cout<<endl;
+			dfs(i,2);
+			cout<<endl;
+			dfs(i,3);
+			cout<<endl;
+			return 0;
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 100933067
+//  题目ID: T209107
+#include<bits/stdc++.h>
+using namespace std;
+char a;int b;
+int main(){
+	while(cin>>a){
+		b+=(int)a-(int)'0';
+	}
+	cout<<b;
+}

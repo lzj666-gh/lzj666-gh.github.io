@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 139313844
+//  题目ID: T234803
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--){
+		static int n,s;
+		cin>>n>>s;
+		for(int i=1,tmp;i<n;++i) cin>>tmp,s^=tmp;
+		cout<<(s?"Yes\n":"No\n");
+	}
+}

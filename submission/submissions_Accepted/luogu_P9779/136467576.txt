@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 136467576
+//  题目ID: P9779
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios_base::sync_with_stdio(false);
+	int n;
+	cin>>n;
+	cout<<(1<<n)-1;
+} 

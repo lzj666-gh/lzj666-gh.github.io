@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 202781324
+//  题目ID: T573199
+#include<bits/stdc++.h>
+#define File "a"
+using namespace std;
+int n, m, a[100000 + 5], b[100000 + 5], t[100 + 5];
+signed main() {
+	// freopen(File".in", "r", stdin);
+	// freopen(File".out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	long long ans = 0;
+	for (int i = 1; i <= n; ++i) {
+		cin >> a[i];
+		for (int j = a[i] + 1; j <= 100; ++j)
+			ans += t[j];
+		t[a[i]]++;
+	}
+	for (int i = 1; i <= m; ++i) {
+		cin >> b[i];
+		int l = 0, r = 0;
+		for (int j = 1; j < b[i]; ++j)
+			l += t[j];
+		for (int j = b[i] + 1; j <= 100; ++j)
+			r += t[j];
+		ans += min(l, r);
+		t[b[i]]++;
+	}
+	cout << ans << endl;
+	return 0;
+}
+/*
+O((n+m)log(n+m)) or O((n+m)log A) or O((n+m)A) 
+*/

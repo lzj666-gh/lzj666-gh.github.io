@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 129531295
+//  题目ID: T389301
+#include<bits/stdc++.h>
+using namespace std;
+string a,c(1919810);
+int top,l,b,ans,x,s;
+int main(){
+    cin>>a>>b;
+    --b;
+    l=a.size();
+    for(int i=0;i<a.size();i++){
+    	x=x*10+(a[i]-48);
+    	if(x/b!=0) s++;
+    	if(s==0) continue;
+    	c[++top]=x/b;
+    	x%=b;
+	}
+	for(int i=1; i<=top; i++){
+		cout<<c[i];
+	}
+    return 0;  
+}

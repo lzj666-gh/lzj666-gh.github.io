@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 103050804
+//  题目ID: P1255
+#include<bits/stdc++.h>
+using namespace std;
+int a[5000+10]={1,2,0},n;
+int main(){
+	scanf("%d",&n);
+	for(int i=2;i<n;i++){
+		a[i]=a[i-1]+a[i-2];
+//		cout<<a[i]<<endl;
+	}
+	cout<<a[n-1];
+}

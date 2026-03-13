@@ -1,0 +1,98 @@
+//  OJ: 洛谷
+//  提交ID: 180160638
+//  题目ID: T521603
+#include<bits/stdc++.h>
+// #define ONLINE
+//#pragma warning(disable:4996)
+using namespace std;
+int n, m, a[100000 + 10];
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+	struct Node {
+		int l, r;
+		vector<int>mx;
+		Node() :l(0), r(0) { mx.resize(61); }
+		friend Node operator+(const Node& l, const Node& r) {
+			Node ans;
+			ans.l = min(l.l, r.l);
+			ans.r = max(l.r, r.r); ans.mx.resize(61);
+			for (int i = 0, j = 0; i <= 60 && j <= 60 && i + j <= 60;)
+				if (l.mx[i] >= r.mx[j])
+					ans.mx[i + j] = l.mx[i], i++;
+				else
+					ans.mx[i + j] = r.mx[j], j++;
+			return ans;
+		}
+	}tree[100000 << 2 | 2];
+	void pushup(int p) {
+		tree[p] = tree[lc(p)] + tree[rc(p)];
+	}
+	void build(int p, int l, int r) {
+		tree[p].l = l; tree[p].r = r;
+		if (l == r) {
+			tree[p].mx[0] = a[l];
+			return;
+		}
+		build(lc(p), l, l + r >> 1);
+		build(rc(p), (l + r >> 1) + 1, r);
+		pushup(p);
+	}
+	void change(int p, int k, int x) {
+		if (tree[p].l <= k && k <= tree[p].r) {
+			if (tree[p].l == tree[p].r) {
+				tree[p].mx[0] = x;
+				return;
+			}
+			change(lc(p), k, x);
+			change(rc(p), k, x);
+			pushup(p);
+		}
+	}
+	Node query(int p, int l, int r) {
+		//cout << tree[p].l << ' ' << tree[p].r << endl;
+		if (tree[p].l > r || tree[p].r < l) return Node();
+		if (l <= tree[p].l && tree[p].r <= r) return tree[p];
+		return query(lc(p), l, r) + query(rc(p), l, r);
+	}
+	void debug(int p) {
+		cout << tree[p].l << ',' << tree[p].r << ':';
+		for (int i = 0; i <= 10; ++i) cout << tree[p].mx[i] << ' ';
+		cout << endl;
+		if (tree[p].l == tree[p].r) return;
+		debug(lc(p));
+		debug(rc(p));
+	}
+}t;
+int main() {
+#ifdef ONLINE
+	freopen("triangle.in", "r", stdin);
+	freopen("triangle.out", "w", stdout);
+#endif
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	t.build(1, 1, n);
+	while (m--) {
+		int opt, l, r;
+		cin >> opt >> l >> r;
+		if (opt == 1)
+			t.change(1, l, r);
+		else {
+			Seg_Tree::Node ans = t.query(1, l, r);
+			//cout << ans.l << ' ' << ans.r << endl;
+			bool flg = 1;
+			for (int i = 0; i <= 58; ++i) {
+				if (ans.mx[i + 1] + ans.mx[i + 2] > ans.mx[i]) {
+					cout << ans.mx[i + 1] + ans.mx[i + 2] + ans.mx[i] << endl;
+					flg = 0;
+					break;
+				}
+				if (!(ans.mx[i] || ans.mx[i + 1] || ans.mx[i + 2])) break;
+			}
+			if (flg) cout << 0 << endl;
+		}
+		//t.debug(1);
+	}
+	return 0;
+}

@@ -1,0 +1,99 @@
+//  OJ: 洛谷
+//  提交ID: 224243923
+//  题目ID: P4114
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 2e5 + 5, M = 4e5 + 5;
+struct Edge {
+	int v, w, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+void addedge(int u, int v, int w) {
+	add(u, v, w); add(v, u, w);
+}
+int val[N];
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int max;
+		Node(int max = 0) :max(max) {}
+	}tree[N << 2];
+	void pushup(int p) {
+		tree[p].max = max(tree[lc(p)].max, tree[rc(p)].max);
+	}
+	void build(int p, int l, int r) {
+		if (l == r) {
+			tree[p].max = val[l];
+			return;
+		}
+		build(lson); build(rson);
+		pushup(p);
+	}
+	void set(int p, int l, int r, int x, int val) {
+		if (x < l || r < x) return;
+		if (l == r) {
+			tree[p].max = val;
+			return;
+		}
+		set(lson, x, val);
+		set(rson, x, val);
+		pushup(p);
+	}
+	int querymax(int p, int l, int r, int L, int R) {
+		if (R < l || r < L) return 0;
+		if (L <= l && r <= R) return tree[p].max;
+		return max(querymax(lson, L, R), querymax(rson, L, R));
+	}
+}t;
+int dfn[N], idk, hvy[N], siz[N], top[N], f[N], dep[N], v[M];
+void dfs1(int x, int fa) {
+	siz[x] = 1; f[x] = fa; dep[x] = dep[fa] + 1;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs1(edge[i].v, x), siz[x] += siz[edge[i].v],
+			(siz[edge[i].v] > siz[hvy[x]]) && (hvy[x] = edge[i].v);
+}
+void dfs2(int x, int fa) {
+	dfn[x] = ++idk;
+	if (hvy[x]) top[hvy[x]] = top[x], dfs2(hvy[x], x);
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (edge[i].v == fa) continue;
+		if (edge[i].v ^ hvy[x]) top[edge[i].v] = edge[i].v, dfs2(edge[i].v, x);
+		val[dfn[edge[i].v]] = edge[i].w; v[i + 1 >> 1] = dfn[edge[i].v];
+	}
+}
+int n;
+int querymax(int x, int y) {
+	int ans = 0;
+	while (top[x] ^ top[y]) {
+		if (dep[top[x]] < dep[top[y]]) swap(x, y);
+		ans = max(ans, t.querymax(1, 1, n, dfn[top[x]], dfn[x]));
+		x = f[top[x]];
+	}
+	if (dep[x] > dep[y]) swap(x, y);
+	return max(ans, t.querymax(1, 1, n, dfn[x] + 1, dfn[y]));
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+    idx = idk = 0; memset(head, 0, sizeof(int) * n);
+    memset(hvy, 0, sizeof(int) * n);
+    cin >> n;
+    for (int i = 1, u, v, w; i < n; ++i) cin >> u >> v >> w, addedge(u, v, w);
+    dfs1(1, 1); top[1] = 1; dfs2(1, 1);
+    t.build(1, 1, n);
+    string opt; int x, y;
+    while (cin >> opt, opt != "DONE") {
+        if (opt == "QUERY") cin >> x >> y, cout << querymax(x, y) << endl;
+        if (opt == "CHANGE") cin >> x >> y, t.set(1, 1, n, v[x], y);
+    }
+	return 0;
+}

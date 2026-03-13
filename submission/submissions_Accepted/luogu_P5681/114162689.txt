@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 114162689
+//  题目ID: P5681
+#include<bits/stdc++.h>
+using namespace std;
+long long a,b,c;//注意数据范围 不开long long 见祖宗
+int main(){
+    scanf("%lld%lld%lld",&a,&b,&c);
+    if(a*a>b*c) puts("Alice");
+    else puts("Bob");//按照题意输出
+    return 0;
+}

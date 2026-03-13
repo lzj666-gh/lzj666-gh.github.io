@@ -1,0 +1,188 @@
+//  OJ: 洛谷
+//  提交ID: 162068428
+//  题目ID: P3369
+#include<bits/stdc++.h>
+using namespace std;
+class Splay {
+#define lc child[0]
+#define rc child[1]
+public:
+	void ins(int x) {
+		if (!root) {
+			new_node<1>(x, 0);
+			return;
+		}
+		int now = root, fa = 0;
+		while (1) {
+			if (x == tree[now].val) {
+				tree[now].cnt++;
+				push_up(now);
+				push_up(fa);
+				splay(now);
+				return;
+			}
+			fa = now;
+			now = tree[now].child[tree[now].val < x];
+			if (!now) {
+				if (tree[now].val < x) new_node<1>(x, fa);
+				else new_node<0>(x, fa);
+				push_up(fa);
+				splay(idx);
+				return;
+			}
+		}
+	}
+	void del(int x) {
+		get_rank(x);
+		if (tree[root].cnt > 1) {
+			tree[root].cnt--;
+			push_up(root);
+			return;
+		}
+		if (!tree[root].lc && !tree[root].rc) {
+			tree[root] = Point();
+			root = 0;
+			return;
+		}
+		if (!tree[root].lc) {
+			int Tmp = root;
+			root = tree[root].rc;
+			tree[root].fa = 0;
+			tree[Tmp] = Point();
+			return;
+		}
+		else if (!tree[root].rc) {
+			int Tmp = root;
+			root = tree[root].lc;
+			tree[root].fa = 0;
+			tree[Tmp] = Point();
+			return;
+		}
+		int L = find(0), cyc = root;
+		splay(L);
+		tree[root].lc = tree[cyc].lc;
+		tree[tree[cyc].rc].fa = root;
+		tree[cyc] = Point();
+		push_up(root);
+	}
+	int get_rank(int x) {
+		int now = root, ans = 0;
+		while (1) {
+			if (x < tree[now].val)
+				now = tree[now].lc;
+			else {
+				ans += (tree[now].lc ? tree[tree[now].lc].size : 0);
+				if (x == tree[now].val) {
+					splay(now);
+					return ans + 1;
+				}
+				ans += tree[now].cnt;
+				now = tree[now].rc;
+			}
+		}
+	}
+	int get_val(int x) {
+		int now = root;
+		while (1) {
+			if (tree[now].lc && x <= tree[tree[now].lc].size)
+				now = tree[now].lc;
+			else {
+				int tmp = tree[now].cnt + tree[tree[now].lc].size;
+				if (x <= tmp) return tree[now].val;
+				x -= tmp;
+				now = tree[now].rc;
+			}
+		}
+	}
+	int get_pre(int x) {
+		ins(x);
+		int tmp = find(0);
+		splay(tmp);
+		int ans = tree[tmp].val;
+		del(x);
+		return ans;
+	}
+	int get_nxt(int x) {
+		ins(x);
+		int tmp = find(1);
+		splay(tmp);
+		int ans = tree[tmp].val;
+		del(x);
+		return ans;
+	}
+protected:
+	struct Point {
+		int child[2], size, val, fa, cnt;
+		Point() :child{ 0,0 }, size(0), val(0), fa(0), cnt(0) {}
+	}tree[100000 + 100]; 
+	int idx = 0, root = 0;
+	template<bool lrc = 0>
+	int new_node(int x, int fa) {
+		if (!fa) {
+			++idx;
+			tree[idx].fa = tree[idx].lc = tree[idx].rc = 0;
+			root = idx;
+			tree[idx].val = x;
+			tree[idx].cnt = ++tree[idx].size;
+			return idx;
+		}
+		++idx;
+		tree[idx].fa = fa;
+		tree[idx].size = 1;
+		tree[idx].val = x;
+		if (lrc)
+			tree[fa].rc = idx;
+		else
+			tree[fa].lc = idx;
+		tree[idx].cnt = 1;
+		return idx;
+	}
+	void push_up(int p) {
+		tree[p].size = tree[tree[p].lc].size + tree[tree[p].rc].size + tree[p].cnt;
+	}
+	void rotate(int x) {
+		int y = tree[x].fa, yf = tree[y].fa, xl = tree[x].lc, xr = tree[x].rc;
+		if (x = tree[y].lc) (tree[y].lc = xr), (tree[xr].fa = y);
+		else (tree[y].rc = xl), (tree[xl].fa = y);
+		tree[y].fa = x; tree[x].rc = y;
+		if (tree[yf].lc == y) tree[yf].lc = x;
+		else tree[yf].rc = x;
+		tree[x].fa = yf;
+		push_up(x); push_up(y);
+	}
+	void splay(int x, int want = 0) {
+		while (tree[x].fa ^ want) {
+			int y = tree[x].fa, z = tree[y].fa;
+			if (z ^ want)
+				((tree[z].lc == y) ^ (tree[y].lc == x)) ? rotate(x) : rotate(y);
+			rotate(x);
+		}
+		if (!want) root = x;
+	}
+	inline int find(bool cbc) {
+		int now = tree[root].child[cbc];
+		while (tree[now].child[!cbc]) now = tree[now].child[!cbc];
+		return now;
+	}
+}lzj;
+int n, opt, x;
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	while (n--) {
+		cin >> opt >> x;
+		if (opt == 1)
+			lzj.ins(x);
+		else if (opt == 2)
+			lzj.del(x);
+		else if (opt == 3)
+			cout << lzj.get_rank(x) << endl;
+		else if (opt == 4)
+			cout << lzj.get_val(x) << endl;
+		else if (opt == 5)
+			cout << lzj.get_pre(x) << endl;
+		else
+			cout << lzj.get_nxt(x) << endl;
+	}
+	return 0;
+}

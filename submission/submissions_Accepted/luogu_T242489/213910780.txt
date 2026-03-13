@@ -1,0 +1,117 @@
+//  OJ: 洛谷
+//  提交ID: 213910780
+//  题目ID: T242489
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+namespace IO {
+	const int SIZE = (1 << 20) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1;
+	char _st[55];
+	int _qr = 0;
+	inline char gc() {
+		return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++);
+	}
+	inline void qread() {}
+	template<class T1, class ...T2>
+	inline void qread(T1& IEE, T2&... ls) {
+		if (is_same<T1, char>::value) {
+			IEE = gc();
+			while (IEE == ' ' || IEE == '\n' || IEE == '\r' || IEE == '\t') IEE = gc();
+			qread(ls...);
+			return;
+		}
+		T1 __ = 0, ___ = 1;
+		char ch;
+		while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___;
+		do {
+			__ = (__ << 1) + (__ << 3) + (ch ^ 48);
+		} while (isdigit(ch = gc()));
+		__ *= ___;
+		IEE = __;
+		qread(ls...);
+		return;
+	}
+	inline void flush() {
+		fwrite(obuf, 1, oS - obuf, stdout);
+		oS = obuf;
+		return;
+	}
+	inline void putc_(char _x) {
+		*oS++ = _x;
+		if (oS == oT) flush();
+	}
+	inline void qwrite() {}
+	template<class T1, class ...T2>
+	inline void qwrite(T1 IEE, T2... ls) {
+		if (is_same<T1, char>::value) {
+			putc_(IEE);
+			qwrite(ls...);
+			return;
+		}
+		if (!IEE) putc_('0');
+		while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10;
+		while (_qr) putc_(_st[_qr--]);
+		qwrite(ls...);
+		return;
+	}
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using IO::qread;
+using IO::qwrite;
+struct BIT {
+#define lb(x) (x & -x)
+	int s[200050];
+	size_t n;
+	void add(int x, int v) {
+		for (; x <= n; x += lb(x))
+			s[x] += v;
+	}
+	int query(int x) {
+		int ans = 0;
+		for (; x; x -= lb(x))
+			ans += s[x];
+		return ans;
+	}
+	void clear(int n) {
+		this->n = n;
+		for (int i = 1; i <= n; ++i)
+			s[i] = 0;
+	}
+}t;
+int s[5][200050];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n;
+	qread(n);
+	t.clear(n);
+	for (int i = 1; i <= n; ++i) {
+		qread(s[0][i]);
+		s[1][i] = t.query(s[0][i] - 1);
+		t.add(s[0][i], 1);
+	}
+	t.clear(n);
+	for (int i = n; i >= 1; --i) {
+		s[2][i] = t.query(s[0][i] - 1);
+		t.add(s[0][i], 1);
+	}
+	t.clear(n);
+	for (int i = 1; i <= n; ++i) {
+		s[3][i] = t.query(n) - t.query(s[0][i]);
+		t.add(s[0][i], 1);
+	}
+	t.clear(n);
+	for (int i = n; i >= 1; --i) {
+		s[4][i] = t.query(n) - t.query(s[0][i]);
+		t.add(s[0][i], 1);
+	}
+	long long ans1 = 0, ans2 = 0;
+	for (int i = 1; i <= n; ++i) {
+		//cerr << s[1][i] << " " << s[2][i] << " " << s[3][i] << " " << s[4][i] << "\n";
+		ans1 += s[1][i] * s[2][i];
+		ans2 += s[4][i] * s[3][i];
+	}
+	qwrite(ans2, ' ', ans1, '\n');
+	return 0;
+}

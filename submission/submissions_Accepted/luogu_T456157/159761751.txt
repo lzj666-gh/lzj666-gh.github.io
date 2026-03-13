@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 159761751
+//  题目ID: T456157
+#include<bits/stdc++.h>
+using namespace std;
+int n,opt,l,r,c;
+vector<int>a;
+main() {
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1,tmp;i<=n;++i) cin>>tmp,a.push_back(tmp);
+	while(n--){
+		cin>>opt>>l>>r>>c;
+		if(opt==0) a.insert(a.begin()+l-1,r);
+		else cout<<a[r-1]<<endl;
+//		for(int i:a) cout<<i<<' ';cout<<endl;
+	}
+	return 0;
+}

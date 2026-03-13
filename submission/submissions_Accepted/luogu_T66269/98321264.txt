@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 98321264
+//  题目ID: T66269
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int a[5]={0};int n;cin>>n;int b;
+	for(int i=1;i<=n;i++){
+		cin>>b;
+		a[b]++;
+	}
+	for(int i=1;i<=4;i++){
+		cout<<i<<": "<<a[i]<<endl;
+	}
+}
+

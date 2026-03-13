@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 149409541
+//  题目ID: U270244
+#include<bits/stdc++.h>
+using namespace std;
+map<string,int>mp;
+int n;
+int k;
+string tmp;int v;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	while(n--){
+		cin>>k;
+		while(k--){
+			cin>>tmp>>v;
+			mp[tmp]+=v;
+		}
+	}
+	for(map<string,int>::iterator it=mp.begin();it!=mp.end();it++){
+		cout<<it->first<<' '<<it->second<<endl;
+	}
+}

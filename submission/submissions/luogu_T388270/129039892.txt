@@ -1,0 +1,82 @@
+//  OJ: 洛谷
+//  提交ID: 129039892
+//  题目ID: T388270
+//T3 50pts
+#include<bits/stdc++.h>
+#define IOS std::ios_base::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
+#define unlocked_getchar() getchar()
+#define READ \
+int read(){\
+	int x=0,s=1;\
+	char c=unlocked_getchar();\
+	while(c<'0'||c>'9'){\
+		if(c=='-') s=-1;\
+		c=unlocked_getchar();\
+	}\
+	while(c<='9'&&c>'0'){\
+		x=(x<<1)+(x<<3)+(c^48);\
+		c=unlocked_getchar();\
+	}\
+	return x*s;\
+}\
+void write(int x);\
+void _write(int x){\
+	if(x<0){\
+		x=~x+1;\
+		putchar('-');\
+	}else if(!x) return;\
+	write(x/10);\
+	putchar(x%10+48);\
+}\
+void write(int x){\
+	int k=0;\
+	while(!x%10){\
+		++k;\
+		x/=10;\
+	}if(!x) return;\
+	_write(x);\
+	while(k--) putchar('0');\
+}
+using std::cin;
+using std::cout;
+using std::vector;
+using std::cerr;
+using std::endl;
+using std::abs;
+int min(const int &a,const int &b){return a<b?a:b;}
+int T,n,a[1000000+10];
+int main(){
+	IOS
+//	freopen("arrs.in","r",stdin);
+//	freopen("arrs.out","w",stdout);
+	cin>>T;
+	while(T--){
+		cin>>n;
+		for(int i=1;i<=n;++i) cin>>a[i];
+//		priority_queue<int,vector<int>,greater<int>> q;
+		vector<int> b(100000+10);
+		for(int i=0
+		;i<=n;++i) b[i]=0x7f7f7f7f;
+		int ans=a[1];
+		b[1]=a[1];
+		for(int i=2;i<=n;++i){
+			int l=lower_bound(b.begin()+1,b.begin()+i,a[i])-b.begin()-1;
+			ans+=min(abs(b[l+1]-a[i]),abs(a[i]-b[l]));
+//			cerr<<"now: "<<a[i]<<" find: {"<<b[l]<<" and "<<b[l+1]<<"} ans: "<<ans<<" min: "<<min(b[l+1]-a[i],a[i]-b[l])<<endl;
+			b[i]=a[i];
+			b.insert(b.begin()+l+1,a[i]);
+//			cerr<<i<<": ";\
+			for(int j=1;j<=i;++j) cerr<<b[j]<<' ';\
+			cerr<<endl;
+		}
+		cout<<ans<<endl;
+	}
+	return 0;
+}
+/*
+1 2 3 4 7 9
+find : 3
+1 2 3 4 5 6
+mid:3
+b[l]<=a[i]
+*/

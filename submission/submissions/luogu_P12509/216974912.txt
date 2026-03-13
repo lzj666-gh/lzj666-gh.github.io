@@ -1,0 +1,51 @@
+//  OJ: 洛谷
+//  提交ID: 216974912
+//  题目ID: P12509
+#include<string>
+int Alice(std::string S) {
+	constexpr int mod = 1 << 10, p = 131, p2 = 1331;
+	int cur = 1, cur2 = 1, ans = 0, ans2 = 0;
+	for (const char& c : S) {
+		ans += 1ll * (c == '0') * cur % mod;
+		ans %= mod;
+		cur = 1ll * cur * p % mod;
+
+		ans2 += 1ll * (c == '0') * cur2 % mod;
+		ans2 %= mod;
+		cur2 = 1ll * cur2 * p2 % mod;
+	}
+	return (ans << 10) + ans2;
+}
+int Bob(std::string T, int X) {
+	constexpr int mod = 1 << 10, p = 131, p2 = 1331;
+	int cur = 1, cur2 = 1, ans = 0, ans2 = 0;
+	for (const char& c : T) {
+		ans += 1ll * (c == '0') * cur % mod;
+		ans %= mod;
+		cur = 1ll * cur * p % mod;
+
+		ans2 += 1ll * (c == '0') * cur2 % mod;
+		ans2 %= mod;
+		cur2 = 1ll * cur2 * p2 % mod;
+	}
+
+	if ((ans << 10) + ans2 == X) return 0;
+	cur = 1, cur2 = 1;
+	for (int i = 0; i < T.size(); ++i) {
+		ans -= 1ll * (T[i] == '0') * cur % mod;
+		ans += 1ll * (T[i] == '1') * cur % mod;
+		ans2 -= 1ll * (T[i] == '0') * cur2 % mod;
+		ans2 += 1ll * (T[i] == '1') * cur2 % mod;
+		ans = (ans % mod + mod) % mod; ans2 = (ans2 % mod + mod) % mod;
+		if ((ans << 10) + ans2 == X) {
+			return i + 1;
+		}
+		ans += 1ll * (T[i] == '0') * cur % mod;
+		ans -= 1ll * (T[i] == '1') * cur % mod;
+		ans2 += 1ll * (T[i] == '0') * cur2 % mod;
+		ans2 -= 1ll * (T[i] == '1') * cur2 % mod;
+		cur = 1ll * cur * p % mod;
+		cur2 = 1ll * cur2 * p2 % mod;
+	}
+	return 0;
+}

@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 114868194
+//  题目ID: P3205
+#include <bits/stdc++.h>
+using namespace std;
+const int mod=19650827;
+int dp[2010][2010][2],a[2010];
+int main(){
+	int n;
+	cin>>n;
+	for(int i=1;i<=n;i++) cin>>a[i];
+	for(int i=1;i<=n;i++) dp[i][i][1]=1;
+	for(int len=1;len<=n;len++)
+		for(int i=1,j=i+len;j<=n;i++,j++){
+			if(a[i]<a[i+1]) dp[i][j][1]+=dp[i+1][j][1];
+			if(a[i]<a[j])   dp[i][j][1]+=dp[i+1][j][0];
+			if(a[j]>a[j-1]) dp[i][j][0]+=dp[i][j-1][0];
+			if(a[j]>a[i])   dp[i][j][0]+=dp[i][j-1][1];
+			dp[i][j][0]%=mod;
+			dp[i][j][1]%=mod;
+		}
+	cout<<(dp[1][n][0]+dp[1][n][1])%mod;
+	return 0;
+}

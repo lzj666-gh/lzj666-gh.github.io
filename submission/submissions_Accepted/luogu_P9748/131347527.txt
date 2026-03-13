@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 131347527
+//  题目ID: P9748
+#include<bits/stdc++.h>
+using namespace std;
+int n,ans2;
+int main(){
+	ios::sync_with_stdio(false);
+//	freopen("apple.in","r",stdin);
+//	freopen("apple.out","w",stdout);
+	cin>>n;
+	int k=n,ans=0;
+	while(k!=0){
+		++ans;
+		if((k-1)%3==0&&!ans2) ans2=ans; 
+		k-=(k-1)/3+1; 
+	}
+	cout<<ans<<' '<<ans2;
+	return 0;
+}

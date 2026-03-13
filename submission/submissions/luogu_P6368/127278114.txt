@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 127278114
+//  题目ID: P6368
+#include<bits/stdc++.h>
+using namespace std;
+int r,c,x,y;
+string ans[1000+10];
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>r>>c;
+	for(int i=1;i<=r;++i){
+		cin>>ans[i];
+		string tmp=ans[i];
+		reverse(tmp.begin(),tmp.end());
+		ans[i]+=tmp;
+	}
+	for(int i=r,j=r+1;i>=1&&j<=2*c;--i,++j){
+		ans[j]=ans[i];
+	}
+	cin>>x>>y;
+	--y;
+	ans[x][y]=ans[x][y]=='.'?'#':'.';
+	for(int i=1;i<=2*c;++i){
+		cout<<ans[i]<<endl;
+	}
+	return 0;
+}

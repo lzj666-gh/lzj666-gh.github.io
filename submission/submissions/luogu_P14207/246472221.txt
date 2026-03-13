@@ -1,0 +1,80 @@
+//  OJ: 洛谷
+//  提交ID: 246472221
+//  题目ID: P14207
+#include<bits/stdc++.h>
+#define file(name) // freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout)
+using namespace std;
+using ll = long long;
+int n, m; ll p;
+struct Node {
+	int pos, buy, price, cought;
+	friend bool operator<(const Node& a, const Node& b) {
+		return a.pos == b.pos ? a.buy > b.buy:a.pos < b.pos;
+	}
+	friend ll operator-(const Node& a, const Node& b) {
+		return (a.pos - b.pos) * p;
+	}
+}a[1000000 + 5];
+struct Seg_Tree {
+#define lc(p) (tree[p].ls == -1 ? tree[p].ls = ++idx : tree[p].ls)
+#define rc(p) (tree[p].rs == -1 ? tree[p].rs = ++idx : tree[p].rs)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int ls, rs; ll sum, cnt;
+		Node() :ls(-1), rs(-1), sum(0), cnt(0) {}
+	}tree[10000000 + 5];
+	int idx;
+	void pushup(int p) {
+		tree[p].sum = 0; tree[p].cnt = 0;
+		if (~tree[p].ls) {
+			tree[p].sum += tree[tree[p].ls].sum;
+			tree[p].cnt += tree[tree[p].ls].cnt;
+		}
+		if (~tree[p].rs) {
+			tree[p].sum += tree[tree[p].rs].sum;
+			tree[p].cnt += tree[tree[p].rs].cnt;
+		}
+	}
+	void add(int p, int l, int r, const int& x, const int& k) {
+		tree[p].sum += 1ll * x * k; tree[p].cnt += k;
+		if (l == r) return;
+		if (x <= mid) add(lson, x, k);
+		else add(rson, x, k);
+	}
+	ll query(int p, int l, int r, ll k) {
+		//cerr << "query [" << l << ',' << r << "]; k = " << k << " and tree[p].cnt = " << tree[p].cnt << endl;
+		if (tree[p].cnt <= k) return tree[p].sum;
+		if (l == r) return k * l;
+		ll res = 0;
+		if (~tree[p].rs) {
+			if (tree[tree[p].rs].cnt <= k)
+				res += tree[tree[p].rs].sum, k -= tree[tree[p].rs].cnt;
+			else return query(rson, k);
+		}
+		if (~tree[p].ls) {
+			return res + query(lson, k);
+		}
+		return res;
+	}
+	Seg_Tree() :idx(1), tree() {}
+}t;
+signed main() {
+	file(fish);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> p;
+	for (int i = 1; i <= n; ++i) cin >> a[i].pos >> a[i].cought;
+	for (int i = 1; i <= m; ++i) cin >> a[n + i].pos >> a[n + i].buy >> a[n + i].price;
+	inplace_merge(a + 1, a + n + 1, a + n + m + 1);
+	ll cost = 0, ans = 0, cnt = 0;
+	for (int i = 1; i <= n + m; ++i) {
+		cost += a[i] - a[i - 1];
+		cnt += a[i].cought;
+		if (a[i].buy) t.add(1, 1, 1e6, a[i].price, a[i].buy);
+		ans = max(ans, t.query(1, 1, 1e6, cnt) - cost);
+		//cerr << "in " << a[i].pos << " cnt " << cnt << " buy " << t.query(1, 1, 1e6, cnt) << " cost " << cost << endl;
+	}
+	cout << ans << endl;
+	return 0;
+}

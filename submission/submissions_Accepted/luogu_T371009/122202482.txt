@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 122202482
+//  题目ID: T371009
+#include<bits/stdc++.h>
+using namespace std;
+string s[5];
+int main(){
+//	freopen("password.in","r",stdin);
+//	freopen("password.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>s[0];
+	for(char c:s[0]){
+		if(c>='a'&&c<='z') s[1]+=c;
+		else if(c>='A'&&c<='Z') s[2]+=c;
+		else if(c>='0'&&c<='9') s[3]+=c;
+		else s[4]+=c;
+	}
+	cout<<"password level:"<<((s[1].size()!=0)+(s[2].size()!=0)+(s[3].size()!=0)+(s[4].size()!=0))<<endl;
+	for(int i=1;i<=4;i++){
+		cout<<(i[s].size()!=0?i[s]:"(Null)")<<endl;
+	}
+	return 0;
+}

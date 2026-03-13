@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 191651462
+//  题目ID: P4170
+#include<bits/stdc++.h>
+using namespace std;
+long long dp[50+11][50+11];
+char s[50+5];
+int main(){
+// 	freopen("color.in","r",stdin);
+// 	freopen("color.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>(s+1);
+	int n=strlen(s+1);
+	memset(dp,0x3f,sizeof dp);
+	for(int i=1;i<=n;++i) dp[i][i]=1,dp[i][i+1]=2-(s[i]==s[i+1]);
+	for(int l=3;l<=n;++l){
+		//len
+		for(int i=1;i+l-1<=n;++i){
+			int j=i+l-1;
+			//[i,j]
+			bool ok=1;
+			for(int k=i+1;k<=j;++k) if(s[k]^s[k-1]){ok=0;break;}
+			if(ok){dp[i][j]=1;continue;}
+			if(s[i]==s[j]){
+				/*
+				int p1=i+1,p2=j-1;
+				while(p1<=j&&p2>=i&&(s[p1]==s[p1-1]||s[p2]==s[p2+1])){
+					if(s[p1]==s[p1-1]) p1++;
+					if(s[p2]==s[p2+1]) p2--;
+				}
+				dp[i][j]=dp[p1][p2]+1;
+				*/
+				dp[i][j]=min(dp[i+1][j],dp[i][j-1]);
+			}
+			for(int k=i+1;k+1<=j;++k){
+				dp[i][j]=min(dp[i][j],dp[i][k]+dp[k+1][j]);
+			}
+		}
+	}
+	cout<<dp[1][n]<<endl;
+	return 0;
+}
+//O(n^3) (n<51) possibly can get 100pts
+//but maybe it's truth can be wrong

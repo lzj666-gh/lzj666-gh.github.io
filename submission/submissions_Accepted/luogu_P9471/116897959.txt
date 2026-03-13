@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 116897959
+//  题目ID: P9471
+//T3 A
+#include<bits/stdc++.h>
+using namespace std;
+string s;
+int num,up,low;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>s;
+	for(int i=0;i<s.size();i++){
+		if(s[i]>='0'&&s[i]<='9') num++;
+		if(s[i]>='a'&&s[i]<='z') low++;
+		if(s[i]>='A'&&s[i]<='Z') up++;
+	}
+	cout<<num<<' '<<low<<' '<<up<<endl;
+	return 0;
+}

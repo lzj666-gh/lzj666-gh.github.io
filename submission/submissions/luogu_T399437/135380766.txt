@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 135380766
+//  题目ID: T399437
+#include<bits/stdc++.h>
+using namespace std;
+short n,a[100+10][100+10];
+int s[100+10][100+10],ans;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cout<<66561<<endl;
+	return 0;
+}

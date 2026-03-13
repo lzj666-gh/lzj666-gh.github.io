@@ -1,0 +1,92 @@
+//  OJ: 洛谷
+//  提交ID: 220891673
+//  题目ID: P3369
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 2e6 + 5;
+struct Seg_Tree {
+#define lc(p) (tree[p].ls == -1 ? tree[p].ls = ++idx : tree[p].ls)
+#define rc(p) (tree[p].rs == -1 ? tree[p].rs = ++idx : tree[p].rs)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int sum, ls, rs;
+		Node() : sum(0), ls(-1), rs(-1) {}
+	}tree[N << 2];
+	int idx = 1;
+	void pushup(int p) {
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+	}
+	void add(int p, int l, int r, int x, int val) {
+		if (l == r) {
+			tree[p].sum += val;
+			return;
+		}
+		if (x <= mid) add(lson, x, val);
+		if (x > mid) add(rson, x, val);
+		pushup(p);
+	}
+	int query(int p, int l, int r, int L, int R) {
+		if (p == -1) return 0;
+		if (L <= l && r <= R) return tree[p].sum;
+		int res = 0;
+		if (L <= mid) res += query(tree[p].ls, l, (l + r >> 1), L, R);
+		if (R > mid) res += query(tree[p].rs, (l + r >> 1) + 1, r, L, R);
+		return res;
+	}
+	int val_get(int p, int l, int r, int k) {
+		if (l == r) return l;
+		//assert(tree[p].ls != -1 || tree[p].rs != -1);
+		//assert(tree[p].sum);
+		if (tree[p].ls == -1 || k > tree[tree[p].ls].sum) return val_get(rson, k - tree[lc(p)].sum);
+		else return val_get(lson, k);
+	}
+	int rst(int p, int l, int r, int x) {
+		if (l == r) return l;
+		//assert(tree[p].sum); assert(l <= x);
+		//assert(tree[p].ls != -1 || tree[p].rs != -1);
+		if (x <= mid || tree[p].rs == -1 || tree[tree[p].rs].sum == 0) return rst(tree[p].ls, l, (l + r >> 1), x);
+		else return rst(tree[p].rs, (l + r >> 1) + 1, r, x);
+	}
+	int lst(int p, int l, int r, int x) {
+		if (l == r) return l;
+		//assert(tree[p].sum); assert(x <= r);
+		//assert(tree[p].ls != -1 || tree[p].rs != -1);
+		if (x > mid || tree[p].ls == -1 || tree[tree[p].ls].sum == 0) return lst(tree[p].rs, (l + r >> 1) + 1, r, x);
+		else return lst(tree[p].ls, l, (l + r >> 1), x);
+	}
+	void ins(int x) {
+		add(1, -1e7, 1e7, x, 1);
+	}
+	void del(int x) {
+		add(1, -1e7, 1e7, x, -1);
+	}
+	int get_rank(int x) {
+		return query(1, -1e7, 1e7, 0, x - 1) + 1;
+	}
+	int get_val(int k) {
+		return val_get(1, -1e7, 1e7, k);
+	}
+	int get_pre(int x) {
+		return rst(1, -1e7, 1e7, x - 1);
+	}
+	int get_nxt(int x) {
+		return lst(1, -1e7, 1e7, x + 1);
+	}
+}t;
+int n, opt, k;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		cin >> opt >> k;
+		if (opt == 1) t.ins(k);
+		if (opt == 2) t.del(k);
+		if (opt == 3) cout << t.get_rank(k) << endl;
+		if (opt == 4) cout << t.get_val(k) << endl;
+		if (opt == 5) cout << t.get_pre(k) << endl;
+		if (opt == 6) cout << t.get_nxt(k) << endl;
+	}
+	return 0;
+}

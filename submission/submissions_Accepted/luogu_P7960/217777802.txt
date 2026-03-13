@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 217777802
+//  题目ID: P7960
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+bool check(int x) {
+	while (x) {
+		if (x % 10 == 7) return 0;
+		x /= 10;
+	}
+	return 1;
+}
+int vis[20000000 + 10];
+vector<int>prm;
+void pre(int n) {
+	for (int i = 1; i <= n; i++) {
+		if (!vis[i]) {
+			if (check(i))
+				prm.push_back(i), vis[i] = prm.size() - 1;
+			else
+				for (int j = 1; i * j <= n; ++j)
+					vis[i * j] = -1;
+		}
+	}
+}
+signed main(){
+	pre(2e7);
+	int T, x; cin >> T;
+	while (T--) cin >> x, cout << (vis[x] == -1 ? -1 : prm[vis[x] + 1]) << endl;
+	return 0;
+}

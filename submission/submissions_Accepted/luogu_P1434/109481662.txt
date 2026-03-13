@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 109481662
+//  题目ID: P1434
+#include<bits/stdc++.h>
+using namespace std;
+int r,c,a[120][120],b[120][120],maxa;
+int dfs(int x,int y){
+	if(b[x][y]!=0) return b[x][y];
+	int re=1;
+	if(a[x][y+1]<a[x][y]&&(x>=1&&x<=r)&&(y+1>=1&&y+1<=c)) re=max(re,dfs(x,y+1)+1);
+	if(a[x][y-1]<a[x][y]&&(x>=1&&x<=r)&&(y-1>=1&&y-1<=c)) re=max(re,dfs(x,y-1)+1);
+	if(a[x+1][y]<a[x][y]&&(x+1>=1&&x+1<=r)&&(y>=1&&y<=c)) re=max(re,dfs(x+1,y)+1);
+	if(a[x-1][y]<a[x][y]&&(x-1>=1&&x-1<=r)&&(y>=1&&y<=c)) re=max(re,dfs(x-1,y)+1);
+	b[x][y]=re;
+	return re;
+}
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin>>r>>c;
+	for(int i=1;i<=r;i++){
+		for(int j=1;j<=c;j++){
+			cin>>a[i][j];
+		}
+	}
+	for(int i=1;i<=r;i++){
+		for(int j=1;j<=c;j++){
+			maxa=max(maxa,dfs(i,j));
+//			cout<<dfs(i,j)<<" ";
+		}
+//		cout<<endl;
+	}
+	cout<<maxa<<endl;
+	return 0;
+}

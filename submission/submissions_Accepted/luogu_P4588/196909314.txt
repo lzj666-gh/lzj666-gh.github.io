@@ -1,0 +1,61 @@
+//  OJ: 洛谷
+//  提交ID: 196909314
+//  题目ID: P4588
+#include<bits/stdc++.h>
+using namespace std;
+int q, M;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define ls l, l + r >> 1
+#define rs (l + r >> 1) + 1, r
+	struct Node {
+		int ans;
+		Node():ans(1) { }
+	}tree[100000 << 4 | 3];
+	void pushup(int p) {
+		tree[p].ans = tree[lc(p)].ans * 1ll * tree[rc(p)].ans % M;
+	}
+	void build(int p, int l, int r) {
+		tree[p].ans = 1;
+		if(l == r) return;
+		build(lc(p), ls);
+		build(rc(p), rs);
+	}
+	void set(int p, int l, int r, int x, int k) {
+		if(x < l || r < x) return;
+		if(l == r) {
+			tree[p].ans = k;
+			return;
+		}
+		set(lc(p), ls, x, k);
+		set(rc(p), rs, x, k);
+		pushup(p);
+	}
+	int query() {
+		return tree[1].ans;
+	}
+}t;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while(T--) {
+		cin >> q >> M;
+		t.build(1, 1, q);
+		for(int i = 1; i <= q; ++i) {
+			int opt;
+			cin >> opt;
+			if(opt == 1) {
+				cin >> opt;
+				t.set(1, 1, q, i, opt);
+			}
+			else {
+				cin >> opt;
+				t.set(1, 1, q, opt, 1);
+			}
+			cout << t.query() << endl;
+		}
+	}
+	return 0;
+}

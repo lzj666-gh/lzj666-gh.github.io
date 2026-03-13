@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 158466999
+//  题目ID: P2068
+#include<bits/stdc++.h>
+#define add(x, k) \
+	for (int lzjlzjlzj = x; lzjlzjlzj <= n; lzjlzjlzj += lb(lzjlzjlzj)) {\
+		s[lzjlzjlzj] += k;\
+	}
+#define lb(x) (x & ~x + 1)
+typedef long long ll;
+using namespace std;
+ll s[100000 + 10], n, w;
+int l,r;
+ll query(ll x) {
+	ll ans = 0;
+	for (; x; x -= lb(x)) {
+		ans += s[x];
+	}
+	return ans;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin>>n>>w;
+	while(w--){
+		static char opt;
+		cin>>opt;
+		if(opt=='x'){
+			cin>>l>>r;
+			add(l,r);
+		}
+		else{
+			cin>>l>>r;
+			cout<<query(r)-query(l-1)<<endl;
+		}
+	}
+	return 0;
+}

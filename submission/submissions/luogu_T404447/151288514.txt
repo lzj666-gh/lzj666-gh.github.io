@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 151288514
+//  题目ID: T404447
+#include<bits/stdc++.h>
+#pragma(disable:6385)
+using namespace std;
+int s, n, ns;
+double dp[1000 + 10][1000 + 10];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cout << fixed << setprecision(4);
+	cin >> n >> s;
+    ns = n * s;
+    for (int i = n; i >= 1; i--) {
+        for (int j = s; j >= 01; j--) {
+            if (i == n && j == s) continue;
+            dp[i][j] = 
+                (ns + 
+                    (n - i) * j * dp[i + 1][j] + 
+                    i * (s - j) * dp[i][j + 1] + 
+                    (n - i) * (s - j) * dp[i + 1][j + 1]
+                ) 
+                / (ns - i * j);
+        }
+    }
+    cout << dp[1][1] + 1;
+	return 0;
+}

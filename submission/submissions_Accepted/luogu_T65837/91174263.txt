@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 91174263
+//  题目ID: T65837
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	long long a;cin>>a;
+	a=a%19*a%19*a%19;
+	printf("%.lld",a);
+
+	return 0;
+}
+

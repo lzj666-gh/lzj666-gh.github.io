@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 158004141
+//  题目ID: U418137
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+inline int read() {
+	int r = 0; char c = getchar();
+	while (c < '0' || c>'9') c = getchar();
+	while (c >= '0' && c <= '9') r = r * 10 + (c ^ 48), c = getchar();
+	return r;
+}
+inline void write(int x) {
+	if (x > 9) write(x / 10);
+	putchar(x % 10 ^ 48);
+	return;
+}
+inline void writi(int args) {
+	write(args); putchar(10);
+}
+int n,m,k,T;
+signed main() {
+	T=read();
+	while(T--){
+		n=read(),m=read(),k=read()+1;
+		if(n%k==1&&m%k==1) cout<<"NSL"<<endl;
+		else{
+			write((n%k+k-1)%k),putchar(' '),writi((m%k+k-1)%k);
+		}
+	}
+	return 0;
+}

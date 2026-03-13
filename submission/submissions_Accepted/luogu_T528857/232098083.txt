@@ -1,0 +1,59 @@
+//  OJ: 洛谷
+//  提交ID: 232098083
+//  题目ID: T528857
+#include<bits/stdc++.h>
+#define file(name) freopen(#name".in", "r", stdin), freopen(#name".out", "w", stdout);
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[1000000 + 5];
+int head[500000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int dis0[500000 + 5], dis1[500000 + 5], disn[500000 + 5];
+bool vis[500000 + 5];
+struct Node {
+	int idx, dis;
+	Node(int idx = 0, int dis = 0) :idx(idx), dis(dis) {}
+	friend bool operator<(const Node& a, const Node& b) {
+		return a.dis > b.dis;
+	}
+};
+int n, m, u, v;
+template<int* dis>
+void dij(int s) {
+	memset(vis, 0, sizeof vis);
+	priority_queue<Node>q;
+	memset(dis, 0x3f, sizeof dis0);
+	dis[s] = 0; q.emplace(s, 0);
+	while (!q.empty()) {
+		int now = q.top().idx; q.pop();
+		if (vis[now]) continue;
+		vis[now] = 1;
+		for (int i = head[now]; i; i = edge[i].nxt) {
+			int w = dis[now] + 1;
+			if (w < dis[edge[i].v]) {
+				dis[edge[i].v] = w;
+				q.emplace(edge[i].v, dis[edge[i].v]);
+			}
+		}
+	}
+}
+signed main() {
+//	file(railway);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= m; ++i) cin >> u >> v, add(u, v), add(v, u);
+	dij<dis0>(0);
+	dij<dis1>(1);
+	dij<disn>(n);
+	int ans = dis1[n];
+	for (int i = 1; i <= n; ++i) {
+		int anss = min(ans, min(dis0[1] + disn[i], dis1[i] + dis0[n]));
+		if (anss == 0x3f3f3f3f) cout << -1 << endl;
+		else cout << anss << endl;
+	}
+	return 0;
+}

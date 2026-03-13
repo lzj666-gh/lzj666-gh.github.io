@@ -1,0 +1,114 @@
+//  OJ: 洛谷
+//  提交ID: 131347999
+//  题目ID: P9750
+#include<bits/stdc++.h>
+using namespace std;
+inline int min(const int &a,const int &b){return a<b?a:b;}
+int T,M;
+inline void print(int z,int m){//输出m分之n 
+	//前为分子，后为分母 
+	if(m<0){
+		if(z<0){
+			m=-m,z=-z;
+		}
+		else{
+			cout<<'-';
+			m=-m;
+		}
+	}
+	else if(z<0){
+		cout<<'-';
+		z=-z;
+	}
+	int tmp=__gcd(m,z);
+	m/=tmp;
+	z/=tmp;
+	if(m==1) cout<<z;
+	else cout<<z<<'/'<<m;
+}
+inline bool is_int(double k){
+	if(k==(int)k) return true;
+	else return false;
+}
+int main(){
+	ios::sync_with_stdio(false);
+//	freopen("uqe.in","r",stdin);
+//	freopen("uqe.out","w",stdout);
+	cin>>T>>M;
+	while(T--){
+		int a,b,c;
+		cin>>a>>b>>c;
+		int d=b*b-4*a*c;
+		if(d<0){
+			cout<<"NO"<<endl;
+			continue;
+		}
+		if((-b*1.0/2*a)!=0){
+			if(is_int(sqrt(d))){
+				print(-b+sqrt(d),2*a);
+				cout<<endl;
+				continue;
+			}
+			print(-b,2*a);
+		}
+		else{
+			if(is_int(sqrt(d))){
+				print(sqrt(d),2*a);
+				cout<<endl;
+				continue;
+			}
+		}
+		int k=1;
+		for(int i=2;i*i<=d;++i){
+			while(d%(i*i)==0) d/=i*i,k*=i;
+		}
+		int fz=k/__gcd(k,2*a),fm=2*a/__gcd(k,2*a);
+		if(a<0){
+			a=-a;
+			fz=k/__gcd(k,2*a),fm=2*a/__gcd(k,2*a);
+			fz=-fz;
+		}
+		if(fz==1&&fm==1) {
+			if(d!=1) cout<<"+sqrt("<<d<<')';
+		}
+		else{
+			if(fm<0&&fz<0) fm=-fm,fz=-fz;
+			if(fz<0||fm<0) cout<<'+',fz=abs(fz),fm=abs(fm);
+			else cout<<'+';
+			if(fz==1){
+				if(d!=1) cout<<"sqrt("<<d<<")";
+				else cout<<1;
+			}
+			else{
+				cout<<fz;
+				if(d!=1) cout<<"*sqrt("<<d<<")";
+			}
+			if(fm!=1) cout<<'/'<<fm;
+		}
+		cout<<endl;
+	}
+	return 0;
+}
+/*
+9 1000
+1 -1 0
+-1 -1 -1
+1 -2 1
+1 5 4
+4 4 1
+1 0 -432
+1 -3 1
+2 -4 1
+1 7 1
+
+~~小模拟~~
+
+~~中模拟~~
+
+~~大模拟~~
+
+**超级无敌大模拟** 
+
+AFO 
+
+*/

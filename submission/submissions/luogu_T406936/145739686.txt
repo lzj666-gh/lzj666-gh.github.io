@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 145739686
+//  题目ID: T406936
+#include<bits/stdc++.h>
+using namespace std;
+signed main(){
+	ios_base::sync_with_stdio(false);
+	int l=0;
+	while(1){
+		++l;
+		cout<<"Bob will win";
+	}
+	return 0;
+}

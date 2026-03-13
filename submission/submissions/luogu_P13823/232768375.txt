@@ -1,0 +1,155 @@
+//  OJ: 洛谷
+//  提交ID: 232768375
+//  题目ID: P13823
+#include<bits/stdc++.h>
+using namespace std;
+namespace IO {
+	template<class... T2> inline void qread(char& IEE, T2&... ls);
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls);
+	template<class... T2> inline void qwrite(char IEE, T2... ls);
+	template<class... T2> inline void qwrite(const char* str, T2... ls);
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls);
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls);
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	template<class... T2> inline void qwrite(char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class... T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+constexpr int MAXN = 500000 + 5, MAXM = 500000 + 5;
+struct Edge {
+	int v, nxt;
+}edge[MAXM], redge[MAXM];
+int head[MAXN], rhead[MAXN], idx, ridx;
+void add(int u, int v) {
+	edge[++idx] = { v, head[u] };
+	head[u] = idx;
+}
+void radd(int u, int v) {
+	redge[++ridx] = { v, rhead[u] };
+	rhead[u] = ridx;
+}
+int n, m, p[MAXN];
+int cid[MAXN], ccnt;
+vector<int> cnd[MAXN];
+bool vis[MAXN];
+vector<int> order;
+void dfs1(int u) {
+	vis[u] = 1;
+	for (int i = head[u]; i; i = edge[i].nxt)
+		if (!vis[edge[i].v])
+			dfs1(edge[i].v);
+	order.push_back(u);
+}
+void dfs2(int u, int id) {
+	vis[u] = 1; cid[u] = id;
+	cnd[id].push_back(u);
+	for (int i = rhead[u]; i; i = redge[i].nxt)
+		if (!vis[redge[i].v])
+			dfs2(redge[i].v, id);
+}
+void kosaraju() {
+	order.clear();
+	memset(vis, 0, sizeof vis);
+	for (int i = 1; i <= n; ++i)
+		if (!vis[i])
+			dfs1(i);
+	memset(vis, 0, sizeof vis);
+	ccnt = 0;
+	for (int i = order.size() - 1; i >= 0; --i)
+		if (!vis[order[i]])
+			ccnt++, dfs2(order[i], ccnt);
+}
+vector<int> G1[MAXN], G2[MAXN];
+int ind1[MAXN], ind2[MAXN];
+void build_graph() {
+	set<pair<int, int>> edges1, edges2;
+	for (int u = 1; u <= n; ++u)
+		for (int i = head[u]; i; i = edge[i].nxt) {
+			int v = edge[i].v, cu = cid[u], cv = cid[v];
+			if (cu != cv) {
+				if (edges1.find({ cu, cv }) == edges1.end()) {
+					edges1.insert({ cu, cv });
+					G1[cu].push_back(cv);
+					ind1[cv]++;
+				}
+				if (edges2.find({ cv, cu }) == edges2.end()) {
+					edges2.insert({ cv, cu });
+					G2[cv].push_back(cu);
+					ind2[cu]++;
+				}
+			}
+		}
+}
+int max_val[MAXN], f[MAXN], g[MAXN];
+void compute_g() {
+	vector<int> topo;
+	queue<int> q;
+	for (int i = 1; i <= ccnt; ++i)
+		if (ind1[i] == 0)
+			q.push(i);
+	while (!q.empty()) {
+		int u = q.front(); q.pop();
+		topo.push_back(u);
+		for (int v : G1[u])
+			if (!--ind1[v])
+				q.push(v);
+	}
+	for (int i = topo.size() - 1; i >= 0; --i) {
+		int& u = topo[i];
+		g[u] = max_val[u];
+		for (int v : G1[u])
+			if (g[v] > g[u])
+				g[u] = g[v];
+	}
+}
+void compute_f() {
+	vector<int> topo;
+	queue<int> q;
+	for (int i = 1; i <= ccnt; ++i)
+		if (!ind2[i])
+			q.push(i);
+	while (!q.empty()) {
+		int u = q.front(); q.pop();
+		topo.push_back(u);
+		for (int v : G2[u])
+			if (!--ind2[v])
+				q.push(v);
+	}
+	for (int i = topo.size() - 1; i >= 0; --i) {
+		int& u = topo[i];
+		f[u] = max_val[u];
+		for (int v : G2[u])
+			if (f[v] > f[u])
+				f[u] = f[v];
+	}
+}
+int main() {
+	qread(n, m);
+	for (int i = 1; i <= n; ++i) qread(p[i]);
+	for (int i = 1, u, v; i <= m; ++i) qread(u, v), add(u, v), radd(v, u);
+	kosaraju();
+	build_graph();
+	for (int i = 1; i <= ccnt; ++i) {
+		max_val[i] = 0;
+		for (int u : cnd[i])
+			if (p[u] > max_val[i])
+				max_val[i] = p[u];
+	}
+	compute_g();
+	compute_f();
+	for (int i = 1; i <= n; ++i)
+		if (p[i] == max(f[cid[i]], g[cid[i]])) qwrite(0, ' ');
+		else qwrite(1, ' ');
+	return 0;
+}

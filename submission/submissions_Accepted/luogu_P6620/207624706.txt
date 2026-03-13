@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 207624706
+//  题目ID: P6620
+#include <bits/stdc++.h>
+using namespace std;
+int n, x, mod, m, ans;
+int a[1000 + 10], S[1000 + 10][1000 + 10];
+int poww(int x, int k) {
+	if (k == 0) return 1;
+	if (k == 1) return x;
+	long long tmp = poww(x, k / 2);
+	tmp *= tmp;
+	tmp %= mod;
+	if (k % 2 == 1) return tmp * x % mod;
+	else return tmp;
+}
+int main() {
+	cin >> n >> x >> mod >> m; x %= mod;
+	for (int i = 0; i <= m; ++i)
+		cin >> a[i];
+	S[0][0] = 1;
+	for (int i = 1; i <= m; ++i)
+		for (int j = 1; j <= i; ++j)
+			S[i][j] = (1ll * S[i - 1][j] * j % mod + S[i - 1][j - 1]) % mod;
+	ans = (1ll * a[0] * poww(x + 1, n)) % mod;
+	for (int i = 1; i <= m; ++i) {
+		int tmp = 1ll * poww(x, i) * poww(x + 1, n - i) % mod;
+		for (int j = n; j >= n - i + 1; --j)
+			tmp = 1ll * tmp * j % mod;
+		int sum = 0;
+		for (int j = i; j <= m; ++j)
+			sum += 1ll * S[j][i] * a[j] % mod,
+			sum %= mod;
+		ans += 1ll * sum * tmp % mod;
+		ans %= mod;
+	}
+	cout << ans << endl;
+	return 0;
+}

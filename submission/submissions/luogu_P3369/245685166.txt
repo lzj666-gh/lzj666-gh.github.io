@@ -1,0 +1,60 @@
+//  OJ: 洛谷
+//  提交ID: 245685166
+//  题目ID: P3369
+#include<bits/stdc++.h>
+using namespace std;
+int a, b, p;
+class FHQ_Treap {
+	int root;
+	struct Point {
+		int lc, rc, siz, val, rnd;
+		Point(int val = 0) :lc(), rc(), siz(1), val(val), rnd(rand()) {}
+	}; vector<Point>tree;
+	int new_node(int val) { return tree.emplace_back(val), tree.size() - 1; }
+	int pushup(int p) { tree[p].siz = tree[tree[p].lc].siz + tree[tree[p].rc].siz + 1; return p; }
+	int split(int p, int val, int& x, int& y) {
+		if (!p) return x = y = 0;
+		if (tree[p].val <= val) x = p, split(tree[p].rc, val, tree[p].rc, y);
+		else y = p, split(tree[p].lc, val, x, tree[p].lc);
+		return pushup(p);
+	}
+	int merge(int x, int y) {
+		if (!x || !y) return x | y;
+		if (tree[x].rnd < tree[y].rnd) return tree[x].rc = merge(tree[x].rc, y), pushup(x);
+		else return tree[y].lc = merge(x, tree[y].lc), pushup(y);
+	}
+	int val_get(int p, int x) {
+		if (tree[tree[p].lc].siz + 1 == x) return p;
+		if (x <= tree[tree[p].lc].siz) return val_get(tree[p].lc, x);
+		else return val_get(tree[p].rc, x - (tree[tree[p].lc].siz + 1));
+	}
+public:
+	FHQ_Treap() :root() { tree.emplace_back(); tree.back().siz = 0; }
+	void ins(int x) { split(root, x, a, b); root = merge(merge(a, new_node(x)), b); }
+	void del(int x) {
+		split(root, x, a, b); split(a, x - 1, a, p);
+		root = merge(merge(a, merge(tree[p].lc, tree[p].rc)), b);
+	}
+	int get_rank(int x) {
+		split(root, x - 1, a, b); int ans = tree[a].siz + 1;
+		root = merge(a, b); return ans;
+	}
+	int get_val(int x) { return tree[val_get(root, x)].val; }
+	int get_pre(int x) { return get_val(get_rank(x) - 1); }
+	int get_nxt(int x) { return get_val(get_rank(x + 1)); }
+}t;
+int n, opt, x;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	srand(time(0)); cin >> n;
+	while (n--) {
+		cin >> opt >> x;
+		if (opt == 1) t.ins(x);
+		else if (opt == 2) t.del(x);
+		else if (opt == 3) cout << t.get_rank(x) << endl;
+		else if (opt == 4) cout << t.get_val(x) << endl;
+		else if (opt == 5) cout << t.get_pre(x) << endl;
+		else cout << t.get_nxt(x) << endl;
+	}
+	return 0;
+}

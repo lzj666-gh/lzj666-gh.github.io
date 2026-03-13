@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 194207422
+//  题目ID: P9774
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+int p;
+ll n, fac[1000000 + 10];
+ll query(ll n) {
+	if (n < p) return  fac[n];
+	return (((n / p) & 1) ? p - 1 : 1) * query(n / p) % p * query(n % p) % p;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin >> T >> p;
+	fac[0] = 1;
+	for (int i = 1; i <= p; ++i) fac[i] = fac[i - 1] * i % p;
+	while (T--) {
+		cin >> n;
+		cout << query(n) << endl;
+	}
+	return 0;
+}

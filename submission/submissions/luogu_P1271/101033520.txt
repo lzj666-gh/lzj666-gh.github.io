@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 101033520
+//  题目ID: P1271
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int m,n;cin>>n;const int N=n+1;int aa[N];
+	cin>>m;
+	for(int i=0;i<m;i++){
+		int a;cin>>a;
+		aa[a]++;
+	}
+	for(int i=1;i<=n;i++){
+		cout<<aa[i]<<" ";
+	}
+}

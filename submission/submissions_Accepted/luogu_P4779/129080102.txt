@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 129080102
+//  题目ID: P4779
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+	int to,next,val;
+}edge[1919810];
+int head[114514],n,m,s,idx;
+inline void add(int u,int v,int val){
+	++idx;
+	edge[idx]={v,head[u],val};
+	head[u]=idx;
+}
+array<int,114514> dijkstra(){
+	priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> q;
+	q.push({0,s});
+	array<int,114514> dis;
+	dis.fill(0x3f3f3f3f);
+	bool vis[114514];
+	memset(vis,0,sizeof vis);
+	dis[s]=0;
+	while(!q.empty()){
+		pair<int,int> now=q.top();
+		q.pop();
+		int now_num=now.second,now_val=now.first;
+		if(dis[now_num]<now_val||vis[now_num]) continue;
+		vis[now_num]=true;
+		for(int to_idx=head[now_num];to_idx;to_idx=edge[to_idx].next){
+			int new_val=edge[to_idx].val+now_val;
+			if(new_val<dis[edge[to_idx].to]){
+				dis[edge[to_idx].to]=new_val;
+				q.push({new_val,edge[to_idx].to});
+			}
+		}
+	}
+	return dis;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m>>s;
+	for(int i=1;i<=m;i++){
+		int u,v,val;
+		cin>>u>>v>>val;
+		add(u,v,val);
+	}
+	auto ans=dijkstra();
+	for(int i=1;i<=n;++i) cout<<ans[i]<<' ';
+}

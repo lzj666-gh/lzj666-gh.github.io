@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 150229309
+//  题目ID: P10247
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,u[300000+10],v[300000+10];
+bitset<300000+10>st[1000];
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=m;++i) cin>>u[i]>>v[i],st[u[i]][i]=1,st[v[i]][i]=1;
+	for(int i=1;i<=m;++i){
+		if(u[i]==v[i]){
+			cout<<0<<' ';
+			continue;
+		}
+		bitset<10> now=(st[u[i]]|st[v[i]]);
+		now.flip();
+		bool flg=true;
+		for(int j=1;;++j){
+			if(now[j]){
+				cout<<j<<' ';
+				flg=false;
+				break;
+			}
+		}
+		if(flg) cout<<0<<' ';
+	}
+}

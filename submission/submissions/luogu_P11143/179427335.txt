@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 179427335
+//  题目ID: P11143
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, k;
+struct LZJ {
+	int x, y;
+}a[200000 + 10];
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> k;
+	int cnt = 0;
+	for (int i = 1; i <= k; ++i)
+		cin >> a[i].x >> a[i].y, cnt += a[i].y >= a[i].x;
+	cout << cnt << endl;
+	return 0;
+}

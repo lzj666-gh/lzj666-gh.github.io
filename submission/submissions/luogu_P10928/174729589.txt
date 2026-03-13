@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 174729589
+//  题目ID: P10928
+#include<bits/stdc++.h>
+#define maxn 500000+10
+using namespace std;
+struct node{
+	int x,y,z;
+	friend bool operator <(const node &a,const node &b){
+		return a.z<b.z;
+	}
+}a[5000000];
+int n,m;
+int fa[maxn],siz[maxn];
+int find(int x){
+	return fa[x]==x?x:fa[x]=find(fa[x]);
+}
+void mian(){
+	cin>>n;
+	m=n-1;
+	for(int i=1;i<=m;i++){
+		cin>>a[i].x>>a[i].y>>a[i].z;
+	}
+//	sort(&a[1],&a[m+1]);
+	for(int i=1;i<=n;i++) fa[i]=i;
+    for(int i=1;i<=n;i++) siz[i]=1;
+    int ans=0;
+	for(int i=1;i<=m;i++){
+		int v1=a[i].x,v2=a[i].y;
+		v1=find(v1);v2=find(v2);
+//		if(v1==v2) continue;
+		fa[v1]=v2;
+		ans+=(siz[v1]*siz[v2]-1)*(a[i].z+1);
+		siz[v2]+=siz[v1];
+	}
+	cout<<ans<<endl;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--) mian();
+	return 0;
+}

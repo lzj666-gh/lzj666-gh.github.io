@@ -1,0 +1,107 @@
+//  OJ: 洛谷
+//  提交ID: 195406921
+//  题目ID: P4097
+#include<bits/stdc++.h>
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+using namespace std;
+struct Line {
+	double k, b;
+	Line(int x_0 = 0, int y_0 = 0, int x_1 = 0, int y_1 = 0) {
+		if (x_1 == x_0) {
+			k = 0;
+			b = max(y_0, y_1);
+			return;
+		}
+		k = (y_1 - y_0) * 1.0 / (x_1 - x_0);
+		b = y_0 - x_0 * k;
+	}
+	double operator()(int x) {
+		return k * x + b;
+	}
+	friend ostream& operator<<(ostream& out, const Line& l) {
+		return out << "f(x)=" << l.k << 'x' << '+' << l.b;
+	}
+}l[100000 + 5];
+int n, op, k, xx, yy, xxx, yyy;
+struct Tree {
+	int l, r, ans;
+}tree[100000 << 2 | 3];
+void build(int p, int l, int r) {
+	tree[p].l = l; tree[p].r = r;
+	if (l == r) return;
+	build(lc(p), l, l + r >> 1);
+	build(rc(p), (l + r >> 1) + 1, r);
+}
+const double eps = 1e-10;
+//114514 for less and 1919810 for greater
+int cmp(double x, double y) {
+	if (x - y > eps) return 1919810;
+	if (fabs(x - y) <= eps) return 0;
+	return 114514;
+}
+void clac(int p, int x) {
+	//cout << "inserting! "<< '[' << tree[p].l << ',' << tree[p].r << ']' << endl;
+	int mid = tree[p].l + tree[p].r >> 1;
+	int& y = tree[p].ans;
+	int Mid = cmp(l[tree[p].ans](mid), l[x](mid));
+	if (Mid == 114514 || (Mid == 0 && x < y)) swap(x, y);
+	int L = cmp(l[x](tree[p].l), l[y](tree[p].l)), R = cmp(l[x](tree[p].r), l[y](tree[p].r));
+	if (L == 1919810 || (L == 0 && x < y)) clac(lc(p), x);
+	if (R == 1919810 || (R == 0 && x < y)) clac(rc(p), x);
+	//cout << '[' << tree[p].l << ',' << tree[p].r << "]'s final ans is " << l[tree[p].ans] << endl;
+}
+void find(int p, int L, int R, int x) {
+	if (tree[p].r < L || R < tree[p].l) return;
+	//cout << "finding int " << p << '[' << tree[p].l << ',' << tree[p].r << ']' << endl;
+	if (L <= tree[p].l && tree[p].r <= R) {
+		//cout << "find a Line[" << tree[p].l << ',' << tree[p].r << ']' << endl;
+		return clac(p, x);
+	}
+	find(lc(p), L, R, x);
+	find(rc(p), L, R, x);
+}
+struct Ans {
+	double first; int second;
+	friend bool operator<(const Ans& a, const Ans& b) {
+		int t = cmp(a.first, b.first);
+		return(t == 114514 || (t == 0 && a.second > b.second));
+	}
+};
+
+Ans query(int p, int k) {
+	if (k <= tree[p].l && tree[p].r <= k) return { l[tree[p].ans](k),tree[p].ans };
+	if (tree[p].r < k || k < tree[p].l) return { 0,0 };
+	return max({ query(lc(p), k), query(rc(p), k),{ l[tree[p].ans](k),tree[p].ans } });
+}
+const int xmod = 39989, ymod = 1e9;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	build(1, 1, xmod);
+	int lastans = 0;
+	for (int i = 1, j = 1; i <= n; ++i) {
+		cin >> op;
+		if (op) {
+			cin >> xx >> yy >> xxx >> yyy;
+			xx = (xx + lastans - 1) % xmod + 1;
+			xxx = (xxx + lastans - 1) % xmod + 1;
+			yy = (yy + lastans - 1) % ymod + 1;
+			yyy = (yyy + lastans - 1) % ymod + 1;
+			l[j] = Line(xx, yy, xxx, yyy);
+			if (xx > xxx) {
+				swap(xx, xxx);
+				swap(yy, yyy);
+			}
+			//cout << "insert " << l[j] << '(' << xx << "<=x<=" << xxx << ')' << endl;
+			find(1, xx, xxx, j);
+			j++;
+		}
+		else {
+			cin >> k;
+			k = (k + lastans - 1) % xmod + 1;
+			cout << (lastans = query(1, k).second) << endl;
+		}
+	}
+	return 0;
+}

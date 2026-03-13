@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 110646119
+//  题目ID: P1460
+#include<bits/stdc++.h>
+#define maxn 25+10
+using namespace std;
+int ______[maxn],_____[maxn],____[maxn][maxn],___[maxn],n,m,__=0x7f7f7f7f;
+bool jduge(int k){
+	int val;
+	for(int i=1;i<=n;i++){
+		val=0;
+		for(int j=1;j<=k;j++){
+			val+=____[___[j]][i];
+		}
+		if(val<_____[i]) return false;
+	}
+	return true;
+}
+void _(int x,int k){
+	if(x>m){
+		if(jduge(k)){
+			if(k<__){
+				__=k;
+				for(int i=1;i<=__;i++){
+					______[i]=___[i];
+				}
+			}
+		}
+		return;
+	}
+	___[k+1]=x;
+	_(x+1,k+1);
+	___[k+1]=0;
+	_(x+1,k);
+}
+int main()
+{
+	cin>>n;
+	for(int i=1; i<=n; i++) cin>>_____[i];
+	cin>>m;
+	for(int i=1; i<=m; i++)
+	{
+		for(int j=1; j<=n; j++) cin>>____[i][j];
+	}
+	_(1,0);
+	cout<<__<<' ';
+	for(int i=1;i<=__;i++) cout<<______[i]<<' ';
+	return 0;
+}

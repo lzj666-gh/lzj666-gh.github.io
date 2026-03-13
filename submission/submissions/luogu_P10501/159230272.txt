@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 159230272
+//  题目ID: P10501
+#include<bits/stdc++.h>
+using namespace std;
+int sg[200+10][200+10],n,m,T;
+int SG(int n,int m){
+	if(sg[n][m]!=-1) return sg[n][m];
+	int f[200+10]={0};
+	for(int i=2;i<=n-2;++i) f[SG(i,m)^SG(n-i,m)]=1;
+	for(int i=2;i<=m-2;++i) f[SG(n,i)^SG(n,m-i)]=1;
+	for(int i=0;;++i) if(!f[i])
+		return sg[n][m]=i;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	memset(sg,-1,sizeof sg);
+	sg[2][2]=sg[3][2]=sg[2][3]=0;
+	while(cin>>n>>m){
+		cout<<(SG(n,m)?"WIN":"LOSE")<<endl;
+	}
+	return 0;
+}

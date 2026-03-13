@@ -1,0 +1,142 @@
+//  OJ: 洛谷
+//  提交ID: 221989283
+//  题目ID: SP7734
+#include<bits/stdc++.h>
+using namespace std;
+struct Splay {
+#define ls son[0]
+#define rs son[1]
+	struct iterator {
+		iterator* son[2], * fa;
+		int size, val;
+		bool rev;
+		iterator() : son(), fa(), size(1), val(), rev() {}
+	};
+	using it = iterator*;
+	it root;
+	int n;
+	it newnode(int x) {
+		it p = new iterator;
+		p->ls = p->rs = p->fa = nullptr;
+		p->val = x;
+		p->size = 1;
+		p->rev = false;
+		return p;
+	}
+	void pushdown(it p) {
+		if (!p) return;
+		if (p->rev) {
+			swap(p->ls, p->rs);
+			if (p->ls) p->ls->rev ^= 1;
+			if (p->rs) p->rs->rev ^= 1;
+			p->rev = false;
+		}
+	}
+	void pushup(it p) {
+		p->size = 1;
+		if (p->ls) p->size += p->ls->size;
+		if (p->rs) p->size += p->rs->size;
+	}
+	void rotate(it p) {
+		if (!p || !p->fa) return;
+		it fp = p->fa, ffp = fp->fa;
+		int mode = (fp->rs == p);
+		it child = p->son[!mode];
+		fp->son[mode] = child;
+		if (child) child->fa = fp;
+		p->son[!mode] = fp;
+		fp->fa = p;
+		p->fa = ffp;
+		if (ffp) {
+			if (ffp->ls == fp) ffp->ls = p;
+			else ffp->rs = p;
+		}
+		pushup(fp);
+		pushup(p);
+	}
+	void splay(it p, it fa = nullptr) {
+		if (!p) return;
+		while (p->fa != fa) {
+			it fp = p->fa;
+			it ffp = fp->fa;
+			if (ffp != fa) {
+				if ((ffp->ls == fp) == (fp->ls == p)) {
+					rotate(fp);
+				}
+				else {
+					rotate(p);
+				}
+			}
+			else {
+				rotate(p);
+			}
+		}
+		if (!fa) root = p;
+	}
+	it kth(int k) {
+		it p = root;
+		while (p) {
+			pushdown(p);
+			int L = (p->ls) ? p->ls->size : 0;
+			if (k <= L) {
+				p = p->ls;
+			}
+			else if (k <= L + 1) {
+				return p;
+			}
+			else {
+				k -= L + 1;
+				p = p->rs;
+			}
+		}
+		return nullptr;
+	}
+	it build(int l, int r, it fa) {
+		if (l > r) return nullptr;
+		int mid = (l + r) >> 1;
+		it p = newnode(mid);
+		p->fa = fa;
+		p->ls = build(l, mid - 1, p);
+		p->rs = build(mid + 1, r, p);
+		pushup(p);
+		return p;
+	}
+	void reverse(int l, int r) {
+		it pl = kth(l);
+		it pr = kth(r + 2);
+		splay(pl);
+		splay(pr, pl);
+		it node = pr->ls;
+		node->rev ^= 1;
+	}
+	void dfs(it p) {
+		if (!p) return;
+		pushdown(p);
+		dfs(p->ls);
+		if (p->val >= 1 && p->val <= n) {
+			cout << p->val << " ";
+		}
+		dfs(p->rs);
+	}
+	void init(int _n) {
+		n = _n;
+		root = build(0, n + 1, nullptr);
+	}
+	void print() {
+		dfs(root);
+		cout << endl;
+	}
+}t;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m;
+	cin >> n >> m;
+	t.init(n);
+	while (m--) {
+		int l, r;
+		cin >> l >> r;
+		t.reverse(l, r);
+	}
+	t.print();
+	return 0;
+}

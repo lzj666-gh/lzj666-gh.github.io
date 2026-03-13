@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 95468197
+//  题目ID: P5719
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int n,k,s1=0,s2=0,s1j=0,s2j=0;cin>>n>>k;
+	for(int i=1;i<=n;i++){
+		if(i%k==0){
+			s1+=i;
+			s1j+=1;
+		}
+		else{
+			s2+=i;
+			s2j+=1;
+		}
+	}
+	printf("%.1lf %.1lf",s1*1.0/s1j,s2*1.0/s2j);
+	return 0;
+}

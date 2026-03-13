@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 127065188
+//  题目ID: T257331
+#include<bits/stdc++.h>
+#define pii pair<int,int>
+using namespace std;
+int n,m,t[100000+10];
+vector<int>ch[100000+10];
+vector<int>r(100000+10);
+vector<int>maxans(100000+10);
+inline int top_(){
+	int ans=0;
+	queue<pii> q;
+	for(int i=1;i<=n;++i) if(!r[i]) q.push({i,100}),maxans[i]=100;
+	while(!q.empty()){
+		pii now=q.front();
+		q.pop();
+		for(auto a:ch[now.first]){
+			--r[a];
+			maxans[a]=max(maxans[a],now.second+1);
+			if(!r[a]) q.push({a,maxans[a]});
+		}
+	}
+	for(int i=1;i<=n;++i) ans+=maxans[i]/*,cout<<"i: "<<i<<" maxans: "<<maxans[i]<<endl*/;
+	for(int i=1;i<=n;++i) if(!maxans[i]){
+		cout<<"Poor Xed"<<endl;
+		exit(0);
+	}
+	return ans;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=m;++i){
+		int qian,hou;
+		cin>>qian>>hou;
+		ch[hou].emplace_back(qian);
+		++r[qian];
+	}
+	cout<<top_()<<endl;
+}

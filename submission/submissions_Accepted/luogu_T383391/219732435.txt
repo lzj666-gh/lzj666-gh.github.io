@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 219732435
+//  题目ID: T383391
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 2e3 + 5;
+int n, q;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+	int x[N];
+	void add(int l, int r, int c) {
+		x[l] += c;
+		x[r + 1] -= c;
+	}
+	int query() {
+		int ans = 0;
+		for (int i = 1; i <= n; ++i) ans ^= x[i] += x[i - 1];
+		return ans;
+	}
+}tree[N];
+signed main() {
+	//freopen("xor.in", "r", stdin);
+	//freopen("xor.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> q;
+	while (q--) {
+		int r, c, l, s;
+		cin >> r >> c >> l >> s;
+		for (int x = r; x < r + l; ++x)
+			tree[x].add(c, x - r + c, s);
+	}
+	int ans = 0;
+	for (int i = 1; i <= n; ++i) ans ^= tree[i].query();
+	cout << ans << endl;
+	return 0;
+}

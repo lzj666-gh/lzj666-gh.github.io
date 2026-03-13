@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 203677325
+//  题目ID: P6003
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+ll n, k, m;
+bool check(ll x) {
+	ll n = ::n, k = ::k, cnt = 0;
+	while (n / x > m) {
+		ll t = n / x;
+		ll tmp = (n - t * x) / t + 1;
+		cnt += tmp * t;
+		n -= tmp * t;
+		k -= tmp;
+	}
+	return cnt + k * m >= ::n;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> k >> m;
+	ll l = 1, r = 1e12, mid;
+	while (l < r) {
+		mid = l + r + 1 >> 1;
+		if (check(mid)) l = mid;
+		else r = mid - 1;
+	}
+	cout << l << endl;
+	return 0;
+}

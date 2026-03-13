@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 92864980
+//  题目ID: T289190
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n,p;cin>>n>>p;
+	long long s=1;
+	for(int i=1;i<=n;i+=1){
+		s=s*i%p;
+	}
+	cout<<s%p;
+	return 0;
+}
+

@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 225312558
+//  题目ID: T634811
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int a,b;
+    cin>>a>>b;
+    if(a>0) cout<<"North";
+    else cout<<"South";
+    if(b>0) cout<<"East";
+    else cout<<"West";
+}

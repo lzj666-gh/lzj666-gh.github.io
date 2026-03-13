@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 131486925
+//  题目ID: P9751
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+int main(){
+//	freopen("bus.in","r",stdin);
+//	freopen("bus.out","w",stdout);
+	ios::sync_with_stdio(0);
+	srand(time(NULL));
+	cout<<rand()%100<<endl;
+}

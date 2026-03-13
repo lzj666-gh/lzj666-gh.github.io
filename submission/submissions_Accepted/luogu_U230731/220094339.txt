@@ -1,0 +1,120 @@
+//  OJ: 洛谷
+//  提交ID: 220094339
+//  题目ID: U230731
+#include <bits/stdc++.h>
+using namespace std;
+constexpr int N = 2e5 + 5, M = 4e5 + 10, V = 4e5 + 10;
+struct Edge {
+	int v, nxt;
+} edge[M];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = {v, head[u]};
+	head[u] = idx;
+}
+int n, m, q;
+int dfn[N], low[N], idk;
+stack<int> stk;
+int tot;
+vector<int> vdcc;
+vector<int> RST[V]; 
+void build_vdcc(int root) {
+	if (vdcc.empty()) return;
+	int square = ++tot;
+	for (int x : vdcc) {
+		RST[square].push_back(x);
+		RST[x].push_back(square);
+	}
+	vdcc.clear();
+}
+void tarjan(int x) {
+	dfn[x] = low[x] = ++idk;
+	stk.push(x);
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		int v = edge[i].v;
+		if (!dfn[v]) {
+			tarjan(v);
+			low[x] = min(low[x], low[v]);
+			if (low[v] >= dfn[x]) {
+				vdcc = {x};
+				while (stk.top() != v) {
+					vdcc.push_back(stk.top());
+					stk.pop();
+				}
+				vdcc.push_back(stk.top());
+				stk.pop();
+				build_vdcc(x);
+			}
+		} else {
+			low[x] = min(low[x], dfn[v]);
+		}
+	}
+}
+int fa[V][20], dep[V], d[V];
+void RST_dfs(int x, int f) {
+	fa[x][0] = f;
+	dep[x] = dep[f] + 1;
+	for (int i = 1; i < 20; ++i)
+		fa[x][i] = fa[fa[x][i-1]][i-1];
+	for (int y : RST[x]) {
+		if (y == f) continue;
+		RST_dfs(y, x);
+	}
+}
+int LCA(int x, int y) {
+	if (dep[x] < dep[y]) swap(x, y);
+	int gap = dep[x] - dep[y];
+	for (int i = 0; i < 20; ++i)
+		if (gap & (1 << i))
+			x = fa[x][i];
+	if (x == y) return x;
+	for (int i = 19; i >= 0; --i)
+		if (fa[x][i] != fa[y][i])
+			x = fa[x][i], y = fa[y][i];
+	return fa[x][0];
+}
+void RST_pushdown(int x, int f) {
+	for (int y : RST[x]) {
+		if (y == f) continue;
+		RST_pushdown(y, x);
+		d[x] += d[y];
+	}
+}
+int main() {
+	//freopen("pressure.in", "r", stdin);
+	//freopen("pressure.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> q;
+	tot = n;
+	for (int i = 1, a, b; i <= m; ++i) {
+		cin >> a >> b;
+		add(a, b);
+		add(b, a);
+	}
+	for (int i = 1; i <= n; ++i) {
+		if (!dfn[i]) {
+			tarjan(i);
+			if (!stk.empty()) {
+				vdcc.clear();
+				while (!stk.empty()) {
+					vdcc.push_back(stk.top());
+					stk.pop();
+				}
+				build_vdcc(i);
+			}
+		}
+	}
+	RST_dfs(1, 0);
+	while (q--) {
+		int u, v;
+		cin >> u >> v;
+		int l = LCA(u, v);
+		d[u]++; d[v]++;
+		d[l]--;
+		if (fa[l][0]) d[fa[l][0]]--;
+	}
+	RST_pushdown(1, 0);
+	for (int i = 1; i <= n; ++i)
+		cout << d[i] << '\n';
+	return 0;
+}

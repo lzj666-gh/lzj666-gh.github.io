@@ -1,0 +1,11 @@
+//  OJ: 洛谷
+//  提交ID: 223880182
+//  题目ID: P5705
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+    string s;
+    cin >> s;
+    for_each(s.rbegin(), s.rend(), [](char c) { cout << c; });
+    return 0;
+}

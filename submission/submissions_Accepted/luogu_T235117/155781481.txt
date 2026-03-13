@@ -1,0 +1,60 @@
+//  OJ: 洛谷
+//  提交ID: 155781481
+//  题目ID: T235117
+#include<bits/stdc++.h>
+#define ok(i) if (fa[i].t() == -1) fa[i].t() = i;
+#define get(i,j) (i + (n + 1) * j)
+#ifdef ONLINE_JUDGE
+#define map unordered_map
+#endif
+using namespace std;
+struct lzj {
+	int n;
+	int& t() { return n; }
+	lzj():n(-1){}
+};
+map<int, lzj>fa;
+int find(int k) {
+	if (fa[k].t() == k) return k;
+	return fa[k].t() = find(fa[k].t());
+}
+int n, m, ans;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, l, r, opt; i <= m; ++i) {
+		cin >> opt >> l >> r;
+		ok(get(l, 0));
+		ok(get(r, 0));
+		//天敌
+		ok(get(l, 1));
+		ok(get(r, 1));
+		//同类
+		ok(get(l, 2));
+		ok(get(r, 2));
+		//捕食
+		if (l > n || r > n) ans++;
+		else if (opt == 1) {
+			if (find(get(l, 1)) == find(get(r, 0)) || find(get(l, 1)) == find(get(r, 2))) {
+				ans++;
+			}
+			else {
+				fa[find(get(l, 0))] = fa[find(get(r, 0))];
+				fa[find(get(l, 1))] = fa[find(get(r, 1))];
+				fa[find(get(l, 2))] = fa[find(get(r, 2))];
+			}
+		}
+		else {
+			if (find(get(l, 1)) == find(get(r, 1)) || find(get(l, 0)) == find(get(r, 1))) {
+				ans++;
+			}
+			else {
+				fa[find(get(l, 0))] = fa[find(get(r, 2))];
+				fa[find(get(l, 1))] = fa[find(get(r, 0))];
+				fa[find(get(l, 2))] = fa[find(get(r, 1))];
+			}
+		}
+	}
+	cout << ans << endl;
+	return 0;
+}

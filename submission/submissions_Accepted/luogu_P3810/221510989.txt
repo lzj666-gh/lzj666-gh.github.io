@@ -1,0 +1,91 @@
+//  OJ: 洛谷
+//  提交ID: 221510989
+//  题目ID: P3810
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+constexpr int N = 1e5 + 5;
+namespace IO {
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	inline void qread(char& IEE) { IEE = gc(); }
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	inline void qwrite(char IEE) { putc_(IEE); }
+	inline void qwrite(const char* str) { while (*str != '\0') putc_(*str++); }
+	inline void qwrite(const std::string& IEE) { qwrite(IEE.c_str()); }
+	template<class... T2> inline void qwrite(const char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class ...T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+struct Node {
+	int a, b, c, cnt, ans;
+	Node() :a(), b(), c(), cnt(), ans() {}
+	friend bool operator!=(const Node& a, const Node& b) {
+		return a.a != b.a || a.b != b.b || a.c != b.c;
+	}
+}t[N];
+int n, tot, ans[N], V;
+class BIT{
+public:
+#define lb(x) (x & ~x + 1)
+	int query(int x) {
+		int ans = 0;
+		for (; x; x -= lb(x)) {
+			ans += s[x];
+		}
+		return ans;
+	}
+	void add(int x, int k) {
+		for (; x <= V; x += lb(x)) {
+			s[x] += k;
+		}
+	}
+	void clear() {
+		unordered_map<int, int>().swap(s);
+	}
+	BIT() :s() {}
+protected:
+	unordered_map<int, int>s;
+}tr;
+inline bool comp2(const Node& a, const Node& b){
+	return a.b == b.b ? a.c < b.c : a.b < b.b;
+}
+inline bool comp1(const Node& a, const Node& b) {
+	return a.a == b.a ? comp2(a, b) : a.a < b.a;
+}
+void CDQ(int l, int r) {
+	if (l == r) return;
+	int mid = l + r >> 1;
+	CDQ(l, mid);
+	CDQ(mid + 1, r);
+	sort(t + l, t + mid + 1, comp2);
+	sort(t + mid + 1, t + r + 1, comp2);
+	for (int j = mid + 1, i = l; j <= r; ++j) {
+		while (i <= mid && t[i].b <= t[j].b)
+			tr.add(t[i].c, t[i].cnt), i++;
+		t[j].ans += tr.query(t[j].c);
+	}
+	tr.clear();
+}
+signed main() {
+	qread(n, V);
+	for (int i = 1; i <= n; ++i) qread(t[i].a, t[i].b, t[i].c);
+	sort(t + 1, t + n + 1, comp1);
+	for (int i = 1; i <= n; ++i) {
+		if (t[i] != t[i - 1]) t[++tot] = t[i];
+		t[tot].cnt++;
+	}
+	CDQ(1, tot);
+	for (int i = 1; i <= tot; ++i) ans[t[i].ans + t[i].cnt - 1] += t[i].cnt;
+	for (int i = 0; i < n; ++i) cout << ans[i] << endl;
+	return 0;
+}

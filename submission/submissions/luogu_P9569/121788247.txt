@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 121788247
+//  题目ID: P9569
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int v,t,id;
+	friend bool operator < (const node &a,const node &b) {
+		return a.t<b.t;
+	}
+}a[100000+10];
+int n,t;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>t;
+	for(int i=1;i<=n;i++) cin>>a[i].v>>a[i].t,a[i].id=i;
+	sort(&a[1],&a[n+1]);
+	int ans=0,st=1;
+	for(int i=1;i<=n;i++){
+		if(a[i].v*(t-a[i].t+1)>ans){
+			ans=a[i].v*(t-a[i].t+1);
+			st=a[i].id;
+		}
+	}
+	cout<<st<<endl;
+	return 0;
+}

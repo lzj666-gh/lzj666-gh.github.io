@@ -1,0 +1,117 @@
+//  OJ: 洛谷
+//  提交ID: 232792578
+//  题目ID: P13824
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+struct Point {
+	ll x, y;
+}points[1000 + 5];
+int n, t;
+vector<int> graph[1000 + 5];
+int parent[1000 + 5], depth[1000 + 5];
+void dfs(int u, int p, int d) {
+	parent[u] = p;
+	depth[u] = d;
+	for (int v : graph[u]) {
+		if (v == p) continue;
+		dfs(v, u, d + 1);
+	}
+}
+int lca(int a, int b) {
+	while (depth[a] > depth[b]) a = parent[a];
+	while (depth[b] > depth[a]) b = parent[b];
+	while (a != b) a = parent[a], b = parent[b];
+	return a;
+}
+vector<int> get_path(int a, int b) {
+	int w = lca(a, b);
+	vector<int> path1, path2;
+	int cur = a;
+	while (cur != w) path1.push_back(cur), cur = parent[cur];
+	path1.push_back(w);
+	cur = b;
+	while (cur != w) path2.push_back(cur), cur = parent[cur];
+	reverse(path2.begin(), path2.end());
+	path1.insert(path1.end(), path2.begin(), path2.end());
+	return path1;
+}
+ll calc(const vector<int>& path) {
+	ll len = 0;
+	for (int i = 0; i < path.size() - 1; i++) {
+		int u = path[i], v = path[i + 1];
+		ll dx = points[u].x - points[v].x, dy = points[u].y - points[v].y;
+		len += dx * dx + dy * dy;
+	}
+	return len;
+}
+ll diss(int i, int j) {
+	ll dx = points[i].x - points[j].x;
+	ll dy = points[i].y - points[j].y;
+	return dx * dx + dy * dy;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> t;
+	for (int i = 1; i <= n; ++i)
+		cin >> points[i].x >> points[i].y;
+	for (int i = 0; i < n - 1; ++i) {
+		int u, v;
+		cin >> u >> v;
+		graph[u].push_back(v);
+		graph[v].push_back(u);
+	}
+	dfs(1, 0, 0);
+	vector<tuple<ll, int, int>> pairs;
+	for (int p = 1; p <= n; ++p)
+		for (int q = p; q <= n; ++q)
+			pairs.push_back({ calc(get_path(p, q)), p, q });
+	sort(pairs.begin(), pairs.end(), [](const auto& a, const auto& b) {
+		if (get<0>(a) != get<0>(b)) return get<0>(a) > get<0>(b);
+		if (get<1>(a) != get<1>(b)) return get<1>(a) < get<1>(b);
+		return get<2>(a) < get<2>(b);
+		});
+	while (t--) {
+		ll d;
+		cin >> d;
+		bool found = false;
+		for (const auto& [len, p, q] : pairs) {
+			vector<int> path = get_path(p, q);
+			int w = lca(p, q), index_w = -1;
+			for (int i = 0; i < path.size(); ++i)
+				if (path[i] == w) {
+					index_w = i;
+					break;
+				}
+			vector<int> U, V;
+			for (int i = 0; i <= index_w; ++i) U.push_back(path[i]);
+			for (int i = index_w; i < path.size(); ++i) V.push_back(path[i]);
+			int s = U.size() - 1; vector<vector<bool>> vis(s + 1, vector<bool>(V.size(), false));
+			vis[0][V.size() - 1] = (diss(U[0], V[V.size() - 1]) <= d);
+			for (int i = 0; i <= s; ++i)
+				for (int j = V.size() - 1; j >= 0; --j) {
+					if (!vis[i][j]) continue;
+					if (i < s) {
+						ll d_val = diss(U[i + 1], V[j]);
+						if (d_val <= d) vis[i + 1][j] = 1;
+					}
+					if (j > 0) {
+						ll d_val = diss(U[i], V[j - 1]);
+						if (d_val <= d) vis[i][j - 1] = 1;
+					}
+					if (i < s && j > 0) {
+						ll d_val = diss(U[i + 1], V[j - 1]);
+						if (d_val <= d) vis[i + 1][j - 1] = 1;
+					}
+				}
+			if (vis[s][0]) {
+				cout << p << " " << q << "\n";
+				found = 1;
+				break;
+			}
+		}
+		if (!found) cout << "1 1\n";
+	}
+	return 0;
+}

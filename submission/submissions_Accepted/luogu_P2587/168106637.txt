@@ -1,0 +1,56 @@
+//  OJ: 洛谷
+//  提交ID: 168106637
+//  题目ID: P2587
+#include<bits/stdc++.h>
+using namespace std;
+int n, h, t, l, r, ans; int* a; int* b;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	a = new int[n + 1];
+	b = new int[n + 1];
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int j = 1; j <= n; ++j) cin >> b[j];
+	sort(a + 1, a + n + 1);
+	sort(b + 1, b + n + 1);
+	h = 1; t = n;
+	l = 1; r = n;
+	ans = 0;
+	while (h <= t && l <= r) {
+		if (a[h] > b[l]) {
+			ans += 2;
+			h++; l++;
+		}
+		else if (a[t] > b[r]) {
+			ans += 2;
+			t--; r--;
+		}
+		else {
+			ans += a[h] == b[r];
+			h++; r--;
+		}
+	}
+	cout << ans << ' ';
+	int* c = a;
+	a = b; b = c;
+	h = 1; t = n;
+	l = 1; r = n;
+	ans = 0;
+	while (h <= t && l <= r) {
+		if (a[h] > b[l]) {
+			ans += 2;
+			h++; l++;
+		}
+		else if (a[t] > b[r]) {
+			ans += 2;
+			t--; r--;
+		}
+		else {
+			ans += a[h] == b[r];
+			h++; r--;
+		}
+	}
+	cout << n + n - ans << endl;
+	return 0;
+}
+//CF1399F

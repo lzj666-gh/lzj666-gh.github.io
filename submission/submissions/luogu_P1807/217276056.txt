@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 217276056
+//  题目ID: P1807
+#include<bits/stdc++.h>
+#define int long long 
+using namespace std;
+constexpr int N = 1500 + 10, M = 50000 + 10;
+struct Edge {
+	int v, w, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+bool vis[N];
+int n, m, s, t;
+int dis[N];
+int SPFA() {
+	memset(dis, 0x3f, sizeof dis);
+	memset(vis, 0, sizeof 0);
+	queue<int>q;
+	q.push(s); vis[s] = 1; dis[s] = 0;
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		vis[now] = 0;
+		for (int i = head[now]; i; i = edge[i].nxt)
+			if (dis[now] + edge[i].w < dis[edge[i].v])
+				dis[edge[i].v] = dis[now] + edge[i].w,
+				vis[edge[i].v] ? void() : q.push(edge[i].v);
+	}
+	return dis[t];
+}
+
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m; s = 1; t = n;
+	for (int i = 1, u, v, w; i <= m; ++i) cin >> u >> v >> w, add(u, v, w);
+	cout << SPFA() << endl;
+	return 0;
+}

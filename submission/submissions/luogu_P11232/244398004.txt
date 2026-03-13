@@ -1,0 +1,63 @@
+//  OJ: 洛谷
+//  提交ID: 244398004
+//  题目ID: P11232
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+#define int long long
+using namespace std;
+int32_t main() {
+	//file(detect);
+	cin.tie(0)->sync_with_stdio(false);
+	int T; cin >> T;
+	while (T--) {
+		int n, m, L, V;
+		cin >> n >> m >> L >> V;
+		vector<tuple<int, int, int>>car;
+		for (int i = 1, d, v, a; i <= n; ++i)
+			cin >> d >> v >> a, car.emplace_back(d, v, a);
+		vector<int>pos(m);
+		for (int i = 0; i < m; ++i) cin >> pos[i];
+		sort(pos.begin(), pos.end());
+		vector<pair<int, int>>len;
+		for (auto& [d, v, a] : car) {
+			int L = 0, R = -1;
+			if (a > 0) {
+				double t = 1.0 * (V - v) / a;
+				if (t < 0) t = 0;
+				double beg = d + v * t + 0.5 * a * t * t;
+				L = lower_bound(pos.begin(), pos.end(), (int)floor(beg)) - pos.begin();
+				R = m - 1;
+				while (L < m && sqrt(v * v + 2 * a * (pos[L] - d)) - 1e-6 <= V) L++;
+				if (L < m) {
+					if (!(sqrt(v * v + 2 * a * (pos[L] - d)) > V))
+						cerr << sqrt(v * v + 2 * a * (pos[L] - d)) << ' ' << V << endl;
+				}
+			}
+			else if (a == 0) {
+				if (v <= V) continue;
+				L = lower_bound(pos.begin(), pos.end(), d) - pos.begin();
+				R = m - 1;
+			}
+			else {
+				if (v <= V) continue;
+				double t = 1.0 * (v - V) / -a;
+				double beg = d + v * t + 0.5 * a * t * t;
+				L = lower_bound(pos.begin(), pos.end(), d) - pos.begin();
+				R = lower_bound(pos.begin(), pos.end(), (int)ceil(beg)) - pos.begin() - 1;
+			}
+			//cerr << "in car v: " << v << " a: " << a << " begin: " << d << " over speed: [" << L << ", " << R << "]\n";
+			if (L <= R) {
+				len.emplace_back(L, R);
+			}
+		}
+		int ans = m, lst = -1;
+		sort(len.begin(), len.end(), [](auto& a, auto& b) { return a.second != b.second ? a.second < b.second : a.first < b.first; });
+		for (auto& [l, r] : len) {
+			//cerr << "line: [" << l << ',' << r << "]\n";
+			if (l <= lst && lst <= r) continue;
+			ans--; lst = r;
+		}
+		cout << len.size() << ' ' << ans << endl;
+	}
+	return 0;
+}

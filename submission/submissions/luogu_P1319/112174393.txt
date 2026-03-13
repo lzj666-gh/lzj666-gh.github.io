@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 112174393
+//  题目ID: P1319
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n;
+main(){
+	ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>n;
+	int x;
+	bool l=false;
+	int hs=1;
+	while(cin>>x){
+		for(int i=1;i<=x;i++){
+			if(++hs==n){
+				hs=1;
+				cout<<'\n';
+			}
+			cout<<l;
+		}
+		l=!l;
+	}
+	return 0;
+}

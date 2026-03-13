@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 176120013
+//  题目ID: T508936
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, m, q, a[100000 + 10];
+string s[100000 + 10];
+unordered_map<string, int>f;
+unordered_map<string, bool>vis;
+vector<pair<string, int>>v[100000 + 10];
+signed main() {
+// 	freopen("jump.in", "r", stdin);
+// 	freopen("jump.out", "w", stdout);
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> q;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = 1; i <= m; ++i) {
+		cin >> s[i];
+		vis[s[i]] = 1;
+	}
+	for (int i = 1; i <= m; ++i) {
+		string now;
+		int j = s[i].size();
+		now = s[i].back();
+		if (vis[now]) v[i].emplace_back(now, a[j]);
+		j--;
+		for (; j >= 1; j--) {
+			now = s[i][j - 1] + now;
+			if(vis[now]) v[i].emplace_back(now, a[j]);
+		}
+	}
+	while (q--) {
+		int op, x;
+		cin >> op >> x;
+		if (op == 1) {
+			for (const auto& tmp : v[x]) f[tmp.first] += tmp.second;
+		}
+		else {
+			cout << f[s[x]] << endl;
+		}
+	}
+	return 0;
+}

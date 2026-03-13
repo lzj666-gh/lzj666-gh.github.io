@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 90679194
+//  题目ID: T140093
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    cout<<"No Pain, No Gain!";
+    return 0;
+}

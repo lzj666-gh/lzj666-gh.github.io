@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 217918359
+//  题目ID: P4999
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+using ll=long long;
+static constexpr int mod=1e9+7;
+int a,b;
+ll jyh[60][2][60][2];
+int num[60];
+ll dfs(int l,bool lstflg,int sum,bool lst0,int now){
+	ll tot=0;
+	if(l==0) return sum;
+	if(jyh[l][lstflg][sum][lst0]^-1) return jyh[l][lstflg][sum][lst0];
+	for(int i=0;i^10;++i){
+		if(!lstflg&&i>num[l]) break;
+		tot+=dfs(l-1,lstflg||i<num[l],sum+((!lst0||i)&&(i==now)),lst0&&(i==0),now);
+        tot%=mod;
+	}
+	jyh[l][lstflg][sum][lst0]=tot;
+	return tot;
+}
+ll Sum(ll x,int d){
+	int l=0;
+	while(x) num[++l]=x%10,x/=10;
+	memset(jyh,-1,sizeof jyh);
+	return dfs(l,0,0,1,d);
+}
+signed main(){
+	ios_base::sync_with_stdio(false);
+    int T;
+    cin>>T;
+    while(T--){
+        ll a,b,ans=0;
+    	cin>>a>>b;
+    	for(int i=0;i^10;++i) ans+=(Sum(b,i)-Sum(a-1,i))*i%mod;
+    	cout<<(ans%mod+mod)%mod<<endl;
+    }
+	return 0;
+}
+//P2602

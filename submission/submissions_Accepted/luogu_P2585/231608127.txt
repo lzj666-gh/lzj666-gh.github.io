@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 231608127
+//  题目ID: P2585
+#include<bits/stdc++.h>
+using namespace std;
+string s;
+int mx[500000 + 5][3], mn[500000 + 5][3];
+int dfs(int x) {
+	if (s[x] == '0') {
+		mx[x][0] = mn[x][0] = 1;
+		mx[x][1] = mx[x][2] = mn[x][1] = mn[x][2] = 0;
+		return x;
+	}
+	if (s[x] == '1') {
+		int ed = dfs(x + 1);
+		mx[x][0] = max(mx[x + 1][1], mx[x + 1][2]) + 1;
+		mx[x][1] = max(mx[x + 1][0], mx[x + 1][2]);
+		mx[x][2] = max(mx[x + 1][0], mx[x + 1][1]);
+		mn[x][0] = min(mn[x + 1][1], mn[x + 1][2]) + 1;
+		mn[x][1] = min(mn[x + 1][0], mn[x + 1][2]);
+		mn[x][2] = min(mn[x + 1][0], mn[x + 1][1]);
+		return ed;
+	}
+	int son1 = x + 1, son2 = dfs(son1) + 1;
+	int ed = dfs(son2);
+	mx[x][0] = max(mx[son1][1] + mx[son2][2], mx[son1][2] + mx[son2][1]) + 1;
+	mx[x][1] = max(mx[son1][0] + mx[son2][2], mx[son1][2] + mx[son2][0]);
+	mx[x][2] = max(mx[son1][0] + mx[son2][1], mx[son1][1] + mx[son2][0]);
+	mn[x][0] = min(mn[son1][1] + mn[son2][2], mn[son1][2] + mn[son2][1]) + 1;
+	mn[x][1] = min(mn[son1][0] + mn[son2][2], mn[son1][2] + mn[son2][0]);
+	mn[x][2] = min(mn[son1][0] + mn[son2][1], mn[son1][1] + mn[son2][0]);
+	return ed;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	memset(mn, 0x3f, sizeof mn);
+	cin >> s;
+	dfs(0);
+	cout << max({ mx[0][0],mx[0][1],mx[0][2] }) << ' ' << min({ mn[0][0],mn[0][1],mn[0][2] }) << endl;
+	return 0;
+}

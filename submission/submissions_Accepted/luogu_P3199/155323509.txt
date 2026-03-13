@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 155323509
+//  题目ID: P3199
+#include<bits/stdc++.h>
+#define eps 1e-10
+using namespace std;
+struct Edge {
+	int v;
+	double w;
+	int nxt;
+}edge[10000 + 10];
+int head[3000 + 10], idx;
+void add(int u, int v, double w) { edge[++idx] = { v,w,head[u] }; head[u] = idx; }
+int n, m;
+double dp[30000 + 10];
+bool vis[3000 + 10], cjl;
+void chk(int x,double tmp) {
+	vis[x] = 1;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (dp[edge[i].v] > dp[x] + edge[i].w - tmp) {
+			if (vis[edge[i].v] || cjl) {
+				cjl = 1;
+				break;
+			}
+			dp[edge[i].v] = dp[x] + edge[i].w - tmp;
+			chk(edge[i].v, tmp);
+		}
+	}
+	vis[x] = 0;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= m; ++i) { static int u, v;static double w; cin >> u >> v >> w; add(u, v, w); }
+	double l = -1e6, r = 1e6, mid;
+	while (r - l > eps) {
+		mid = (l + r) / 2;
+		memset(dp, 0, sizeof dp);
+		memset(vis, 0, sizeof vis); cjl = 0;
+		for (int i = 1; i <= n; ++i) {
+			chk(i, mid); 
+			if (cjl) { break; }
+		}
+		if (cjl) r = mid;
+		else l = mid;
+	}
+	cout << fixed << setprecision(8) << l << endl;
+}

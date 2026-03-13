@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 111192598
+//  题目ID: T338933
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	std::ios::sync_with_stdio(false);
+	long long n;
+	cin>>n;
+	n=n*(n+1)%1000000007*(2*n+1);
+	cout<<n%1000000007<<endl;
+	return 0;
+}

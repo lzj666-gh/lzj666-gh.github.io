@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 114012472
+//  题目ID: T129158
+#include<bits/stdc++.h>
+using namespace std;
+//int v[1000+10],w[1000+10],N,V,dp[1000+10];
+int m,n,w[1000+10],c[1000+10],f[1000+10];
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;++i){
+		cin>>w[i]>>c[i];
+	}
+	for(int i=1;i<=n;i++){
+		for(int v=m;v>=w[i];v--){
+			if(f[v-w[i]]+c[i]>f[v]) f[v]=f[v-w[i]]+c[i];
+		}
+	}
+	cout<<f[m]<<endl;
+	return 0;
+}

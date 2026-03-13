@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 174844729
+//  题目ID: U443956
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+constexpr int mod = 1e9 + 7;
+#ifdef _WIN32
+#define getchar_unlocked getchar
+#define putchar_unlocked putchar
+#endif
+inline int read() {
+	int r = 0; char c = getchar_unlocked();
+	while (c < '0' || c>'9') c = getchar_unlocked();
+	while (c >= '0' && c <= '9') r = r * 10 + (c ^ 48), c = getchar_unlocked();
+	return r;
+}
+inline void write(int x) {
+	if (x > 9) write(x / 10);
+	putchar_unlocked(x % 10 ^ 48);
+	return;
+}
+int a[31000005], n;
+ll ans, bef;
+ll poww(ll a, ll x) {
+	if (x == 0) return 1;
+	ll t = poww(a, x / 2);
+	t = (t * t) % mod;
+	if (x % 2 == 1) t = (t * a) % mod;
+	return t;
+}
+int main() {
+	//	ios_base::sync_with_stdio(false);
+	n = read();
+	for (int i = 1; i <= n; ++i) a[i] = read();
+	for (int i = n, j = 1; i > 0; --i, ++j)
+		ans += a[i] * i * bef, ans %= mod,
+		bef += a[i] * j, bef %= mod;
+	write(ans * poww((1ll * (n - 1) * n / 2 % mod), mod - 2) % mod);
+	return 0;
+}
+/*
+T1:https://www.luogu.com.cn/article/wqxc0iap
+T2:https://www.luogu.com.cn/article/xf736p8a
+T3:https://www.luogu.com.cn/article/sjak58zp
+T4:https://www.luogu.com.cn/article/qc2da156
+*/

@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 127073856
+//  题目ID: P7071
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n;
+main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	if(n&1){
+		cout<<"-1"<<endl;
+		return 0;
+	}
+	int top=2;
+	while(top<=n) top<<=1;
+	while(n){
+		if(n>=top){
+			n-=top;
+			cout<<top<<' ';
+		}
+		top>>=1;
+	}
+}

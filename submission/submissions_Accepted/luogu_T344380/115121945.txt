@@ -1,0 +1,87 @@
+//  OJ: 洛谷
+//  提交ID: 115121945
+//  题目ID: T344380
+#include<bits/stdc++.h>
+using namespace std;
+int maxx=-1,maxy=-1;
+struct node2{
+	int data,top=0;
+	int children[99];
+}a[100+10];
+int max(int x,int y){
+	return x<y?y:x;
+}
+int j[200];
+int dfs2(int k,int last){
+	if(j[k]!=0) return j[k];
+	int re=0;
+	for(int i=1;i<=a[k].top;i++){
+		if(a[k].children[i]==last) continue;
+		re+=dfs2(a[k].children[i],k);
+	}
+	maxy=max(maxy,(re+1)*a[k].data);
+//	cout<<re+1<<' '<<k<<endl;
+	return j[k]=re+1;
+}
+struct node{
+    int data;
+    vector<int> children;
+};
+
+int n;
+vector<node> tree;
+
+pair<int, int> dfs(int root, int parent) {
+    int subtreeSize = 0;
+    int influence = tree[root].data;
+    
+    for (int i=0;i<tree[root].children.size();i++) {
+    	int child=tree[root].children[i];
+        if (child == parent) continue;
+        pair<int, int> result = dfs(child, root);
+        influence = max(influence, result.second);
+        subtreeSize += result.first;
+    }
+    
+    subtreeSize++; // 加上自身节点
+    influence = max(influence, subtreeSize * tree[root].data);
+    
+    return make_pair(subtreeSize, influence);
+}
+int mian();
+int main() {
+	ios::sync_with_stdio(false);
+    cin >> n;
+    
+    tree.resize(n + 1);
+    for (int i = 1; i <= n; i++) {
+        cin >> tree[i].data;
+        a[i].data=tree[i].data;
+    }
+    
+    for (int i = 1; i <= n - 1; i++) {
+        int x, y;
+        cin >> x >> y;
+        
+        tree[x].children.push_back(y);
+        tree[y].children.push_back(x);
+        a[x].children[++a[x].top]=y;
+		a[y].children[++a[y].top]=x;
+    }
+    
+    pair<int, int> result = dfs(1, -1);
+    mian();
+    cout<< ' ' << result.second << endl;
+    
+    return 0;
+}
+
+int mian(){
+	
+	for(int i=1;i<=a[1].top;i++){
+//		cout<<dfs(a[1].children[i],0)<<' '<<a[1].children[i]<<endl;
+		maxx=max(maxx,dfs2(a[1].children[i],1));
+	}
+	cout<<maxx;
+	return 0;
+}

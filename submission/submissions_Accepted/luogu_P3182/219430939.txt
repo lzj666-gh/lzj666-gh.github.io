@@ -1,0 +1,9 @@
+//  OJ: 洛谷
+//  提交ID: 219430939
+//  题目ID: P3182
+n=int(input())
+a,b,c=0,1,0
+for i in range(3,n+1):
+    c=(a+b)*(i-1)
+    a,b=b,c
+print(b)

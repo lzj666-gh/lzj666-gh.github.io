@@ -1,0 +1,43 @@
+//  OJ: 洛谷
+//  提交ID: 176119988
+//  题目ID: T508932
+#include<bits/stdc++.h>
+using namespace std;
+int a[100000 + 10], n, k, rd[100000 + 10], most[100000 + 10];
+int main() {
+// 	freopen("gate.in", "r", stdin);
+// 	freopen("gate.out", "w", stdout);
+	ios_base::sync_with_stdio(false);
+	cin >> n >> k;
+	for (int i = 1; i <= n; ++i) cin >> a[i], rd[a[i]]++;
+	if (k == 1) {
+		int cnt = 0;
+		for (int i = 1; i <= n; ++i) if (a[i] != 1) cnt++;
+		cout << cnt << endl;
+		return 0;
+	}
+	queue<int>q;
+	int cnt = 0;
+	if (a[1] != 1) cnt++, rd[a[1]]--, rd[1]++, a[1] = 1;
+	for (int i = 1; i <= n; ++i) {
+		if (rd[i] == 0) q.push(i);
+		most[i] = k;
+	}
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		if (now == 1) continue;
+		if (most[now] == 1) {
+			if (a[now] != 1) cnt++;
+			rd[a[now]]--;
+			if (rd[a[now]] == 0) q.push(a[now]);
+			continue;
+		}
+		most[a[now]] = min(most[a[now]], most[now] - 1);
+		rd[a[now]]--;
+		if (rd[a[now]] == 0) q.push(a[now]);
+	}
+	cout << cnt << endl;
+	return 0;
+}
+//a[1] must be 1
+//all node should goto 1's path'lenth less_equal than k

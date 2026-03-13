@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 129086222
+//  题目ID: P1226
+#include<bits/stdc++.h>
+using namespace std;
+long long _pow_(long long a,long long x,long long p){ //a^b mod p
+	if(x==0) return 1;
+	long long t=_pow_(a,x/2,p)%p;
+	t=(t*t)%p;
+	if(x%2==1) t=(t*a)%p;
+	return t;
+}
+int main(){
+	long long a,b,p;
+	scanf("%lld%lld%lld",&a,&b,&p);
+	printf("%lld^%lld mod %lld=%lld",a,b,p,_pow_(a,b,p));
+	return 0;
+}

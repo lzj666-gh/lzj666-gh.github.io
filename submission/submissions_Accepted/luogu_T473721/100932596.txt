@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 100932596
+//  题目ID: T473721
+#include<bits/stdc++.h>
+using namespace std;
+char a[505],b[505];
+int L1,L2=0;
+double x;
+int main(){
+	cin>>x;
+	cin>>a;
+	cin>>b;
+	L1=strlen(a);
+	for(int i=0;i<L1;i++){
+		if(a[i]==b[i]) L2++;
+	}
+	if(1.0*L2/L1>x) cout<<"yes";
+	else cout<<"no";
+	return 0;
+}

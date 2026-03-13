@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 217953057
+//  题目ID: P8710
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 1e6 + 10, M = 1e6 + 10;
+int fa[N], t[N];
+int find(int x) {
+	if (fa[x] == x) return x;
+	int k = fa[x], ret = find(fa[x]);
+	if (k ^ ret) t[x] += t[k];
+	return fa[x] = ret;
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n, m;
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) fa[i] = i;
+	while (m--) {
+		int opt, a, b;
+		cin >> opt >> a >> b;
+		if (opt == 1) {
+			int x = find(a), y = find(b);
+			if (x ^ y) t[x] -= t[y];
+			fa[x] = y;
+		}
+		else t[find(a)] += b;
+	}
+	int l;
+	for (int i = 1; i <= n; ++i) { l = find(i); cout << (i ^ l ? t[l] : 0) + t[i] << ' '; }
+	return 0;
+}

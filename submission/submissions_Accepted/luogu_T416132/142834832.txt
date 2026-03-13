@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 142834832
+//  题目ID: T416132
+#include<bits/stdc++.h>
+using namespace std;
+int n,k,r;
+bool b[100+10][100+10][2],a[100+10][100+10];//0：向右，1：向下 
+short mp[100+10][100+10],idx=1;
+int sum[10000+10];
+void dfs(int x,int y){
+	if(x<1||x>n||y<1||y>n) return;
+	if(mp[x][y]) return;
+	mp[x][y]=idx;
+	if(a[x][y])sum[idx]++;
+	if(!b[x+1][y][0]) dfs(x+1,y);
+	if(!b[x][y+1][1]) dfs(x,y+1);
+	if(!b[x][y][0]) dfs(x-1,y);
+	if(!b[x][y][1]) dfs(x,y-1);
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>k>>r;
+	for(int i=1;i<=r;++i){
+		int q1,q2,w1,w2;
+		cin>>q1>>w1>>q2>>w2;
+		if(!(q1<=q2&&w1<=w2)) swap(q1,q2),swap(w1,w2);
+		if(q1+1==q2) b[q2][w2][0]=1;
+		else b[q2][w2][1]=1;
+	}
+	for(int i=1;i<=k;++i){
+		int x,y;
+		cin>>x>>y;
+		a[x][y]=true;
+	}
+	for(int i=1;i<=n;++i){
+		for(int j=1;j<=n;++j){
+			if(mp[i][j]) continue;
+			dfs(i,j);++idx;
+		}
+	}
+	auto ans=0ull;
+	for(int i=1;i<idx;++i)
+	for(int j=i;j<idx;++j){
+		if(i==j) continue;
+		ans+=sum[i]*sum[j];
+	}
+	cout<<ans<<endl;
+	return 0;
+}

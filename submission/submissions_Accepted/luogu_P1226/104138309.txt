@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 104138309
+//  题目ID: P1226
+#include<bits/stdc++.h>
+using namespace std;
+long long b,a,p;
+long long mod(long long x){
+	if(x==0) return 1;
+	long long t=mod(x/2)%p;
+	t=(t*t)%p;
+	if(x%2==1) t=(t*a)%p;
+	return t;
+}
+int main(){
+	scanf("%lld%lld%lld",&a,&b,&p);
+	printf("%lld^%lld mod %lld=%lld",a,b,p,mod(b));
+	return 0;
+} 

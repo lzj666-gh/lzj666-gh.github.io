@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 218575697
+//  题目ID: P3383
+#include<bits/stdc++.h>
+using namespace std;
+int read() {
+	int x = 0; char c = getchar();
+	while (c > '9' || c < '0') c = getchar();
+	while (c >= '0' && c <= '9') x = x * 10 + (c ^ 48), c = getchar();
+	return x;
+}
+void print(int x) {
+	if (x < 10) return putchar(x + '0'), void();
+	print(x / 10); putchar(x % 10 + '0');
+}
+int n, q;
+bool isp[100000000 + 10];
+vector<int>prm;
+void getprm() {
+	memset(isp, 1, sizeof isp);
+	isp[0] = isp[1] = 0;
+	for (int i = 2; i <= n; ++i) {
+		if (isp[i])
+			prm.push_back(i);
+		for (int j = 0; j < prm.size(); ++j) {
+			if (i * prm[j] > n) break;
+			isp[i * prm[j]] = 0;
+			if (i % prm[j] == 0) break;
+		}
+	}
+}
+signed main() {
+	n = read(); q = read();
+	getprm();
+	while (q--) {
+		int k = read();
+		print(prm[k - 1]);
+		puts("");
+	}
+	return 0;
+}

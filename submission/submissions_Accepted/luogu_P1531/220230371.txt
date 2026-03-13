@@ -1,0 +1,62 @@
+//  OJ: 洛谷
+//  提交ID: 220230371
+//  题目ID: P1531
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 2e5 + 5;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int max = INT_MIN;
+	}tree[N << 2];
+	void pushup(int p) {
+		tree[p].max = max(tree[lc(p)].max, tree[rc(p)].max);
+	}
+	void build(int p, int l, int r, vector<int>& a) {
+		if (l == r) {
+			tree[p].max = a[l];
+			return;
+		}
+		build(lson, a);
+		build(rson, a);
+		pushup(p);
+	}
+	void add(int p, int l, int r, int x, int val) {
+		if (l == r) {
+			tree[p].max = max(tree[p].max, val);
+			return;
+		}
+		if (x <= mid) add(lson, x, val);
+		if (x > mid) add(rson, x, val);
+		pushup(p);
+	}
+	int query(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].max;
+		if (r < L || R < l) return INT_MIN;
+		return max(query(lson, L, R), query(rson, L, R));
+	}
+}t;
+int n, m;
+vector<int>a;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	a.resize(n + 1);
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	t.build(1, 1, n, a);
+	while (m--) {
+		char op;
+		int l, r;
+		cin >> op >> l >> r;
+		if (op == 'U')
+			t.add(1, 1, n, l, r);
+		else if (op == 'Q')
+			cout << t.query(1, 1, n, l, r) << endl;
+	}
+	return 0;
+}

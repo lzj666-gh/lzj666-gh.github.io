@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 199053560
+//  题目ID: B2051
+#include<bits/stdc++.h>
+using namespace std;
+int x,y;
+int main(){
+	cin.tie(0)->sync_with_stdio(false);
+	cin>>x>>y;
+	if(-1<=x&&x<=1&&-1<=y&&y<=1) cout<<"yes"<<endl;
+	else cout<<"no"<<endl;
+	return 0;
+}

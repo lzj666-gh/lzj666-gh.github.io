@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 98275048
+//  题目ID: T66277
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int a[12]={1,4,6,9,13,16,19,28,40,75,100,201};
+	int n;cin>>n;int i=0;
+	while(n>a[i]){
+		i++;
+	}
+	for(int j=11;j>i;j--){
+		a[j]=a[j-1];
+	}
+	a[i]=n;
+	for(int j=0;j<=11;j++){
+		cout<<a[j]<<" ";
+	}
+}

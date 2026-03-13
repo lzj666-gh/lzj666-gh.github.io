@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 179713291
+//  题目ID: P11155
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, d[105];
+vector<int>a[105];
+bool p[105][105];
+bool nw[105];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		cin >> d[i];
+		for (int j = 1, tmp; j <= d[i]; ++j) cin >> tmp, a[i].push_back(tmp);
+	}
+	cin >> m;
+	for (int i = 1; i <= m; ++i) {
+		memset(nw, 0, sizeof nw);
+		for (int j = 1; j <= n; ++j) cin >> p[i][j];
+		for (int j = 1; j <= n; ++j) {
+			bool ok = 1;
+			for (int k : a[j]) if (!nw[k]) ok = 0;
+			if (ok) nw[j] = p[i][j];
+		}
+		int tot = 0;
+		for (int j = 1; j <= n; ++j) tot += nw[j];
+		cout << tot << endl;
+	}
+	return 0;
+}

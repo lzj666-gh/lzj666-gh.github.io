@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 98270414
+//  题目ID: T66275
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n;cin>>n;const int N=n;int a[N];
+	for(int i=0;i<n;i++){
+		cin>>a[i];
+	}
+	int sh=0,lian=1,max=-1;
+	for(int i=0;i<n;i++){
+		if(a[i]==sh){
+			lian++;
+		}
+		else{
+			if(lian>max){
+				max=lian;
+			}
+			lian=1;
+		}
+		sh=a[i];
+	}
+	cout<<max;
+	return 0;
+}

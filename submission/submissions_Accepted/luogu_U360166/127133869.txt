@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 127133869
+//  题目ID: U360166
+#include<bits/stdc++.h>
+using namespace std;
+__int128 read(){
+	auto c=getchar();__int128 x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=x*10+c-'0';c=getchar();}return x*s;}
+void write(auto x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+int main(){
+	__int128 a,b;
+	a=read();b=read();
+	write(a+b);
+}

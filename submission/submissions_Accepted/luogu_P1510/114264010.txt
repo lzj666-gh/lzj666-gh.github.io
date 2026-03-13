@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 114264010
+//  题目ID: P1510
+#include<bits/stdc++.h>
+using namespace std;
+int V,N,v[100000+10],w[100000+10],dp[100000+10],c;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>V>>N>>c;
+	for(int i=1;i<=N;++i){
+		cin>>w[i]>>v[i];
+	}
+	for(int i=1;i<=N;i++){
+		for(int j=c;j>=v[i];j--){
+			if(dp[j-v[i]]+w[i]>dp[j]) dp[j]=dp[j-v[i]]+w[i];
+		}
+	}
+	for(int i=1;i<=V;i++){
+		if(dp[i]>=V){
+			cout<<c-i<<endl;
+			return 0;
+		}
+	}
+	cout<<"Impossible"<<endl;
+	return 0;
+}

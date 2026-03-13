@@ -1,0 +1,77 @@
+//  OJ: 洛谷
+//  提交ID: 145357071
+//  题目ID: T307162
+#include<bits/stdc++.h>
+#define hash lzj_hash
+using namespace std;
+template<typename T1,typename T2> ostream& operator << (ostream&out,pair<T1,T2>&p){out<<'{'<<p.first<<','<<p.second<<'}';return out;}
+template<typename T>inline ostream& operator<<(ostream&out,vector<T>v){out<<'{';for(int k:v) out<<k<<' ';out<<'}';return out;}
+vector<int>v;
+int n;
+int val(const vector<int>&v){
+	int t=0;
+	for(int i=0;i<v.size()-1;++i) if(v[i+1]!=v[i]+1) ++t;
+	return (t+2)/3;
+}
+inline void swp(vector<int>&v,int l,int r,int L,int R){
+	vector<int>now;
+	for(int i=l;i<r;++i) now.push_back(v[i]);
+//	cout<<"now:"<<now<<endl;
+	for(int i=l,j=r;j<R;++i,++j) v[i]=v[j];
+//	cout<<"v:"<<v<<endl;
+	for(int i=L,j=0;i<R;++i,++j) v[i]=now[j];
+//	cout<<"v:"<<v<<endl;
+}
+unsigned long long hash(const vector<int>&v){
+	unsigned long long ans=0,p=1;
+	for(int i=0;i<v.size();++i) ans+=p*v[i],p*=107;
+	return ans;
+}
+unordered_map<unsigned long long,pair<int,bool>>vis;
+bool iddfs(int dep,int k,vector<int>now){
+	int nhash=hash(now);
+	if(vis[nhash].first<=k&&vis[nhash].first){
+//		cout<<vis[nhash]<<endl;
+		return vis[nhash].second;
+	}
+	vis[nhash].first=k;
+	int g=val(now);
+	if(g+k>dep) return vis[nhash].second=0;
+	if(!g){
+//		cout<<"find "<<now<<" !! it's good"<<endl;
+		return vis[nhash].second=1;
+	}
+//	cout<<"on dep "<<dep<<" line "<<k<<" is "<<now<<endl;
+	for(int i=0;i<now.size();++i){
+		for(int j=i+1;j<=now.size();++j){//[i,j)
+			for(int l=i+1;l<now.size();++l){
+				int r=j-i+l;//[i,j)->[l,r)
+				if(r>now.size()) continue;
+				vector<int>nw=now;
+				swp(nw,i,j,l,r);
+//				cout<<"try"<<nw<<endl;
+				if(iddfs(dep,k+1,nw)) return vis[nhash].second=1;
+			}
+		}
+	}
+	return vis[nhash].second=0;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--){
+		cin>>n;
+		v.clear();
+		vis.clear();
+		for(int i=0,tmp;i^n;++i) cin>>tmp,v.push_back(tmp);
+		if(!val(v)) cout<<0;else 
+		if(vis.clear(),iddfs(1,0,v)) cout<<1;
+		else if(vis.clear(),iddfs(2,0,v)) cout<<2;
+		else if(vis.clear(),iddfs(3,0,v)) cout<<3;
+		else if(vis.clear(),iddfs(4,0,v)) cout<<4;
+		else cout<<"5 or more";
+		cout<<endl;
+	}
+	return 0;
+}

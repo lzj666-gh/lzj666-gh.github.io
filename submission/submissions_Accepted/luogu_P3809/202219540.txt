@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 202219540
+//  题目ID: P3809
+#include<bits/stdc++.h>
+using namespace std;
+string s;
+int n, w, sa[2000000 + 5];
+int rk[2000000 + 5], oldrk[2000000 + 5], id[1000000 + 5], cnt[1000000 + 5];
+void sort(int m) {
+	int cur = 0;
+	for (int i = n - w + 1; i <= n; ++i) id[++cur] = i;
+	for (int i = 1; i <= n; ++i)
+		if (sa[i] > w) 
+			id[++cur] = sa[i] - w;
+	memset(cnt, 0, sizeof(cnt));
+	for (int i = 1; i <= n; ++i) ++cnt[rk[i]];
+	for (int i = 1; i <= m; ++i) cnt[i] += cnt[i - 1];
+	for (int i = n; i >= 1; --i) sa[cnt[rk[id[i]]]--] = id[i];
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> s;
+	n = s.size();
+	s = ' ' + s;
+	int p = 128;
+	for (int i = 1; i <= n; ++i) rk[i] = s[i];
+	for (int i = 1; i <= n; ++i) ++cnt[rk[i]];
+	for (int i = 1; i <= p; ++i) cnt[i] += cnt[i - 1];
+	for (int i = n; i >= 1; --i) sa[cnt[rk[i]]--] = i;
+	for (w = 1; w < n; w <<= 1) {
+		sort(max(n, p));
+		memcpy(oldrk, rk, sizeof oldrk);
+		for (int i = 1, p = 0; i <= n; ++i) {
+			if (oldrk[sa[i]] != oldrk[sa[i - 1]] || oldrk[sa[i] + w] != oldrk[sa[i - 1] + w]) 
+				++p;
+			rk[sa[i]] = p;
+		}
+		if (p == n) break;
+	}
+	for (int i = 1; i <= n; ++i) cout << sa[i] << ' ';
+	return 0;
+}

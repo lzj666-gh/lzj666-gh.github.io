@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 125289897
+//  题目ID: P1980
+#include<bits/stdc++.h>
+using namespace std;
+inline int read(){
+	register int s=1,x=0;
+	register char c=getchar();
+	if(c=='-'){
+		s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0'){
+		x=(x<<3)+(x<<1)+(c^48);
+		c=getchar(); 
+	}
+	return s*x;
+}
+inline void write(int x){
+	if(x==0) return;
+	if(x<0){
+		putchar('-');
+		x=~x-1;
+	}
+	write(x/10);
+	putchar(x%10+'0');
+}
+int n,x,ans;
+int main(){
+	n=read();
+	x=read();
+	for(int i=1;i<=n;++i){
+		int tmp=i;
+		while(tmp){
+			ans+=(tmp%10==x);
+			tmp/=10;
+		}
+	}
+	cout<<ans<<endl;
+}

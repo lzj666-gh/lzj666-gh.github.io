@@ -1,4 +1,0 @@
-//  OJ: 洛谷
-//  提交ID: 200160247
-//  题目ID: P10552
-print('Please carefully check the download files before the contest begins!!!')

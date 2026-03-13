@@ -1,0 +1,15 @@
+//  OJ: 洛谷
+//  提交ID: 176121259
+//  题目ID: T508934
+#include<bits/stdc++.h>
+using namespace std;
+string s[100000 + 10];
+int n;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> s[i];
+	sort(s + 1, s + n + 1, [](const string& a, const string& b)->bool {return a + b < b + a; });
+	for (int i = 1; i <= n; ++i) cout << s[i];
+	return 0;
+}

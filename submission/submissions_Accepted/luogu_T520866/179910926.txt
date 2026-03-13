@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 179910926
+//  题目ID: T520866
+#include<bits/stdc++.h>
+//#pragma warning(disable:4996)
+//#define ONLINE
+using namespace std;
+int n, m, a, b;
+long long A[1000 + 10][1000 + 10], B[1000 + 10][1000 + 10];
+long long query(int i1, int j1, int i2, int j2) {
+	return B[i2][j2] + B[i1 - 1][j1 - 1] - B[i1 - 1][j2] - B[i2][j1 - 1];
+}
+int main() {
+#ifdef ONLINE
+	freopen("matrix.in", "r", stdin);
+	freopen("matrix.out", "w", stdout);
+#endif
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> a >> b;
+	for (int i = 1; i <= n; ++i) for (int j = 1; j <= m; ++j) cin >> A[i][j];
+	for (int i = 1; i <= n; ++i) {
+		B[i][1] = B[i - 1][1] + A[i][1];
+		for (int j = 2; j <= m; ++j)
+			B[i][j] = B[i - 1][j] + B[i][j - 1] - B[i - 1][j - 1] + A[i][j];
+	}
+	long long ans = LLONG_MIN;
+	int itop = min(n - a + 1, n - b + 1);
+	int jtop = min(m - a + 1, m - b + 1);
+	for (int i = 1; i <= itop; ++i)
+		for (int j = 1; j <= jtop; ++j)
+			if (query(i, j, i + a - 1, j + b - 1) == query(i, j, i + b - 1, j + a - 1))
+				ans = max(ans, query(i, j, i + a - 1, j + b - 1));
+	if (ans == LLONG_MIN) cout << "Chinese_zjc_ L" << endl;
+	else cout << ans << endl;
+	return 0;
+}
+//9:58 finish

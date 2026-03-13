@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 201688801
+//  题目ID: P3382
+#include<bits/stdc++.h>
+using namespace std;
+constexpr double eps = 1e-8;
+int n;
+double L, R, s[15];
+double g(double x) {
+	double ans = 0, nw = 1;
+	for (int i = n; i >= 0; --i) ans += s[i] * nw, nw *= x;
+	return ans;
+}
+bool comp(double l, double r) {
+	if (fabs(l - r) <= eps) return false;
+	return l < r;
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> L >> R;
+	for (int i = 0; i <= n; ++i) cin >> s[i];
+	double l = L, stp, mid1, mid2, r = R;
+	while (comp(l, r)) {
+		stp = (r - l) / 3;
+		mid1 = l + stp;
+		mid2 = mid1 + stp;
+		if (comp(g(mid2), g(mid1))) r = mid2;
+		else if (comp(g(mid1), g(mid2))) l = mid1;
+		else l = mid1, r = mid2;
+	}
+	cout << l << endl;
+	return 0;
+}

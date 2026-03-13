@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 94340448
+//  题目ID: T292100
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int a;cin>>a;
+	for(int i=1;i<=a;i++){
+		cout<<"Hello,world"<<endl;
+	}
+	return 0;
+}

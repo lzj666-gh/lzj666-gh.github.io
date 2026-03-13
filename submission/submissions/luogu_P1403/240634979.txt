@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 240634979
+//  题目ID: P1403
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 1e6 + 5;
+vector<int>prm;
+bool vis[N];
+int g[N], f[N];
+void prep() {
+	f[1] = 1; g[1] = 1;
+	for (int i = 2; i < N; ++i) {
+		if (!vis[i]) prm.push_back(i), f[i] = 2, g[i] = 1;
+		for (int& k : prm) {
+			if (k * i >= N) break;
+			vis[k * i] = 1;
+			if (i % k == 0) {
+				f[i * k] = f[i] / (g[i] + 1) * (g[i] + 2);
+				g[i * k] = g[i] + 1;
+				break;
+			}
+			else {
+				f[i * k] = f[i] * f[k];
+				g[i * k] = 1;
+			}
+		}
+	}
+	for (int i = 1; i < N; ++i) f[i] += f[i - 1];
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	prep(); int n; cin >> n;
+	cout << f[n] << endl;
+	return 0;
+}

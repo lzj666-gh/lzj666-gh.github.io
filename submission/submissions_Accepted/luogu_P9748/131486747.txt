@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 131486747
+//  题目ID: P9748
+#include<bits/stdc++.h>
+using namespace std;
+int n,day,ans,k;
+int main(){
+//	freopen("apple.in","r",stdin);
+//	freopen("apple.out","w",stdout);
+	ios::sync_with_stdio(0);
+	cin>>n;
+	while(n>0){
+		++day,--n;
+		if(n%3==0){
+			ans=day;
+			k=n/3;n-=k;
+			break;
+		}
+		k=n/3;n-=k;
+	}while(n>0){
+		++day,--n;
+		k=n/3;n-=k;
+	}
+	cout<<day<<" "<<ans<<endl;
+	return 0;
+}

@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 95275280
+//  题目ID: P5725
+#include<bits/stdc++.h>
+using namespace std;
+void juzhen(int x);
+void sanjiao(int x);
+int main(){
+	int x;cin>>x;
+	juzhen(x);
+	cout<<endl;
+	sanjiao(x);
+}
+void juzhen(int x){
+	int c=1;
+	for(int i=1;i<=x;i++){
+		for(int y=1;y<=x;y++){
+			if(c<=9){
+				cout<<0;
+			}
+			cout<<c;
+			c++;
+		}
+		cout<<endl;
+	}
+}
+void sanjiao(int x){
+	int c=1;
+	for(int i=1;i<=x;i++){
+		for(int y=1;y<=x*2-i*2;y++){
+			cout<<" ";
+		}
+		for(int y=1;y<=i;y++){
+			if(c<=9){
+				cout<<0;
+			}
+			cout<<c;
+			c++;
+		}
+		cout<<endl;
+	}
+}

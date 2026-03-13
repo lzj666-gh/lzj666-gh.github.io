@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 115965041
+//  题目ID: T164522
+#include<bits/stdc++.h>
+using namespace std;
+bool a[1<<20+1];
+int d,i;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>d>>i;
+	int now=1;
+	for(int k=1;k<=i;k++){
+		now=1;
+		for(int j=1;j<=d;j++){
+			if(a[now]==false) a[now]=true,now=now*2;
+			else a[now]=false,now=now*2+1;
+		}
+	}
+	cout<<now/2<<endl;
+	return 0;
+}

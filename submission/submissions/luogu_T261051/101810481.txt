@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 101810481
+//  题目ID: T261051
+#include<bits/stdc++.h>
+using namespace std;
+int a[100000+100]={0},n,x,y,cnt=0;
+int main(){
+	scanf("%d%d%d",&n,&x,&y);
+	for(int i=1;i<=n;i++){
+		scanf("%d",&a[i]);
+	}
+	sort(&a[1],&a[n+1]);
+//	for(int i=1;i<=n;i++) cout<<a[i]<<" ";
+//	cout<<endl;
+	for(int i=1;i<=n;i++){
+		for(int j=n;j>i;j--){
+			if(a[i]+a[j]>=x&&a[i]+a[j]<=y){
+//				cout<<a[i]<<" "<<i<<" "<<a[j]<<" "<<j<<endl;
+				cnt++;
+			}
+			if(a[i]+a[j]<x) break;
+		}
+	}
+	cout<<cnt<<endl;
+	return 0;
+}

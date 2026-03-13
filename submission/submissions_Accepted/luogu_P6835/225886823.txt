@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 225886823
+//  题目ID: P6835
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int mod = 998244353;
+struct Edge {
+	int v, nxt;
+}edge[10000000 + 5];
+int head[1000000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int id, n, m, u, v;
+long long f[1000000 + 5], sum[1000000 + 5];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> id >> n >> m;
+	for (int i = 1; i <= m; ++i) cin >> u >> v, add(u, v), f[u]++;
+	//for (int x = 1; x <= n; ++x) for (int i = head[x]; i; i = edge[i].nxt) cout << ' ' << x << ',' << edge[i].v << endl;
+	for (int i = 1; i <= n; ++i) {
+		f[i]++;
+		for (int j = head[i]; j; j = edge[j].nxt)
+			//cerr << i << ',' << edge[j].v << endl, 
+			f[i] += (sum[i - 1] - sum[edge[j].v - 1]) % mod;
+		sum[i] = (sum[i - 1] + (f[i] %= mod)) % mod;
+		//cerr << f[i] << endl;
+	}
+	cout << (sum[n] + mod) % mod << endl;
+	return 0;
+}

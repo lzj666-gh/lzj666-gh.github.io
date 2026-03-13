@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 128578861
+//  题目ID: P1672
+#include<bits/stdc++.h>
+using namespace std;
+int f1,d,f2,c;
+int a[2000+10];
+int ch[2000+10];//ch[i]=a[i+1]-a[i]
+long long s;
+int main(){
+//	freopen("feed.in","r",stdin);
+//	freopen("feed.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>c>>f1>>f2>>d;
+	s=f2;
+	for(int i=1;i<=c;++i){
+		int l,r;
+		cin>>l>>r;
+		++ch[l-1];
+		--ch[r];
+	}
+	for(int i=1;i<=d;++i) a[i]=ch[i-1]+a[i-1];
+	s+=a[d];
+	for(int i=d-1;i>=1;--i){
+		s+=a[i];
+//		cerr<<i<<": s: "<<s<<" a[i]: "<<a[i]<<endl;
+		if(s==f1){
+			cout<<i<<endl;
+			return 0;
+		}
+	}
+	return 0;
+}

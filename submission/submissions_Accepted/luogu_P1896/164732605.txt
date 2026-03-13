@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 164732605
+//  题目ID: P1896
+#include<bits/stdc++.h>
+using namespace std;
+int d[611+5], cnt, n, k, mx, t[611+5];
+long long f[10 + 5][25 + 5][611 + 5];
+void DP() {
+	f[0][0][1] = 1;
+	for (int i = 1; i <= n + 1; ++i)
+		for (int j = 0; j <= mx; ++j)
+			for (int nw = 1; nw <= cnt; ++nw)
+				for (int lst = 1; lst <= cnt; ++lst) {
+					if ((d[nw] & d[lst]) || (d[nw] & (d[lst] << 1)) || (d[nw] & (d[lst] >> 1))) continue;
+					if (j - t[nw] >= 0)
+						f[i][j][nw] += f[i - 1][j - t[nw]][lst];
+//						cout << "line: " << i << " now:" << bitset<15>(d[nw]) << " using last " << bitset<15>(d[lst]) << " updata sigma:" << f[i - 1][j - t[nw]][lst] << " now is:" << f[i][j][nw] << endl;
+				}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> k;
+	mx = ((n + 1) / 2) * ((n + 1) / 2);
+	for (int i = 0; i < (1 << n); ++i)
+		if (!(i & (i << 1))) d[++cnt] = i, t[cnt] = bitset<15>(i).count();
+//	for (int i = 1; i <= cnt; ++i) cout << bitset<15>(d[i]) << ' ' << t[i] << endl;
+	DP();
+	long long ans = 0;
+	for (int i = 1; i <= cnt; ++i) ans += f[n][k][i];
+	cout << ans << endl;
+	return 0;
+}

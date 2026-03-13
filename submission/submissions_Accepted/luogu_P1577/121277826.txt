@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 121277826
+//  题目ID: P1577
+#include<bits/stdc++.h>
+#define f_u(i,j,n,k) for(register int i=j;i<=n;i+=k)
+#define f_d(i,j,n,k) for(register int i=j;i>=n;i-=k)
+#define maxn 100010
+using namespace std;
+double d[maxn];
+int a[maxn],n,m,minn,maxx;
+inline bool check(int x){
+	int num=0;
+	f_u(i,1,n,1) num+=a[i]/x;
+	return num>=m;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	f_u(i,1,n,1) cin>>d[i],a[i]=(int)(d[i]*100);
+	int l=0,r=INT_MAX;
+	while(l<=r){
+		int mid=(l+r)>>1;
+		if(mid==0)	break;
+		if(check(mid)) l=mid+1;
+		else r=mid-1;
+	}
+	cout<<fixed<<setprecision(2)<<r/100.0<<endl;
+	return 0;
+}

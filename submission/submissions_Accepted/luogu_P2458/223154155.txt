@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 223154155
+//  题目ID: P2458
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 150000 + 5;
+struct Edge {
+	int v, nxt;
+}edge[N << 1];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+long long dp[N][3], r[N];
+void dfs(int x, int fa) {
+	dp[x][0] = r[x]; dp[x][1] = 0; dp[x][2] = 0;
+	bool flg = 1; long long ans = LLONG_MAX;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs(edge[i].v, x),
+			dp[x][0] += min({ dp[edge[i].v][0],dp[edge[i].v][1],dp[edge[i].v][2] }),
+			dp[x][2] += min(dp[edge[i].v][0], dp[edge[i].v][1]),
+			dp[x][1] += min(dp[edge[i].v][0], dp[edge[i].v][1]),
+			flg &= dp[edge[i].v][1] < dp[edge[i].v][0],
+			ans = min(ans, dp[edge[i].v][0] - dp[edge[i].v][1]);
+	if (flg) dp[x][1] += ans;
+}
+int n;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		int idx, s, k;
+		cin >> idx >> r[idx] >> s;
+		while (s--) cin >> k, add(idx, k), add(k, idx);
+	}
+	dfs(1, 1);
+	cout << min(dp[1][0], dp[1][1]) << endl;
+	return 0;
+}

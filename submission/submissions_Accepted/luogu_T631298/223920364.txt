@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 223920364
+//  题目ID: T631298
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int n, p, pp, a[5000 + 5], pos[5000 + 5][10000 + 10];
+int qpow(int a, int b) {
+	int res = 1;
+	while (b) {
+		if (b & 1) (res *= a) %= mod;
+		(a *= a) %= mod; b >>= 1;
+	}
+	return res;
+}
+signed main(int args, char** argv) {
+	if (0) {
+		string s = argv[0];
+		s.pop_back(); s.pop_back(); s.pop_back();
+		freopen((s + "in").c_str(), "r", stdin);
+		freopen((s + "out").c_str(), "w", stdout);
+	}
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> p;
+	p = p * qpow(100, mod - 2) % mod;
+	pp = (1 - p + mod) % mod;
+	pos[0][5002] = 1;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 1; j <= 10004; ++j) {
+			(pos[i][j] += pos[i - 1][j] * p % mod) %= mod;
+			(pos[i][j + a[n - i + 1]] += pos[i - 1][j] * pp % mod) %= mod;
+		}
+		pos[i][5002] = 1;
+	}
+	for (int i = 5002 - n; i <= 5002 + n; ++i) {
+		cout << pos[n][i] << ' ';
+	}
+}

@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 105602837
+//  题目ID: P2404
+#include<bits/stdc++.h>
+using namespace std;
+int n,b[10]={1,0},m;
+void print(int k){
+//	printf("%d:%d=",ans++,n);
+	for(int i=1;i<k;i++) printf("%d+",b[i]);
+	printf("%d\n",b[k]) ;
+}
+void dfs(int k,int x){
+//	cout<<k<<" "<<x<<endl;
+	if(x==0&&b[1]!=n){
+		print(k-1); 
+		return;
+	}
+	for(int i=b[k-1];i<=x;i++){
+		b[k]=i;
+		dfs(k+1,x-i);
+	}
+}
+int main(){
+	scanf("%d",&n);
+	dfs(1,n);
+	return 0;
+}

@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 129921289
+//  题目ID: T390076
+#include<bits/stdc++.h>
+using namespace std;
+string a;
+int x,y;
+pair<int,int> p1,p2;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>a;
+	x=0,y=a.size()-1;
+	while(a[x]==a[y]&&x<y) ++x,--y;
+	p1={x,y};++x,--y;
+	if(a[p1.first]!=a[p1.second]){
+		a[p1.first]=a[p1.second]=min(a[p1.first],a[p1.second]);
+		while(a[x]==a[y]&&x<y) ++x,--y;
+		p2={x,y};
+		if(a[p2.first]!=a[p2.second]){
+			a[p2.first]=a[p2.second]=min(a[p2.first],a[p2.second]);
+		}
+		else if(a.size()&1) a[a.size()/2]='a';
+	}
+	else{
+		int i=-1,j=a.size()-1;
+		while(a[++i]=='a'&&i<a.size()) --j;
+		a[i]='a';a[j]='a';
+	}
+	if(a[0]=='c') a[0]='a';
+	cout<<a<<endl;
+	return 0;
+}

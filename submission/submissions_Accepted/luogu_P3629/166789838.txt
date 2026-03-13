@@ -1,0 +1,114 @@
+//  OJ: 洛谷
+//  提交ID: 166789838
+//  题目ID: P3629
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+	int v,w,nxt;
+}edge[5000000+10];
+int idx,head[5000000+10];
+void add(int u,int v,int w){
+	edge[++idx]={v,w,head[u]};
+	head[u]=idx;
+}
+int n,k;
+namespace DP{
+	int d1[5000000+10],d2[5000000+10];
+	bool vis[5000000+10];
+	void dfs(int k){
+		vis[k]=1;
+		for(int i=head[k];i;i=edge[i].nxt){
+			if(vis[edge[i].v])continue;
+			dfs(edge[i].v);
+			int now=d1[edge[i].v]+edge[i].w;
+			if(now>d1[k])d2[k]=d1[k],d1[k]=now;
+			else if(now>d2[k])d2[k]=now;
+		}
+		if(!head[k])d1[k]=d2[k]=0;
+	}
+}
+namespace DFS{
+	int disl[100000+10],l,r,disr[100000+10];
+	namespace get_one{
+		pair<int,int> dfs1(int k,int fa){ // get the point l
+			pair<int,int>ans=make_pair(0,k);
+			for(int i=head[k];i;i=edge[i].nxt){
+				if(edge[i].v==fa) continue;
+				pair<int,int>p=dfs1(edge[i].v,k);
+				p.first+=edge[i].w;
+				if(p.first>ans.first) ans=p;
+			}
+			return ans;
+		}
+		void dfs2(int k,int fa,int sum){ // get the point r && get the dis to l
+			disl[k]=sum;
+			if(disl[k]>disl[r]) r=k;
+			int mx=0;
+			for(int i=head[k];i;i=edge[i].nxt){
+				if(edge[i].v==fa) continue;
+				dfs2(edge[i].v,k,sum+edge[i].w);
+			}
+		}
+		void dfs3(int k,int fa,int sum){ //get the dis to r
+			disr[k]=sum;
+			int mx=0;
+			for(int i=head[k];i;i=edge[i].nxt){
+				if(edge[i].v==fa) continue;
+				dfs3(edge[i].v,k,sum+edge[i].w);
+			}
+		}
+		void get(){
+			l=dfs1(1,0).second;
+			dfs2(l,0,0);
+			dfs3(r,0,0);
+		}
+	}
+	bool isl[100000+10];
+	int len[100000+10];
+	vector<int>path;
+	bool dfs1(int k,int fa){ // get the dfront
+		if(k==r) return (path.push_back(k),isl[k]=1);
+		for(int i=head[k];i;i=edge[i].nxt){
+			if(edge[i].v==fa) continue;
+			if(dfs1(edge[i].v,k)) return (path.push_back(k),isl[k]=1);
+		}
+		return 0;
+	}
+	void dfs2(int k,int pt){
+		for(int i=head[k];i;i=edge[i].nxt){
+			if(edge[i].v==pt) return void(edge[i].w=-1);
+		}
+	}
+	int del(){
+		get_one::get();
+		int bef=disl[r];
+		dfs1(l,0);
+		reverse(path.begin(),path.end());
+		for(int i=0;i<path.size()-1;++i){
+			dfs2(path[i],path[i+1]);
+			dfs2(path[i+1],path[i]);
+		}
+		return bef;
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>k;
+	for(int i=1,u,v;i<n;++i)cin>>u>>v,add(u,v,1),add(v,u,1);
+	if(k==1){
+		using namespace DP;
+		dfs(1);
+		int ans=INT_MIN;
+		for(int i=1;i<=n;++i)ans=max(ans,d1[i]+d2[i]);
+		cout<<(2*(n-1)-ans+1)<<endl;
+	}
+	else{
+		int bef=DFS::del();
+		using namespace DP;
+		dfs(1);
+		int ans=INT_MIN;
+		for(int i=1;i<=n;++i)ans=max(ans,d1[i]+d2[i]);
+		cout<<(n*2-bef-ans)<<endl;
+	}
+	return 0;
+}

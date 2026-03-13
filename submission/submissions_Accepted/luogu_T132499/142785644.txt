@@ -1,0 +1,163 @@
+//  OJ: 洛谷
+//  提交ID: 142785644
+//  题目ID: T132499
+#include<bits/stdc++.h>
+using namespace std;
+bitset<2> mp[500 + 10][500 + 10];
+char tmp;
+int r, c;
+bool vis[500 + 10][500 + 10][4];
+struct node {
+	int x; int y; int stp; bitset<2>k;
+	//k： 1竖躺，2横躺，3立着
+	//x，y：最左上角的点
+	node(int xx = 0, int yy = 0, int step = 0, int now = 0) :x(xx), y(yy), stp(step), k(now) {}
+	bool ok() {
+		if (x <= 1 || x >= r || y <= 1 || y >= c)return false;
+		switch (k.to_ulong()) {
+		case 1:return mp[x][y].to_ulong() && mp[x + 1][y].to_ulong();
+		case 2:return mp[x][y].to_ulong() && mp[x][y + 1].to_ulong();
+		case 3:return mp[x][y] != 0 && mp[x][y] != 2;
+		default: return false;
+		}
+	}
+	bool end() {
+		return mp[x][y] == 3 && k == 3;
+	}
+	node chg(int s) {
+		switch (k.to_ulong()) {
+		case 1:
+			switch (s) {
+			case 1: {
+				node now = node(x - 1, y, stp + 1, 3);
+				if (now.ok()) return now;
+				else return node();
+			}
+			case 2: {
+				node now = node(x, y + 1, stp + 1, 1);
+				if (now.ok()) return now;
+				else return node();
+			}
+			case 3: {
+				node now = node(x, y - 1, stp + 1, 1);
+				if (now.ok()) return now;
+				else return node();
+			}
+			case 4: {
+				node now = node(x + 2, y, stp + 1, 3);
+				if (now.ok()) return now;
+				else return node();
+			}
+			}
+		case 2:
+			switch (s) {
+			case 1: {
+				node now = node(x - 1, y, stp + 1, 2);
+				if (now.ok()) return now;
+				else return node();
+			}
+			case 2: {
+				node now = node(x, y + 2, stp + 1, 3);
+				if (now.ok()) return now;
+				else return node();
+			}
+			case 3: {
+				node now = node(x, y - 1, stp + 1, 3);
+				if (now.ok()) return now;
+				else return node();
+			}
+			case 4: {
+				node now = node(x + 1, y, stp + 1, 2);
+				if (now.ok()) return now;
+				else return node();
+			}
+			}
+		case 3:
+			switch (s) {
+			case 1: {
+				node now = node(x - 2, y, stp + 1, 1);
+				if (now.ok()) return now;
+				else return node();
+			}
+			case 2: {
+				node now = node(x, y + 1, stp + 1, 2);
+				if (now.ok()) return now;
+				else return node();
+			}
+			case 3: {
+				node now = node(x, y - 2, stp + 1, 2);
+				if (now.ok()) return now;
+				else return node();
+			}
+			case 4: {
+				node now = node(x + 1, y, stp + 1, 1);
+				if (now.ok()) return now;
+				else return node();
+			}
+			}
+		default:return node();
+		}
+	}
+	friend bool operator !=(const node& a, const node& b) {
+		return !(a.k == b.k && a.stp == b.stp && a.x == b.x && a.y == b.y);
+	}
+	friend ostream& operator<<(ostream& out, const node& n) {
+		out << '(' << n.x << ',' << n.y << ')' << " with " << n.k << " use " << n.stp;
+		return out;
+	}
+};
+void bfs(int x, int y, int k) {
+	queue<node> q;
+	q.push(node(x, y, 0, k));
+	while (!q.empty()) {
+		node now = q.front();
+		q.pop();
+		if (vis[now.x][now.y][now.k.to_ulong()]) continue;
+		vis[now.x][now.y][now.k.to_ulong()] = true;
+		if (now.end()) {
+			cout << now.stp << endl;
+			return;
+		}
+		for (int i = 1; i <= 4; ++i) {
+			node neww = now.chg(i);
+			if (neww != node()) q.push(neww);
+
+		}
+	}
+	cout << "Impossible" << endl;
+}
+int mian() {
+	memset(vis, 0, sizeof vis);
+	cin >> r >> c;
+	if (r == 0 && c == 0) return 0;
+	int x = 0, y = 0, s = 3;
+	for (int i = 1; i <= r; ++i)
+		for (int j = 1; j <= c; ++j) {
+			cin >> tmp;
+			if (tmp ^ 'X') {
+				mp[i][j] = [](const char& c)->int {switch (c) { case'#': {return 0; }case'.': {return 1; }case'E': {return 2; }case'O': {return 3; } }}(tmp);
+			}
+			else
+				if (x && y)
+					if (x == i - 1 && y == j) s = 1;
+					else s = 2;
+				else x = i, y = j;
+		}
+	bfs(x, y, s);
+	return 1;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	while (mian());
+	return 0;
+}
+/*
+7 7
+#######
+#XEEEE#
+#EEEEE#
+##EE.E#
+##EE.E#
+##EEOE#
+#######
+*/

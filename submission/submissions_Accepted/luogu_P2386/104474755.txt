@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 104474755
+//  题目ID: P2386
+#include<iostream>
+#include<cstdio>
+int ans,n,k;
+void bs(int lz,int now,int pg)
+{
+    if(lz==k&&!pg) {
+		ans++;
+		return;
+	}
+    if(lz==k||pg<0) return;
+    for(int i=now;i<=pg;i++) bs(lz+1,i,pg-i);
+}
+int main()
+{
+    int t;
+    scanf("%d",&t);
+    while(t--){
+        ans=0;
+		scanf("%d%d",&n,&k);
+		bs(0,0,n);
+		printf("%d\n",ans);
+	}
+    return 0;
+}

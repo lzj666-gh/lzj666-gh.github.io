@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 109455362
+//  题目ID: P1644
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,cnt;
+void dfs(int x,int y){
+	if(x<0||x>n||y<0||y>m) return;
+	if(x==n&&y==m){
+		cnt++;
+		return ;
+	}
+	dfs(x+1,y+2);
+	dfs(x+2,y+1);
+	dfs(x-2,y+1);
+	dfs(x-1,y+2);
+}
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>n>>m;
+	dfs(0,0);
+	cout<<cnt<<endl;
+	return 0;
+}
+

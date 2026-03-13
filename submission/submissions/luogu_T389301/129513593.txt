@@ -1,0 +1,148 @@
+//  OJ: 洛谷
+//  提交ID: 129513593
+//  题目ID: T389301
+#include<bits/stdc++.h>
+using namespace std;
+struct big_num{
+	int ws;short aa[100000];
+	short& operator [] (int k){
+		return aa[k];
+	}
+	void _init_(){
+		ws=0;
+		memset(aa,0,sizeof aa);
+	}
+	void operator = (const int &b){
+		this->_init_();
+		string s=to_string(b);
+		reverse(s.begin(),s.end());
+		for(int i=0;i<s.size();++i) aa[i+1]=s[i]-'0';
+		ws=s.size();
+	}
+	friend istream& operator >> (istream& in,big_num &b){
+		b._init_();
+		string s;
+		in>>s;
+		reverse(s.begin(),s.end());
+		for(int i=0;i<s.size();++i) b[i+1]=s[i]-'0';
+		b.ws=s.size();
+		return in;
+	}
+	friend ostream& operator << (ostream& out,const big_num &b){
+		big_num _1;
+		_1=0;
+		if(b==_1||b.ws==0){
+			cout<<0;
+			return out;
+		}
+		for(int i=b.ws;i>=1;--i) out<<b.aa[i];
+		return out;
+	}
+	friend big_num operator + (const big_num &a,const big_num &b){
+		big_num ans;
+		ans._init_();
+		if(a.ws==b.ws)
+			if(a.aa[a.ws]+b.aa[b.ws]>=10) ans.ws=a.ws+1;
+			else ans.ws=a.ws;
+		else ans.ws=max(a.ws,b.ws);
+		for(int i=1;i<=ans.ws;++i){
+			ans.aa[i]+=a.aa[i]+b.aa[i];
+			ans.aa[i+1]+=ans.aa[i]/10;
+			ans.aa[i]%=10;
+		}
+		return ans;
+	}
+	friend void operator += (big_num &aa,const big_num &b){
+		aa=aa+b;
+	}
+	friend big_num operator + (const big_num &a,const int &b){
+		big_num tmp;tmp=b;
+		return a+tmp;
+	}
+	friend void operator += (big_num &a,const int &b){
+		big_num tmp=a+b;
+		a=tmp;
+	}
+	friend bool operator == (const big_num &a,const big_num &b){
+		if(a.ws!=b.ws) return false;
+		for(int i=a.ws;i>=1;--i){
+			if(a.aa[i]!=b.aa[i]) return false;
+		}
+		return true;
+	}
+	friend bool operator > (const big_num &a,const big_num &b){
+		if(a.ws!=b.ws) return a.ws>b.ws;
+		for(int i=a.ws;i>=1;--i){
+			if(a.aa[i]!=b.aa[i]) return a.aa[i]>b.aa[i];
+		}
+		return false;
+	}
+	friend bool operator < (const big_num &a,const big_num &b){
+		if(a.ws!=b.ws) return a.ws<b.ws;
+		for(int i=a.ws;i>=1;--i){
+			if(a.aa[i]!=b.aa[i]) return a.aa[i]<b.aa[i];
+		}
+		return false;
+	}
+	friend big_num operator * (const big_num &a,const int &b){
+		big_num ans;
+		ans._init_();
+		for(int i=1;i<=a.ws;++i){
+			ans[i]+=a.aa[i]*b;
+			ans[i+1]+=ans[i]/10;
+			ans[i]%=10;
+		}
+		if(ans[ans.ws+1]!=0) ++ans.ws;
+		return ans;
+	}
+	friend big_num operator / (const big_num &a,int b){
+		big_num ans;ans._init_();
+		ans=b;
+		big_num k;k._init_();
+		while(ans<a||ans==a){
+			ans+=b;
+			k+=1;
+		}
+		return k;
+	}
+	friend big_num operator - (const big_num &a,const big_num &b){
+		big_num ans;
+		ans._init_();
+		for(int i=a.ws;i>=1;--i){
+			ans[i]=a.aa[i]-b.aa[i];
+			if(ans[i]<0) --ans[i+1],ans[i]+=10;
+		}
+		while(!ans[ans.ws]) --ans.ws;
+		return ans;
+	}
+	friend big_num operator % (const big_num &a,int &b){
+		big_num tmp;
+		tmp=a/b;
+		tmp=tmp*b;
+		return a-tmp;
+	}
+};
+long long n,ans,kk,_1,tmp;int k;
+inline __int128 read(){
+    __int128 x=0,s=1;
+    char c=getchar();
+    while(c<'0'||c>'9'){
+        if(c=='-') s=-1;
+        else s=1;
+        c=getchar();
+    }
+    while(c>='0'&&c<='9'){
+        x=x*10+c-'0';
+        c=getchar();
+    }
+    return x*s;
+}
+int main(){
+//	freopen("drinks.in","r",stdin);
+//	freopen("drinks.out","w",stdout);
+//	ios_base::sync_with_stdio(false);
+	n=read();
+	k=read();
+	cout<<n/(k-1)<<endl;
+	return 0;
+}

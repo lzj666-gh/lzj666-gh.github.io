@@ -1,0 +1,44 @@
+//  OJ: 洛谷
+//  提交ID: 103101131
+//  题目ID: T209139
+#include<bits/stdc++.h>
+using namespace std;
+bool a[60+10][30+10];
+int x=0,y=20,n;
+long long s=0;
+void baosou(int b){
+	if(b==0){
+		s++;
+		return;
+	}
+	a[x][y]=false;
+	if(a[x+1][y]){
+		x++;
+		baosou(b-1);
+		x--;
+		a[x+1][y]=true;
+	}
+	if(a[x][y-1]){
+		y--;
+		baosou(b-1);
+		y++;
+		a[x][y-1]=true;
+	}
+	if(a[x][y+1]){
+		y++;
+		baosou(b-1);
+		y--;
+		a[x][y+1]=true;
+	}
+}
+int main(){
+	scanf("%d",&n);
+	for(int i=0;i<60+10;i++){
+		for(int j=0;j<30+10;j++){
+			a[i][j]=true;
+		}
+	}
+	baosou(n);
+	printf("%lld",s);
+	return 0;
+}

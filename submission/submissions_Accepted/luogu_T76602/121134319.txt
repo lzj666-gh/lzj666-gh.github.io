@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 121134319
+//  题目ID: T76602
+#include<bits/stdc++.h>
+using namespace std;
+long long b,p,k;
+int main(){
+	int kk;
+	ios_base::sync_with_stdio(false);
+	cin>>kk;
+//	cout<<k<<endl;
+	for(int aaa=1;aaa<=kk;++aaa){
+//		cout<<aaa<<' '<<k<<' '<<(aaa<=k)<<endl;
+		b=2011,k=10000;
+		cin>>p;
+		b%=k;
+		long long ans=1;
+		while(p){
+			if(p&1) ans=ans*b%k;
+			b=b*b%k;
+			p=(p>>1);
+		}
+		cout<<ans<<endl;
+	}
+
+	return 0;
+}

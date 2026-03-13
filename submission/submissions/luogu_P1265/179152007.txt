@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 179152007
+//  题目ID: P1265
+#include<bits/stdc++.h>
+using namespace std;
+int n, x[5000 + 10], y[5000 + 10];
+bool fnd[5000 + 10];
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> x[i] >> y[i];
+	double ans = 0;
+	int cur = 1, tot = 1;
+	fnd[1] = 1;
+	for (; tot <= n;) {
+		int tp=-1;
+		for (int i = 1; i <= n; ++i) {
+			if (i == cur || fnd[i]) continue;
+			if (tp == -1 || ((x[i] - x[cur]) * (x[i] - x[cur]) + (y[i] - y[cur]) * (y[i] - y[cur]) <
+				(y[tp] - y[cur]) * (y[tp] - y[cur]) + (x[tp] - x[cur]) * (x[tp] - x[cur])))
+				tp = i;
+		}
+		ans += sqrt((y[tp] - y[cur]) * (y[tp] - y[cur]) + (x[tp] - x[cur]) * (x[tp] - x[cur]));
+		cur = tp;
+		++tot;
+	}
+	cout << fixed << setprecision(2) << ans << endl;
+	return 0;
+}
+/*
+4
+ 0 0
+ 1 2
+ -1 2
+ 0 4
+
+*/

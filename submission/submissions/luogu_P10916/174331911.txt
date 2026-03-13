@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 174331911
+//  题目ID: P10916
+#include<bits/stdc++.h>
+using namespace std;
+int n, a[500000 + 10];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	a[++n] = 1;
+	if (n <= 2000) {
+		for (int i = 1; i < n; ++i) {
+			int l = 1, r = 1;
+			map<int, bool>ans;
+			ans[1] = 1;
+			for (int j = 1; j <= n; ++j) {
+				if (a[j] == i || a[j] == 1) {
+					r = j - 1;
+					for (int I = l; I <= r; ++I)
+						for (int J = I; J <= r; ++J)
+							ans[__gcd(a[I], a[J])] = 1;
+					l = j + 1;
+				}
+			}
+			cout << ans.size() << ' ';
+		}
+		cout << endl;
+		return 0;
+	}
+	for (int i = n - 1; i >= 1; --i) cout << i << ' ';
+	return 0;
+}

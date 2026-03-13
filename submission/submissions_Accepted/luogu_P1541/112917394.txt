@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 112917394
+//  题目ID: P1541
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,t[5],dp[41][41][41][41],a[121];
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;++i){
+		cin>>a[i];
+	}
+	for(int i=1;i<=m;++i){
+		int b;
+		cin>>b;
+		++t[b];
+	}
+	dp[0][0][0][0]=a[1];
+	for(int i=0;i<=t[1];++i)
+		for(int j=0;j<=t[2];++j)
+			for(int k=0;k<=t[3];++k)
+				for(int l=0;l<=t[4];++l){
+					if(i==0&&j==0&&k==0&&l==0) continue;
+					int ma=0;
+					if(i>=1) ma=max(ma,dp[i-1][j][k][l]);
+					if(j>=1) ma=max(ma,dp[i][j-1][k][l]);
+					if(k>=1) ma=max(ma,dp[i][j][k-1][l]);
+					if(l>=1) ma=max(ma,dp[i][j][k][l-1]);
+					dp[i][j][k][l]=ma+a[i+j*2+k*3+l*4+1];
+				}
+	cout<<dp[t[1]][t[2]][t[3]][t[4]]<<endl;
+}

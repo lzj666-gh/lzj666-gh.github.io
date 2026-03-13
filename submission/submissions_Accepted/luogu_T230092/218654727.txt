@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 218654727
+//  题目ID: T230092
+#include<bits/stdc++.h>
+#define int ll
+#define bepos(a, m) (((a) % (m) + (m)) % (m))
+using namespace std;
+using ll = long long;
+ll exgcd(ll a, ll b, ll& x, ll& y) {
+	if (b == 0) { x = 1, y = 0; return a; }
+	ll ret = exgcd(b, a % b, y, x);
+	y -= a / b * x;
+	return ret;
+}
+pair<int, int> merge(const pair<int, int>& eq1, const pair<int, int>& eq2) {
+	ll x, y;
+	int d = exgcd(eq1.second, eq2.second, x, y);
+	int dv = eq2.second / d, dt = eq2.first - eq1.first;
+	x = x * dt / d;
+	if (dt % d) throw logic_error("These two congruences are contradictory to each other.");
+	ll mod = eq1.second * dv;
+	return { bepos((eq1.second * bepos(x,dv) + eq1.first),mod),mod };
+}
+pair<int, int> now[10 + 10];
+int n;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i)
+		cin >> now[i].second >> now[i].first, now[i].first = bepos(now[i].first, now[i].second);
+	pair<int, int> ans = now[1];
+	try {
+		for (int i = 2; i <= n; ++i)
+			ans = merge(ans, now[i]);
+		cout << ans.first << endl;
+	}
+	catch (...) {
+		cout << -1 << endl;
+	}
+	return 0;
+}

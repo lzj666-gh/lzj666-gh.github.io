@@ -1,0 +1,50 @@
+//  OJ: 洛谷
+//  提交ID: 202132602
+//  题目ID: P3809
+#include<bits/stdc++.h>
+#include<array>
+using namespace std;
+string s;
+int n, w, sa[2000000 + 5];
+array<int, 2000000 + 5>rk, oldrk;
+vector<int>t[1000000 + 5];
+void sort(vector<int>& v) {
+	if (v.empty()) return;
+	static array<int, 1000000 + 5>t;
+	t.fill(0);
+	for (int&i : v) t[i]++;
+	for (int i = 1000000, p = 0; i >= 1; --i) while (t[i]--) v[p] = i, p++;
+}
+void sort() {
+	for (int i = 1; i <= 1000000; ++i) t[i].clear();
+	for (int i = 1; i <= n; ++i) 
+		t[rk[sa[i]]].push_back(rk[sa[i + w]]);
+	for (int i = 1; i <= n; ++i)
+		sort(t[i]);
+	for (int i = 1, p = 1; i <= 1000000; ++i)
+		while (t[i].size())
+			sa[p] = i,
+			p++,
+			t[i].pop_back();
+}
+int main() {
+	cin >> s;
+	n = s.size();
+	s = ' ' + s;
+	for (int i = 1; i <= n; ++i) sa[i] = i, rk[i] = s[i];
+	for (w = 1; w < n; w <<= 1) {
+		//sort();
+		
+		sort(sa + 1, sa + n + 1, [](int x, int y) {
+			return rk[x] == rk[y] ? rk[x + w] < rk[y + w] : rk[x] < rk[y];
+		});
+		
+		oldrk = rk;
+		for (int i = 1, p = 0; i <= n; ++i) {
+			if (oldrk[sa[i]] != oldrk[sa[i - 1]] || oldrk[sa[i] + w] != oldrk[sa[i - 1] + w]) ++p;
+			rk[sa[i]] = p;
+		}
+	}
+	for (int i = 1; i <= n; ++i) cout << sa[i] << ' ';
+	return 0;
+}

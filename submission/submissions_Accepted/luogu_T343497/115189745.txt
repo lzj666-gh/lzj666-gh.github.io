@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 115189745
+//  题目ID: T343497
+#include<bits/stdc++.h>
+using namespace std;
+int n,k;
+struct node{
+	vector<int> children;
+}a[100000+10];
+int main(){
+	ios::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	for(int lzj=1;lzj<=T;lzj++){
+		cin>>n>>k;
+		for(int i=1;i<=n-1;i++){
+			int x,b;
+			cin>>x>>b;
+			a[x].children.push_back(b);
+			a[b].children.push_back(x);
+		}
+		if(n%k!=0){
+			cout<<"NO"<<endl;
+			continue;
+		}
+		else{
+			cout<<"YES"<<endl;
+		}
+	}
+}

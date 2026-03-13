@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 214713483
+//  题目ID: T407130
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+struct Edge {
+	int v, nxt;
+}edge[600000 + 5];
+int head[200000 + 5], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, m ,k, sg[200000 + 10];
+bool vis[200000 + 10];
+int SG(int k) {
+	if (vis[k]) return sg[k];
+	vis[k] = 1;
+	unordered_map<int, bool>mp;
+	for (int i = head[k]; i; i = edge[i].nxt) mp[SG(edge[i].v)] = 1;
+	for (int i = 0;; ++i)
+		if (mp[i] == 0)
+			return sg[k] = i;
+	return sg[k] = 0;
+}
+int a[600000 + 10], b[200000 + 10];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> k;
+	for (int i = 1, x, y; i <= m; ++i) cin >> x >> y, add(x, y);
+	int s = 0;
+	for (int i = 1, x; i <= k; ++i) {
+		cin >> x;
+		s ^= SG(x);
+	}
+	cout << (s ? "win" : "lose") << endl;
+	return 0;
+}

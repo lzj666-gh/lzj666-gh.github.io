@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 110330893
+//  题目ID: P1135
+#include<bits/stdc++.h>
+#define maxn 200+10
+using namespace std;
+int n,k[maxn],a,b,bb[maxn];
+struct node{
+	int k,step;
+	node(int kk,int st){
+		k=kk;step=st;
+	}
+};
+queue<node> q;
+inline bool p(int dx){
+	return dx<=n&&dx>=1;
+}
+int bfs(int x,int y){
+	int dx;
+	if(x==y) return 0;
+	q.push(node(x,0));
+	bb[x]=true;
+	while(!q.empty()){
+		node no=q.front();
+		q.pop();
+		dx=no.k+k[no.k];
+		if(p(dx)&&bb[dx]==false){
+			bb[dx]=true;
+			q.push(node(dx,no.step+1));
+			if(dx==y) return no.step+1;
+		}
+		dx=no.k-k[no.k];
+		if(p(dx)&&bb[dx]==false){
+			bb[dx]=true;
+			q.push(node(dx,no.step+1));
+			if(dx==y) return no.step+1;
+		}
+	}
+	return -1;
+}
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>n>>a>>b;
+	for(int i=1;i<=n;i++) cin>>k[i];
+	cout<<bfs(a,b)<<endl;
+	return 0;
+}

@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 127472512
+//  题目ID: T268139
+#include<bits/stdc++.h>
+using namespace std;
+int cnt;
+char x;
+string s;
+int main() {
+// 	freopen("composition.in","r",stdin);
+// 	freopen("composition.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>x>>s;
+	for(char c:s) if(c==x) ++cnt;
+	cout<<cnt<<endl;
+	return 0;
+}
+//want:100pts

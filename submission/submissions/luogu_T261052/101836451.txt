@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 101836451
+//  题目ID: T261052
+#include<bits/stdc++.h>
+using namespace std;
+struct ydcx{
+	int x,y;
+}a[50000+100];
+int n,p=0;
+int main(){
+	cin>>n;
+	a[0].x=0;
+	a[0].y=0;
+	char k;
+	for(int i=0;i<n;i++){
+		cin>>k;
+		if(k=='W'){
+			p++;
+			a[p].y++;
+		}
+		else if(k=='A'){
+			p++;
+			a[p].x--;
+		}
+		else if(k=='S'){
+			p++;
+			a[p].y--;
+		}
+		else if(k=='D'){
+			p++;
+			a[p].x++;
+		}
+		else if(k=='Z'&&p>0){
+			p--;
+		}
+	}
+	cout<<a[p].x<<" "<<a[p].y;
+	return 0;
+}

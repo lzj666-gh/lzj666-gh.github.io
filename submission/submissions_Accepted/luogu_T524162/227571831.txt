@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 227571831
+//  题目ID: T524162
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int n, m, a;
+priority_queue<int, vector<int>, greater<int>>q;
+int32_t main(int32_t argc, char** argv) {
+//	if (argc >= 2) freopen(argv[1], "r", stdin);
+//	else freopen("sequence.in", "r", stdin);
+//	if (argc >= 3) freopen(argv[2], "w", stdout);
+//	else freopen("sequence.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m; int mx = 0;
+	for (int i = 1; i <= n; ++i) cin >> a, q.push(a), mx = max(mx, a);
+	while ((a = q.top()) * 2 <= mx && (m--)) q.pop(), q.push(a + a);
+	if (m == -1) {
+		int ans = 0;
+		while (!q.empty()) ans += q.top(), ans %= mod, q.pop();
+		cout << ans << endl;
+		return 0;
+	}
+	int tim = m / n; m %= n;
+	while (m--) a = q.top(), q.pop(), q.push(a + a);
+	int ans = 0;
+	while (!q.empty()) ans += q.top(), ans %= mod, q.pop();
+	while (tim--) ans = ans * 2 % mod;
+	cout << ans << endl;
+	return 0;
+}

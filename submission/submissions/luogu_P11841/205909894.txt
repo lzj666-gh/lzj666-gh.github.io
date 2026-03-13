@@ -1,0 +1,62 @@
+//  OJ: 洛谷
+//  提交ID: 205909894
+//  题目ID: P11841
+﻿#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+ll solve(ll a, ll b, ll c, ll d) {
+	ll cnt = 0;
+	while (1) {
+		if (c == a && d == b) 
+			return cnt;
+		if (c < a || d < b) 
+			return -1;
+		if (c > d) {
+			if (d == 0) 
+				return -1;
+			if (c - a < d)
+				if (c - d >= a)
+					c -= d,
+					cnt++;
+				else 
+					return -1;
+			else {
+				ll k = (c - a) / d;
+				cnt += k;
+				c -= k * d;
+			}
+		}
+		else if (d > c) {
+			if (c == 0) 
+				return -1;
+			if (d - b < c) 
+				if (d - c >= b) 
+					d -= c,
+					cnt++;
+				else 
+					return -1;
+			else {
+				ll k = (d - b) / c;
+				cnt += k;
+				d -= k * c;
+			}
+		}
+		else
+			// c == d
+			if (a == c && b == d)
+				return cnt;
+			else 
+				return -1;
+	}
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		ll a, b, c, d;
+		cin >> a >> b >> c >> d;
+		cout << solve(a, b, c, d) << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,66 @@
+//  OJ: 洛谷
+//  提交ID: 135349858
+//  题目ID: T396631
+#include<bits/stdc++.h>
+using namespace std;
+int p(char c){
+	if(c<='9'&&c>'0') return c^48;
+	switch(c){
+		case '0':
+			return 10;
+		case 'J':
+			return 11;
+		case 'Q':
+			return 12;
+		case 'K':
+			return 13;
+		case 'A':
+			return 1;
+	}
+	return -1;
+}
+list<pair<char,bool>> ch[15];
+inline void debug(){
+	for(int i=1;i<=13;++i){
+		cout<<i<<": ";
+		for(auto a:ch[i]){
+			cout<<a.first<<'('<<a.second<<')'<<' ';
+		}
+		cout<<endl;
+	}
+	cout<<endl;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	for(int i=1;i<=13;++i){
+		char c;
+		for(int j=1;j<=4;++j) cin>>c,ch[i].push_back(make_pair(c,false));
+	}
+	for(int i=1;i<=4;++i){
+		char c=ch[13].front().first;
+		ch[13].pop_front();
+		int now=p(c);
+		if(now==13) continue;
+		ch[now].push_front(make_pair(c,true));
+		while(ch[now].size()){
+			int pp=p(ch[now].back().first);
+			ch[now].pop_back();
+			if(pp==13) break;
+			ch[pp].push_front(make_pair(ch[now].back().first,true));
+			now=pp;
+		}
+//		debug();
+	}
+	int ans=0;
+	map<char,int>c;
+	for(int i=1;i<=13;++i){
+		for(auto a:ch[i]){
+			if(a.second) c[a.first]++;
+		}
+	}
+	for(map<char,int>::iterator it=c.begin();it!=c.end();it++){
+		if(it->second==4) ++ans;
+	}
+	cout<<ans<<endl;
+	return 0;
+}

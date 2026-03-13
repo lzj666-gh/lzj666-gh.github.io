@@ -1,0 +1,64 @@
+//  OJ: 洛谷
+//  提交ID: 127472750
+//  题目ID: T268143
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[100000];
+inline int max(const int &a,const int &b) {
+	return a>b?a:b;
+}
+ostream& operator << (ostream& out,vector<int> v) {
+	if(v.size()==0) return out ;
+	for(int i:v) out<<i<<' ';
+	out<<endl;
+	return out;
+}
+vector<int> mer(vector<int> &a,vector<int> &b) {
+	vector<int> ret,ans;
+	int ii=0,j=0;
+	while(ii<a.size()&&j<b.size()) {
+		ret.push_back(a[ii]<b[j]?a[ii++]:b[j++]);
+	}
+	while(ii<a.size()) ret.emplace_back(a[ii++]);
+	while(j<b.size()) ret.emplace_back(b[j++]);
+	ans.push_back(ret[0]);
+	for(int k:ret) if(k!=ans[ans.size()-1]) ans.emplace_back(k);
+	return ans;
+}
+vector<int> zhiyin[100000];
+int main() {
+//	freopen("seq.in","r",stdin);
+//	freopen("seq.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	for(int I=1; I<=T; ++I) {
+		cin>>n;
+		for(int i=1; i<=n; ++i) cin>>a[i];
+		sort(&a[1],&a[n+1]);
+		int ans=1;
+		vector<int> b;
+		for(int i=1; i<100000; ++i) zhiyin[i].clear();
+		int maxy=0;
+		for(int i=1; i<=n; ++i)
+			if(a[i]!=a[i-1]) {
+				b.emplace_back(a[i]);
+				for(int j=1; j<=a[i]; ++j)
+					if(a[i]%j==0) {
+						zhiyin[j].push_back(a[i]);
+						maxy=max(maxy,j);
+					}
+			}
+		for(int i=2; i<100000; ++i) ans=max(ans,(int)zhiyin[i].size());
+		for(int i=1; i<=maxy; ++i)
+			if(zhiyin[i].size())
+				for(int j=1; j<=maxy; ++j)
+					if(zhiyin[j].size())
+						if(zhiyin[i][0]>zhiyin[j].back()||zhiyin[j][0]>zhiyin[i].back())
+							zhiyin[i]=zhiyin[j]=mer(zhiyin[i],zhiyin[j]),ans=max(ans,(int)zhiyin[i].size());
+		cout<<ans<<endl;
+	}
+	return 0;
+}
+//want:60~80pts(almost alwanys 60pts)
+//O(a_i^2)

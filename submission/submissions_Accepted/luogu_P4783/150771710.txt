@@ -1,0 +1,48 @@
+//  OJ: 洛谷
+//  提交ID: 150771710
+//  题目ID: P4783
+#include<bits/stdc++.h>
+#define ll long long
+using namespace std;
+constexpr ll mod = 1000000007;
+ll a[400 + 10][800 + 10];
+int n;
+ll poww(ll a,ll x){ 
+	if(x==0) return 1;
+	ll t=poww(a,x/2);
+	t=(t*t)%mod;
+	if(x%2==1) t=(t*a)%mod;
+	return t;
+}
+static int work() {
+	for (int i = 1; i <= n; ++i) {
+		for (int j = i; j <= n; ++j)
+			if (a[j][i] != 0) { swap(a[i], a[j]); break; }
+		if (a[i][i] == 0) return 1;
+		ll invv=poww(a[i][i],mod-2);
+		for (int j = 1; j <= n; ++j)
+			if (j != i){
+				ll bs=a[j][i]*invv%mod;
+				for (int k = n + n; k >= i; --k)
+					a[j][k] -= bs * a[i][k],a[j][k]=(a[j][k]+mod)%mod;
+			}
+		for (int j = 1; j <= n + n; ++j) a[i][j]=(a[i][j]*invv)%mod;
+	}
+	return 0;
+}
+int main() {
+	//freopen("lzj.txt","r",stdin);
+	cin >> n;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= n; ++j)
+			cin>>a[i][j];
+	for (int i = n + 1; i <= n + n; ++i)
+		a[i - n][i] = 1;
+	int err = work();
+	if (err) puts("No Solution");
+	else
+		for (int i = 1; i <= n; ++i, cout<<endl)
+			for (int j = n + 1; j <= n * 2; ++j)
+				a[i][j]=(a[i][j]+mod)%mod,cout<<a[i][j]<<' ';
+	return 0;
+}

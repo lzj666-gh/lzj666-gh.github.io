@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 220329248
+//  题目ID: T618278
+#include<bits/stdc++.h>
+using namespace std;
+int x;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> x;
+	int y = 0;
+	while (x >= 60) x -= 60, y++;
+	printf("|%d|%d|:|%d|%d|", y / 10, y % 10, x / 10, x % 10);
+	return 0;
+}

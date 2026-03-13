@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 240322396
+//  题目ID: P1835
+#include<bits/stdc++.h>
+using namespace std;
+vector<int> prm;
+bool vis[1000000 + 5], vis2[1000000 + 5];
+void prep() {
+	for (int i = 2; i <= 1e6; ++i) {
+		if (!vis[i]) {
+			prm.push_back(i);
+		}
+		for (auto& j : prm) {
+			if (i * j > 1e6) break;
+			vis[i * j] = 1;
+			if (i % j == 0) break;
+		}
+	}
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	prep(); int l, r;
+	cin >> l >> r;
+	for (int i = l; i <= r; ++i) {
+		for (auto& j : prm) {
+			if (i * j > r) break;
+			if (i * j < l) continue;
+			vis2[i * j - l] = 1;
+		}
+	}
+	cout << count(vis2, vis2 + r + 1, false) << endl;
+	return 0;
+}

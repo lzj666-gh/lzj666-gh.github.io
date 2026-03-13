@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 176127399
+//  题目ID: P11019
+#include<bits/stdc++.h>
+using namespace std;
+string s;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> s;
+	cout << '/';
+	for (int i = 0; i <= 10; ++i) if (s[i] >= 'A' && s[i] <= 'Z') cout << char(s[i] - 'A' + 'a'); else if (s[i] == ']') break;
+	return 0;
+}

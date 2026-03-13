@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 101710356
+//  题目ID: T209050
+#include<bits/stdc++.h>
+using namespace std;
+int a,amax=0,amin=0x7f7f7f,n;
+int main(){
+	cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>a;
+		amax=max(amax,a);
+		amin=min(amin,a); 
+	}
+	cout<<amax<<" "<<amin;
+	return 0;
+}

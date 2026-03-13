@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 111480498
+//  题目ID: P9373
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin.tie(NULL);cout.tie(NULL);
+	int T;
+	cin>>T;
+	for(int i=1;i<=T;i++){
+		long long n,k;
+		cin>>n>>k;
+		bool e=true;
+		for(long long i=0;i<n;i++){
+			long long x=i,y=n-i;
+			if(y>x&&x!=k) continue;
+			if(x%y==k){
+				cout<<x<<" "<<y<<endl;
+				e=false;
+				break;
+			}
+		}
+		if(e) cout<<-1<<endl;
+	}
+}

@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 94343778
+//  题目ID: T66186
+#include<iostream>
+using namespace std;
+int main()
+{
+    int m;cin>>m;
+    int a=1,b=1,c;
+    int i;
+    for(i=3; i<=m; i++)
+    {
+        c=a+b;
+        a=b;
+        b=c;
+    }
+    cout<<b<<endl;
+    return 0;
+}

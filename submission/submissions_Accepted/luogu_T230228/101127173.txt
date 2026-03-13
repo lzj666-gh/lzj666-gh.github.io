@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 101127173
+//  题目ID: T230228
+#include<bits/stdc++.h>
+using namespace std;
+struct node {
+	int id,val;
+} a[10000+10];
+int n,pos[10000+10];
+int main() {
+	cin>>n;
+	for(int i=1; i<=n; i++) {
+		a[i].id=i;
+		scanf("%d",&a[i].val);
+	}
+	for(int i=1; i<n; i++) {
+		for(int j=1; j<=n-i; j++) {
+			if(a[j].val>a[j+1].val) swap(a[j],a[j+1]);
+		}
+	}
+    for(int i=1;i<=n;i++) pos[a[i].id]=i;
+    for(int i=1;i<=n;i++) cout<<pos[i]<<" ";
+	return 0;
+}

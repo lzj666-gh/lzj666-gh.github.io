@@ -1,0 +1,79 @@
+//  OJ: 洛谷
+//  提交ID: 220205597
+//  题目ID: P3353
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e6 + 5;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int sum, max, lzy;
+		Node(int sum = 0, int max = 0, int lzy = 0) :sum(sum), max(max), lzy(lzy) {}
+	}tree[N << 2];
+	void pushup(int p) {
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+		tree[p].max = max(tree[lc(p)].max, tree[rc(p)].max);
+	}
+	void pushdown(int p, int l, int r) {
+		if (tree[p].lzy) {
+			tree[lc(p)].sum += tree[p].lzy * (mid - l + 1);
+			tree[rc(p)].sum += tree[p].lzy * (r - mid);
+			tree[lc(p)].max += tree[p].lzy;
+			tree[rc(p)].max += tree[p].lzy;
+			tree[lc(p)].lzy += tree[p].lzy;
+			tree[rc(p)].lzy += tree[p].lzy;
+			tree[p].lzy = 0;
+		}
+	}
+	void build(int p, int l, int r, vector<int>& a) {
+		tree[p].lzy = 0;
+		if (l == r) {
+			tree[p].sum = tree[p].max = a[l];
+			return;
+		}
+		build(lson, a);
+		build(rson, a);
+		pushup(p);
+	}
+	void add(int p, int l, int r, int L, int R, int val) {
+		if (L <= l && r <= R) {
+			tree[p].sum += val * (r - l + 1);
+			tree[p].max += val;
+			tree[p].lzy += val;
+			return;
+		}
+		pushdown(p, l, r);
+		if (L <= mid) add(lson, L, R, val);
+		if (R > mid) add(rson, L, R, val);
+		pushup(p);
+	}
+	int querysum(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].sum;
+		if (r < L || R < l) return 0;
+		pushdown(p, l, r);
+		return querysum(rson, L, R) + querysum(lson, L, R);
+	}
+	int querymax(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].max;
+		if (r < L || R < l) return 0;
+		pushdown(p, l, r);
+		return max(querymax(lson, L, R), querymax(rson, L, R));
+	}
+}t;
+int n, w;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> w;
+	for (int i = 1, x, b; i <= n; ++i) cin >> x >> b, t.add(1, 1, 1e5, x, x, b);
+	int ans = 0;
+	for (int l = 1, r = w; r <= 1e5; ++l, ++r) {
+		ans = max(ans, t.querysum(1, 1, 1e5, l, r));
+	}
+	cout << ans << endl;
+	return 0;
+}

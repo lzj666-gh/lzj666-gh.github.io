@@ -1,0 +1,15 @@
+//  OJ: 洛谷
+//  提交ID: 211816201
+//  题目ID: T569441
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int main()
+{
+int i,t;
+cin>>t;
+for(i=1;i<=t;i=i+1){
+int a, b; cin >> a >> b; cout << (a+b+1)/2 << endl;
+}
+return 0;
+}

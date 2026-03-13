@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 139975789
+//  题目ID: T408360
+#include<bits/stdc++.h>
+#include<ext/pb_ds/priority_queue.hpp>
+using namespace std;
+__gnu_pbds::priority_queue<int,greater<int>> q;
+int n,cnt;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1,tmp;i<=n;++i){
+		cin>>tmp;
+		q.push(tmp);
+	}
+	for(int i=1;i<n;i++){
+		int tp1,tp2;
+		tp1=q.top(); q.pop();
+		tp2=q.top(); q.pop();
+		cnt+=tp1+tp2;
+		q.push(tp1+tp2);
+	}
+	cout<<cnt<<endl;
+	return 0;
+}

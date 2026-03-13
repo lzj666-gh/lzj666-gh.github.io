@@ -1,0 +1,46 @@
+//  OJ: 洛谷
+//  提交ID: 131347755
+//  题目ID: P9751
+#include<bits/stdc++.h>
+using namespace std;
+inline int max(const int &a,const int &b){return a>b?a:b;}
+struct Edge{
+	int next,v,a;
+}edge[40000+10];
+int idx,head[10000+10];
+inline void add(int u,int v,int a){
+	edge[++idx]={head[u],v,a};
+	head[u]=idx;
+}
+int n,m,k,mx;
+int dij(){
+	priority_queue<pair<int,int>>q;
+	for(int i=0;k*i<=mx;++i) q.push({i*k,1});
+	map<pair<int,int>,bool>vis;
+	while(!q.empty()){
+		int num=q.top().second,ti=q.top().first;
+//		cerr<<"num: "<<num<<" time: "<<ti<<endl;
+		q.pop();
+		if(vis[{ti,num}]) continue;
+		vis[{ti,num}]=true;
+		if(num==n&&ti%k==0) return ti;
+		for(int k=head[num];k;k=edge[k].next){
+			if(edge[k].a<=ti) q.push({ti+1,edge[k].v});
+		}
+	}
+	return -1;
+}
+int main(){
+	ios::sync_with_stdio(false);
+//	freopen("bus.in","r",stdin);
+//	freopen("bus.out","w",stdout);
+	cin>>n>>m>>k;
+	for(int i=1;i<=m;++i){
+		int x,y,z;
+		cin>>x>>y>>z;
+		mx=max(mx,z);
+		add(x,y,z);
+	}
+	cout<<dij()<<endl;
+	return 0;
+}

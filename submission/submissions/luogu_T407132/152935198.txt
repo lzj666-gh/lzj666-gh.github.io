@@ -1,0 +1,54 @@
+//  OJ: 洛谷
+//  提交ID: 152935198
+//  题目ID: T407132
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int nxt, v;
+	Edge(int n, int vv) {
+		nxt = n;
+		v = vv;
+	}
+};
+vector<Edge>edge;
+int n, m, sg[6000 + 10], head[6000 + 10];
+bool vis[6000 + 10];
+static void add(int u, int v) {
+	edge.push_back(Edge(head[u], v));
+	head[u] = edge.size() - 1;
+}
+int SG(int k) {
+	if (vis[k]) {
+		return sg[k];
+	}
+	if (head[k] == -1) {
+		return sg[k] = 0;
+	}
+	vis[k] = true;
+	set<int>nw;
+	for (int i = head[k]; i != -1; i = edge[i].nxt) nw.insert(SG(edge[i].v));
+	for (int i = 0;; ++i) {
+		if (!nw.count(i)) {
+			sg[k] = i;
+			return i;
+		}
+	}
+}
+int a[6000 + 10], b[2000 + 10];
+int main() {
+	for (int i = 1; i <= 6000; i++) head[i] = -1;
+	ios_base::sync_with_stdio(false);
+	cin >> m >> n;
+	for (int i = 1; i <= m; ++i) cin >> a[i];
+	for (int i = 1; i <= n; ++i) cin >> b[i];
+	sort(b + 1, b + n + 1);
+	sort(a + 1, a + m + 1);
+	for (int i = 0; i <= b[n]; ++i)
+		for (int j = 1; j <= m; ++j)
+			if (i - a[j] >= 0) add(i, i - a[j]);
+	head[0] = -1;
+	int res = 0;
+	for (int i = 1; i <= n; ++i) res ^= SG(b[i]);
+	cout << (res ? "Yes\n" : "No\n");
+	return 0;
+}

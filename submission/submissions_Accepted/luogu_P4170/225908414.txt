@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 225908414
+//  题目ID: P4170
+#include<bits/stdc++.h>
+using namespace std;
+long long dp[50 + 11][50 + 11];
+string s;
+bool check(int l, int r) {
+	char cbc = s[l];
+	for (int i = l; i <= r; ++i) if (s[i] ^ cbc) return 0;
+	return 1;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> s;
+	int n = s.size();
+	s = ' ' + s;
+	memset(dp, 0x3f, sizeof dp);
+	for (int i = 1; i <= n; ++i) dp[i][i] = 1, dp[i][i + 1] = 2 - (s[i] == s[i + 1]);
+	for (int l = 3; l <= n; ++l)
+		for (int i = 1; i + l - 1 <= n; ++i) {
+			int j = i + l - 1;
+			if (check(i, j)) { dp[i][j] = 1; continue; }
+			if (s[i] == s[j])
+				dp[i][j] = min(dp[i + 1][j], dp[i][j - 1]);
+			for (int k = i + 1; k <= j - 1; ++k)
+				dp[i][j] = min(dp[i][j], dp[i][k] + dp[k + 1][j]);
+		}
+	cout << dp[1][n] << endl;
+	return 0;
+}

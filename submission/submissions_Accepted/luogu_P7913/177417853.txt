@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 177417853
+//  题目ID: P7913
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, ans1[100000 + 10], ans2[100000 + 10], m1, m2;
+struct P {
+	int beg, end;
+	friend bool operator<(const P& a, const P& b) {
+		return a.beg < b.beg;
+	}
+}a[100000 + 10];
+void work(int* anss) {
+	for (int i = 1; i <= m; ++i) cin >> a[i].beg >> a[i].end;
+	sort(a + 1, a + m + 1);
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>lq;
+	priority_queue<int, vector<int>, greater<int>>wq;
+	//cout << "begin :" << (m == m1 ? "first" : "second") << endl;
+	for (int i = 1; i <= n; ++i) wq.push(i);
+	for (int i = 1; i <= m; ++i) {
+		//cout << "in " << i << endl;
+		while (!lq.empty() && a[i].beg >= lq.top().first) {
+			wq.emplace(lq.top().second);
+			lq.pop();
+		}
+		if (wq.empty()) continue;
+		int cur = wq.top(); wq.pop();
+		anss[cur]++;
+		lq.emplace(a[i].end, cur);
+		//cout << "cur :" << cur << endl;
+	}
+	for (int i = 1; i <= n; ++i) anss[i] += anss[i - 1];
+}
+signed main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m1 >> m2;
+	m = m1;
+	work(ans1);
+	m = m2;
+	work(ans2);
+	int ans = 0;
+	for (int i = 0; i <= n; ++i) ans = max(ans, ans1[i] + ans2[n - i]);
+	cout << ans << endl;
+	return 0;
+}

@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 199056041
+//  题目ID: B3876
+#include<bits/stdc++.h>
+using namespace std;
+long long n;
+int main(){
+	cin.tie(0)->sync_with_stdio(false);
+	cin>>n;
+	cout<<(n&1?n/2+1:n+1)<<endl;
+	return 0;
+}

@@ -1,0 +1,87 @@
+//  OJ: 洛谷
+//  提交ID: 197356557
+//  题目ID: P5787
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, k, x, y, l, r;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define ls l, l + r >> 1
+#define rs (l + r >> 1) + 1, r
+	struct Node {
+		struct Edge {
+			int u, v;
+			Edge(int uu = 0, int vv = 0):u(uu), v(vv) { }
+		};
+		vector<Edge>edge;
+		Node(): edge(vector<Edge>()) { }
+	}tree[100000 << 4 | 3];
+	stack<int>stk;
+	int siz[200000 + 10], fa[200000 + 10];
+	Seg_Tree() {
+		memset(siz, 0, sizeof siz);
+		memset(fa, 0, sizeof fa);
+	}
+	void init() {
+		for(int i = 1; i <= n; ++i) fa[i] = i, fa[i + n] = i + n;
+		for(int i = 1; i <= n; ++i) siz[i] = 1, siz[i + n] = 1;
+	}
+	void add(const int&p, const int&l, const int&r, const int&L, const int&R, Node::Edge e) {
+		if(r < L || R < l) return;
+		if(L <= l && r <= R) {
+			tree[p].edge.push_back(e);
+			return;
+		}
+		add(lc(p), ls, L, R, e);
+		add(rc(p), rs, L, R, e);
+	}
+	int find(const int&x) {
+		1;
+		return fa[x] == x ? x : find(fa[x]);
+	}
+	void merge(const int&fu, const int&fv) {
+		if(fu == fv) return;
+		if(siz[fu] > siz[fv])
+			fa[fv] = fu, siz[fu] += siz[fv], stk.push(fv);
+		else
+			fa[fu] = fv, siz[fv] += siz[fu], stk.push(fu);
+	}
+	void query(const int& p, const int& l, const int& r) {
+		bool TruE = 0;
+		int End = stk.empty() ? 0 : stk.top();
+		for(const Node::Edge& e : tree[p].edge) {
+			const int& x = e.u;
+			const int& y = e.v;
+			if(find(x) == find(y) || find(x + n) == find(y + n)) {
+				TruE = 1;
+			}
+			merge(find(x + n), find(y));
+			merge(find(x), find(y + n));
+		}
+		if(TruE)
+			for(int i = l; i <= r; ++i)
+				cout << "No" << endl;
+		else if(l == r)
+			cout << "Yes" << endl;
+		else
+			query(lc(p), ls),
+			query(rc(p), rs);
+		while(!stk.empty() && stk.top() ^ End) {
+			int tmp = stk.top(); stk.pop();
+			siz[fa[tmp]] -= siz[tmp];
+			fa[tmp] = tmp;
+		}
+	}
+}t;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> k; k--;
+	t.init();
+	for(int i = 1; i <= m; ++i) {
+		cin >> x >> y >> l >> r;
+		t.add(1, 0, k, l, r - 1, Seg_Tree::Node::Edge(x, y));
+	}
+	t.query(1, 0, k);
+	return 0;
+}

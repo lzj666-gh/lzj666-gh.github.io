@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 163807284
+//  题目ID: CF730J
+#include<bits/stdc++.h>
+using namespace std;
+struct Node{
+	int a,b;
+}a[100+10];
+int n,all;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;++i) cin>>a[i].a,all+=a[i].a;
+	for(int i=1;i<=n;++i) cin>>a[i].b;
+	sort(a+1,a+n+1,[](const Node&a,const Node&b){return a.b<b.b;});
+	int k=0,pos=n;
+	while(all>0){
+		all-=a[pos].b;
+		k++;pos--;
+	}
+	cout<<k<<' ';
+	k=0;
+	while(pos){
+		k+=a[pos].a;
+		pos--;
+	}
+	cout<<k<<endl;
+	return 0;
+}

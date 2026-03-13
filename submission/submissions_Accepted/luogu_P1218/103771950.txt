@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 103771950
+//  题目ID: P1218
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+bool pri(int x){
+    if(x==2) return true;
+    if(x<2||x%2==0) return false;
+    for(int tmp=3;tmp*tmp<=x;tmp+=2){
+        if(x%tmp==0) return false;
+    }
+    return true;
+}
+void DFS(int last,int w){
+    if(w==n){
+        printf("%d\n",last);return;
+    }
+    for(int i=1;i<=9;i+=2){
+        if(i==5) continue;
+        if(pri(last*10+i)){
+            DFS(last*10+i,w+1);
+        }
+    }
+}
+int main(){
+    scanf("%d",&n);
+    DFS(2,1);DFS(3,1);DFS(5,1);DFS(7,1);
+    return 0;
+}

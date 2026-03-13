@@ -1,0 +1,77 @@
+//  OJ: 洛谷
+//  提交ID: 168339110
+//  题目ID: P8149
+#include<bits/stdc++.h>
+using namespace std;
+int fa[600000+10],siz[600000+10],a[600000+10],b[600000+10],c[600000+10],d[600000+10];
+bool vis[600000+10];
+set<int>st[600000+10];
+int find(int x){
+	return fa[x]==x?x:fa[x]=find(fa[x]);
+}
+queue<pair<int,int>>q;
+void merge(int x,int y){
+	x=find(x);y=find(y);
+	if(x==y) return;
+	if(st[x].size()<st[y].size()) x^=y^=x^=y;
+	for(set<int>::iterator it=st[y].begin();it!=st[y].end();it++){
+		int now=*it;
+		if(vis[now]) continue;
+		if(find(a[now])==x&&find(b[now])==y){
+			vis[now]=1;
+			st[x].erase(now);
+			q.emplace(c[now],d[now]);
+		}
+		else if(find(a[now])==y&&find(b[now])==x){
+			vis[now]=1;
+			st[x].erase(now);
+			q.emplace(c[now],d[now]);
+		}
+	}
+	for(set<int>::iterator it=st[y].begin();it!=st[y].end();it++){
+		int cur=*it;
+		if(!vis[cur]) st[x].insert(cur);
+	}
+	fa[y]=x;
+	siz[x]+=siz[y];
+}
+void modify(){
+	while(!q.empty()){
+		pair<int,int>now=q.front();q.pop();
+		merge(now.first,now.second);
+	}
+}
+int n,m,opt;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;++i) fa[i]=i,siz[i]=1;
+	for(int i=1;i<=m;++i){
+		cin>>opt;
+		if(opt==1){
+			cin>>a[i]>>b[i]>>c[i]>>d[i];
+			if(find(a[i])==find(b[i])){
+				q.emplace(c[i],d[i]);
+				vis[i]=1;
+				modify();
+				continue;
+			}
+			st[find(a[i])].insert(i);
+			st[find(b[i])].insert(i);
+		}
+		else if(opt==2){
+			cin>>a[i]>>b[i];
+			q.emplace(a[i],b[i]);
+			modify();
+		}
+		else if(opt==3){
+			cin>>a[i]>>b[i];
+			cout<<(find(a[i])==find(b[i])?"entangled\n":"separate\n");
+		}
+		else if(opt==4){
+			cin>>a[i];
+			cout<<siz[find(a[i])]<<endl;
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,47 @@
+//  OJ: 洛谷
+//  提交ID: 245502673
+//  题目ID: P3385
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[6000 + 5];
+int head[2000 + 5], idx;
+void add(int u, int v, int w) {
+	//cerr << "add " << u << " " << v << endl;
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int dis[2000 + 5], vis[2000 + 5], n, m;
+bool inq[2000 + 5];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T; cin >> T;
+	while (T--) {
+		cin >> n >> m; idx = 0;
+		memset(head + 1, 0, sizeof(int) * n);
+		memset(vis + 1, 0, sizeof(int) * n);
+		memset(inq + 1, 0, sizeof(bool) * n);
+		memset(dis + 1, 0x3f, sizeof(int) * n);
+		for (int i = 1, u, v, w; i <= m; ++i) {
+			cin >> u >> v >> w;
+			if (w >= 0) add(u, v, w), add(v, u, w);
+			else add(u, v, w);
+		}
+		queue<int>q; inq[1] = 1; dis[1] = 0;
+		q.push(1); bool flg = 0;
+		while (!q.empty()) {
+			int now = q.front(); inq[now] = 0; q.pop();
+			//cerr << "update " << now << ' ' << dis[now] << endl;
+			if (++vis[now] > n) {
+				flg = 1;
+				break;
+			}
+			for (int i = head[now]; i; i = edge[i].nxt)
+				if (int w = edge[i].w + dis[now]; w < dis[edge[i].v])
+					dis[edge[i].v] = w, (inq[edge[i].v] || (q.push(edge[i].v), inq[edge[i].v] = 1));
+		}
+		cout << (flg ? "YES" : "NO") << endl;
+	}
+	return 0;
+}

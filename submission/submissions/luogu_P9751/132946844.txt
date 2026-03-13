@@ -1,0 +1,66 @@
+//  OJ: 洛谷
+//  提交ID: 132946844
+//  题目ID: P9751
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+typedef pair<ll,ll> pllll;
+inline ll read(){
+    ll x=0,s=1;
+    char c=getchar();
+    while(c<'0'||c>'9'){
+        if(c=='-') s=-1;
+        c=getchar();
+    }
+    while(c>='0'&&c<='9'){
+        x=(x<<1)+(x<<3)+(c^48);
+        c=getchar();
+    }
+    return x*s;
+}
+inline void write(ll x){
+	if(x<0){
+		putchar('-');
+		x=~x+1;
+	}
+	else if(!x) return;
+	write(x/10);
+	putchar(x%10+'0');
+}
+ll n,m,k,dis[10000+10][100+10];
+bool vis[10000+10][100+10];
+vector<pllll> edges[10000+10];
+priority_queue<pllll,vector<pllll>,greater<pllll>> q;
+inline void add(ll num,ll v,ll w){
+	edges[num].push_back(make_pair(v,w));
+}
+void dijkstra(){
+	dis[1][0]=0;
+	q.push({0,1});
+	while(!q.empty()){
+		ll ti=q.top().first,num=q.top().second;
+		q.pop();
+		if(vis[num][ti%k]) continue;
+		vis[num][ti%k]=true;
+		for(auto d:edges[num]){
+			ll v=d.first,w=d.second,t=(ti+1)%k;
+			t=((w-ti+k-1)/k)*k+ti;
+			if(dis[v][(t+1)%k]>t+1){
+				dis[v][(t+1)%k]=t+1;
+				q.push({t+1,v});
+			}
+		}
+	}
+}
+int main(){
+	memset(dis,0x3f,sizeof(dis));
+	n=read(),m=read(),k=read();
+	for(int num,v,w,i=0;i<m;i++){
+		num=read(),v=read(),w=read();
+		add(num,v,w);
+	}
+	dijkstra();
+	if(!vis[n][0]) printf("-1");
+	else write(dis[n][0]);
+	return 0;
+}

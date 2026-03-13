@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 115047636
+//  题目ID: T138173
+#include<bits/stdc++.h>
+using namespace std;
+int pa[100],n,k;
+int st[100],top=0,cnt=0;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>k;
+	for(int i=1;i<=n;i++) pa[i]=i;
+	for(int i=1;i<=k;i++){
+		int x,y;
+		cin>>x>>y;
+		pa[y]=x;
+	}
+	for(int i=1;i<=n;i++){
+		if(pa[i]==i) cnt++,st[++top]=i;
+	}
+	cout<<cnt<<endl;
+	for(int i=1;i<=top;i++){
+		cout<<st[i]<<' ';
+	}
+	cout<<endl;
+	return 0;
+}

@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 165538190
+//  题目ID: P5785
+#include<bits/stdc++.h>
+using namespace std;
+long long n, s, t[300000 + 10], f[300000 + 10], dp[300000 + 10], q[300000 + 10], hh, tt;
+bool chk(int mid, int i) {
+	return (dp[q[mid + 1]] - dp[q[mid]]) * 1.0 / (f[q[mid + 1]] - f[q[mid]]) <= t[i] + s;
+	//                    dy                   /       dx                    <=     K
+}
+int work(int i) {
+	if (hh == tt) return q[hh];
+	int l = hh, r = tt;
+	while (l < r) {
+		int mid = l + r >> 1;
+		if (chk(mid,i)) l = mid + 1;
+		else r = mid;
+	}
+	return q[l];
+}
+//bina_srch
+int main() {
+	ios_base::sync_with_stdio(false);
+	memset(dp, 0x3f, sizeof dp);
+	cin >> n >> s;
+	for (int i = 1; i <= n; ++i) cin >> t[i] >> f[i], t[i] += t[i - 1], f[i] += f[i - 1];
+	dp[0] = 0;
+	hh = tt = 1;
+	for (int i = 1; i <= n; i++) {
+		int p = work(i);
+		dp[i] = dp[p] - (t[i] + s) * f[p] + t[i] * f[i] + s * f[n];
+		while (hh < tt && (dp[q[tt]] - dp[q[tt - 1]]) * (f[i] - f[q[tt]]) >= (dp[i] - dp[q[tt]]) * (f[q[tt]] - f[q[tt - 1]])) --tt;
+		q[++tt] = i;
+		/*
+				for (int j = 0; j < i; ++j) {
+					dp[i] = min(dp[i], dp[j] - (s + t[i]) * f[j] + t[i] * f[i] + s * f[n]);
+				}
+		*/
+	}
+	cout << dp[n] << endl;
+	return 0;
+}

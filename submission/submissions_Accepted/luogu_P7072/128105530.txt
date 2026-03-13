@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 128105530
+//  题目ID: P7072
+#include<bits/stdc++.h>
+using namespace std;
+#define io ios_base::sync_with_stdio(false); \
+		   cin.tie(nullptr);\
+		   cout.tie(nullptr);
+int n,w,t[600+10];
+int main(){
+	io
+	cin>>n>>w;
+	for(int i=1,x;i<=n;i++){
+		int p=1>i*w/100?1:i*w/100;
+		cin>>x;
+		++t[x];
+		int sum=0;
+		for(int j=600;j>=0;j--){
+			if(!t[j]) continue;
+			sum+=t[j];
+			if(sum>=p){
+				cout<<j<<' ';
+				break;
+			}
+		}
+	}
+	return 0;
+ } 

@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 179435468
+//  题目ID: P11144
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+const ll mod1 = 4e8, mod2 = mod1 - 1;
+signed main() {
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		ll ans1, ans2;
+		cout << "? " << mod1 << endl;
+		cin >> ans1;
+		cout << "? " << mod2 << endl;
+		cin >> ans2;
+		if (ans1 == 0 && ans2 == 0) cout << "! " << 0 << endl;
+		else {
+			ll k = 0;
+			for (; (ans1 - ans2 + k * mod1) % mod2;) k++;
+			cout << "! " << ans1 + k * mod1 << endl;
+		}
+	}
+	return 0;
+}

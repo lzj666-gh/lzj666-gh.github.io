@@ -1,0 +1,92 @@
+//  OJ: 洛谷
+//  提交ID: 221427456
+//  题目ID: P4374
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 5e4 + 5, M = 1e5 + 5;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+void addedge(int u, int v) {
+	add(u, v); add(v, u);
+}
+int ans[N];
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int lzy;
+		Node(int lzy = INT_MAX) : lzy(lzy) {}
+	}tree[N << 2];
+	void pushdown(int p) {
+		tree[lc(p)].lzy = min(tree[lc(p)].lzy, tree[p].lzy);
+		tree[rc(p)].lzy = min(tree[rc(p)].lzy, tree[p].lzy);
+	}
+	void setmin(int p, int l, int r, int L, int R, int val) {
+		if (R < l || r < L) return;
+		if (L <= l && r <= R) {
+			tree[p].lzy = min(tree[p].lzy, val);
+			return;
+		}
+		pushdown(p);
+		setmin(lson, L, R, val);
+		setmin(rson, L, R, val);
+	}
+	void query(int p, int l, int r) {
+		if (l == r) {
+			ans[l] = tree[p].lzy;
+			if (ans[l] == INT_MAX) ans[l] = -1;
+			return;
+		}
+		pushdown(p);
+		query(lson); query(rson);
+	}
+}t;
+int dfn[N], idk, hvy[N], siz[N], top[N], f[N], dep[N], v[N];
+void dfs1(int x, int fa) {
+	siz[x] = 1; f[x] = fa; dep[x] = dep[fa] + 1;
+	for (int i = head[x]; i; i = edge[i].nxt)
+		if (edge[i].v ^ fa)
+			dfs1(edge[i].v, x), siz[x] += siz[edge[i].v],
+			(siz[edge[i].v] > siz[hvy[x]]) && (hvy[x] = edge[i].v);
+}
+void dfs2(int x, int fa) {
+	dfn[x] = ++idk;
+	if (hvy[x]) top[hvy[x]] = top[x], dfs2(hvy[x], x);
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (edge[i].v == fa) continue;
+		if (edge[i].v ^ hvy[x]) top[edge[i].v] = edge[i].v, dfs2(edge[i].v, x);
+		v[i + 1 >> 1] = dfn[edge[i].v];
+	}
+}
+int n, m;
+void setmin(int x, int y, int val) {
+	while (top[x] ^ top[y]) {
+		if (dep[top[x]] < dep[top[y]]) swap(x, y);
+		t.setmin(1, 1, n, dfn[top[x]], dfn[x], val);
+		x = f[top[x]];
+	}
+	if (dep[x] > dep[y]) swap(x, y);
+	t.setmin(1, 1, n, dfn[x] + 1, dfn[y], val);
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v; i < n; ++i) cin >> u >> v, addedge(u, v);
+	dfs1(1, 1); top[1] = 1; dfs2(1, 1);
+	while (m--) {
+		int a, b, c; cin >> a >> b >> c;
+		setmin(a, b, c);
+	}
+	t.query(1, 1, n);
+	for (int i = 1; i < n; ++i) cout << ans[v[i]] << endl;
+	return 0;
+}

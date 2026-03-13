@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 94551383
+//  题目ID: T66198
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int n;cin>>n;short int flag=0;
+	for(int x=1;x<=9;x++){
+		for(int y=1;y<=9;y++){
+			for(int z=0;z<=9;z++){
+				if(x*110+y*100+z*12==n){
+				cout<<x<<x<<z<<"+"<<y<<z<<z<<"="<<n;
+				flag=1;
+				}
+			}
+		}
+	}
+	if(flag==0) cout<<"NONE";
+
+	return 0;
+}
+

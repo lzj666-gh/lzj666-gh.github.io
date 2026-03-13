@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 108224490
+//  题目ID: P1638
+#include<iostream>
+using namespace std;
+const int maxn=1000000+10;
+int n,m,a[maxn],flag[maxn];
+int main() {
+	scanf("%d%d",&n,&m);
+	for(int i=1; i<=n; i++){ 
+		scanf("%d",&a[i]);
+	} 
+	int cnt=0,maxn=1e8;
+	int l=0,r=0;
+	for(int i=1,j=0; i<=n; i++) {
+		if(i>1) {
+			flag[a[i-1]]--;  
+			if(flag[a[i-1]]==0)cnt--;  
+		}
+		while(j<=n&&cnt<m) { 
+			j++;
+			if(flag[a[j]]==0) cnt++;
+			flag[a[j]]++;
+		}
+		if(cnt==m&&j<=n) {
+			if(j-i+1<maxn) {
+				maxn=j-i+1;
+				l=i;
+				r=j;
+			}
+		}
+	}
+	cout<<l<<" "<<r<<endl;
+	return 0;
+}

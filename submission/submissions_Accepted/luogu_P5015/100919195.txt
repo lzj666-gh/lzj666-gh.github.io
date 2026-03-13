@@ -1,0 +1,14 @@
+//  OJ: 洛谷
+//  提交ID: 100919195
+//  题目ID: P5015
+#include<bits/stdc++.h>
+using namespace std;
+char a[10];
+int main(){
+	fgets(a,10,stdin);int i=0,tmp=0;
+	while(a[i]!='\n'){
+		if(a[i]!=' ') tmp++;
+		i++;
+	}
+	cout<<tmp<<endl;
+}

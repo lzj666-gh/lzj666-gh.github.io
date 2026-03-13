@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 101121084
+//  题目ID: P1152
+#include<bits/stdc++.h>
+using namespace std;
+int a[1010];int b[100000000]={0};
+int main(){
+	int i=0;
+	while(cin>>a[i]) i++;
+	int n=i+1;
+	for(i=0;i<n;i++){
+		for(int j=0;j<n-i-1;j++){
+			if(a[j]>a[j+1]){
+				swap(a[j],a[j+1]);
+			}
+		}
+	}
+//	for(i=1;i<n;i++) cout<<a[i]<<" ";
+	for(i=1;i<n-1;i++){
+		for(int j=1;j<i;j++){
+			b[a[i]-a[j]]++;
+		}
+	}
+	for(i=1;i<n;i++){
+		if(b[i]==0){
+			cout<<"Not jolly";
+			return 0;
+		}
+	}
+	cout<<"Jolly";
+	return 0;
+}

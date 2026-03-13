@@ -1,0 +1,63 @@
+//  OJ: 洛谷
+//  提交ID: 220784087
+//  题目ID: P3919
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+#define lc(p) (tree[p].ls)
+#define rc(p) (tree[p].rs)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+struct Tree {
+	int sum, ls, rs;
+}tree[30000000 + 10];
+int root[1000000 + 10], n, m, idx, a[1000000 + 10];
+void pushup(int p) {
+	tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+}
+void build(int p, int l, int r) {
+	if (l == r) {
+		tree[p].sum = a[l];
+		return;
+	}
+	build(tree[p].ls = ++idx, l, l + r >> 1);
+	build(tree[p].rs = ++idx, (l + r >> 1) + 1, r);
+	pushup(p);
+}
+int query(int p, int l, int r, int x) {
+	if (l == r) return tree[p].sum;
+	if (x <= mid) return query(lson, x);
+	else return query(rson, x);
+}
+void add(int lp, int rp, int l, int r, int x, int val) {
+	tree[rp] = tree[lp];
+	if (l == r) {
+		tree[rp].sum = val;
+		return;
+	}
+	if (x <= mid) add(tree[lp].ls, tree[rp].ls = ++idx, l, mid, x, val);
+	else add(tree[lp].rs, tree[rp].rs = ++idx, mid + 1, r, x, val);
+	pushup(rp);
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	root[0] = ++idx;
+	build(idx, 1, n);
+	for (int l = 1; l <= m; ++l) {
+		int v, opt, d, val;
+		cin >> v >> opt >> d;
+		root[l] = ++idx;
+		if (opt == 1) {
+			cin >> val;
+			add(root[v], idx, 1, n, d, val);
+		}
+		else if (opt == 2) {
+			cout << query(root[v], 1, n, d) << endl;
+			tree[idx] = tree[root[v]];
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,103 @@
+//  OJ: 洛谷
+//  提交ID: 140282429
+//  题目ID: T408360
+#include<bits/stdc++.h>
+#include<ext/pb_ds/priority_queue.hpp>
+using namespace std;
+namespace dui{
+	   template<typename _Tv,
+	   typename Cmp_Fn = std::less<_Tv>,
+	   typename Tag = __gnu_pbds::pairing_heap_tag,
+	   typename _Alloc = std::allocator<char> >
+  class priority_queue
+  : public __gnu_pbds::detail::container_base_dispatch<_Tv, Cmp_Fn, _Alloc, Tag>::type
+  {
+  public:
+    typedef _Tv 					value_type;
+    typedef Cmp_Fn 					cmp_fn;
+    typedef Tag 					container_category;
+    typedef _Alloc 					allocator_type;
+    typedef typename allocator_type::size_type 		size_type;
+    typedef typename allocator_type::difference_type 	difference_type;
+
+  private:
+    typedef typename __gnu_pbds::detail::container_base_dispatch<_Tv, Cmp_Fn, _Alloc,
+						     Tag>::type
+ 							base_type;
+    typedef typename _Alloc::template rebind<_Tv>   	__gnu_pbds::__rebind_v;
+    typedef typename __rebind_v::other			__rebind_va;
+
+ public:
+    typedef typename __rebind_va::reference 		reference;
+    typedef typename __rebind_va::const_reference 	const_reference;
+    typedef typename __rebind_va::pointer 	   	pointer;
+    typedef typename __rebind_va::const_pointer 	const_pointer;
+
+    typedef typename base_type::point_iterator 		point_iterator;
+    typedef typename base_type::point_const_iterator 	point_const_iterator;
+    typedef typename base_type::iterator 		iterator;
+    typedef typename base_type::const_iterator 		const_iterator;
+
+    priority_queue() { }
+
+    /// Constructor taking some policy objects. r_cmp_fn will be
+    /// copied by the Cmp_Fn object of the container object.
+    priority_queue(const cmp_fn& r_cmp_fn) : base_type(r_cmp_fn) { }
+
+    /// Constructor taking __iterators to a range of value_types. The
+    /// value_types between first_it and last_it will be inserted into
+    /// the container object.
+    template<typename It>
+    priority_queue(It first_it, It last_it)
+    { base_type::copy_from_range(first_it, last_it); }
+
+    /// Constructor taking __iterators to a range of value_types and
+    /// some policy objects The value_types between first_it and
+    /// last_it will be inserted into the container object. r_cmp_fn
+    /// will be copied by the cmp_fn object of the container object.
+    template<typename It>
+    priority_queue(It first_it, It last_it, const cmp_fn& r_cmp_fn)
+    : base_type(r_cmp_fn)
+    { base_type::copy_from_range(first_it, last_it); }
+
+    priority_queue(const priority_queue& other)
+    : base_type((const base_type& )other) { }
+
+    virtual
+    ~priority_queue() { }
+
+    priority_queue&
+    operator=(const priority_queue& other)
+    {
+      if (this != &other)
+	{
+	  priority_queue tmp(other);
+	  swap(tmp);
+	}
+      return *this;
+    }
+
+    void
+    swap(priority_queue& other)
+    { base_type::swap(other); }
+  };
+}
+int n,cnt;
+int main(){
+	ios_base::sync_with_stdio(false);
+	dui::priority_queue<int,greater<int> > q;
+	cin>>n;
+	for(int i=1,tmp;i<=n;++i){
+		cin>>tmp;
+		q.push(tmp);
+	}
+	for(int i=1;i<n;i++){
+		int tp1,tp2;
+		tp1=q.top(); q.pop();
+		tp2=q.top(); q.pop();
+		cnt+=tp1+tp2;
+		q.push(tp1+tp2);
+	}
+	cout<<cnt<<endl;
+	return 0;
+}

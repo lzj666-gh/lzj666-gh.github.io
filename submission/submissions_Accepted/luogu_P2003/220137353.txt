@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 220137353
+//  题目ID: P2003
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e5 + 5;
+int n, a[N];
+vector<tuple<int, int, int>>v;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	v.resize(n);
+	for (int i = 0, l, r, h; i < n; ++i) cin >> h >> l >> r, v[i] = { h,l + 1,r };
+	sort(v.begin(), v.end());
+	int ans = 0;
+	for (const auto& [h, l, r] : v) {
+		ans += h - a[l];
+		ans += h - a[r];
+		for (int i = l; i <= r; ++i) a[i] = h;
+	}
+	cout << ans << endl;
+	return 0;
+}

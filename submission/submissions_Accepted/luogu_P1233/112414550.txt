@@ -1,0 +1,34 @@
+//  OJ: 洛谷
+//  提交ID: 112414550
+//  题目ID: P1233
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int l,w;
+}a[114514];
+bool cmp(node n1,node n2){
+	if(n1.l==n2.l){
+		return n1.w>n2.w;
+	}
+	return n1.l>n2.l;
+}
+int n,dp[114514],ans;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		cin>>a[i].l>>a[i].w;
+	}
+	sort(&a[1],&a[n+1],cmp);
+//	for(int i=1;i<=n;i++){
+//		cout<<a[i].l<<' '<<a[i].w<<'\n';
+//	}
+	for(int i=1;i<=n;i++){
+		for(int j=i-1;j>=1;j--){
+			if(a[i].w>a[j].w) dp[i]=max(dp[i],dp[j]+1);
+		}
+		ans=max(ans,dp[i]);
+	}
+	cout<<ans+1;
+	return 0;
+}

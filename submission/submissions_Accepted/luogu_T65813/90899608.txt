@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 90899608
+//  题目ID: T65813
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	double r,n,c;
+	cin>>r>>n;
+	c=3.1415926*r*2*n/360+2*r;
+	printf("%.2lf",c);
+	return 0;
+}
+

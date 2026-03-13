@@ -1,0 +1,40 @@
+//  OJ: 洛谷
+//  提交ID: 217300341
+//  题目ID: P1656
+#include<bits/stdc++.h>
+#define int long long 
+using namespace std;
+constexpr int N = 150 + 10, M = 10000 + 10;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx = 1;
+void add(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+}
+int n, m;
+vector<pair<int, int>>ans;
+int dfn[N], idk, low[N];
+void tarjan(int x, int in) {
+	dfn[x] = low[x] = ++idk;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (!dfn[edge[i].v]) {
+			tarjan(edge[i].v, i);
+			if (low[edge[i].v] > dfn[x])
+				ans.emplace_back(x, edge[i].v);
+			low[x] = min(low[x], low[edge[i].v]);
+		}
+		else if (in ^ 1 ^ i)
+			low[x] = min(low[x], dfn[edge[i].v]);
+	}
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v; i <= m; ++i) cin >> u >> v, add(u, v), add(v, u);
+	for (int i = 1; i <= n; ++i) if (!dfn[i]) tarjan(i, 0);
+	sort(ans.begin(), ans.end());
+	for (const pair<int, int>& p : ans) cout << p.first << ' ' << p.second << endl;
+	return 0;
+}

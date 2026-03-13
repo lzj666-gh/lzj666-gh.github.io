@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 139445058
+//  题目ID: T407141
+#include <bits/stdc++.h>
+using namespace std;
+int n,s;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin >> n;
+    for (int i = 1, c; i <= n; ++i) {
+        cin >> c;
+        if (i & 1) s ^= c;
+    }
+    cout << (s ? "win" : "lose") << endl;
+    return 0;
+}

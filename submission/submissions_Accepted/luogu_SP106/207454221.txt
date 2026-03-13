@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 207454221
+//  题目ID: SP106
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		int n, m;
+		cin >> n >> m;
+		cout << (n == 0 && m == 0 || ((m + 1) / 2 - 1 & n - m + (m + 1) / 2 - 1) == (m + 1) / 2 - 1) << endl;
+	}
+	return 0;
+}

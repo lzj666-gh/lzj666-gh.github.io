@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 179320644
+//  题目ID: P1521
+#include<bits/stdc++.h>
+using namespace std;
+int n, k;
+int dp[5000][5000];
+int main(){
+	cin >> n >> k;
+	dp[0][0] = 	dp[1][0] = 	dp[2][0] = 	dp[2][1] = 1;
+	for (int i = 3; i <= n; i++)
+		for (int j = 0; j <= k; j++)
+			for (int k = 0; k <= i - 1 && j - k >= 0; k++)
+				dp[i][j] = (dp[i - 1][j - k] + dp[i][j]) % 10000;
+	cout << dp[n][k] << endl;
+	return 0;
+}

@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 94782492
+//  题目ID: T66252
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+	int m,s=0,n=-1;
+	cin>>m;
+	while(s<=m)
+	{
+		n+=2;
+		s+=n;
+		
+	}
+	cout<<n;
+	
+	return 0;
+}

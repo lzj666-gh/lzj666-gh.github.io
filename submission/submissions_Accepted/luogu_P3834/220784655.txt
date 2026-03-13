@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 220784655
+//  题目ID: P3834
+#include<bits/stdc++.h>
+using namespace std;
+int idx;
+struct Tree {
+	int ls, rs, sum;
+}tree[5000000 + 5];
+#define lc(p) (tree[p].ls)
+#define rc(p) (tree[p].rs)
+#define mid (l + r >> 1)
+void insert(int lp, int rp, int l, int r, int k) {
+	tree[rp] = tree[lp]; tree[rp].sum++;
+	if (l == r) return;
+	if (k <= mid) insert(tree[lp].ls, tree[rp].ls = ++idx, l, l + r >> 1, k);
+	else insert(tree[lp].rs, tree[rp].rs = ++idx, mid + 1, r, k);
+}
+int query(int lp, int rp, int l, int r, int k) {
+	if (l == r) return l;
+	int L = tree[lc(rp)].sum - tree[lc(lp)].sum;
+	if (k <= L) return query(lc(lp), lc(rp), l, l + r >> 1, k);
+	else return query(rc(lp), rc(rp), mid + 1, r, k - L);
+}
+int n, m, a[200000 + 5], root[200000 + 5];
+vector<int>b;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i], b.push_back(a[i]);
+	sort(b.begin(), b.end());
+	b.erase(unique(b.begin(), b.end()), b.end());
+	for (int i = 1; i <= n; ++i) a[i] = lower_bound(b.begin(), b.end(), a[i]) - b.begin() + 1;
+	root[0] = ++idx;
+	for (int i = 1; i <= n; ++i) insert(root[i - 1], root[i] = ++idx, 1, b.size(), a[i]);
+	while (m--) {
+		static int l, r, k;
+		cin >> l >> r >> k;
+		cout << b[query(root[l - 1], root[r], 1, b.size(), k) - 1] << endl;
+	}
+	return 0;
+}

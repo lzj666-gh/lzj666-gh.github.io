@@ -1,0 +1,68 @@
+//  OJ: 洛谷
+//  提交ID: 174272169
+//  题目ID: P3919
+#include<bits/stdc++.h>
+using namespace std;
+struct Tree {
+	int sum, ls, rs;
+}tree[30000000 + 10];
+int root[1000000 + 10], n, m, idx, a[1000000 + 10];
+void pushup(int p) {
+	tree[p].sum = tree[tree[p].ls].sum + tree[tree[p].rs].sum;
+}
+void build(int p, int l, int r) {
+	if (l == r) {
+		tree[p].sum = a[l];
+		return;
+	}
+	tree[p].ls = ++idx;
+	build(idx, l, l + r >> 1);
+	tree[p].rs = ++idx;
+	build(idx, (l + r >> 1) + 1, r);
+	pushup(p);
+}
+int query(int p, int fnd,int l,int r) {
+	if (l == r) return tree[p].sum;
+	if (l <= fnd && fnd <= (l + r >> 1)) return query(tree[p].ls, fnd, l, l + r >> 1);
+	else return query(tree[p].rs, fnd, (l + r >> 1) + 1, r);
+}
+void chg(int bef, int to, int idk, int val,int l,int r) {
+	if (l == r) {
+		tree[to].sum = val;
+		return;
+	}
+	if (l <= idk && idk <= (l + r >> 1)) {
+		tree[to].rs = tree[bef].rs;
+		tree[to].ls = ++idx;
+		chg(tree[bef].ls, tree[to].ls, idk, val, l, l + r >> 1);
+		pushup(to);
+	}
+	else {
+		tree[to].ls = tree[bef].ls;
+		tree[to].rs = ++idx;
+		chg(tree[bef].rs, tree[to].rs, idk, val, (l + r >> 1) + 1, r);
+		pushup(to);
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) cin >> a[i]; 
+	root[0] = ++idx;
+	build(idx, 1, n);
+	for (int l = 1; l <= m; ++l) {
+		int v, opt, loc, val;
+		cin >> v >> opt >> loc;
+		if (opt == 1) {
+			cin >> val;
+			root[l] = ++idx;
+			chg(root[v], idx, loc, val, 1, n);
+		}
+		else if (opt == 2) {
+			cout << query(root[v], loc, 1, n) << endl;
+			root[l] = root[v];
+		}
+//		for (int i = 1; i <= n; ++i) clog << query(root[l], i, 1, n) << ' '; clog << endl;
+	}
+	return 0;
+}

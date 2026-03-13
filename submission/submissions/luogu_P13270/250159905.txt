@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 250159905
+//  题目ID: P13270
+#include<bits/stdc++.h>
+#define min(a,b) ((a)<(b)?(a):(b))
+using namespace std;
+int n; string s;
+int get_min(string x) {
+	int i = 0, j = 1, k = 0;
+	while (i < x.size()&&j < x.size()) {
+		for (k = 0; k < x.size() && x[(i + k) % x.size()] == x[(j + k) % x.size()]; ++k);
+		x[(i + k) % x.size()] > x[(j + k) % x.size()] ? i += k + 1 : j += k + 1;
+		j += i == j;
+		k = 0;
+	}
+	return min(i, j);
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> s;
+	for (int i = get_min(s), j = 0; j < n; ++i, ++j) cout << s[i % s.size()] << ' ';
+	return 0;
+}

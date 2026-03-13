@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 179690675
+//  题目ID: P11157
+#include<bits/stdc++.h>
+using namespace std;
+int n, a[300000 + 10];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = 1; i <= n; ++i) {
+		bool flg = 1;
+		for (int j = n - i; j >= max(a[i], 1 - i); --j) if (j <= a[i + j]) {
+			flg = 0;
+			cout << 1 << ' ' << j << endl;
+			break;
+		}
+		if (flg) cout << 0 << endl;
+	}
+	return 0;
+}

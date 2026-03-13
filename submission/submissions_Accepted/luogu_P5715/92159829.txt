@@ -1,0 +1,26 @@
+//  OJ: 洛谷
+//  提交ID: 92159829
+//  题目ID: P5715
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int a,b,c,d;
+	cin>>a>>b>>c;
+	if(a<b){
+		d=a;a=b;b=d;
+	}
+	if(a<c){
+		d=a;a=c;c=d;
+	}
+	//a最大
+	if(b<c){
+		printf("%d %d %d",b,c,a);
+	}
+	else{
+		printf("%d %d %d",c,b,a);
+	}
+	
+	return 0;
+}
+

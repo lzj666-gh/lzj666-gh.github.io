@@ -1,0 +1,57 @@
+//  OJ: 洛谷
+//  提交ID: 116198866
+//  题目ID: P8604
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+	vector <int> nei;
+	void s(){sort(nei.begin(),nei.end());}
+}edge[1000000];
+int n,m,t;
+bool b[100000+10];
+void dfs(int k){
+	if(b[k]||!k) return;
+	cout<<k<<' ';
+	b[k]=true;
+	for(int i=0;i<edge[k].nei.size();i++){
+		dfs(edge[k].nei[i]);
+	}
+}
+void bfs(int x){
+	queue <int> q;
+	q.push(x);
+	b[x]=true;
+	while(!q.empty()){
+		int d=q.front();
+//		cout<<d<<' ';
+		q.pop();
+		for(int i=0;i<edge[d].nei.size();i++){
+			if(b[edge[d].nei[i]]==false) b[edge[d].nei[i]]=true,q.push(edge[d].nei[i]);
+		}
+	}
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=m;i++){
+		int x,y;
+		cin>>x>>y;
+		edge[x].nei.push_back(y);
+		edge[y].nei.push_back(x);
+	}
+	for(int i=1;i<=n;i++) edge[i].s();
+	int x,y;
+	cin>>x>>y;
+	int cnt=0;
+	for(int i=1;i<=n;i++){
+		vector<int>v;
+		for(int j=0;j<edge[i].nei.size();j++) v.push_back(edge[i].nei[j]);
+		memset(b,0,sizeof(b));
+		edge[i].nei.clear();
+		bfs(x);
+		if(!b[y]) cnt++;
+		for(int j=0;j<v.size();j++) edge[i].nei.push_back(v[j]);
+	}
+	cout<<cnt-1<<endl;
+	return 0;
+}

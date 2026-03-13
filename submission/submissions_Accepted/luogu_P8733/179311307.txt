@@ -1,0 +1,59 @@
+//  OJ: 洛谷
+//  提交ID: 179311307
+//  题目ID: P8733
+#include<bits/stdc++.h>
+using namespace std;
+int n, x[20 + 2], y[20 + 2], D;
+double dp[1 << 20 | 2][20 + 2];
+vector<int>to[20 + 2];
+vector<double>cost[20 + 2];
+double dis[20 + 2][20 + 2];
+int main() {
+	ios_base::sync_with_stdio(false);
+	memset(dis, 127, sizeof dis);
+	cin >> n >> D;
+	for (int i = 1; i <= n; ++i) cin >> x[i] >> y[i];
+	int cnt = 0;
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 1; j <= n; ++j) {
+			//if (i == j) continue;
+			double c = sqrt((x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]));
+			if (c <= D) cost[i].push_back(c), to[i].push_back(j), dis[i][j] = c;
+		}
+	}
+	for (int k = 1; k <= n; ++k)
+		for (int i = 1; i <= n; ++i)
+			for (int j = 1; j <= n; ++j)
+				dis[i][j] = min(dis[i][j], dis[i][k] + dis[j][k]);
+	int maxx = 1 << n;
+	memset(dp, 127, sizeof dp);
+	dp[1][1] = 0;
+	for (int i = 2; i < maxx; ++i) {
+		for (int j = 1; j <= n; ++j)
+			if (i & (1 << (j - 1))) {
+				for (int k = 0; k < to[j].size(); ++k) {
+					if (!(i & (1 << (to[j][k] - 1)))) continue;
+					dp[i][j] = min(dp[i][j], dp[i ^ (1 << (j - 1))][to[j][k]] + cost[j][k]);
+					//cout << bitset<5>(i) << ',' << j << ' ' << bitset<5>(i ^ (1 << (to[j][k] - 1))) << ',' << to[j][k] << ' ' << dp[i][j] << endl;
+				}
+			}
+		for (int j = 1; j <= n; ++j)
+			if (i & (1 << (j - 1))) {
+				for (int k = 0; k < n; ++k)
+					if (i & (1 << k))
+						dp[i][j] = min(dp[i][j], dp[i][k + 1] + dis[k + 1][j]);
+				//cout << bitset<5>(i) << ',' << j << ' ' << dp[i][j] << endl;
+			}
+	}
+	double anss = 1e20;
+	for (int i = 1; i <= n; ++i) anss = min(anss, dp[maxx - 1][i] + dis[i][1]);
+	cout << fixed << setprecision(2) << anss << endl;
+	return 0;
+}
+/*
+4 4
+0 0
+0 4
+0 8
+4 4 
+*/

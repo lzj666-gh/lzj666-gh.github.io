@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 103096690
+//  题目ID: T209137
+#include<bits/stdc++.h>
+using namespace std;
+int a[30+10]={0},n;
+int main() {
+	scanf("%d",&n);
+	a[1]=1;a[2]=3;
+	for(int i=3; i<=n; i++) {
+		a[i]=a[i-1]+2*a[i-2];
+/*		for(int j=a[i][0]; j>=1; j--) {
+			cout<<a[i][j];
+		}
+		cout<<endl;
+*/	}
+	cout<<a[n];
+	return 0;
+}

@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 182955200
+//  题目ID: T528363
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, l, r, opt;
+bool tree[5000 + 10], cp[5000 + 10];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	while (m--) {
+		cin >> opt >> l >> r;
+		for (int i = l; i < r; ++i) cp[i] = 1;
+		if (opt == 1) {
+			for (int i = l + 1; i < r; ++i) tree[i] = 1;
+		}
+		else {
+			for (int i = l; i <= r; ++i) tree[i] = 1;
+
+		}
+	}
+	int sum = 0;
+	for (int i = 1; i <= n; ++i) sum += tree[i];
+	cout << n - sum << ' ';
+	sum = 0;
+	for (int i = 1; i < n; ++i) sum += cp[i];
+	cout << n - 1 - sum << endl;
+	return 0;
+}

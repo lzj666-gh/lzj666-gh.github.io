@@ -1,0 +1,43 @@
+//  OJ: 洛谷
+//  提交ID: 101810109
+//  题目ID: T261057
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[4]= {0};
+char A[600+10]={0};
+int main() {
+	scanf("%d",&n);
+	getchar();
+//	cout<<"aa"<<endl;
+	for(int i=0; i<n; i++) {
+//		cout<<i<<endl;
+		for(int j=0; j<=3; j++) {
+//			cout<<j<<endl;
+			fgets(A,600+10,stdin);
+//			cout<<A;
+			a[j]=strlen(A);
+//			cout<<a[j]<<endl;
+		}
+/*		for(int j=0;j<=3;j++){
+			cout<<a[j]<<" ";
+		}
+		cout<<endl;
+*/		if(a[1]==a[2]&&a[2]==a[3]){
+			cout<<'A'<<endl;
+		}
+		else if(a[0]==a[2]&&a[2]==a[3]){
+			cout<<'B'<<endl;
+		}
+		else if(a[0]==a[1]&&a[1]==a[3]){
+			cout<<'C'<<endl;
+		}
+		else if(a[0]==a[1]&&a[1]==a[2]){
+			cout<<'D'<<endl;
+		}
+		else{
+			cout<<'C'<<endl;
+		}
+	}
+
+	return 0;
+}

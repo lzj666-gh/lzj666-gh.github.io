@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 134277725
+//  题目ID: T396631
+#include<bits/stdc++.h>
+using namespace std;
+int p(char c){
+	if(c<='9'&&c>'0') return c^48;
+	switch(c){
+		case '0':
+			return 10;
+		case 'J':
+			return 11;
+		case 'Q':
+			return 12;
+		case 'K':
+			return 13;
+		case 'A':
+			return 1;
+	}
+}
+vector<pair<char,bool>> ch[15];
+int main(){
+	for(int i=1;i<=13;++i){
+		char c;
+		scanf("%d",&c);
+		ch[i].push_back(make_pair(c,false));
+	}
+	for(int i=1;i<=4;++i){
+		char c=ch[13][0];
+		ch[13].erase(ch[13].begin());
+		int now=p(c);
+	}
+}

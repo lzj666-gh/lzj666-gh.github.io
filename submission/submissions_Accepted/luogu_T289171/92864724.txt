@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 92864724
+//  题目ID: T289171
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	double a;cin>>a;
+	printf("%.2lf",4.00/3*3.14*a*a*a);
+
+	return 0;
+}
+

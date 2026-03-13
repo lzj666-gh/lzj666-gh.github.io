@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 224267667
+//  题目ID: P5675
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7; 
+int n, a[200 + 5], f[200 + 5][256];
+signed main() {
+    cin.tie(0)->sync_with_stdio(false);
+    cin >> n;
+	for(int i = 1; i <= n; ++i) cin >> a[i];
+	int ans = 0; f[0][0] = 1;
+	for(int i = 1; i <= n; ++i) {
+		for(int j = 1; j <= n; ++j)
+			for(int k = 0; k < 256; ++k)
+				if(i == j) f[j][k] = f[j - 1][k];
+				else f[j][k] = (f[j - 1][k] + f[j - 1][k ^ a[j]]) % mod;
+		for(int j = a[i]; j < 256; ++j) (ans += f[n][j]) %= mod;
+	}
+	cout << ans << endl;
+	return 0;
+}

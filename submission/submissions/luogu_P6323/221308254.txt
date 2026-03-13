@@ -1,0 +1,68 @@
+//  OJ: 洛谷
+//  提交ID: 221308254
+//  题目ID: P6323
+#include<bits/stdc++.h>
+using namespace std;
+namespace IO {
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1; char _st[55]; int _qr = 0;
+	inline char gc() { return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++); }
+	inline void qread() {}
+	inline void qread(char& IEE) { IEE = gc(); }
+	template<class T1, class ...T2> inline void qread(T1& IEE, T2&... ls) { T1 __ = 0, ___ = 1; char ch; while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___; do { __ = (__ << 1) + (__ << 3) + (ch ^ 48); } while (isdigit(ch = gc())); __ *= ___; IEE = __; qread(ls...); }
+	template<class... T2> inline void qread(char& IEE, T2&... ls) { IEE = gc(); qread(ls...); }
+	inline void flush() { fwrite(obuf, 1, oS - obuf, stdout); oS = obuf; }
+	inline void putc_(char _x) { *oS++ = _x; if (oS == oT) flush(); }
+	inline void qwrite() {}
+	inline void qwrite(char IEE) { putc_(IEE); }
+	inline void qwrite(const char* str) { while (*str != '\0') putc_(*str++); }
+	inline void qwrite(const std::string& IEE) { qwrite(IEE.c_str()); }
+	template<class... T2> inline void qwrite(const char IEE, T2... ls) { putc_(IEE); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const char* str, T2... ls) { while (*str != '\0') putc_(*str++); qwrite(ls...); }
+	template<class... T2> inline void qwrite(const std::string& IEE, T2... ls) { qwrite(IEE.c_str(), ls...); }
+	template<class T1, class ...T2> inline void qwrite(T1 IEE, T2... ls) { if (!IEE) putc_('0'); if (IEE < 0) putc_('-'), IEE = -IEE; while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10; while (_qr) putc_(_st[_qr--]); qwrite(ls...); }
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+using ll = long long;
+constexpr int mod = 1e9 + 7, N = 1e5 + 5;
+int fac[N * 2], inv[N * 2];
+int qpow(int a, int b) {
+	int ans = 1;
+	while (b) {
+		if (b & 1) ans = 1ll * ans * a % mod;
+		a = 1ll * a * a % mod; b >>= 1;
+	}
+	return ans;
+}
+int C(int x, int y) {
+	if (x > y) return 0;
+	return 1ll * fac[y] * inv[x] % mod * inv[y - x] % mod;
+}
+void init(int t) {
+	fac[0] = inv[0] = 1;
+	for (int i = 1; i <= t; i++) fac[i] = 1ll * fac[i - 1] * i % mod;
+	inv[t] = qpow(fac[t], mod - 2);
+	while (--t) inv[t] = 1ll * inv[t + 1] * (t + 1) % mod;
+}
+int n, m, f[500][N];
+int main() {
+	qread(n, m); init(n + m);
+	int lim = ceil(sqrt(m * 2));
+	f[0][0] = 1;
+	for (int i = 1; i <= lim; i++) {
+		for (int j = i; j <= m; j++) {
+			f[i][j] = (f[i][j - i] + f[i - 1][j - i]) % mod;
+			if (j >= n + 1) f[i][j] = (f[i][j] - f[i - 1][j - n - 1]) % mod;
+		}
+	}
+	int ans = 0;
+	for (int i = 0; i <= m; i++) {
+		int sum = 0;
+		for (int j = 0; j <= lim; j++) sum += f[j][i] * (j & 1 ? -1 : 1), sum %= mod;
+		sum = (sum + mod) % mod;
+		ans = (ans + 1ll * sum * C(n - 1, n + m - i - 1)) % mod;
+	}
+	qwrite(ans, '\n');
+	return 0;
+}

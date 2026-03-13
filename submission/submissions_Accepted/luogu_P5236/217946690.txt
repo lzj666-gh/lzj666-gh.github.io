@@ -1,0 +1,122 @@
+//  OJ: 洛谷
+//  提交ID: 217946690
+//  题目ID: P5236
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+    int v, w, nxt;
+}edge[4000000 + 10];
+int head[1000000 + 10], idx;
+void add(int u, int v, int w) {
+    edge[++idx] = { v, w, head[u] };
+    head[u] = idx;
+}
+int n, m, q, dfn[1000000 + 10], low[1000000 + 10], cur[1000000 + 10], from[1000000 + 10], idk, id;
+stack<int> stk;
+vector<vector<int>> vdcc;
+namespace RST {
+    struct Edge {
+        int v, w, nxt;
+    }edge[4000000 + 10];
+    int head[1000000 + 10], idx;
+    void add(int u, int v, int w) {
+        edge[++idx] = { v, w, head[u] };
+        //cerr << u << " " << v << " " << w << endl;
+        head[u] = idx;
+    }
+    int sum[1000000 + 10], dis[1000000 + 10], f[1000000 + 10][30], dep[1000000 + 10], cyc[1000000 + 10], cir[1000000 + 10];
+    void dfs(int x, int fa) {
+        dep[x] = dep[fa] + 1;
+        f[x][0] = fa;
+        for (int i = 1; i <= 25; ++i)
+            f[x][i] = f[f[x][i - 1]][i - 1];
+        for (int i = head[x]; i; i = edge[i].nxt)
+            if (edge[i].v != fa)
+                dis[edge[i].v] = dis[x] + edge[i].w,
+                dfs(edge[i].v, x);
+    }
+    int A, B;
+    int LCA(int a, int b) {
+        if (dep[a] < dep[b]) swap(a, b);
+        int cur = dep[a] - dep[b];
+        for (int i = 20; i >= 0; --i)
+            if (cur & (1 << i)) a = f[a][i];
+        if (a == b) return a;
+        for (int i = 20; i >= 0; --i)
+            if (f[a][i] != f[b][i])
+                a = f[a][i], b = f[b][i];
+        A = a; B = b;
+        return f[a][0];
+    }
+    void main() {
+        dfs(1, 0);
+        while (q--) {
+            int a, b;
+            cin >> a >> b;
+            int l = LCA(a, b);
+            if (l <= n)
+                cout << dis[a] - dis[l] + dis[b] - dis[l] << endl;
+            else {
+                int len = abs(cir[A] - cir[B]);
+                len = min(len, cyc[l] - len);
+                //cerr << dis[a] - dis[A] << " " << dis[b] - dis[B] << " " << len << endl;
+                cout << dis[a] - dis[A] + dis[b] - dis[B] + len << endl;
+            }
+        }
+    }
+}
+void tarjan(int x) {
+    dfn[x] = low[x] = ++idk;
+    stk.push(x);
+    for (int i = head[x]; i; i = edge[i].nxt) {
+        int v = edge[i].v;
+        if (!dfn[v]) {
+            cur[v] = cur[x] + edge[i].w;
+            from[v] = x;
+            tarjan(v);
+            low[x] = min(low[x], low[v]);
+            if (low[v] >= dfn[x]) {
+                vdcc.push_back(vector<int>());
+                ++id;
+                int cbc = stk.top();
+                while (1) {
+                    int now = stk.top(); stk.pop();
+                    vdcc.back().push_back(now);
+                    if (now == v) break;
+                }
+                vdcc.back().push_back(x);
+                RST::add(x, id, 0);
+                int w_back = 0;
+                for (int j = head[cbc]; j; j = edge[j].nxt)
+                    if (edge[j].v == x) {
+                        w_back = edge[j].w;
+                        break;
+                    }
+                RST::cyc[id] = (cur[cbc] - cur[x]) + w_back;
+                //cerr << id << ':' << RST::cyc[id] << endl;
+                for (auto u : vdcc.back()) {
+                    if (u != x) RST::cir[u] = cur[u] - cur[x], RST::add(id, u, min(RST::cir[u], RST::cyc[id] - RST::cir[u]));
+                    else RST::cir[u] = 0;
+                    //RST::add(id, u, min(RST::cir[u], RST::cyc[id] - RST::cir[u]));
+                }
+            }
+        }
+        else {
+            low[x] = min(low[x], dfn[v]);
+        }
+    }
+}
+int main() {
+    cin.tie(0)->sync_with_stdio(false);
+    cin >> n >> m >> q; id = n;
+    for (int i = 1, u, v, w; i <= m; ++i) {
+        cin >> u >> v >> w;
+        add(u, v, w);
+        add(v, u, w);
+    }
+    for (int i = 1; i <= n; ++i)
+        if (!dfn[i])
+            tarjan(i);
+    RST::main();
+    return 0;
+}

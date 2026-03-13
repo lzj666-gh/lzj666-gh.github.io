@@ -1,0 +1,6 @@
+//  OJ: 洛谷
+//  提交ID: 109677686
+//  题目ID: P1601
+a=input()
+b=input()
+print(a+b)

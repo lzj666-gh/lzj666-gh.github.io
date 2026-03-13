@@ -1,0 +1,125 @@
+//  OJ: 洛谷
+//  提交ID: 217031336
+//  题目ID: P6577
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+namespace IO {
+	const int SIZE = (1 << 21) + 1;
+	char ibuf[SIZE], * iS, * iT, obuf[SIZE], * oS = obuf, * oT = obuf + SIZE - 1;
+	char _st[55];
+	int _qr = 0;
+	inline char gc() {
+		return (iS == iT ? iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++) : *iS++);
+	}
+	inline void qread() {}
+	template<class T1, class ...T2>
+	inline void qread(T1& IEE, T2&... ls) {
+		T1 __ = 0, ___ = 1;
+		char ch;
+		while (!isdigit(ch = gc())) ___ = (ch == '-') ? -___ : ___;
+		do {
+			__ = (__ << 1) + (__ << 3) + (ch ^ 48);
+		} while (isdigit(ch = gc()));
+		__ *= ___;
+		IEE = __;
+		qread(ls...);
+		return;
+	}
+	inline void flush() {
+		fwrite(obuf, 1, oS - obuf, stdout);
+		oS = obuf;
+		return;
+	}
+	inline void putc_(char _x) {
+		*oS++ = _x;
+		if (oS == oT) flush();
+	}
+	inline void qwrite() {}
+	template<class T1, class ...T2>
+	inline void qwrite(T1 IEE, T2... ls) {
+		if (!IEE) putc_('0');
+		if (IEE < 0) putc_('-'), IEE = -IEE;
+		while (IEE) _st[++_qr] = IEE % 10 + '0', IEE /= 10;
+		while (_qr) putc_(_st[_qr--]);
+		qwrite(ls...);
+		return;
+	}
+	struct Flusher_ { ~Flusher_() { flush(); } }io_flusher;
+}
+using namespace IO;
+typedef long long ll;
+const int N = 500 + 5;
+int l[N << 1], oth[N << 1];
+bool vis[N << 1];
+int slack[N];
+struct Edge {
+	int v, w, nxt;
+	Edge(int v = 0, int w = 0, int nxt = 0) :v(v), w(w), nxt(nxt) {}
+}edge[N * N];
+int head[N << 1], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+bool dfs(int u) {
+	vis[u] = 1;
+	for (int i = head[u]; i; i = edge[i].nxt) {
+		int v = edge[i].v;
+		if (!vis[v + N]) {
+			int t = l[u] + l[v] + N - edge[i].w;
+			if (t == 0) {
+				vis[v + N] = 1;
+				if (oth[v + N] == -1 || dfs(oth[v + N])) {
+					oth[u] = v; oth[v + N] = u;
+					return 1;
+				}
+			}
+			else
+				slack[v] = min(slack[v], t);
+		}
+	}
+	return false;
+}
+int KM(int n, int m) {
+	memset(oth, -1, sizeof oth);
+	memset(l, 0, sizeof l);
+	for (int i = 1; i <= n; i++)
+		for (int j = head[i]; j; j = edge[j].nxt)
+			l[i] = max(l[i], edge[i].w);
+	for (int i = 1; i <= n; i++) {
+		memset(slack, 0x3f, sizeof slack);
+		while (1) {
+			memset(vis, 0, sizeof vis);
+			if (dfs(i)) break;
+			int minz = INT_MAX;
+			for (int j = 1; j <= m; j++)
+				if (!vis[j + N] && minz > slack[j])
+					minz = slack[j];
+			for (int j = 1; j <= n; j++)
+				if (vis[j]) l[j] -= minz;
+			for (int j = 1; j <= m; j++)
+				if (vis[j + N]) l[j + N] += minz;
+				else slack[j] -= minz;
+		}
+	}
+	int ans = 0;
+	for (int i = 1; i <= n; i++)
+		if (oth[i] != -1)
+			for (int j = head[i]; j; j = edge[j].nxt)
+				if (edge[j].v == oth[i]) {
+					ans += edge[i].w; break;
+				}
+	return ans;
+}
+int main() {
+	int n, m;
+	qread(n, m);
+	for (int i = 1, u, v, w; i <= m; ++i)
+		qread(u, v, w), add(u, v, w);
+	qwrite(KM(n, n)); putc_('\n');
+	for (int i = 1; i <= n; ++i)
+		qwrite(oth[i + N]), putc_(' ');
+	cout << endl;
+	return 0;
+}

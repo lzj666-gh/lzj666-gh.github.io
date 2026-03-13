@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 214704768
+//  题目ID: T407141
+#include <bits/stdc++.h>
+using namespace std;
+int n, t;
+int main() {
+    cin.tie(0)->sync_with_stdio(false);
+    cin >> n;
+    for (int i = 1, a; i <= n; ++i) {
+        cin >> a;
+        if (i & 1) t ^= a;
+    }
+    cout << (t ? "win" : "lose") << endl;
+    return 0;
+}

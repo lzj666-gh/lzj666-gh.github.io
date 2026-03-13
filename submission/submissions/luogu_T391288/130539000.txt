@@ -1,0 +1,51 @@
+//  OJ: 洛谷
+//  提交ID: 130539000
+//  题目ID: T391288
+#include<bits/stdc++.h>
+using namespace std;
+int n,a[100+10][100+10],ans=0x7f7f7f7f,mxa;
+array<array<bool,100+10>,100+10>vis;
+inline int min(const int &a,const int &b){return a>b?b:a;}
+bool bfs(int mx,int mn)
+{
+    for(int i=1;i<=n;++i) for(int j=1;j<=n;++j) vis[i][j]=false;
+    queue<pair<int,int>>q;
+    q.push({1,1});
+    while(!q.empty())
+    {
+        pair<int,int> nw=q.front();q.pop();
+        // cerr<<nw.first<<' '<<nw.second<<endl;
+        if(vis[nw.first][nw.second]||nw.first>n||nw.second>n||nw.first<1||nw.second<1) continue;
+        vis[nw.first][nw.second]=true;
+        if(nw.first==n&&nw.second==n) return true;
+        if(nw.first+1<=n) if(a[nw.first+1][nw.second]<=mx&&a[nw.first+1][nw.second]>=mn) if(!vis[nw.first+1][nw.second]) q.push({nw.first+1,nw.second});
+        if(nw.first-1>=1) if(a[nw.first-1][nw.second]<=mx&&a[nw.first-1][nw.second]>=mn) if(!vis[nw.first-1][nw.second]) q.push({nw.first-1,nw.second});
+        if(nw.second+1<=n) if(a[nw.first][nw.second+1]<=mx&&a[nw.first][nw.second+1]>=mn) if(!vis[nw.first][nw.second+1]) q.push({nw.first,nw.second+1});
+        if(nw.second-1>=1) if(a[nw.first][nw.second-1]<=mx&&a[nw.first][nw.second-1]>=mn) if(!vis[nw.first][nw.second-1]) q.push({nw.first,nw.second-1});
+    }
+    return false;
+}
+int main(){
+    // freopen("maze.in","r",stdin);
+    // freopen("maze.out","w",stdout);
+    ios_base::sync_with_stdio(false);
+    cin>>n;
+    for(int i=1;i<=n;++i) for(int j=1;j<=n;++j) cin>>a[i][j],mxa=mxa<a[i][j]?a[i][j]:mxa;
+    for(int x=1;x<=n;++x){
+        for(int y=1;y<=n;++y){
+            int nw=a[x][y];
+            if(nw>a[n][n]||nw>a[1][1]) continue;
+            int l=nw,r=mxa,mid;
+            while(l<r){
+                mid=l+r>>1;
+                if(bfs(mid,nw)) r=mid;
+                else l=mid+1;
+            	if(mxa-mid>ans) l=mid+1
+            }
+            ans=min(ans,l-nw);
+        }
+    }
+    cerr<<"end with valve 0 and "<<clock()*1.0/CLOCKS_PER_SEC<<" times"<<endl;
+    cout<<ans<<endl;
+    return 0;
+}

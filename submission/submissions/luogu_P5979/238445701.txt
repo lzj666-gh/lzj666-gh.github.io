@@ -1,0 +1,98 @@
+//  OJ: 洛谷
+//  提交ID: 238445701
+//  题目ID: P5979
+#include<bits/stdc++.h>
+#define all(a) (a).begin(),(a).end()
+#define rall(a) (a).rbegin(),a.rend()
+#define file(a) freopen(#a".in","r",stdin),freopen(#a".out","w",stdout),freopen(#a".err","w",stderr)
+using namespace std;
+constexpr int inf = 2e9, mod = 1e9 + 7;
+struct Node {
+	int ans1, ans2;
+	Node(int ans1 = -inf, int ans2 = 0) :ans1(ans1), ans2(ans2) {}
+	friend Node operator+(const Node& a, const Node& b) {
+		if (a.ans1 == b.ans1) return Node(a.ans1, (a.ans2 + b.ans2) % mod);
+		else if (a.ans1 > b.ans1) return a;
+		else return b;
+	}
+}tree[1000000 << 2 | 3], dp[1000000 + 5];
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+void change(int p, int l, int r, int x, Node k) {
+	if (l == r) {
+		tree[p] = k;
+		return;
+	}
+	if (x <= mid) change(lson, x, k);
+	else change(rson, x, k);
+	tree[p] = tree[lc(p)] + tree[rc(p)];
+}
+Node query(int p, int l, int r, int x, int y) {
+	if (x <= l && r <= y) return tree[p];
+	if (r < x || y < l) return Node();
+	return query(lson, x, y) + query(rson, x, y);
+}
+void clear(int n) {
+	fill_n(tree + 1, n << 2 | 3, Node());
+}
+struct F__k {
+	int mxl, mnr;
+	void operator+=(const F__k& b) {
+		mxl = max(mxl, b.mxl);
+		mnr = min(mnr, b.mnr);
+	}
+}line[1000000 + 5];
+vector<pair<int, int>> tmp[1000000 + 5];
+int n;
+void cdq(int l, int r) {
+	if (l == r) return;
+	cdq(l, mid);
+	F__k cur = { 1,n };
+	for_each(tmp + mid + 1, tmp + r + 1, [](auto& p) { p.clear(); });
+	clear(mid - l + 1);
+	for (int i = mid; i >= l; --i) {
+		if (cur.mnr < cur.mxl || i + cur.mnr <= mid) break;
+		if (i + cur.mxl <= r) {
+			tmp[max(mid + 1, i + cur.mxl)].push_back({ i,1 });
+			tmp[min(r + 1, i + cur.mnr + 1)].push_back({ i,0 });
+		}
+		cur += line[i];
+	}
+	cur = { 1,n };
+	for (int i = mid + 1; i <= r; ++i) {
+		for (const pair<int, int>& j : tmp[i])
+			change(1, 1, mid - l + 1, j.first - l + 1, j.second ? dp[j.first] : Node());
+		cur += line[i];
+		if (cur.mnr < cur.mxl || i - cur.mnr > mid) break;
+		Node res = query(1, 1, mid - l + 1, max(l, i - cur.mnr) - l + 1, min(mid, i - cur.mxl) - l + 1); ++res.ans1;
+		dp[i] = dp[i] + res;
+	}
+	cdq(mid + 1, r);
+}
+int32_t main() {
+	// file(cat);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n; F__k cur = { 1,n };
+	for (int i = 1; i <= n; ++i) cin >> line[i].mxl >> line[i].mnr, cur += line[i];
+	dp[0] = { 0,1 };
+	if (n <= 10000) {
+		for (int i = 0; i <= n; ++i) {
+			F__k cur = { 1,n };
+			for (int j = i - 1; j >= 0; --j) {
+				cur += line[j + 1];
+				if (i - j > cur.mnr) break;
+				if (i - j >= cur.mxl) dp[i] = dp[i] + Node(dp[j].ans1 + 1, dp[j].ans2);
+			}
+		}
+		if (dp[n].ans1 < 0) cout << "NIE" << endl;
+		else cout << dp[n].ans1 << ' ' << dp[n].ans2 << endl;
+		return 0;
+	}
+	cdq(0, n);
+	if (dp[n].ans1 < 0) cout << "NIE" << endl;
+	else cout << dp[n].ans1 << ' ' << dp[n].ans2 << endl;
+	return 0;
+}

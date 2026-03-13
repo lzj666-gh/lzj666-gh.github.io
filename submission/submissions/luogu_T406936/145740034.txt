@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 145740034
+//  题目ID: T406936
+#include<bits/stdc++.h>
+using namespace std;
+signed main(){
+	ios_base::sync_with_stdio(false);
+	int l=0;
+	while(1){
+		++l;
+		if(l==3||l==4) cout<<"Georgia will win"<<endl;
+		cout<<"Bob will win"<<endl;
+		if(l==1000) return 0;
+	}
+	return 0;
+}

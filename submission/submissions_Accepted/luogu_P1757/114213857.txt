@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 114213857
+//  题目ID: P1757
+#include<bits/stdc++.h>
+using namespace std;
+int v,n,t=0,w[1000+10],c[1000+10],a[100+10][100000+10],f[1000000];
+int main(){
+	cin>>v>>n;
+	for(int i=1;i<=n;i++){
+		int p;
+		cin>>w[i]>>c[i]>>p;
+		a[p][++a[p][0]]=i;
+		t=max(p,t);
+	}
+	for(int p=1;p<=t;p++){
+		for(int j=v;j>=0;j--){
+			for(int i=1;i<=a[p][0];i++){
+				if(j>=w[a[p][i]]){
+					int tmp=a[p][i];
+					if(f[j]<f[j-w[tmp]]+c[tmp]){
+						f[j]=f[j-w[tmp]]+c[tmp];
+					}
+				}
+			}
+		}
+	}
+	cout<<f[v]<<endl;
+	return 0;
+}

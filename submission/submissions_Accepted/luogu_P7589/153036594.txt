@@ -1,0 +1,18 @@
+//  OJ: 洛谷
+//  提交ID: 153036594
+//  题目ID: P7589
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--){
+		static int n,k,d;
+		cin>>n>>k>>d;
+		int ans=0;
+		for(int i=1,y,b,w;i<=n;++i) cin>>y>>b>>w,ans^=abs(w-b)-1;
+		cout<<(ans?"Yes\n":"No\n");
+	}
+	return 0;
+}

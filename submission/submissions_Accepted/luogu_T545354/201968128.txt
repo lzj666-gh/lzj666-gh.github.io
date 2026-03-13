@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 201968128
+//  题目ID: T545354
+#include<bits/stdc++.h>
+#define File "water"
+using namespace std;
+int n, h[100000 + 10], mx;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; ++i) cin >> h[i], mx = max(mx, h[i]);
+	long long tot = 0;
+	h[0] = h[n];
+	for (int i = 1; i <= n; ++i)
+		if (h[i] >= h[i - 1])
+			tot += h[i] - h[i - 1];
+	long long minans = LLONG_MAX;
+	for (int s = 1; s <= n; ++s) {
+		long long ans = tot;
+		if (h[s] >= h[s - 1])
+			ans -= (h[s] - h[s - 1]);
+		ans += mx - h[s - 1];
+		minans = min(ans, minans);
+	}
+	cout << minans << endl;
+	return 0;
+}

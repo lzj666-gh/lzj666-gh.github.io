@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 129580513
+//  题目ID: P1757
+#include<bits/stdc++.h>
+using namespace std;
+int v,n,t=0,vv[1000+10],w[1000+10],a[100+10][100000+10],dp[1000000];
+int main(){
+    cin>>v>>n;
+    for(int i=1;i<=n;i++){
+        int tmp;
+        cin>>vv[i]>>w[i]>>tmp;
+        a[tmp][++a[tmp][0]]=i;
+        t=max(tmp,t);
+    }
+    for(int tmp=1;tmp<=t;tmp++){
+        for(int j=v;j>=0;j--){
+            for(int i=1;i<=a[tmp][0];i++){
+                if(j>=vv[a[tmp][i]]){
+                    int tmp=a[tmp][i];
+                    if(dp[j]<dp[j-vv[tmp]]+w[tmp]){
+                        dp[j]=dp[j-vv[tmp]]+w[tmp];
+                    }
+                }
+            }
+        }
+    }
+    cout<<dp[v]<<endl;
+    return 0;
+}

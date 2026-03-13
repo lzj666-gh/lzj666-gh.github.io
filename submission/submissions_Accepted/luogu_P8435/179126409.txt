@@ -1,0 +1,64 @@
+//  OJ: 洛谷
+//  提交ID: 179126409
+//  题目ID: P8435
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge{
+	int u,v,nxt;
+}edge[4000000+10];
+int head[1000000+10],idx;
+void add(int u,int v){
+	edge[++idx]={u,v,head[u]};
+	head[u]=idx;
+}
+int n,m,dfn[1000000+10],low[1000000+10],idk,root;
+stack<int>stk;
+vector<vector<int>>vdcc;
+void tarjan(int x){
+	dfn[x]=low[x]=++idk;
+	stk.push(x);
+	int chd=0;
+	for(int i=head[x];i;i=edge[i].nxt){
+		int v(edge[i].v);
+		if(!dfn[v]){
+			tarjan(v);
+			low[x]=min(low[x],low[v]);
+			if(low[v]>=dfn[x]){
+				chd++;
+				vdcc.push_back(vector<int>());
+				while(stk.size()){
+					int now=stk.top();stk.pop();
+					vdcc.back().push_back(now);
+					if(now==v) break;
+				}
+				vdcc.back().push_back(x);
+			}
+		}
+		else
+			low[x]=min(low[x],dfn[v]);
+	}
+	if(!chd&&x==root){
+		vdcc.push_back(vector<int>());
+		vdcc.back().push_back(x);
+		return;
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1,u,v;i<=m;++i){
+		cin>>u>>v;
+		add(u,v);add(v,u);
+	}
+	for(int i=1;i<=n;++i)
+		if(!dfn[i])
+			root=i,tarjan(i);
+	cout<<vdcc.size()<<endl;
+	for(vector<int>&now:vdcc){
+		cout<<now.size()<<' ';
+		for(int&qwq:now)
+			cout<<qwq<<' ';
+		cout<<endl;
+	}
+	return 0;
+}

@@ -1,0 +1,20 @@
+//  OJ: 洛谷
+//  提交ID: 199817086
+//  题目ID: P3367
+#include<bits/stdc++.h>
+using namespace std;
+int fa[1000000 + 10], n, m, x, y, z;
+int find(int x) {
+	return ((fa[x] == x) ? x : (fa[x] = find(fa[x])));
+}
+signed main() {
+    cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) fa[i] = i;
+	while (m--) {
+		cin >> z >> x >> y;
+		if (z == 1) fa[find(x)] = find(y);
+		else putchar("NY"[find(x) == find(y)]), putchar('\n');
+	}
+	return 0;
+}

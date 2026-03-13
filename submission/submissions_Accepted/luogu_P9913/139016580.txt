@@ -1,0 +1,16 @@
+//  OJ: 洛谷
+//  提交ID: 139016580
+//  题目ID: P9913
+#include<bits/stdc++.h>
+using namespace std;
+int T;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> T;
+	while (T--) {
+		int tmp;
+		cin >> tmp;
+		cout << (tmp != 3 && tmp != 2 && tmp != 5 ? "Yes" : "No") << endl;
+	}
+	return 0;
+}

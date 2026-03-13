@@ -1,0 +1,58 @@
+//  OJ: 洛谷
+//  提交ID: 110930537
+//  题目ID: P1332
+#include <bits/stdc++.h>
+#define maxn 500+10
+using namespace std;
+struct node{
+    int x,y;
+    int step;
+    node(int xx, int yy,int st){
+        x=xx;y=yy;step=st;
+    }
+};
+int n,m,a,b;
+int c[maxn][maxn],dx[4][2]={{0,1},{0,-1},{1,0},{-1,0}};
+bool d[maxn][maxn];
+queue<node> q;
+void bfs(){
+    while(!q.empty()){
+        node no=q.front();
+        q.pop();
+        for(int i=0;i<4;i++){
+            int ddx=no.x+dx[i][0];
+            int ddy=no.y+dx[i][1];
+            if((c[ddx][ddy]>=no.step+1||c[ddx][ddy]==-1)&&d[ddx][ddy]==false&&ddx<=n&&ddx>=1&&ddy<=m&&ddy>=1){
+                c[ddx][ddy]=no.step+1;
+                q.push(node(ddx,ddy,no.step+1));
+                d[ddx][ddy]=true;
+            }
+        }
+    }
+}
+int main(){
+//	freopen("P1332_2.in","rb",stdin);
+//	freopen("out.txt","wb",stdout);
+    std::ios::sync_with_stdio(false);
+    cin.tie(0);cout.tie(0);
+    cin>>n>>m>>a>>b;
+    memset(c,-1,sizeof(c));
+    for(int i=1;i<=a;i++){
+        int x,y;cin>>x>>y;
+        q.push(node(x,y,0));
+        d[x][y]=true;
+        c[x][y]=0;
+    }
+    bfs();
+//    for(int i=1;i<=n;i++){
+//    	for(int j=1;j<=m;j++){
+//    		cout<<c[i][j]<<" ";
+//		}
+//		cout<<endl;
+//	}
+    for(int i=1;i<=b;i++){
+        int x,y;
+        cin>>x>>y;
+        cout<<c[x][y]<<endl;
+    }
+}

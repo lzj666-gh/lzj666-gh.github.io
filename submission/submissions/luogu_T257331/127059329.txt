@@ -1,0 +1,43 @@
+//  OJ: 洛谷
+//  提交ID: 127059329
+//  题目ID: T257331
+#include<bits/stdc++.h>
+#define pii pair<int,int>
+using namespace std;
+int n,m;
+vector<int>ch[100000+10];
+vector<int>r(100000+10);
+inline int top_(){
+	int ans=0;
+	queue<pii> q;
+	for(int i=1;i<=n;++i) if(!r[i]) q.push({i,100});
+	if(q.empty()){
+		cout<<"Poor Xed"<<endl;
+		exit(0);
+	}
+	while(!q.empty()){
+		pii now=q.front();
+		q.pop();
+		ans+=now.second;
+		for(auto a:ch[now.first]){
+			--r[a];
+			if(r[a]<0){
+				cout<<"Poor Xed"<<endl;
+				exit(0);
+			}
+			if(!r[a]) q.push({a,now.second+1});
+		}
+	}
+	return ans;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=m;++i){
+		int qian,hou;
+		cin>>qian>>hou;
+		ch[qian].emplace_back(hou);
+		++r[hou];
+	}
+	cout<<top_()<<endl;
+}

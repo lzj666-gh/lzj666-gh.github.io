@@ -1,0 +1,10 @@
+//  OJ: 洛谷
+//  提交ID: 121950980
+//  题目ID: P9145
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cout<<"China"<<endl;
+	return 0;
+}

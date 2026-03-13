@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 115496660
+//  题目ID: T165958
+#include<bits/stdc++.h>
+using namespace std;
+int n,m;
+struct node{
+	int l,r;
+}a[100000+10];
+bool b[100000+10];
+queue<int> q;
+void bfs(int x){
+	q.push(x);
+	while(!q.empty()){
+		int d=q.front();
+		q.pop();
+		cout<<d<<' ';
+		if(a[d].l) q.push(a[d].l);
+		if(a[d].r) q.push(a[d].r);
+	}
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1;i<=n;i++){
+	    int ii;
+	    cin>>ii;
+		cin>>a[ii].l>>a[ii].r;
+		b[a[ii].l]=true;
+		b[a[ii].l]=true;
+	}
+	for(int i=1;i<=n;i++){
+	    if(b[i]==false){
+	        bfs(i);
+	        return 0;
+	    }
+	}
+	return 0;
+}

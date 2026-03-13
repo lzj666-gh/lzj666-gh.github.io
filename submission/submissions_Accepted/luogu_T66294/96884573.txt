@@ -1,0 +1,19 @@
+//  OJ: 洛谷
+//  提交ID: 96884573
+//  题目ID: T66294
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int a,b,g;cin>>a>>b;
+	for(int i=a;i<=b;i++){
+		int k=10;
+		while(k<=i*10){
+			if(i%k/(k/10)==2) g++;
+			k*=10;
+		}
+	}
+	cout<<g;	
+	
+}
+

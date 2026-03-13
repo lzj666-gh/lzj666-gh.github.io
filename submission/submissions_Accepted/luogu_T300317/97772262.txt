@@ -1,0 +1,37 @@
+//  OJ: 洛谷
+//  提交ID: 97772262
+//  题目ID: T300317
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n;cin>>n;
+	int a=n,j=0;
+	while(a!=1){
+		if(a%2==1){
+			a=a*3+1;
+		}
+		else{
+			a/=2;
+		}
+		j++;
+	}
+	int d[j+1];j=0;
+	d[j]=n;
+	j++;
+	while(n!=1){
+		if(n%2==1){
+			n=n*3+1;
+		}
+		else{
+			n/=2;
+		}
+		d[j]=n;
+		j++;
+	}
+	for(int i=j-1;i>=0;i--){
+		cout<<d[i]<<" ";
+	}
+	return 0;
+}
+

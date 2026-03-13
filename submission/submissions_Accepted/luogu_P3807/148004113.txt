@@ -1,0 +1,33 @@
+//  OJ: 洛谷
+//  提交ID: 148004113
+//  题目ID: P3807
+#include<bits/stdc++.h>
+#define ll long long
+using namespace std;
+int n, m, p, inv[100000 + 10];
+inline ll C(int n, int m, const ll& p) {
+//	if (n == p) return 0;
+//	if (m == 0) return 0;
+	if (m > n) return 0;
+	if (n > p && m < p && n - m < p) return 0;
+	if (n < p) {
+		ll tmp = 1;
+		for (int i = m + 1; i <= n; ++i) if (i > n - m) tmp *= i, tmp %= p;
+		for (int i = 1; i <= n - m; ++i) if (i <= m) tmp *= inv[i], tmp %= p;
+		return tmp;
+	}
+	return C(n / p, m / p, p) % p* C(n % p, m % p, p) % p;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	int T;
+	cin >> T;
+	while (T--) {
+		cin >> n >> m >> p;
+		inv[0] = inv[1] = 1;
+		for (int i = 2; i <= n + m; ++i)
+			inv[i] = 1ll * (p - p / i) * inv[p % i] % p;
+		cout << C(n + m, n, p) << endl;
+	}
+	return 0;
+}

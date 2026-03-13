@@ -1,0 +1,8 @@
+//  OJ: 洛谷
+//  提交ID: 211814893
+//  题目ID: T568867
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	cout<<"100";
+}

@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 127472719
+//  题目ID: T268142
+#include<bits/stdc++.h>
+using namespace std;
+struct pii {
+	long long num,val;
+	friend bool operator > (const pii &a,const pii &b) {
+		return a.num>b.num;
+	}
+	friend ostream& operator <<(ostream&out,pii&p) {
+		out<<'{'<<p.num<<','<<p.val<<'}';
+		return out;
+	}
+};
+int n,a[100000];
+inline void dij() {
+	priority_queue<pii,vector<pii>,greater<pii>>q;
+	q.push({1,0});
+	array<bool,100000+10> vis;
+	array<long long,100000+10> dis;
+	vis.fill(false);
+	dis.fill(0x3f3f3f3f3f3f3f3f);
+	dis[1]=0;
+	while(!q.empty()) {
+		pii now=q.top();
+		q.pop();
+//		cout<<now<<" out\n";
+		if(vis[now.num]||dis[now.num]<now.val) continue;
+		vis[now.num]=true;
+		dis[now.num]=now.val;
+		for(int i=1; i<=n; ++i) {
+			if(a[now.num]&a[i]) q.push({i,now.val+a[now.num]+a[i]});
+		}
+	}
+	for(int i=1; i<=n; ++i) cout<<(dis[i]!=0x3f3f3f3f3f3f3f3f?dis[i]:-1)<<' ';
+}
+int main() {
+//	freopen("path.in","r",stdin);
+//	freopen("path.out","w",stdout);
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1; i<=n; ++i) cin>>a[i];
+	dij();
+	cout<<endl;
+	return 0;
+}
+//want:60pts
+//O(n^2)->60pts

@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 115904025
+//  题目ID: T343520
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int n;
+    cin>>n;
+    int nn=1<<n;
+    vector<pair<int,int> >a;
+    for(int i=0;i<nn;++i){
+    	int aa;
+        cin>>aa;
+        a.push_back(make_pair(aa,i));
+    }
+    for(int i=1;i<n;++i)
+        for(int j=0;j<a.size();j+=2)
+           if(a[j].first>a[j+1].first) a[j/2]=a[j];
+           else a[j/2]=a[j+1];
+    if(a[0].first<a[1].first) cout<<a[0].second+1<<endl;
+    else cout<<a[1].second+1<<endl;
+    return 0;
+}

@@ -1,0 +1,100 @@
+//  OJ: 洛谷
+//  提交ID: 220136683
+//  题目ID: P1276
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+constexpr int N = 1e5 + 5;
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid (l + r >> 1)
+#define lson lc(p), l, mid
+#define rson rc(p), mid + 1, r
+	struct Node {
+		int sum, empty, full;
+	}tree[N << 2];
+	void pushup(int p) {
+		tree[p].sum = tree[lc(p)].sum + tree[rc(p)].sum;
+	}
+	void pushdown(int p, int l, int r) {
+		if (tree[p].full) {
+			tree[lc(p)].sum = (mid - l + 1);
+			tree[rc(p)].sum = (r - mid);
+			tree[rc(p)].full = tree[lc(p)].full = 1;
+			tree[p].full = 0;
+		}
+		if (tree[p].empty) {
+			tree[lc(p)].sum = 0;
+			tree[rc(p)].sum = 0;
+			tree[rc(p)].empty = tree[lc(p)].empty = 1;
+			tree[p].empty = 0;
+		}
+	}
+	void build(int p, int l, int r) {
+		tree[p].empty = tree[p].full = 0;
+		if (l == r) {
+			tree[p].sum = r - l + 1;
+			return;
+		}
+		build(lson);
+		build(rson);
+		pushup(p);
+	}
+	void full(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) {
+			tree[p].sum = (r - l + 1);
+			tree[p].full = 1;
+			return;
+		}
+		pushdown(p, l, r);
+		if (L <= mid) full(lson, L, R);
+		if (R > mid) full(rson, L, R);
+		pushup(p);
+	}
+	void empty(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) {
+			tree[p].sum = 0;
+			tree[p].empty = 1;
+			return;
+		}
+		pushdown(p, l, r);
+		if (L <= mid) empty(lson, L, R);
+		if (R > mid) empty(rson, L, R);
+		pushup(p);
+	}
+	int query(int p, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return tree[p].sum;
+		pushdown(p, l, r);
+		int res = 0;
+		if (L <= mid) res += query(lson, L, R);
+		if (R > mid) res += query(rson, L, R);
+		return res;
+	}
+}t;
+int n, m;
+bool big[1000], small[1000];
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) big[i] = 1;
+	int ans = 0;
+	while (m--) {
+		int op, l, r;
+		cin >> op >> l >> r;
+		if (op == 0) {
+			for (int i = l; i <= r; ++i)
+				if (big[i]) big[i] = 0;
+				else if (small[i]) ans++, small[i] = 0;
+		}
+		else if (op == 1) {
+			for (int i = l; i <= r; ++i)
+				if (!big[i] && !small[i])
+					small[i] = 1;
+		}
+	}
+	int tmp = 0;
+	for (int i = 0; i <= n; ++i) tmp += small[i];
+	cout << tmp << '\n' << ans << '\n';
+	return 0;
+}

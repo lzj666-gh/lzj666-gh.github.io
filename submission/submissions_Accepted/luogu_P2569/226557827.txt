@@ -1,0 +1,38 @@
+//  OJ: 洛谷
+//  提交ID: 226557827
+//  题目ID: P2569
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n, m, w, dp[2005][2005], ap[2005], bp[2005], as[2005], bs[2005];
+int32_t main() {
+	memset(dp, 0xcf, sizeof dp);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> w;
+	for (int i = 1; i <= n; ++i) cin >> ap[i] >> bp[i] >> as[i] >> bs[i];
+	dp[0][0] = 0;
+	for (int i = 1; i <= n; ++i) {
+		int pre = max(0ll, i - w - 1);
+		for (int j = 0; j <= m; ++j) dp[i][j] = max(dp[i][j], dp[i - 1][j]);
+		deque<int> q1;
+		for (int j = 0; j <= m; ++j) {
+			while (!q1.empty() && q1.front() < j - as[i]) q1.pop_front();
+			if (!q1.empty()) dp[i][j] = max(dp[i][j], dp[pre][q1.front()] + q1.front() * ap[i] - j * ap[i]);
+			while (!q1.empty() && dp[pre][q1.back()] + q1.back() * ap[i] <= dp[pre][j] + j * ap[i]) q1.pop_back();
+			q1.push_back(j);
+		}
+		deque<int> q2;
+		for (int j = m; j >= 0; j--) {
+			while (!q2.empty() && q2.front() > j + bs[i]) q2.pop_front();
+			if (j + 1 <= m) {
+				while (!q2.empty() && dp[pre][q2.back()] + q2.back() * bp[i] <= dp[pre][j + 1] + (j + 1) * bp[i]) q2.pop_back();
+				q2.push_back(j + 1);
+			}
+			if (!q2.empty()) dp[i][j] = max(dp[i][j], dp[pre][q2.front()] + q2.front() * bp[i] - j * bp[i]);
+		}
+	}
+	int ans = 0;
+	for (int j = 0; j <= m; ++j) ans = max(ans, dp[n][j]);
+	cout << ans << endl;
+	return 0;
+}

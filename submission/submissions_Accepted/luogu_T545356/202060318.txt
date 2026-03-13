@@ -1,0 +1,65 @@
+//  OJ: 洛谷
+//  提交ID: 202060318
+//  题目ID: T545356
+#include<bits/stdc++.h>
+using namespace std;
+const int mod = 1e9 + 7;
+string s[20], x;
+char T[200000 + 10], cur[200000 + 10];
+int cnt[26][200000 + 10], len[20], nxt[200000 + 10];
+long long poww[200000 + 10];
+int kmp(const char* s, const char* t, int n, int m) {
+	if (m > n) return 0;
+	int j = 0, k = -1;
+	nxt[0] = -1;
+	while (j < m) {
+		if (k == -1 || t[j + 1] == t[k + 1])
+			nxt[++j] = ++k;
+		else k = nxt[k];
+	}
+	int x = 0, y = 0, ans = 0;
+	while (x < n) {
+		if (y == -1 || s[x + 1] == t[y + 1]) ++x, ++y;
+		else y = nxt[y];
+		if (y == m) ans++, y = nxt[y];
+	}
+	return ans;
+}
+int m, Q, ans;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> s[0] >> x;
+	m = x.size();
+	len[0] = s[0].size();
+	x = '#' + x;
+	poww[0] = 1;
+	for (int i = 1; i <= m; ++i)
+		poww[i] = poww[i - 1] * 2 % mod;
+	for (char c = 'a'; c <= 'z'; ++c)
+		for (int i = m; i > 0; --i)
+			cnt[c - 'a'][i] = (cnt[c - 'a'][i + 1] + (x[i] == c) * poww[m - i]) % mod;
+	for (int i = 0; len[i] < 1e5 && i < m; ++i) {
+		s[i + 1] = s[i] + x[i + 1] + s[i];
+		s[i] = '#' + s[i];
+		len[i + 1] = len[i] * 2 + 1;
+	}
+	cin >> Q;
+	while (Q--) {
+		cin >> T;
+		int k = strlen(T);
+		memmove(T + 1, T, k);
+		int l = 0;
+		while (len[l] < k) ++l;
+		if (l <= m) {
+			ans = kmp(s[l].c_str(), T, len[l], k) * poww[m - l] % mod;
+			memcpy(cur + 1, s[l].c_str() + len[l] - k + 2, k - 1);
+			memcpy(cur + k + 1, s[l].c_str() + 1, k - 1);
+			for (cur[k] = 'a'; cur[k] <= 'z'; ++cur[k])
+				ans = (ans + kmp(cur, T, k * 2 - 1, k) * cnt[cur[k] - 'a'][l + 1]) % mod;
+			cout << ans << endl;
+		}
+		else
+			cout << kmp(s[m].c_str(), T, len[m], k) << endl;
+	}
+	return 0;
+}

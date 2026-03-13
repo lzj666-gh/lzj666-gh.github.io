@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 151280427
+//  题目ID: T404454
+#include<bits/stdc++.h>
+using namespace std;
+int w, b;
+double dp[1000 + 10][1000 + 10];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> w >> b;
+	cout << fixed << setprecision(9);
+	for (int i = 0; i <= b; ++i) dp[0][i] = 0;
+	for (int i = 0; i <= w; ++i) dp[i][0] = 1, dp[i][1] = 1.0 * i / (i + 1);
+	for (int i = 1; i <= w; ++i)
+		for (int j = 2; j <= b; ++j) {
+			dp[i][j] += 1.0 * i / (i + j);
+//			dp[i][j] += 0;
+			dp[i][j] += 1.0 * j / (i + j) * (j - 1) / (i + j - 1) * i / (i + j - 2) * dp[i - 1][j - 2];
+			if (j ^ 2) dp[i][j] += 1.0 * j / (i + j) * (j - 1) / (i + j - 1) * (j - 2) / (i + j - 2) * dp[i][j - 3];
+		}
+	cout << dp[w][b] << endl;
+	return 0;
+}

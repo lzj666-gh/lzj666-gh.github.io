@@ -1,0 +1,35 @@
+//  OJ: 洛谷
+//  提交ID: 248847876
+//  题目ID: P10761
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+constexpr int mod = 1e9 + 7;
+int n; long long dp[100000 + 5], f[100000 + 5][400];
+int32_t main() {
+	//file(trains);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n; dp[1] = 1; int m = sqrt(n);
+	for (int i = 1; i <= n; ++i) {
+		int x, d; cin >> d >> x;
+		for (int j = 1; j <= m; ++j) {
+			if (i + j <= n) f[i + j][j] = (f[i + j][j] + f[i][j]) % mod;
+			dp[i] = (dp[i] + f[i][j]) % mod;
+		}
+		if (!d) continue;
+		if (d > m) {
+			for (int t = 1; t <= x && i + t * d <= n; ++t)
+				dp[i + t * d] = (dp[i + t * d] + dp[i]) % mod;
+			continue;
+		}
+		if (i + d <= n)
+			f[i + d][d] = (f[i + d][d] + dp[i]) % mod;
+		x++; x *= d; x += i;
+		if (x <= n) f[x][d] = (f[x][d] - dp[i] + mod) % mod;
+	}
+	long long ans = 0;
+	for (int i = 1; i <= n; ++i) ans = (ans + dp[i]) % mod;
+	cout << (ans + mod) % mod << endl;
+	return 0;
+}

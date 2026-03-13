@@ -1,0 +1,36 @@
+//  OJ: 洛谷
+//  提交ID: 129891500
+//  题目ID: T390076
+#include<bits/stdc++.h>
+#define f_u(a,b) for(register int i=a;i<=b;++i)
+#define f_d(a,b) for(register int i=a;i>=b;--i)
+#define F_u(a,b) for(register int j=a;j<=b;++j)
+#define F_d(a,b) for(register int j=a;j>=b;--j)
+using namespace std;
+inline int read(){register char c=getchar();register int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=(x<<3)+(x<<1)+(c^48);c=getchar();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+string a;
+int x,y;
+pair<int,int> p1,p2;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin>>a;
+	x=0,y=a.size()-1;
+	while(a[x]==a[y]&&x<y) ++x,--y;
+	p1={x,y};++x,--y;
+	if(a[p1.first]!=a[p1.second]){
+		a[p1.first]=a[p1.second]=min({a[p1.first],a[p1.second]});
+		while(a[x]==a[y]&&x<y) ++x,--y;
+		p2={x,y};
+		if(a[p2.first]!=a[p2.second]){
+			a[p2.first]=a[p2.second]=min({a[p2.first],a[p2.second]});
+		}
+	}
+	else{
+		int i=-1,j=a.size()-1;
+		while(a[++i]=='a'&&i<a.size()) --j;
+		a[i]='a';a[j]='a';
+	}
+	cout<<a<<endl;
+	return 0;
+}

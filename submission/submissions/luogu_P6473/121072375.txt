@@ -1,0 +1,39 @@
+//  OJ: 洛谷
+//  提交ID: 121072375
+//  题目ID: P6473
+#include<bits/stdc++.h>
+#define f_u(a,b) for(register int i=a;i<=b;++i)
+#define f_d(a,b) for(register int i=a;i>=b;--i)
+#define F_u(a,b) for(register int j=a;j<=b;++j)
+#define F_d(a,b) for(register int j=a;j>=b;--j)
+using namespace std;
+inline int read(){register char c=getchar();register int x=0,s=1; while(c<'0'||c>'9'){if(c=='-')s=-1;c=getchar();}while(c>='0'&&c<='9'){x=(x<<3)+(x<<1)+(c^48);c=getchar();}return x*s;}
+inline void write(int x){if(x<0)putchar('-'),x=-x;if(x>9)write(x/10);putchar(x%10+'0');}
+int n,l,v,q;
+long long a[200000+10],s[200000+10];
+int main(){
+	ios_base::sync_with_stdio(false);
+	n=read();
+	l=read();
+	v=read();
+	f_u(1,n) a[i]=read();
+	sort(&a[1],&a[n+1]);
+	f_u(1,n) s[i]=s[i-1]+a[i];
+	q=read();
+	for(int qq=1;qq<=q;++qq){
+		long long tmp=read();
+		tmp=tmp*v-l;
+		if(tmp<0){
+			putchar('0');
+			putchar('\n');
+		}
+		else if(s[n]>tmp){
+			cout<<upper_bound(s+1,s+n+1,tmp)-s-1<<endl;
+		}
+		else{
+			write(-1);
+			putchar('\n');
+		}
+	}
+	return 0;
+}

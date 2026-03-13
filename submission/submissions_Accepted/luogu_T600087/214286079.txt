@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 214286079
+//  题目ID: T600087
+#include<bits/stdc++.h>
+#define int long long
+#define File "antidag"
+using namespace std;
+int n, m, l = -1, r;
+struct Edge {
+	int v, w, nxt;
+}edge[100000 + 10];
+int head[100000 + 10], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int rd[100000 + 10];
+bool check(int mid) {
+	memset(rd, 0, sizeof rd);
+	for (int i = 1; i <= idx; ++i)
+		if (edge[i].w > mid)
+			rd[edge[i].v]++;
+	queue<int>tp;
+	for (int i = 1; i <= n; ++i)
+		if (!rd[i])
+			tp.push(i);
+	while (!tp.empty()) {
+		int cur = tp.front();
+		tp.pop();
+		for (int i = head[cur]; i; i = edge[i].nxt)
+			if (edge[i].w > mid)
+				if (!--rd[edge[i].v])
+					tp.push(edge[i].v);
+	}
+	for (int i = 1; i <= n; ++i)
+		if (rd[i])
+			return 0;
+	return 1;
+}
+signed main() {
+	// freopen(File".in", "r", stdin);
+	// freopen(File".out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v, w; i < m; ++i) cin >> u >> v >> w, add(u, v, w), r = max(r, w);
+	while (l < r - 1) {
+		int mid = l + r >> 1;
+		if (check(mid)) r = mid;
+		else l = mid;
+	}
+	cout << r << endl;
+}

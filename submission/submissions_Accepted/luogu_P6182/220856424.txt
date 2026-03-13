@@ -1,0 +1,32 @@
+//  OJ: 洛谷
+//  提交ID: 220856424
+//  题目ID: P6182
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int lst[1000000], num[1000000], idx, n, x;
+char opt;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	num[0] = -1;
+	for (int l = 1; l <= n; ++l) {
+		cin >> opt;
+		if (opt == 'a') {
+			cin >> x;
+			lst[l] = l - 1;
+			num[l] = x;
+		}
+		else if (opt == 't') {
+			cin >> x;
+			lst[l] = lst[x - 1];
+			num[l] = num[x - 1];
+		}
+		else {
+			lst[l] = lst[lst[l - 1]];
+			num[l] = num[lst[l - 1]];
+		}
+		cout << num[l] << endl;
+	}
+	return 0;
+}

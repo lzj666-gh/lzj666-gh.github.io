@@ -1,0 +1,43 @@
+//  OJ: 洛谷
+//  提交ID: 128125643
+//  题目ID: T386311
+#include<bits/stdc++.h>
+#define x first
+#define y second
+using namespace std;
+inline int read(){
+	register int x=0,s=1;
+	register char c=getchar();
+	while(c>'9'||c<'0'){
+		if(c=='-') s=-1;
+		c=getchar();
+	}
+	while(c<='9'&&c>='0'){
+		x=(x<<1)+(x<<3)+(c^48);
+		c=getchar();
+	}
+	return s*x;
+}
+inline void write(int x){
+	if(x<0){
+		x=~x+1;
+		putchar('-');
+	}
+	else if(!x) return;
+	write(x/10);
+	putchar(x%10+48);
+}
+int a=read(),b=read(),c=read(),d=read(),e=read(),f=read(),g=read();
+short cnt1_,cnt2_,cnt3_;
+int main(){
+	if(e%(a+b)<=a&&e%(a+b)) ++cnt1_;
+	if(e%(c+d)<=c&&e%(c+d)) ++cnt1_;
+	if(f%(a+b)<=a&&f%(a+b)) ++cnt2_;
+	if(f%(c+d)<=c&&f%(c+d)) ++cnt2_;
+	if(g%(a+b)<=a&&g%(a+b)) ++cnt3_;
+	if(g%(c+d)<=c&&g%(c+d)) ++cnt3_;
+	cout<<(cnt1_==2?"both\n":cnt1_==1?"one\n":"none\n");
+	cout<<(cnt2_==2?"both\n":cnt2_==1?"one\n":"none\n");
+	cout<<(cnt3_==2?"both\n":cnt3_==1?"one\n":"none\n");
+	return 0;
+}

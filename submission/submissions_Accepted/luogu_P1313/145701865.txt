@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 145701865
+//  题目ID: P1313
+a,b,k,n,m=map(int,input().split())
+a=(a**n)
+b=(b**m)
+c=1
+for i in range(k,k-n,-1):
+    c*=i
+for i in range(1,n+1):
+    c//=i
+print((a*b*c)%10007)

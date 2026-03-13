@@ -1,0 +1,52 @@
+//  OJ: 洛谷
+//  提交ID: 114077651
+//  题目ID: T246039
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    
+    vector<int> nums(n);
+    for (int i = 0; i < n; i++) {
+        cin >> nums[i];
+    }
+    
+    vector<int> dp(n, 1);
+    vector<int> prev(n, -1);
+    
+    int maxLen = 1;
+    int endIndex = 0;
+    
+    for (int i = 1; i < n; i++) {
+        for (int j = 0; j < i; j++) {
+            if (nums[i] > nums[j] && dp[i] < dp[j] + 1) {
+                dp[i] = dp[j] + 1;
+                prev[i] = j;
+            }
+        }
+        
+        if (dp[i] > maxLen) {
+            maxLen = dp[i];
+            endIndex = i;
+        }
+    }
+    
+    cout<<"max=" << maxLen << endl;
+    
+    vector<int> longestSubsequence;
+    while (endIndex != -1) {
+        longestSubsequence.insert(longestSubsequence.begin(), nums[endIndex]);
+        endIndex = prev[endIndex];
+    }
+    
+    for (int i = 0; i < longestSubsequence.size(); i++) {
+        cout << longestSubsequence[i] << " ";
+    }
+    cout << endl;
+    
+    return 0;
+}

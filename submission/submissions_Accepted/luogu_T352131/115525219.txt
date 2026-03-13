@@ -1,0 +1,30 @@
+//  OJ: 洛谷
+//  提交ID: 115525219
+//  题目ID: T352131
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn=1000000+10;
+char x,z;
+long long y,w;
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>x>>y>>z>>w;
+	string b="valid";
+	if(x!=z) b="Invalid";
+	else{
+		if(x>'z'||x<'a'){
+			b="Invalid";
+		}
+		if(z>'z'||z<'a'){
+			b="Invalid";
+		}
+		
+	}
+	cout<<b<<endl;
+	if(b=="Invalid"){
+		cout<<-1<<endl;
+		return 0;
+	}
+	cout<<abs(y-w)+1<<endl;
+	return 0;
+}

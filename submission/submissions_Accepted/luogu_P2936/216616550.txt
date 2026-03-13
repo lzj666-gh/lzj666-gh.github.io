@@ -1,0 +1,101 @@
+//  OJ: 洛谷
+//  提交ID: 216616550
+//  题目ID: P2936
+#include<bits/stdc++.h>
+#define File "wip"
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[20000 + 10];
+int head[500], idx = 1;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int h[500];
+struct Tmp {
+	int data;
+	Tmp(int data = 0) :data(data) {}
+	friend bool operator<(const Tmp& a, const Tmp& b) {
+		return h[a.data] < h[b.data];
+	}
+};
+priority_queue<Tmp> pq;
+bool vis[500];
+void bfs(int t) {
+	bool vis[500];
+	memset(vis, 0, sizeof vis);
+	memset(h, 0x3f, sizeof h);
+	queue<int>q;
+	h[t] = 0;
+	q.push(t);
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		if (vis[now]) continue; vis[now] = 1;
+		for (int i = head[now]; i; i = edge[i].nxt)
+			if (edge[i ^ 1].w && h[edge[i].v] > h[now] + 1)
+				h[edge[i].v] = h[now] + 1, q.push(edge[i].v);
+	}
+}
+int more[500];
+void push(int now, int s, int t) {
+	for (int i = head[now]; i; i = edge[i].nxt) {
+		if (edge[i].w && h[edge[i].v] + 1 == h[now]) {
+			int flow = min(more[now], edge[i].w);
+			more[edge[i].v] += flow; more[now] -= flow;
+			edge[i].w -= flow; edge[i ^ 1].w += flow;
+			if (!vis[edge[i].v] && edge[i].v != s && edge[i].v != t)
+				vis[edge[i].v] = 1, pq.push(edge[i].v);
+			if (more[now] == 0) return;
+		}
+	}
+}
+void relabel(int now) {
+	h[now] = 0x3f3f3f3f;
+	for (int i = head[now]; i; i = edge[i].nxt)
+		if (edge[i].w && h[edge[i].v] + 1 < h[now])
+			h[now] = h[edge[i].v] + 1;
+}
+int hlpp(int n, int s, int t) {
+	static int gap[500];
+	bfs(t);
+	if (h[s] == 0x3f3f3f3f) return 0;
+	h[s] = n;
+	for (int i = 1; i <= n; ++i) if (h[i] ^ 0x3f3f3f3f) gap[h[i]]++;
+	for (int i = head[s]; i; i = edge[i].nxt) {
+		int w = edge[i].w;
+		if (w) {
+			edge[i].w -= w; edge[i ^ 1].w += w;
+			more[s] -= w; more[edge[i].v] += w;
+			if (!vis[edge[i].v] && edge[i].v != s && edge[i].v != t) {
+				vis[edge[i].v] = 1;
+				pq.push(edge[i].v);
+			}
+		}
+	}
+	while (!pq.empty()) {
+		int now = pq.top().data; pq.pop();
+		vis[now] = 0;
+		push(now, s, t);
+		if (more[now] && (h[now] ^ 0x3f3f3f3f)) {
+			if (!--gap[h[now]])
+				for (int i = 1; i <= n; i++)
+					if (h[i] < n + 1 && h[i] > h[now] && i != s && i != t)
+						h[i] = n + 1;
+			relabel(now); ++gap[h[now]];
+			pq.push(now); vis[now] = 1;
+		}
+	}
+	return more[t];
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int n;
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		char u, v; int w; cin >> u >> v >> w;
+		add(u, v, w); add(v, u, 0);
+	}
+	cout << hlpp(256, 'A', 'Z') << endl;
+	return 0;
+}

@@ -1,0 +1,80 @@
+//  OJ: 洛谷
+//  提交ID: 249520562
+//  题目ID: P11117
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+int32_t main() {
+	//file(Innopolis);
+	cin.tie(0)->sync_with_stdio(false);
+	int T; cin >> T;
+	while (T--) {
+		struct Edge {
+			int u, v, w, idx;
+			int oth(int x) {
+				assert(x == u || x == v);
+				if (x == u) return v;
+				else return u;
+			}
+			operator tuple<int, int, int, int>() { return make_tuple(u, v, w, idx); }
+		};
+		int n, m; cin >> n >> m;
+		vector<Edge>edge(m); vector<vector<int>>adj(n), link(n);
+		for (int i = 0; i < m; ++i)
+			cin >> edge[i].u >> edge[i].v >> edge[i].w,
+			edge[i].u--, edge[i].v--, edge[i].idx = i;
+		vector<int>d(n);
+		for (int i = 0; i < n; ++i) cin >> d[i];
+		bool flg = 0;
+		for (auto& [u, v, w, i] : edge) {
+			link[u].emplace_back(i); link[v].emplace_back(i);
+			flg |= d[u] == d[v] && d[u] != w;
+		}
+		if (flg) {
+			cout << "NO" << endl;
+			continue;
+		}
+		int cnt = 0, idx = n;
+		for (int i = 0; i < n; ++i) {
+			if (!d[i]) {
+				adj.emplace_back();
+				for (auto& p : link[i]) {
+					if (d[edge[p].oth(i)])
+						if (edge[p].w) adj[edge[p].oth(i)].emplace_back(idx);
+						else adj[idx].emplace_back(edge[p].oth(i));
+				}
+				++idx;
+			}
+		}
+		vector<pair<int, int>>ans;
+		vector<int>r(idx);
+		for (int i = 0; i < idx; ++i)
+			for (auto& p : adj[i])
+				r[p]++;
+		int cur = 0; queue<int>q;
+		for (int i = 0; i < idx; ++i)
+			if (!r[i])
+				q.emplace(i);
+		while (!q.empty()) {
+			int now = q.front(); q.pop(); cur++;
+			for (auto& p : adj[now])
+				if (!--r[p]) q.emplace(p);
+			if (now < n && d[now]) {
+				ans.emplace_back(now, 1);
+				for (auto& p : link[now])
+					if (!d[edge[p].oth(now)] && edge[p].w)
+						ans.emplace_back(edge[p].oth(now), 1),
+						ans.emplace_back(edge[p].oth(now), 0);
+			}
+		}
+		if (cur != idx) {
+			cout << "NO" << endl;
+			continue;
+		}
+		cout << "YES" << endl;
+		cout << ans.size() << endl;
+		for (auto& [a, b] : ans) cout << ++a << ' ' << b << endl;
+	}
+	return 0;
+}

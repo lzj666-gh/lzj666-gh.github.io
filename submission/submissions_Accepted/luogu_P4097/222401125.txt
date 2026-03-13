@@ -1,0 +1,146 @@
+//  OJ: 洛谷
+//  提交ID: 222401125
+//  题目ID: P4097
+#include<bits/stdc++.h>
+using namespace std;
+/**
+ * @brief a line
+ */
+struct Line {
+	double k, b;
+	/**
+	 * @brief using two point to create a line
+	 * @param x0 the first point(x)
+	 * @param y0 the first point(y)
+	 * @param x1 the second point(x)
+	 * @param y1 the second point(y)
+	 */
+	Line(int x0 = 0, int y0 = 0, int x1 = 0, int y1 = 0) {
+		if (x1 == x0) {
+			k = 0;
+			b = max(y0, y1);
+			return;
+		}
+		k = (y1 - y0) * 1.0 / (x1 - x0);
+		b = y0 - x0 * k;
+	}
+	/**
+	 * @brief get one number in the line
+	 * @param x the x value
+	 * @return the y value
+	 */
+	double operator()(int x) {
+		return k * x + b;
+	}
+	/**
+	 * @brief print a line
+	 * @param out ostream
+	 * @param l the line itself
+	 * @return ostream
+	 */
+	friend ostream& operator<<(ostream& out, const Line& l) {
+		return out << "f(x)=" << l.k << 'x' << '+' << l.b;
+	}
+}l[100000 + 5];
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+#define mid tree[p].l + tree[p].r >> 1
+/**
+ * @brief the tree node
+ */
+struct Tree {
+	int l, r, ans;
+}tree[100000 << 2 | 3];
+void build(int p, int l, int r) {
+	tree[p].l = l; tree[p].r = r;
+	if (l == r) return;
+	build(lc(p), l, l + r >> 1);
+	build(rc(p), (l + r >> 1) + 1, r);
+}
+const double eps = 1e-10;
+/**
+ * @brief compare two real number
+ * @param x the first number
+ * @param y the second number
+ * @retval 1 x is greater than y
+ * @retval -1 x is lower than y
+ * @retval 0 x is equals to y
+ */
+int cmp(double x, double y) {
+	if (fabs(x - y) <= eps) return 0;
+	if (x > y) return 1;
+	return -1;
+}
+/**
+ * @brief update the whole interval with the new lint
+ * @param p the node number
+ * @param x the update line number
+ */
+void clac(int p, int x) {
+	int& y = tree[p].ans;
+	int Mid = cmp(l[y](mid), l[x](mid)); /// the middle compare result
+	if (Mid == -1 || (Mid == 0 && x < y)) swap(x, y);
+	int L = cmp(l[x](tree[p].l), l[y](tree[p].l)), /// the left compare result
+		R = cmp(l[x](tree[p].r), l[y](tree[p].r)); /// the right compare result
+	if (L == 1 || (L == 0 && x < y)) clac(lc(p), x);
+	if (R == 1 || (R == 0 && x < y)) clac(rc(p), x);
+}
+/**
+ * @brief find the interval which is totally contained if the updating line
+ * @param p now node
+ * @param L the updating interval's left point
+ * @param R the updating interval's right point
+ * @param x the line number of the insert one
+ */
+void update(int p, int L, int R, int x) {
+	if (tree[p].r < L || R < tree[p].l) return;
+	if (L <= tree[p].l && tree[p].r <= R) return clac(p, x);
+	update(lc(p), L, R, x);
+	update(rc(p), L, R, x);
+}
+struct Ans {
+	double ans; int number;
+	friend bool operator<(const Ans& a, const Ans& b) {
+		int t = cmp(a.ans, b.ans);
+		return(t == -1 || (t == 0 && a.number > b.number));
+	}
+};
+/**
+ * @brief find the maxinum number of the interval
+ * @param p now node
+ * @param k the certain position
+ * @return a pair of (ans, number)
+ */
+Ans query(int p, int k) {
+	if (k <= tree[p].l && tree[p].r <= k) return { l[tree[p].ans](k),tree[p].ans };
+	if (tree[p].r < k || k < tree[p].l) return { 0,0 };
+	return max({ query(lc(p), k), query(rc(p), k),{ l[tree[p].ans](k),tree[p].ans } });
+}
+const int xmod = 39989, ymod = 1e9;
+int n, op, k;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n;
+	build(1, 1, xmod);
+	int lastans = 0;
+	for (int i = 1, cnt = 0; i <= n; ++i) {
+		cin >> op;
+		if (op) {
+			int x0, x1, y0, y1;
+			cin >> x0 >> y0 >> x1 >> y1;
+			x0 = (x0 + lastans - 1) % xmod + 1;
+			x1 = (x1 + lastans - 1) % xmod + 1;
+			y0 = (y0 + lastans - 1) % ymod + 1;
+			y1 = (y1 + lastans - 1) % ymod + 1;
+			if (x0 > x1) swap(x0, x1), swap(y0, y1);
+			l[++cnt] = Line(x0, y0, x1, y1);
+			update(1, x0, x1, cnt);
+		}
+		else {
+			cin >> k;
+			k = (k + lastans - 1) % xmod + 1;
+			cout << (lastans = query(1, k).number) << endl;
+		}
+	}
+	return 0;
+}

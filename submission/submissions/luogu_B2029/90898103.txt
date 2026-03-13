@@ -1,0 +1,13 @@
+//  OJ: 洛谷
+//  提交ID: 90898103
+//  题目ID: B2029
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	int h,r,tong;
+	cin>>h>>r;
+	tong=(20000+3.1415926*r*r*h-1)/(3.1415926*r*r*h);
+	cout<<tong;
+	return 0;
+}
+

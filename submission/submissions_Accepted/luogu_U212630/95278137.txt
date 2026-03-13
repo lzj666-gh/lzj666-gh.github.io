@@ -1,0 +1,12 @@
+//  OJ: 洛谷
+//  提交ID: 95278137
+//  题目ID: U212630
+#include<bits/stdc++.h>
+#include<cmath>
+using namespace std;
+int main(){
+	int a,b,c;cin>>a>>b>>c;
+	double ans;
+	ans=a*1.0/b+sqrt(c)-a*c;
+	printf("%.5lf",ans);
+}

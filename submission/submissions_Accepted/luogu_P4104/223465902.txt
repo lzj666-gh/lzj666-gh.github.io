@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 223465902
+//  题目ID: P4104
+#include<bits/stdc++.h>
+using namespace std;
+int n, k, p, dp[200000][21], T;
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> T;
+	while (T--) {
+		cin >> n >> k >> p;
+		memset(dp, 0, sizeof dp);
+		dp[0][0] = 1; n++;
+		for (int i = 1; i <= n * k; ++i)
+			for (int j = 1; j <= k; ++j) {
+				if (i < j) break;
+				dp[i][j] = dp[i - j][j] + dp[i - j][j - 1]; dp[i][j] %= p;
+				if (i >= n * 2) dp[i][j] -= dp[i - n * 2][j - 1], dp[i][j] %= p;
+			}
+		cout << (dp[n * k][k] + p) % p << endl;
+	}
+	return 0;
+}

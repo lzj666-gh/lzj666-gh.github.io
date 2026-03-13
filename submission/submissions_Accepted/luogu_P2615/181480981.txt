@@ -1,0 +1,23 @@
+//  OJ: 洛谷
+//  提交ID: 181480981
+//  题目ID: P2615
+#include<bits/stdc++.h>
+using namespace std;
+int n, ans[50][50], x, y;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n;
+	x = 1, y = n / 2 + 1;
+	for (int i = 1; i <= n * n; ++i) {
+		ans[x][y] = i;
+		if (x == 1 && y != n) x = n, ++y;
+		else if (x != 1 && y == n) --x, y = 1;
+		else if (x == 1 && y == n) ++x;
+		else if (x != 1 && y != n) 
+			if (ans[x - 1][y + 1]) x++;
+			else x--, y++;
+	}
+	for (int i = 1; i <= n; ++i, cout << endl) 
+		for (int j = 1; j <= n; ++j) cout << ans[i][j] << ' ';
+	return 0;
+}

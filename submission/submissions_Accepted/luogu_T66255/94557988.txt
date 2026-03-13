@@ -1,0 +1,17 @@
+//  OJ: 洛谷
+//  提交ID: 94557988
+//  题目ID: T66255
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int j=0;double zhi=0.1;
+	while(zhi<=8844.43){
+		zhi*=2;
+		j+=1;
+	
+	}
+	cout<<j;
+
+	return 0;
+}

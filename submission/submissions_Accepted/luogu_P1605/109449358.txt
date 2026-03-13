@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 109449358
+//  题目ID: P1605
+#include<bits/stdc++.h>
+using namespace std;
+int n,xx,yy,m,t,sx,sy,fx,fy,cnt;
+bool a[10][10];
+int b[100][2];
+void dfs(int x,int y,int z){
+//	cout<<x<<" "<<y<<endl;
+	if(x<1||x>n||y<1||y>m) return ;
+//	cout<<x<<" "<<y<<endl;
+	if(x==fx&&y==fy){
+/*		for(int i=1;i<z;i++){
+			cout<<b[i][0]<<" "<<b[i][1]<<"  ";
+		}
+		cout<<endl;
+*/		cnt++;
+		return;
+	}
+//	cout<<x<<" "<<y<<endl;
+	if(a[x+1][y]==true) b[z][0]=x+1,b[z][1]=y,a[x+1][y]=false,dfs(x+1,y,z+1),a[x+1][y]=true;
+	if(a[x-1][y]==true) b[z][0]=x-1,b[z][1]=y,a[x-1][y]=false,dfs(x-1,y,z+1),a[x-1][y]=true;
+	if(a[x][y+1]==true) b[z][0]=x,b[z][1]=y+1,a[x][y+1]=false,dfs(x,y+1,z+1),a[x][y+1]=true;
+	if(a[x][y-1]==true) b[z][0]=x,b[z][1]=y-1,a[x][y-1]=false,dfs(x,y-1,z+1),a[x][y-1]=true;
+}
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+	cin>>n>>m>>t;
+	cin>>sx>>sy>>fx>>fy;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			a[i][j]=true;
+		}
+	}
+	for(int i=1;i<=t;i++){
+		cin>>xx>>yy;
+		a[xx][yy]=false;
+	}
+	if(a[fx][fy]==false){
+		cout<<0<<endl;
+		return 0;
+	}
+	a[sx][sy]=false;
+	dfs(sx,sy,1);
+	cout<<cnt<<endl;
+	return 0;
+}
+

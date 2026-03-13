@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 218801223
+//  题目ID: P5960
+#include<bits/stdc++.h>
+using namespace std;
+struct Edge {
+	int v, w, nxt;
+}edge[1000000 + 10];
+int head[1000000 + 10], idx;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+int n, m, dis[1000000 + 10];
+bool vis[1000000 + 10];
+void spfa() {
+	memset(dis, 0xcf, sizeof dis);
+	deque<int>q;
+	q.push_front(0);
+	dis[0] = 0; vis[0] = 1;
+	while (!q.empty()) {
+		int now = q.front(); q.pop_front(); vis[now] = 0;
+		for (int i = head[now]; i; i = edge[i].nxt)
+			if (dis[edge[i].v] < dis[now] + edge[i].w) {
+				dis[edge[i].v] = dis[now] + edge[i].w;
+				if (!vis[edge[i].v]) {
+					if (q.empty() || dis[edge[i].v] < dis[q.front()]) q.push_front(edge[i].v);
+					else q.push_back(edge[i].v);
+					vis[edge[i].v] = 1;
+				}
+			}
+	}
+}
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1, u, v, w; i <= m; ++i) cin >> u >> v >> w, add(u, v, -w);
+	for (int i = 1; i <= n; ++i) add(0, i, 0);
+	spfa();
+	for (int i = 1; i <= n; ++i) cout << dis[i] << ' ';
+	return 0;
+}

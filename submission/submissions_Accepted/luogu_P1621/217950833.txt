@@ -1,0 +1,28 @@
+//  OJ: 洛谷
+//  提交ID: 217950833
+//  题目ID: P1621
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 1e6 + 10, M = 1e6 + 10;
+bool vis[N];
+vector<int>prm;
+int fa[N];
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	int a, b, p, ans;
+	cin >> a >> b >> p; ans = b - a + 1;
+	for (int i = a; i <= b; ++i) fa[i] = i;
+	for (int i = 2; i <= b; ++i) {
+		if (!vis[i]) {
+			prm.push_back(i);
+			for (int j = i + i; j <= b; j += i) {
+				vis[j] = 1;
+				if (i >= p && j - i >= a && find(j) != find(j - i))
+					fa[find(j)] = find(j - i), --ans;
+			}
+		}
+	}
+	cout << ans << endl;
+	return 0;
+}

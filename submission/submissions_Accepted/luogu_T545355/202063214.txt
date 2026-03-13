@@ -1,0 +1,27 @@
+//  OJ: 洛谷
+//  提交ID: 202063214
+//  题目ID: T545355
+#include <bits/stdc++.h>
+using namespace std;
+int f[10000 + 5], n, m, ans;
+struct _ { int c, v; }p[10000 + 5];
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	memset(f, 0xcf, sizeof(f));
+	cin >> m >> n;
+	for (int i = 1; i <= n; ++i)
+		cin >> p[i].c >> p[i].v;
+	sort(p + 1, p + 1 + n, [](const _& a, const _& b)->bool { return a.c == b.c ? a.v < b.v : a.c < b.c; });
+	for (int i = 1; i <= n; ++i) {
+		ans = max(ans, p[i].v);
+		for (int j = 1; j <= m; ++j)
+			ans = max(ans, f[j] + p[i].v);
+		for (int j = m; j > p[i].c; --j) {
+			if (j == p[i].c * 2)
+				f[j] = max(f[j], p[i].v);
+			f[j] = max(f[j], f[j - p[i].c] + p[i].v);
+		}
+	}
+	cout << ans << endl;
+	return 0;
+}

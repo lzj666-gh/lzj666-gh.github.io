@@ -1,0 +1,45 @@
+//  OJ: 洛谷
+//  提交ID: 140421969
+//  题目ID: T405610
+#include<bits/stdc++.h>
+#define isl(a) (bool)(a=='('||a=='['||a=='{')
+using namespace std;
+int ans,mid;
+deque<char>stk;
+string s;
+map<char,char>g;
+int main(){
+	ios_base::sync_with_stdio(false);
+	g['(']=')';
+	g['[']=']';
+	g['{']='}';
+	g[')']='(';
+	g[']']='[';
+	g['}']='{';
+	cin>>s;
+	for(char a:s){
+//		cout<<a;
+		if((bool)(a=='('||a=='['||a=='{')){
+			stk.push_back(a);
+		}
+		else{
+			if(stk.empty()){
+				mid=0; 
+				continue;
+			}
+			if(stk.back()!=g[a]){
+				stk.clear();
+				ans=max(ans,mid);
+				mid=0;
+			}
+			else{
+				stk.pop_back();
+				mid+=2;
+				ans=max(ans,mid); 
+			}
+		}
+//		cout<<a<<':'<<mid<<' '<<ans<<endl;
+	}
+	cout<<ans<<endl;
+	return 0;
+}

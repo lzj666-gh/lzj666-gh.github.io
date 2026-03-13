@@ -1,0 +1,25 @@
+//  OJ: 洛谷
+//  提交ID: 182961336
+//  题目ID: T528357
+#include<bits/stdc++.h>
+using namespace std;
+int n, a, b;
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> a >> b;
+	if (b == 0) {
+		cout << a << endl;
+		return 0;
+	}
+	if (a - b >= 0)
+		if (a + b <= n)
+			cout << a - b << ' ' << a + b << endl;
+		else
+			cout << a - b << endl;
+	else
+		if (a + b <= n)
+			cout << a + b << endl;
+		else
+			cout << "No solution" << endl;
+	return 0;
+}

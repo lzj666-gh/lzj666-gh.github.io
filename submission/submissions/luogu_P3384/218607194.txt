@@ -1,0 +1,130 @@
+//  OJ: 洛谷
+//  提交ID: 218607194
+//  题目ID: P3384
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int N = 1e5 + 10, M = 2e5 + 10;
+struct Edge {
+	int v, nxt;
+}edge[M];
+int head[N], idx, mod;
+void addedge(int u, int v) {
+	edge[++idx] = { v,head[u] };
+	head[u] = idx;
+	edge[++idx] = { u,head[v] };
+	head[v] = idx;
+}
+int hvy[N], ed[N], dep[N], dfn[N], siz[N], fa[N], bel[N], idk;
+void dfs1(int x, int f) {
+	fa[x] = f; dep[x] = dep[f] + 1;
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (edge[i].v == f) continue;
+		dfs1(edge[i].v, x);
+		siz[x] += siz[edge[i].v];
+		if (siz[edge[i].v] > siz[hvy[x]]) hvy[x] = edge[i].v;
+	}
+	siz[x]++;
+}
+void dfs2(int x, int top) {
+	ed[x] = dfn[x] = ++idk;
+	bel[x] = top;
+	if (hvy[x]) dfs2(hvy[x], top);
+	for (int i = head[x]; i; i = edge[i].nxt) {
+		if (edge[i].v == fa[x] || edge[i].v == hvy[x]) continue;
+		dfs2(edge[i].v, edge[i].v);
+	}
+	ed[x] = idk;
+}
+struct Seg_Tree {
+#define lc(p) (p << 1)
+#define rc(p) (p << 1 | 1)
+	struct point {
+		int l, r;
+		long long sum, lazy;
+		point(int l = 0, int r = 0, long long sum = 0, long long lazy = 0) :l(l), r(r), sum(sum), lazy(lazy) {}
+	}tree[N << 2 | 3];
+	void pushdown(int p) {
+		if (tree[p].lazy) {
+			tree[lc(p)].sum += (tree[lc(p)].r - tree[lc(p)].l + 1) * tree[p].lazy;
+			tree[rc(p)].sum += (tree[rc(p)].r - tree[rc(p)].l + 1) * tree[p].lazy;
+			tree[lc(p)].lazy += tree[p].lazy;
+			tree[rc(p)].lazy += tree[p].lazy;
+			tree[p].lazy = 0;
+		}
+	}
+	void pushup(int p) {
+		tree[p].sum = (tree[lc(p)].sum + tree[rc(p)].sum) % mod;
+	}
+	void add(int p, int l, int r, int k) {
+		if (tree[p].l > r || tree[p].r < l) return;
+		if (l <= tree[p].l && tree[p].r <= r) {
+			tree[p].lazy += k;
+			tree[p].sum += k * (tree[p].r - tree[p].l + 1);
+			return;
+		}
+		pushdown(p);
+		add(lc(p), l, r, k);
+		add(rc(p), l, r, k);
+		pushup(p);
+	}
+	long long query(int p, int l, int r) {
+		if (tree[p].l > r || tree[p].r < l) return 0;
+		if (l <= tree[p].l && tree[p].r <= r) return tree[p].sum;
+		pushdown(p);
+		return (query(lc(p), l, r) + query(rc(p), l, r)) % mod;
+	}
+	void build(int p, int l, int r, const vector<int>& v) {
+		tree[p].l = l, tree[p].r = r, tree[p].lazy = 0;
+		if (l == r) {
+			tree[p] = { l,r,v[l],0 };
+			return;
+		}
+		build(lc(p), l, l + r >> 1, v);
+		build(rc(p), (l + r >> 1) + 1, r, v);
+		pushup(p);
+	}
+}t;
+int n, m, s, a[N];
+void add(int a, int b, int k) {
+	while (bel[a] ^ bel[b]) {
+		if (dep[bel[a]] < dep[bel[b]]) swap(a, b);
+		t.add(1, dfn[bel[a]], dfn[a], k);
+		a = fa[bel[a]];
+	}
+	t.add(1, min(dfn[a], dfn[b]), max(dfn[a], dfn[b]), k);
+}
+void add(int a, int k) {
+	t.add(1, dfn[a], ed[a], k);
+}
+long long query(int a, int b) {
+	long long ans = 0;
+	while (bel[a] ^ bel[b]) {
+		if (dep[bel[a]] < dep[bel[b]]) swap(a, b);
+		ans += t.query(1, dfn[bel[a]], dfn[a]);
+		a = fa[bel[a]];
+		ans %= mod;
+	}
+	return (ans + t.query(1, min(dfn[a], dfn[b]), max(dfn[a], dfn[b]))) % mod;
+}
+long long query(int a) {
+	return t.query(1, dfn[a], ed[a]);
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> n >> m >> s >> mod;
+	for (int i = 1; i <= n; ++i) cin >> a[i];
+	for (int i = 1, a, b; i < n; ++i) cin >> a >> b, addedge(a, b);
+	dfs1(s, 0); dfs2(s, s);
+	vector<int>v(n + 1);
+	for (int i = 1; i <= n; ++i) v[dfn[i]] = a[i] % mod;
+	t.build(1, 1, n, v);
+	while (m--) {
+		int opt, x, y, z;
+		cin >> opt >> x;
+		if (opt == 1) cin >> y >> z, add(x, y, z);
+		else if (opt == 2) cin >> y, cout << query(x, y) << endl;
+		else if (opt == 3) cin >> y, add(x, y);
+		else if (opt == 4) cout << query(x) << endl;
+	}
+	return 0;
+}

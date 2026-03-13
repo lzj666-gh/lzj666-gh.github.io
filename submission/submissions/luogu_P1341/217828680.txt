@@ -1,0 +1,53 @@
+//  OJ: 洛谷
+//  提交ID: 217828680
+//  题目ID: P1341
+#include<bits/stdc++.h>
+#define int long long 
+using namespace std;
+constexpr int N = 127 + 10, M = 200000 + 10;
+int n, m, r[N], c[N];
+vector<char>ans;
+int dis[N][N];
+void dfs(int x) {
+	for (int i = 1; i < 128; ++i)
+		if (dis[x][i])
+			--dis[x][i], --dis[i][x],
+			dfs(i);
+	ans.push_back(x);
+}
+signed main() {
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> m;
+	char opt[10];
+	char mn = 127;
+	for (int i = 1; i <= m; ++i) {
+		cin >> opt;
+		dis[*opt][opt[1]]++;
+		dis[opt[1]][*opt]++;
+		mn = min(mn, *opt);
+		mn = min(mn, opt[1]);
+	}
+	int s = -1, t = -1; bool ans = 1;
+	for (int i = 1; i <= n; ++i)
+		if (r[i] == c[i] + 1)
+			if (t == -1)
+				t = i;
+			else
+				ans = 0;
+		else if (r[i] + 1 == c[i])
+			if (s == -1)
+				s = i;
+			else
+				ans = 0;
+		else if (r[i] ^ c[i])
+			ans = 0;
+	if (ans) {
+		dfs(s == -1 ? mn : s);
+		for (int i = m; i >= 0; --i)
+			cout << ::ans[i];
+	}
+	else
+		cout << "No Solution";
+	cout << endl;
+	return 0;
+}

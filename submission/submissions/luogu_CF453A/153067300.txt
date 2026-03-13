@@ -1,0 +1,31 @@
+//  OJ: 洛谷
+//  提交ID: 153067300
+//  题目ID: CF453A
+#include<bits/stdc++.h>
+using namespace std;
+int m, n, z, fm;
+struct node {
+	int m, z;
+	node() :z(0), m(0) {}
+	node(int zz, int mm) :z(zz), m(mm) {}
+	friend node operator +(const node& a, const node& b) { return node(a.z + b.z, a.m + b.m); }
+	friend node operator *(const node& a, const int& b) { return node(a.z * b, a.m * b); }
+};
+node dfs(int k, int mx) {
+	if (k == n + 1) {
+		return node(mx,1);
+	}
+	node ans;
+	for (int i = mx + 1; i <= m; ++i)ans = ans + dfs(k + 1, i);
+	ans = ans + dfs(k + 1, mx) * mx;
+	return ans;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin >> m >> n;
+	node anss = dfs(1, 1);
+	z = anss.z, fm = anss.m;
+	cout << fixed << setprecision(12) << z * 1.0 / fm << endl;
+	return 0;
+	cerr<<"niganma"<<endl;
+}

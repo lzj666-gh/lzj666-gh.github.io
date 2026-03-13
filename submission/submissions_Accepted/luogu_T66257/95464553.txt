@@ -1,0 +1,22 @@
+//  OJ: 洛谷
+//  提交ID: 95464553
+//  题目ID: T66257
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	double n,f=250,k;
+	cin>>n>>k;
+	double sum=n;
+	for(int i=2;i<=20;i++){
+		n=n*1.08;
+		sum+=n;
+		f=f+f*k/100;
+		
+		if(sum>=f){
+			cout<<i;
+			return 0;
+		}
+	
+	}
+	cout<<"Impossible";
+}

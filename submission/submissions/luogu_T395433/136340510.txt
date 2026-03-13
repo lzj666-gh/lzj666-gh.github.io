@@ -1,0 +1,24 @@
+//  OJ: 洛谷
+//  提交ID: 136340510
+//  题目ID: T395433
+#include<bits/stdc++.h>
+using namespace std;
+vector<pair<int,int>>p;
+int n,ans;
+signed main(){
+    ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1,x,y;i<=n;++i) cin>>x>>y,p.emplace_back(make_pair(x,y));
+	sort(p.begin(),p.end(),[&](pair<int,int> p1,pair<int,int> p2){return p1.first<p2.first;});
+	int mid=p[n>>1].first;
+	cout<<mid<<endl;
+	for(int i=0;i<n;++i) ans+=abs(p[i].first-mid);
+	#define first second
+	sort(p.begin(),p.end(),[&](pair<int,int> p1,pair<int,int> p2){return p1.first<p2.first;});
+	mid=p[n>>1].first;
+	cout<<mid<<endl;
+	for(int i=0;i<n;++i) ans+=abs(p[i].first-mid);
+	#undef first
+	cout<<ans<<endl;
+	return 0;
+}

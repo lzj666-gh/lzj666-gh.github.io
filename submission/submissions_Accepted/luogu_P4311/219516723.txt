@@ -1,0 +1,116 @@
+//  OJ: 洛谷
+//  提交ID: 219516723
+//  题目ID: P4311
+#include<bits/stdc++.h>
+using namespace std;
+constexpr int inf = 0x3f3f3f3f;
+struct Edge {
+	int v, w, nxt;
+}edge[200000 + 10];
+int head[20000 + 10], idx = 1;
+void add(int u, int v, int w) {
+	edge[++idx] = { v,w,head[u] };
+	head[u] = idx;
+}
+void addedge(int u, int v, int w) {
+	add(u, v, w); add(v, u, 0);
+}
+int h[20000 + 10], more[20000 + 10], gap[20000 + 10];
+bool vis[20000 + 10];
+struct Comp {
+	bool operator()(int a, int b) {
+		return h[a] < h[b];
+	}
+};
+priority_queue<int, vector<int>, Comp> q;
+void bfs(int t) {
+	memset(h, 0x3f, sizeof h);
+	queue<int>q;
+	q.push(t); h[t] = 0;
+	while (!q.empty()) {
+		int now = q.front(); q.pop();
+		for (int i = head[now]; i; i = edge[i].nxt)
+			if (h[edge[i].v] > h[now] + 1 && edge[i ^ 1].w)
+				h[edge[i].v] = h[now] + 1, q.push(edge[i].v);
+	}
+}
+#define visable(x) ((x) != s && (x) != t)
+void push(int now, int s, int t) {
+	for (int i = head[now]; i; i = edge[i].nxt) {
+		if (h[edge[i].v] + 1 == h[now] && edge[i].w) {
+			int flow = min(more[now], edge[i].w);
+			edge[i].w -= flow; edge[i ^ 1].w += flow;
+			more[edge[i].v] += flow; more[now] -= flow;
+			if (visable(edge[i].v) && !vis[edge[i].v])
+				vis[edge[i].v] = 1, q.push(edge[i].v);
+			if (!more[now]) return;
+		}
+	}
+}
+bool relabel(int now) {
+	h[now] = inf;
+	for (int i = head[now]; i; i = edge[i].nxt)
+		if (edge[i].w && h[edge[i].v] + 1 < h[now])
+			h[now] = h[edge[i].v] + 1;
+	return h[now] ^ inf;
+}
+int hlpp(int n, int s, int t) {
+	bfs(t);
+	if (h[s] == inf) return 0;
+	h[s] = n;
+	for (int i = 1; i <= n; ++i) if (h[i] ^ inf) gap[h[i]]++;
+	for (int i = head[s]; i; i = edge[i].nxt)
+		if (edge[i].w) {
+			int w = edge[i].w;
+			edge[i].w -= w, edge[i ^ 1].w += w;
+			more[s] -= w, more[edge[i].v] += w;
+			if (visable(edge[i].v) && !vis[edge[i].v])
+				vis[edge[i].v] = 1, q.push(edge[i].v);
+		}
+	while (!q.empty()) {
+		int now = q.top(); q.pop(); vis[now] = 0; push(now, s, t);
+		if (more[now] && (h[now] ^ inf)) {
+			if (!--gap[h[now]])
+				for (int i = 1; i <= n; i++)
+					if (visable(i) && h[i] < n + 1 && h[i] > h[now])
+						h[i] = n + 1;
+			if (relabel(now)) ++gap[h[now]], q.push(now), vis[now] = 1;
+		}
+	}
+	return more[t];
+}
+int n, m, k, l[200], c[200];
+#define pos(i, j) ((i - 1) * m + j)
+signed main() {
+	// freopen("soldier.in", "r", stdin);
+	// freopen("soldier.out", "w", stdout);
+	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> m >> k;
+	int ans = 0, nm = n * m;
+	for (int i = 1; i <= n; ++i) {
+		cin >> l[i]; addedge(nm + n + m + 1, nm + i, l[i]); ans += l[i];
+		for (int j = 1; j <= m; ++j) addedge(nm + i, pos(i, j), 1);
+	}
+	nm += n;
+	for (int i = 1; i <= m; ++i) {
+		cin >> c[i]; addedge(nm + i, nm + m + 2, c[i]); ans += c[i];
+		for (int j = 1; j <= m; ++j) addedge(pos(j, i), nm + i, 1);
+	}
+	nm += m;
+	for (int i = 1, x, y; i <= k; ++i) {
+		cin >> x >> y;
+		if (++l[x] > m) {
+			cout << "JIONG!" << endl;
+			return 0;
+		}
+		if (++c[y] > n) {
+			cout << "JIONG!" << endl;
+			return 0;
+		}
+		for (int j = head[pos(x, y)]; j; j = edge[j].nxt)
+			edge[j].v = 0, edge[j ^ 1].v = 0,
+			edge[j].w = 0, edge[j ^ 1].w = 0;
+	}
+	cout << ans - hlpp(nm + 2, nm + 1, nm + 2) << endl;
+	return 0;
+}

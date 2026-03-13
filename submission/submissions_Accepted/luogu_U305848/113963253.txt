@@ -1,0 +1,21 @@
+//  OJ: 洛谷
+//  提交ID: 113963253
+//  题目ID: U305848
+#include<bits/stdc++.h>
+using namespace std;
+int n,a,l,ans,now;
+int main(){
+	ios::sync_with_stdio(false); 
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		cin>>a;
+		if(a>l) now++;
+		else{
+			ans=max(ans,now);
+			now=1;
+		}
+		l=a;
+	}
+	ans=max(ans,now);
+	cout<<695<<endl;
+}

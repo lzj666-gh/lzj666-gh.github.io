@@ -1,0 +1,155 @@
+//  OJ: 洛谷
+//  提交ID: 244481185
+//  题目ID: P9754
+#include<bits/stdc++.h>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+#define int long long
+using namespace std;
+struct Type {
+	int size, index;
+	vector<Type*>sontype;
+	vector<string>sonname;
+	vector<int>sonaddress;
+	map<string, int>nameson;
+	string name; int soncnt;
+	Type(int base = 0, string Name = "") {
+		size = base; index = base;
+		soncnt = 0; sontype.clear();
+		nameson.clear(); name = Name;
+		sonname.clear(); sonaddress.clear();
+	}
+};
+template<typename T>
+class Vector {
+	T data[10000]; int idx;
+public:
+	Vector() :data(), idx() {}
+	template<typename... TT>
+	void emplace_back(TT&&... element) {
+		data[idx++] = T(std::forward<TT>(element)...);
+	}
+	T& back() {
+		return data[idx - 1];
+	}
+	int size() {
+		return idx;
+	}
+	T& operator[](int idx) {
+		return data[idx];
+	}
+};
+Vector<Type>type;
+map<string, Type*>types;
+struct Element {
+	Type* type;
+	string name;
+	int address;
+	Element(Type* type = nullptr, string name = "", int address = 0) :type(type), name(name), address(address) {}
+};
+Vector<Element>element;
+map<string, Element*>elements;
+int n, op, curaddress;
+int32_t main() {
+	//file(struct3);
+	cin.tie(0)->sync_with_stdio(false);
+	type.emplace_back(1, "byte"); types["byte"] = &type.back();
+	type.emplace_back(2, "short"); types["short"] = &type.back();
+	type.emplace_back(4, "int"); types["int"] = &type.back();
+	type.emplace_back(8, "long"); types["long"] = &type.back();
+	cin >> n;
+	while (n--) {
+		cin >> op;
+		if (op == 1) {
+			type.emplace_back(0);
+			cin >> type.back().name >> type.back().soncnt;
+			types[type.back().name] = &type.back();
+			type.back().sontype.resize(type.back().soncnt);
+			type.back().sonname.resize(type.back().soncnt);
+			type.back().sonaddress.resize(type.back().soncnt);
+			int curaddress = 0;
+			for (int i = 0; i < type.back().soncnt; ++i) {
+				string TypeName, SonName;
+				cin >> TypeName >> SonName;
+				type.back().sontype[i] = types.at(TypeName);
+				type.back().sonname[i] = SonName;
+				type.back().nameson[SonName] = i;
+				curaddress = ceil(1.0 * curaddress / type.back().sontype[i]->index) * type.back().sontype[i]->index;
+				type.back().sonaddress[i] = curaddress;
+				curaddress += type.back().sontype[i]->size;
+				type.back().index = max(type.back().index, type.back().sontype[i]->index);
+			}
+			type.back().size = ceil(1.0 * curaddress / type.back().index) * type.back().index;
+			cout << type.back().size << ' ' << type.back().index << endl;
+		}
+		if (op == 2) {
+			string etype, ename;
+			cin >> etype >> ename;
+			Type* current = types[etype];
+			element.emplace_back(current, ename, curaddress);
+			curaddress = ceil(1.0 * curaddress / current->index) * current->index;
+			cout << curaddress << endl;
+			curaddress += types[etype]->size;
+			elements[ename] = &element.back();
+		}
+		if (op == 3) {
+			string s; cin >> s;
+			Type* current = elements.at(s.substr(0, s.find_first_of('.')))->type;
+			vector<int>idxs;
+			for (int i = 0; i < s.size(); ++i) if (s[i] == '.') idxs.push_back(i);
+			idxs.push_back(s.size()); int idk = 0;
+			int idx = idxs[idk] + 1, address = elements.at(s.substr(0, idxs[idk]))->address;
+			if (idxs.size() == 1) {
+				cout << address << endl;
+				continue;
+			}
+			while (1) {
+				++idk;
+				int i = current->nameson.at(s.substr(idx, idxs[idk] - idx));
+				address += current->sonaddress[i];
+				current = current->sontype[i];
+				idx = idxs[idk] + 1;
+				if (idx >= s.size()) break;
+			}
+			cout << address << endl;
+		}
+		if (op == 4) {
+			int addr; cin >> addr;
+			if (addr >= curaddress) {
+				cout << "ERR" << endl;
+				continue;
+			}
+			string ans;
+			for (int i = 0; i < element.size(); ++i) {
+				if (i == element.size() - 1 || element[i + 1].address > addr) {
+					ans = element[i].name + '.';
+					Type* current = element[i].type;
+					bool flg = 1; addr -= element[i].address;
+					while (flg) {
+						for (int i = 0; i < current->soncnt; ++i) {
+							if (i == current->soncnt - 1 || current->sonaddress[i + 1] > addr) {
+								if (current->sonaddress[i] <= addr && addr < current->sonaddress[i] + current->sontype[i]->size) {
+									ans += current->sonname[i];
+									if (current->sontype[i]->soncnt == 0) {
+										flg = 0;
+										break;
+									}
+									ans += '.';
+									addr -= current->sonaddress[i];
+									current = current->sontype[i];
+								}
+								else {
+									flg = 0;
+									ans = "ERR";
+								}
+								break;
+							}
+						}
+					}
+					break;
+				}
+			}
+			cout << ans << endl;
+		}
+	}
+	return 0;
+}

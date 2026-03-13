@@ -1,0 +1,49 @@
+//  OJ: 洛谷
+//  提交ID: 139572937
+//  题目ID: T147072
+#include<bits/stdc++.h>
+using namespace std;
+int trie[1000000 + 10][65], idx, n, m, cnt[1000000 + 10];
+int gt(char c) {
+	if (c >= 'A' && c <= 'Z')
+		return c - 'A';
+	else if (c >= 'a' && c <= 'z')
+		return c - 'a' + 26;
+	else
+		return c - '0' + 52;
+}
+void insert(string s) {
+	int p = 0;
+	for (char c : s) {
+		int t = gt(c);
+		if (!trie[p][t]) trie[p][t] = ++idx/*, cout << "from " << p << " to " << idx << " is " << c << endl*/;
+		p = trie[p][t];
+	}
+	++cnt[p];
+}
+int search(string s) {
+	int p = 0, ans = 0;
+	for (char c : s) {
+		int t = gt(c);
+		if (!trie[p][t]) return ans;
+		p = trie[p][t];
+		ans += cnt[p];
+	}
+	return ans;
+}
+int main() {
+	ios::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 1; i <= n; ++i) {
+		string tmp;
+		cin >> tmp;
+		insert(tmp);
+	}
+	for (int i = 1; i <= m; ++i) {
+		string s;
+		cin >> s;
+		cout << search(s) << endl;
+	}
+//	for (int i = 0; i <= idx; ++i) cout << cnt[i] << endl;
+	return 0;
+}

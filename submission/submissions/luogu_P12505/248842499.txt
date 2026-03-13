@@ -1,0 +1,98 @@
+//  OJ: 洛谷
+//  提交ID: 248842499
+//  题目ID: P12505
+#include<bits/stdc++.h>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/priority_queue.hpp>
+#define file(a) freopen(#a".in", "r", stdin), freopen(#a".out", "w", stdout)
+//#define int long long
+using namespace std;
+int n, q; string s;
+__gnu_pbds::priority_queue<pair<int, int>>p;
+int32_t main() {
+	//file(holiday);
+//	cin.tie(0)->sync_with_stdio(false);
+	cin >> n >> q >> s;
+	vector<__gnu_pbds::priority_queue<pair<int, int>>::point_iterator> it(n);
+	if (count(s.begin(), s.end(), '0') == n) {
+		while (q--) {
+			int k; cin >> k;
+			if (k < 2) cout << 0 << endl;
+			else cout << k << endl;
+		}
+		return 0;
+	}
+	if (count(s.begin(), s.end(), '1') == n) {
+		while (q--) {
+			if (n < 2) cout << 0 << endl;
+			else cout << n << endl;
+		}
+		return 0;
+	}
+	if (q == 1) {
+		int k, ans = 0; cin >> k;
+		for (int i = 0; i < n;) {
+			size_t j = s.find_first_not_of(s[i], i);
+			if (j > n) j = n;
+			if (s[i] == '1' && j - i > 1) ans += j - i;
+			i = j;
+		}
+		if (k == 0) {
+			cout << ans << endl;
+			return 0;
+		}
+		if (n == 1) {
+			cout << 0 << endl;
+			return 0;
+		}
+		if (n == 2) {
+			cout << 2 << endl;
+			return 0;
+		}
+		int mxa = 1;
+		for (int i = 0; i < n; ++i) {
+			if ((i == 0 || s[i - 1] == '0') && s[i] == '1' && (i == n - 1 || s[i + 1] == '0'))
+				mxa = max(mxa, 2);
+			if (i > 0 && i < n + 1 && ((i == 1 || s[i - 2] == '0') && s[i - 1] == '1' && s[i] == '0' && s[i + 1] == '1' && (i == n - 2 || s[i + 2] == '0')))
+				mxa = max(mxa, 3);
+		}
+		cout << ans + mxa << endl;
+		return 0;
+	}
+	function<bool(int)>check1 = [&](int i) { return s[i] == '0' && ((i > 0 && s[i - 1] == '1') || (i < n - 1 && s[i + 1] == '1')); };
+	function<bool(int)>check2 = [&](int i) { return i > 0 && i < n + 1 && s[i] == '0' && (((i == 1 || s[i - 2] == '0') && s[i - 1] == '1') || (s[i + 1] == '1' && (i == n - 2 || s[i + 2] == '0'))); };
+	function<bool(int)>check3 = [&](int i) { return i > 0 && i < n + 1 && s[i] == '0' && (i == 1 || s[i - 2] == '0') && s[i - 1] == '1' && s[i + 1] == '1' && (i == n - 2 || s[i + 2] == '0'); };
+	vector<pair<int, int>>query(q); vector<int>ans(q);
+	for (int i = 0; i < q; ++i) cin >> query[i].first, query[i].second = i;
+	ranges::sort(query); int cur = 0, anss = 0;
+	for (int i = 0; i < n;) {
+		size_t j = s.find_first_not_of(s[i], i);
+		if (j > n) j = n;
+		if (s[i] == '1' && j - i > 1) anss += j - i;
+		i = j;
+	}
+	for (int i = 0; i < n; ++i)
+		if (check3(i)) it[i] = p.push(make_pair(3, i));
+		else if (check2(i)) it[i] = p.push(make_pair(2, i));
+		else if (check1(i)) it[i] = p.push(make_pair(1, i));
+		else if (s[i] == '0') it[i] = p.push(make_pair(0, i));
+	for (int i = 0; i < q; ++i) {
+//		cerr << "now: " << cur << " and to " << query[i].first << endl;
+		while (cur < query[i].first) {
+//			cerr << "pop " << p.top().second << " with value " << p.top().first << endl;
+			anss += p.top().first; int now = p.top().second;
+			p.pop(); s[now] = '1'; // p.erase(it[now]);
+			for (int j = max(0, now - 3); j < n && j <= now + 3; ++j) {
+//				cerr << "updating " << j << endl;
+				if (check3(j)) p.modify(it[j], make_pair(3, j));
+				else if (check2(j)) p.modify(it[j], make_pair(2, j));
+				else if (check1(j)) p.modify(it[j], make_pair(1, j));
+				else if (s[j] == '0') p.modify(it[j], make_pair(0, j));
+			}
+			cur++;
+		}
+		ans[query[i].second] = anss;
+	}
+	for (int i = 0; i < q; ++i) cout << ans[i] << endl;
+	return 0;
+}

@@ -1,0 +1,42 @@
+//  OJ: 洛谷
+//  提交ID: 127785349
+//  题目ID: T385409
+#include <bits/stdc++.h>
+using namespace std;
+
+int t, m, n, k;
+
+int main() {
+    cin >> t;
+    while (t--) {
+        int minn = -2e9, id = 0;
+        cin >> m >> n >> k;
+        for (int a = 0; a <= 5; a++) {   // 暴力枚举前6位，注意第一位最多为5
+            for (int b = 0; b <= 9; b++) {
+                for (int c = 0; c <= 9; c++) {
+                    for (int d = 0; d <= 9; d++) {
+                        for (int e = 0; e <= 9; e++) {
+                            for (int f = 0; f <= 9; f++) {
+                                int g = k-a-b-c-d-e-f;  // g是个位
+                                if (g > 9||g<0) continue;  
+								int t = a * 1e6 + b * 1e5 + c * 1e4 + d * 1e3 + e * 1e2 + f * 10 + g;   // 算出现在凑出来的数字
+                                if (t<m||t > n) continue;  // 合法
+                                int mul = 0;   // 算乘积
+                               	if (a == 0 && b == 0 && c == 0 && d == 0 && e == 0 && f == 0 && g == 0) mul = 0;   // 注意需要特殊判断前导0
+								else if (a == 0 && b == 0 && c == 0 && d == 0 && e == 0 && f == 0) mul = g;   // 前导0
+								else if (a == 0 && b == 0 && c == 0 && d == 0 && e == 0) mul = f * g;  // 前导0
+								else if (a == 0 && b == 0 && c == 0 && d == 0) mul = e * f * g;  // 前导0
+								else if (a == 0 && b == 0 && c == 0) mul = d * e * f * g;  // 前导0
+								else if (a == 0 && b == 0)  mul = c * d * e * f * g;  // 前导0
+								else if (a == 0) mul = b * c * d * e * f * g;  // 前导0
+								else mul = a * b * c * d * e * f * g;  // 前导0
+                                if (mul > minn) minn = mul, id = t;   // 最后统计答案
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        cout << id << ' ' << minn << endl;
+    }
+}

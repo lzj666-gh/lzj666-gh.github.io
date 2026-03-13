@@ -1,0 +1,29 @@
+//  OJ: 洛谷
+//  提交ID: 142912162
+//  题目ID: T416130
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int n;long long sum=0,ans;
+bool a[100000+10];
+int dfs(){
+	static long long p=0;
+//	cout<<'{';
+	long long sum=0;
+	while(!a[++p]){
+		if(a[p+1]) ++sum,++p;
+		else sum+=2*dfs(),sum%=12345678910;
+//		cout<<"p is "<<p<<" and sum is "<<sum<<endl;
+	}
+//	cout<<'}';
+	return sum;
+}
+signed main(){
+// 	freopen("P3015_7.in","r",stdin); 
+	ios_base::sync_with_stdio(false);
+	cin>>n;
+	for(int i=1,tmp;i<=n;++i) cin>>tmp,a[i]=tmp;
+	a[n+1]=1;
+	cout<<dfs();
+	return 0;
+}

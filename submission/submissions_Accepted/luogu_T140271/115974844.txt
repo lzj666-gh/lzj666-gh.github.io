@@ -1,0 +1,41 @@
+//  OJ: 洛谷
+//  提交ID: 115974844
+//  题目ID: T140271
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int l,r;
+}a[1000+10];
+int n,m;
+bool b[1000+10];
+string ans="True";
+int dfs(int k){
+	if(k==0) return 0;
+	int re1=dfs(a[k].l),re2=dfs(a[k].r);
+	if(abs(re1-re2)>1) ans="False";
+	return max(re1,re2)+1;
+}
+int main(){
+	ios::sync_with_stdio(false);
+	cin>>n>>m;
+	for(int i=1;i<=n;i++) a[i].l=a[i].r=0;
+	for(int i=1;i<=m;i++){
+		int x,y;
+		cin>>x>>y;
+		if(a[x].l==0){
+			a[x].l=y;
+		}
+		else{
+			a[x].r=y;
+		}
+		b[y]=true;
+	}
+	for(int i=1;i<=n;i++){
+		if(b[i]==false){
+			cout<<dfs(i)<<endl;
+			cout<<ans<<endl;
+			return 0;
+		}
+	}
+	return 0;
+}
